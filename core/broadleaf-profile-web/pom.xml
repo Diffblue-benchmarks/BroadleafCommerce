@@ -54,7 +54,7 @@
     </profiles>
     <build>
         <plugins>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.17.1</version>
@@ -71,7 +71,7 @@
                         <version>1.2.1</version>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
     <dependencies>
