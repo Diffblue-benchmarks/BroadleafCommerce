@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.security.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,20 +41,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AdminSecurityHelperImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdminSecurityHelperImplDiffblueTest {
-  @Autowired
-  private AdminSecurityHelperImpl adminSecurityHelperImpl;
+  @Autowired private AdminSecurityHelperImpl adminSecurityHelperImpl;
 
   /**
    * Test {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}
+   *
+   * <p>Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"
+  })
   public void testAddAllPermissionsToAuthorities_thenArrayListSizeIsOne() {
     // Arrange
     ArrayList<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -65,7 +70,7 @@ public class AdminSecurityHelperImplDiffblueTest {
     adminPermissionImpl.setId(1L);
     adminPermissionImpl.setQualifiedEntities(new ArrayList<>());
     adminPermissionImpl.setType(PermissionType.ALL);
-    adminPermissionImpl.setName("Admin Permissions");
+    adminPermissionImpl.setName("not blank");
 
     LinkedHashSet<AdminPermission> adminPermissions = new LinkedHashSet<>();
     adminPermissions.add(adminPermissionImpl);
@@ -76,21 +81,26 @@ public class AdminSecurityHelperImplDiffblueTest {
     // Assert
     assertEquals(1, grantedAuthorities.size());
     SimpleGrantedAuthority getResult = grantedAuthorities.get(0);
-    assertEquals("Admin Permissions", getResult.getAuthority());
-    assertEquals("Admin Permissions", getResult.toString());
+    assertEquals("not blank", getResult.getAuthority());
+    assertEquals("not blank", getResult.toString());
   }
 
   /**
    * Test {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}
+   *
+   * <p>Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"
+  })
   public void testAddAllPermissionsToAuthorities_thenArrayListSizeIsTwo() {
     // Arrange
     ArrayList<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -109,16 +119,21 @@ public class AdminSecurityHelperImplDiffblueTest {
 
   /**
    * Test {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List, Collection)}
+   *
+   * <p>Method under test: {@link AdminSecurityHelperImpl#addAllPermissionsToAuthorities(List,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminSecurityHelperImpl.addAllPermissionsToAuthorities(List, Collection)"
+  })
   public void testAddAllPermissionsToAuthorities_whenArrayList_thenArrayListEmpty() {
     // Arrange
     ArrayList<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();

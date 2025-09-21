@@ -22,11 +22,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -57,25 +58,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageTemplateCustomPersistenceHandlerDiffblueTest {
-  @Mock
-  private PageService pageService;
+  @Mock private PageService pageService;
 
-  @InjectMocks
-  private PageTemplateCustomPersistenceHandler pageTemplateCustomPersistenceHandler;
+  @InjectMocks private PageTemplateCustomPersistenceHandler pageTemplateCustomPersistenceHandler;
 
-  @Mock
-  private SandBoxService sandBoxService;
+  @Mock private SandBoxService sandBoxService;
 
   /**
    * Test {@link PageTemplateCustomPersistenceHandler#getSandBox()}.
+   *
    * <ul>
-   *   <li>Then return {@link SandBoxImpl} (default constructor).</li>
+   *   <li>Then return {@link SandBoxImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getSandBox()}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getSandBox()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox PageTemplateCustomPersistenceHandler.getSandBox()"})
   public void testGetSandBox_thenReturnSandBoxImpl() {
     // Arrange
@@ -92,42 +92,53 @@ public class PageTemplateCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link PageTemplateCustomPersistenceHandler#getSandBox()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NumberFormatException}.</li>
+   *   <li>Then throw {@link NumberFormatException}.
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getSandBox()}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getSandBox()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox PageTemplateCustomPersistenceHandler.getSandBox()"})
   public void testGetSandBox_thenThrowNumberFormatException() {
     // Arrange
     when(sandBoxService.retrieveSandBoxById(Mockito.<Long>any()))
-        .thenThrow(new NumberFormatException("ThreadLocalManager.notify.orphans"));
+        .thenThrow(new NumberFormatException());
 
     // Act and Assert
-    assertThrows(NumberFormatException.class, () -> pageTemplateCustomPersistenceHandler.getSandBox());
+    assertThrows(
+        NumberFormatException.class, () -> pageTemplateCustomPersistenceHandler.getSandBox());
     verify(sandBoxService).retrieveSandBoxById(isNull());
   }
 
   /**
-   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with {@code page}, {@code template}.
+   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with
+   * {@code page}, {@code template}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link PageImpl} (default constructor) PageTemplate is {@code null}.</li>
+   *   <li>Given {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page,
+   * PageTemplate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"})
-  public void testGetFieldGroupsWithPageTemplate_givenNull_whenPageImplPageTemplateIsNull() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"
+  })
+  public void testGetFieldGroupsWithPageTemplate_givenNull_thenReturnEmpty() {
     // Arrange
     PageImpl page = new PageImpl();
-    page.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     page.setAdditionalAttributes(new HashMap<>());
     page.setDescription("The characteristics of someone or something");
     page.setExcludeFromSiteMap(true);
@@ -147,21 +158,29 @@ public class PageTemplateCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with {@code page}, {@code template}.
+   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with
+   * {@code page}, {@code template}.
+   *
    * <ul>
-   *   <li>Given {@link PageTemplateImpl} (default constructor).</li>
+   *   <li>Given {@link PageTemplateImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page,
+   * PageTemplate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"
+  })
   public void testGetFieldGroupsWithPageTemplate_givenPageTemplateImpl() {
     // Arrange
     PageImpl page = new PageImpl();
-    page.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     page.setAdditionalAttributes(new HashMap<>());
     page.setDescription("The characteristics of someone or something");
     page.setExcludeFromSiteMap(true);
@@ -181,21 +200,29 @@ public class PageTemplateCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with {@code page}, {@code template}.
+   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with
+   * {@code page}, {@code template}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page,
+   * PageTemplate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"
+  })
   public void testGetFieldGroupsWithPageTemplate_thenReturnSizeIsOne() {
     // Arrange
     PageImpl page = new PageImpl();
-    page.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     page.setAdditionalAttributes(new HashMap<>());
     page.setDescription("The characteristics of someone or something");
     page.setExcludeFromSiteMap(true);
@@ -222,7 +249,8 @@ public class PageTemplateCustomPersistenceHandlerDiffblueTest {
     template.setFieldGroupXrefs(fieldGroups);
 
     // Act
-    List<FieldGroup> actualFieldGroups = pageTemplateCustomPersistenceHandler.getFieldGroups(page, template);
+    List<FieldGroup> actualFieldGroups =
+        pageTemplateCustomPersistenceHandler.getFieldGroups(page, template);
 
     // Assert
     assertEquals(1, actualFieldGroups.size());
@@ -230,58 +258,122 @@ public class PageTemplateCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with {@code page}, {@code template}.
+   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with
+   * {@code page}, {@code template}.
+   *
    * <ul>
-   *   <li>When {@link PageImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then throw {@link NumberFormatException}.
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page,
+   * PageTemplate)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"
+  })
+  public void testGetFieldGroupsWithPageTemplate_thenThrowNumberFormatException() {
+    // Arrange
+    PageTemplateImpl pageTemplate = mock(PageTemplateImpl.class);
+    when(pageTemplate.getFieldGroupXrefs()).thenThrow(new NumberFormatException());
+
+    PageImpl page = new PageImpl();
+    page.setActiveEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setAdditionalAttributes(new HashMap<>());
+    page.setDescription("The characteristics of someone or something");
+    page.setExcludeFromSiteMap(true);
+    page.setFullUrl("https://example.org/example");
+    page.setId(1L);
+    page.setMetaDescription("Meta Description");
+    page.setMetaTitle("Dr");
+    page.setOfflineFlag(true);
+    page.setPageFields(new HashMap<>());
+    page.setPageMatchRules(new HashMap<>());
+    page.setPriority(1);
+    page.setQualifyingItemCriteria(new HashSet<>());
+    page.setPageTemplate(pageTemplate);
+
+    // Act and Assert
+    assertThrows(
+        NumberFormatException.class,
+        () -> pageTemplateCustomPersistenceHandler.getFieldGroups(page, null));
+    verify(pageTemplate).getFieldGroupXrefs();
+  }
+
+  /**
+   * Test {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page, PageTemplate)} with
+   * {@code page}, {@code template}.
+   *
+   * <ul>
+   *   <li>When {@link PageImpl} (default constructor).
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldGroups(Page,
+   * PageTemplate)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PageTemplateCustomPersistenceHandler.getFieldGroups(Page, PageTemplate)"
+  })
   public void testGetFieldGroupsWithPageTemplate_whenPageImpl_thenReturnEmpty() {
     // Arrange
     PageImpl page = new PageImpl();
 
     // Act and Assert
-    assertTrue(pageTemplateCustomPersistenceHandler.getFieldGroups(page, new PageTemplateImpl()).isEmpty());
+    assertTrue(
+        pageTemplateCustomPersistenceHandler
+            .getFieldGroups(page, new PageTemplateImpl())
+            .isEmpty());
   }
 
   /**
    * Test {@link PageTemplateCustomPersistenceHandler#getFieldContainerClassName()}.
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldContainerClassName()}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#getFieldContainerClassName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String PageTemplateCustomPersistenceHandler.getFieldContainerClassName()"})
   public void testGetFieldContainerClassName() {
     // Arrange, Act and Assert
-    assertEquals("org.broadleafcommerce.cms.page.domain.Page",
+    assertEquals(
+        "org.broadleafcommerce.cms.page.domain.Page",
         pageTemplateCustomPersistenceHandler.getFieldContainerClassName());
   }
 
   /**
    * Test {@link PageTemplateCustomPersistenceHandler#fetchEntityBasedOnId(String, List)}.
+   *
    * <ul>
-   *   <li>Then throw {@link NumberFormatException}.</li>
+   *   <li>Then throw {@link NumberFormatException}.
    * </ul>
-   * <p>
-   * Method under test: {@link PageTemplateCustomPersistenceHandler#fetchEntityBasedOnId(String, List)}
+   *
+   * <p>Method under test: {@link PageTemplateCustomPersistenceHandler#fetchEntityBasedOnId(String,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.openadmin.dto.Entity PageTemplateCustomPersistenceHandler.fetchEntityBasedOnId(String, List)"})
+    "org.broadleafcommerce.openadmin.dto.Entity PageTemplateCustomPersistenceHandler.fetchEntityBasedOnId(String, List)"
+  })
   public void testFetchEntityBasedOnId_thenThrowNumberFormatException() throws Exception {
     // Arrange
-    when(pageService.findPageById(Mockito.<Long>any())).thenThrow(new NumberFormatException("foo"));
+    when(pageService.findPageById(Mockito.<Long>any())).thenThrow(new NumberFormatException());
 
     // Act and Assert
-    assertThrows(NumberFormatException.class,
+    assertThrows(
+        NumberFormatException.class,
         () -> pageTemplateCustomPersistenceHandler.fetchEntityBasedOnId("42", new ArrayList<>()));
-    verify(pageService).findPageById(eq(42L));
+    verify(pageService).findPageById(42L);
   }
 }

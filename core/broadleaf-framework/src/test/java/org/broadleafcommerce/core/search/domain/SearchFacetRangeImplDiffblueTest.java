@@ -27,7 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
@@ -43,13 +44,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchFacetRangeImplDiffblueTest {
-  @Autowired
-  private SearchFacetRangeImpl searchFacetRangeImpl;
+  @Autowired private SearchFacetRangeImpl searchFacetRangeImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SearchFacetRangeImpl#setId(Long)}
    *   <li>{@link SearchFacetRangeImpl#setMaxValue(BigDecimal)}
@@ -62,11 +63,18 @@ public class SearchFacetRangeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SearchFacetRangeImpl.getId()", "BigDecimal SearchFacetRangeImpl.getMaxValue()",
-      "BigDecimal SearchFacetRangeImpl.getMinValue()", "SearchFacet SearchFacetRangeImpl.getSearchFacet()",
-      "void SearchFacetRangeImpl.setId(Long)", "void SearchFacetRangeImpl.setMaxValue(BigDecimal)",
-      "void SearchFacetRangeImpl.setMinValue(BigDecimal)", "void SearchFacetRangeImpl.setSearchFacet(SearchFacet)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SearchFacetRangeImpl.getId()",
+    "BigDecimal SearchFacetRangeImpl.getMaxValue()",
+    "BigDecimal SearchFacetRangeImpl.getMinValue()",
+    "SearchFacet SearchFacetRangeImpl.getSearchFacet()",
+    "void SearchFacetRangeImpl.setId(Long)",
+    "void SearchFacetRangeImpl.setMaxValue(BigDecimal)",
+    "void SearchFacetRangeImpl.setMinValue(BigDecimal)",
+    "void SearchFacetRangeImpl.setSearchFacet(SearchFacet)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
@@ -95,20 +103,26 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeImpl#equals(Object)}, and {@link SearchFacetRangeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SearchFacetRangeImpl#equals(Object)}
    *   <li>{@link SearchFacetRangeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SearchFacetRangeImpl.equals(Object)", "int SearchFacetRangeImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SearchFacetRangeImpl.equals(Object)",
+    "int SearchFacetRangeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
@@ -125,26 +139,31 @@ public class SearchFacetRangeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(searchFacetRangeImpl, searchFacetRangeImpl2);
-    int expectedHashCodeResult = searchFacetRangeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, searchFacetRangeImpl2.hashCode());
+    assertEquals(searchFacetRangeImpl.hashCode(), searchFacetRangeImpl2.hashCode());
   }
 
   /**
    * Test {@link SearchFacetRangeImpl#equals(Object)}, and {@link SearchFacetRangeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SearchFacetRangeImpl#equals(Object)}
    *   <li>{@link SearchFacetRangeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SearchFacetRangeImpl.equals(Object)", "int SearchFacetRangeImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SearchFacetRangeImpl.equals(Object)",
+    "int SearchFacetRangeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
@@ -161,21 +180,26 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetRangeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SearchFacetRangeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SearchFacetRangeImpl.equals(Object)", "int SearchFacetRangeImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SearchFacetRangeImpl.equals(Object)",
+    "int SearchFacetRangeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
     searchFacetRangeImpl.setId(1L);
-    searchFacetRangeImpl.setMaxValue(new BigDecimal("4.5"));
+    searchFacetRangeImpl.setMaxValue(null);
     searchFacetRangeImpl.setMinValue(new BigDecimal("2.3"));
     searchFacetRangeImpl.setSearchFacet(new SearchFacetImpl());
 
@@ -191,16 +215,21 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetRangeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SearchFacetRangeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SearchFacetRangeImpl.equals(Object)", "int SearchFacetRangeImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SearchFacetRangeImpl.equals(Object)",
+    "int SearchFacetRangeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
@@ -215,16 +244,21 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetRangeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SearchFacetRangeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SearchFacetRangeImpl.equals(Object)", "int SearchFacetRangeImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SearchFacetRangeImpl.equals(Object)",
+    "int SearchFacetRangeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SearchFacetRangeImpl searchFacetRangeImpl = new SearchFacetRangeImpl();
@@ -239,23 +273,25 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test {@link SearchFacetRangeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link SearchFacetRangeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * SearchFacetRangeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse SearchFacetRangeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SearchFacetRangeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    SearchFacetRangeImpl searchFacetRangeImpl2 = new SearchFacetRangeImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new SearchFacetRangeImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SearchFacetRange> actualCreateOrRetrieveCopyInstanceResult = searchFacetRangeImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<SearchFacetRange> actualCreateOrRetrieveCopyInstanceResult =
+        searchFacetRangeImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -264,11 +300,12 @@ public class SearchFacetRangeImplDiffblueTest {
 
   /**
    * Test new {@link SearchFacetRangeImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SearchFacetRangeImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link SearchFacetRangeImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SearchFacetRangeImpl.<init>()"})
   public void testNewSearchFacetRangeImpl() {
     // Arrange and Act

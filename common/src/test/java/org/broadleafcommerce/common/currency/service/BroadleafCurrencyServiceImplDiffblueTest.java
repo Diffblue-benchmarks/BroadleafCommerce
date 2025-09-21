@@ -19,11 +19,11 @@ package org.broadleafcommerce.common.currency.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,28 +40,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BroadleafCurrencyServiceImplDiffblueTest {
-  @Mock
-  private BroadleafCurrencyDao broadleafCurrencyDao;
+  @Mock private BroadleafCurrencyDao broadleafCurrencyDao;
 
-  @InjectMocks
-  private BroadleafCurrencyServiceImpl broadleafCurrencyServiceImpl;
+  @InjectMocks private BroadleafCurrencyServiceImpl broadleafCurrencyServiceImpl;
 
   /**
    * Test {@link BroadleafCurrencyServiceImpl#findDefaultBroadleafCurrency()}.
-   * <p>
-   * Method under test: {@link BroadleafCurrencyServiceImpl#findDefaultBroadleafCurrency()}
+   *
+   * <p>Method under test: {@link BroadleafCurrencyServiceImpl#findDefaultBroadleafCurrency()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"BroadleafCurrency BroadleafCurrencyServiceImpl.findDefaultBroadleafCurrency()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "BroadleafCurrency BroadleafCurrencyServiceImpl.findDefaultBroadleafCurrency()"
+  })
   public void testFindDefaultBroadleafCurrency() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
     when(broadleafCurrencyDao.findDefaultBroadleafCurrency()).thenReturn(broadleafCurrencyImpl);
 
     // Act
-    BroadleafCurrency actualFindDefaultBroadleafCurrencyResult = broadleafCurrencyServiceImpl
-        .findDefaultBroadleafCurrency();
+    BroadleafCurrency actualFindDefaultBroadleafCurrencyResult =
+        broadleafCurrencyServiceImpl.findDefaultBroadleafCurrency();
 
     // Assert
     verify(broadleafCurrencyDao).findDefaultBroadleafCurrency();
@@ -70,32 +71,36 @@ public class BroadleafCurrencyServiceImplDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyServiceImpl#findCurrencyByCode(String)}.
-   * <p>
-   * Method under test: {@link BroadleafCurrencyServiceImpl#findCurrencyByCode(String)}
+   *
+   * <p>Method under test: {@link BroadleafCurrencyServiceImpl#findCurrencyByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BroadleafCurrency BroadleafCurrencyServiceImpl.findCurrencyByCode(String)"})
   public void testFindCurrencyByCode() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
-    when(broadleafCurrencyDao.findCurrencyByCode(Mockito.<String>any())).thenReturn(broadleafCurrencyImpl);
+    when(broadleafCurrencyDao.findCurrencyByCode(Mockito.<String>any()))
+        .thenReturn(broadleafCurrencyImpl);
 
     // Act
-    BroadleafCurrency actualFindCurrencyByCodeResult = broadleafCurrencyServiceImpl.findCurrencyByCode("GBP");
+    BroadleafCurrency actualFindCurrencyByCodeResult =
+        broadleafCurrencyServiceImpl.findCurrencyByCode("GBP");
 
     // Assert
-    verify(broadleafCurrencyDao).findCurrencyByCode(eq("GBP"));
+    verify(broadleafCurrencyDao).findCurrencyByCode("GBP");
     assertSame(broadleafCurrencyImpl, actualFindCurrencyByCodeResult);
   }
 
   /**
    * Test {@link BroadleafCurrencyServiceImpl#getAllCurrencies()}.
-   * <p>
-   * Method under test: {@link BroadleafCurrencyServiceImpl#getAllCurrencies()}
+   *
+   * <p>Method under test: {@link BroadleafCurrencyServiceImpl#getAllCurrencies()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BroadleafCurrencyServiceImpl.getAllCurrencies()"})
   public void testGetAllCurrencies() {
     // Arrange
@@ -111,19 +116,22 @@ public class BroadleafCurrencyServiceImplDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyServiceImpl#save(BroadleafCurrency)}.
-   * <p>
-   * Method under test: {@link BroadleafCurrencyServiceImpl#save(BroadleafCurrency)}
+   *
+   * <p>Method under test: {@link BroadleafCurrencyServiceImpl#save(BroadleafCurrency)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BroadleafCurrency BroadleafCurrencyServiceImpl.save(BroadleafCurrency)"})
   public void testSave() {
     // Arrange
     BroadleafCurrencyImpl broadleafCurrencyImpl = new BroadleafCurrencyImpl();
-    when(broadleafCurrencyDao.save(Mockito.<BroadleafCurrency>any())).thenReturn(broadleafCurrencyImpl);
+    when(broadleafCurrencyDao.save(Mockito.<BroadleafCurrency>any()))
+        .thenReturn(broadleafCurrencyImpl);
 
     // Act
-    BroadleafCurrency actualSaveResult = broadleafCurrencyServiceImpl.save(new BroadleafCurrencyImpl());
+    BroadleafCurrency actualSaveResult =
+        broadleafCurrencyServiceImpl.save(new BroadleafCurrencyImpl());
 
     // Assert
     verify(broadleafCurrencyDao).save(isA(BroadleafCurrency.class));
@@ -132,11 +140,12 @@ public class BroadleafCurrencyServiceImplDiffblueTest {
 
   /**
    * Test {@link BroadleafCurrencyServiceImpl#create()}.
-   * <p>
-   * Method under test: {@link BroadleafCurrencyServiceImpl#create()}
+   *
+   * <p>Method under test: {@link BroadleafCurrencyServiceImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BroadleafCurrency BroadleafCurrencyServiceImpl.create()"})
   public void testCreate() {
     // Arrange

@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
 import org.junit.Test;
@@ -31,8 +32,9 @@ import org.junit.experimental.categories.Category;
 public class RuleBuilderFieldDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link RuleBuilderField}
    *   <li>{@link RuleBuilderField#setDataWrapper(DataWrapper)}
@@ -48,13 +50,21 @@ public class RuleBuilderFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RuleBuilderField.<init>()", "DataWrapper RuleBuilderField.getDataWrapper()",
-      "String RuleBuilderField.getFieldBuilder()", "String RuleBuilderField.getJson()",
-      "String RuleBuilderField.getJsonFieldName()", "String RuleBuilderField.getRuleType()",
-      "void RuleBuilderField.setDataWrapper(DataWrapper)", "void RuleBuilderField.setFieldBuilder(String)",
-      "void RuleBuilderField.setJson(String)", "void RuleBuilderField.setJsonFieldName(String)",
-      "void RuleBuilderField.setRuleType(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void RuleBuilderField.<init>()",
+    "DataWrapper RuleBuilderField.getDataWrapper()",
+    "String RuleBuilderField.getFieldBuilder()",
+    "String RuleBuilderField.getJson()",
+    "String RuleBuilderField.getJsonFieldName()",
+    "String RuleBuilderField.getRuleType()",
+    "void RuleBuilderField.setDataWrapper(DataWrapper)",
+    "void RuleBuilderField.setFieldBuilder(String)",
+    "void RuleBuilderField.setJson(String)",
+    "void RuleBuilderField.setJsonFieldName(String)",
+    "void RuleBuilderField.setRuleType(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     RuleBuilderField actualRuleBuilderField = new RuleBuilderField();

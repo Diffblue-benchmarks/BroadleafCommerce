@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
@@ -35,16 +36,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CustomerCreditDTO.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerCreditDTODiffblueTest {
-  @Autowired
-  private CustomerCreditDTO<Object> customerCreditDTO;
+  @Autowired private CustomerCreditDTO<Object> customerCreditDTO;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerCreditDTO#CustomerCreditDTO()}
    *   <li>{@link CustomerCreditDTO#customerCreditAccountMasked(String)}
@@ -52,17 +53,21 @@ public class CustomerCreditDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CustomerCreditDTO.<init>()", "void CustomerCreditDTO.<init>(Object)",
-      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
-      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CustomerCreditDTO.<init>()",
+    "void CustomerCreditDTO.<init>(Object)",
+    "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
+    "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerCreditDTO<Object> actualCustomerCreditDTO = new CustomerCreditDTO<>();
-    CustomerCreditDTO<Object> actualCustomerCreditAccountMaskedResult = actualCustomerCreditDTO
-        .customerCreditAccountMasked("3");
-    CustomerCreditDTO<Object> actualCustomerCreditAccountNumResult = actualCustomerCreditDTO
-        .customerCreditAccountNum("3");
+    CustomerCreditDTO<Object> actualCustomerCreditAccountMaskedResult =
+        actualCustomerCreditDTO.customerCreditAccountMasked("3");
+    CustomerCreditDTO<Object> actualCustomerCreditAccountNumResult =
+        actualCustomerCreditDTO.customerCreditAccountNum("3");
 
     // Assert
     assertTrue(actualCustomerCreditDTO.additionalFields.isEmpty());
@@ -72,11 +77,13 @@ public class CustomerCreditDTODiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerCreditDTO#CustomerCreditDTO(Object)}
    *   <li>{@link CustomerCreditDTO#customerCreditAccountMasked(String)}
@@ -84,17 +91,22 @@ public class CustomerCreditDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CustomerCreditDTO.<init>()", "void CustomerCreditDTO.<init>(Object)",
-      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
-      "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CustomerCreditDTO.<init>()",
+    "void CustomerCreditDTO.<init>(Object)",
+    "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountMasked(String)",
+    "CustomerCreditDTO CustomerCreditDTO.customerCreditAccountNum(String)"
+  })
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
-    CustomerCreditDTO<Object> actualCustomerCreditDTO = new CustomerCreditDTO<>(BLCFieldUtils.NULL_FIELD);
-    CustomerCreditDTO<Object> actualCustomerCreditAccountMaskedResult = actualCustomerCreditDTO
-        .customerCreditAccountMasked("3");
-    CustomerCreditDTO<Object> actualCustomerCreditAccountNumResult = actualCustomerCreditDTO
-        .customerCreditAccountNum("3");
+    CustomerCreditDTO<Object> actualCustomerCreditDTO =
+        new CustomerCreditDTO<>(BLCFieldUtils.NULL_FIELD);
+    CustomerCreditDTO<Object> actualCustomerCreditAccountMaskedResult =
+        actualCustomerCreditDTO.customerCreditAccountMasked("3");
+    CustomerCreditDTO<Object> actualCustomerCreditAccountNumResult =
+        actualCustomerCreditDTO.customerCreditAccountNum("3");
 
     // Assert
     assertTrue(actualCustomerCreditDTO.additionalFields.isEmpty());
@@ -104,11 +116,12 @@ public class CustomerCreditDTODiffblueTest {
 
   /**
    * Test {@link CustomerCreditDTO#done()}.
-   * <p>
-   * Method under test: {@link CustomerCreditDTO#done()}
+   *
+   * <p>Method under test: {@link CustomerCreditDTO#done()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object CustomerCreditDTO.done()"})
   public void testDone() {
     // Arrange
@@ -120,18 +133,20 @@ public class CustomerCreditDTODiffblueTest {
 
   /**
    * Test {@link CustomerCreditDTO#additionalFields(String, Object)}.
-   * <p>
-   * Method under test: {@link CustomerCreditDTO#additionalFields(String, Object)}
+   *
+   * <p>Method under test: {@link CustomerCreditDTO#additionalFields(String, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CustomerCreditDTO CustomerCreditDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange
     Object object = BLCFieldUtils.NULL_FIELD;
 
     // Act
-    CustomerCreditDTO<Object> actualAdditionalFieldsResult = customerCreditDTO.additionalFields("Key", object);
+    CustomerCreditDTO<Object> actualAdditionalFieldsResult =
+        customerCreditDTO.additionalFields("Key", object);
 
     // Assert
     Map<String, Object> stringObjectMap = customerCreditDTO.additionalFields;

@@ -20,9 +20,11 @@ package org.broadleafcommerce.common.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.common.site.domain.Theme;
@@ -41,21 +43,26 @@ import org.springframework.web.context.request.WebRequest;
 @ContextConfiguration(classes = {NullBroadleafThemeResolver.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullBroadleafThemeResolverDiffblueTest {
-  @Autowired
-  private NullBroadleafThemeResolver nullBroadleafThemeResolver;
+  @Autowired private NullBroadleafThemeResolver nullBroadleafThemeResolver;
 
   /**
    * Test {@link NullBroadleafThemeResolver#resolveTheme(WebRequest)} with {@code request}.
-   * <p>
-   * Method under test: {@link NullBroadleafThemeResolver#resolveTheme(WebRequest)}
+   *
+   * <p>Method under test: {@link NullBroadleafThemeResolver#resolveTheme(WebRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Theme NullBroadleafThemeResolver.resolveTheme(WebRequest)"})
   public void testResolveThemeWithRequest() {
-    // Arrange and Act
-    Theme actualResolveThemeResult = nullBroadleafThemeResolver
-        .resolveTheme(new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
+    // Arrange
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act
+    Theme actualResolveThemeResult =
+        nullBroadleafThemeResolver.resolveTheme(new ServletWebRequest(request));
 
     // Assert
     assertTrue(actualResolveThemeResult instanceof ThemeDTO);
@@ -65,23 +72,28 @@ public class NullBroadleafThemeResolverDiffblueTest {
   }
 
   /**
-   * Test {@link NullBroadleafThemeResolver#resolveTheme(HttpServletRequest, Site)} with {@code request}, {@code site}.
+   * Test {@link NullBroadleafThemeResolver#resolveTheme(HttpServletRequest, Site)} with {@code
+   * request}, {@code site}.
+   *
    * <ul>
-   *   <li>Then return {@link ThemeDTO}.</li>
+   *   <li>Then return {@link ThemeDTO}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullBroadleafThemeResolver#resolveTheme(HttpServletRequest, Site)}
+   *
+   * <p>Method under test: {@link NullBroadleafThemeResolver#resolveTheme(HttpServletRequest, Site)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Theme NullBroadleafThemeResolver.resolveTheme(HttpServletRequest, Site)"})
   public void testResolveThemeWithRequestSite_thenReturnThemeDTO() {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     // Act
-    Theme actualResolveThemeResult = nullBroadleafThemeResolver.resolveTheme(request, new SiteImpl());
+    Theme actualResolveThemeResult =
+        nullBroadleafThemeResolver.resolveTheme(request, new SiteImpl());
 
     // Assert
     assertTrue(actualResolveThemeResult instanceof ThemeDTO);
@@ -92,11 +104,13 @@ public class NullBroadleafThemeResolverDiffblueTest {
 
   /**
    * Test new {@link NullBroadleafThemeResolver} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link NullBroadleafThemeResolver}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * NullBroadleafThemeResolver}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void NullBroadleafThemeResolver.<init>()"})
   public void testNewNullBroadleafThemeResolver() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
@@ -104,7 +118,7 @@ public class NullBroadleafThemeResolverDiffblueTest {
     //   a non-Spring test was created.
 
     // Arrange, Act and Assert
-    Theme resolveThemeResult = (new NullBroadleafThemeResolver()).resolveTheme(null);
+    Theme resolveThemeResult = new NullBroadleafThemeResolver().resolveTheme(null);
     assertTrue(resolveThemeResult instanceof ThemeDTO);
     assertEquals("", resolveThemeResult.getName());
     assertEquals("", resolveThemeResult.getPath());

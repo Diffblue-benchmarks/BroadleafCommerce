@@ -18,7 +18,8 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service.options;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.BroadleafEnumerationType;
@@ -38,16 +39,17 @@ public class InventoryTypeEnumOptionsExtensionListenerDiffblueTest {
 
   /**
    * Test {@link InventoryTypeEnumOptionsExtensionListener#getValuesToGenerate()}.
-   * <p>
-   * Method under test: {@link InventoryTypeEnumOptionsExtensionListener#getValuesToGenerate()}
+   *
+   * <p>Method under test: {@link InventoryTypeEnumOptionsExtensionListener#getValuesToGenerate()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map InventoryTypeEnumOptionsExtensionListener.getValuesToGenerate()"})
   public void testGetValuesToGenerate() {
     // Arrange and Act
-    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate = inventoryTypeEnumOptionsExtensionListener
-        .getValuesToGenerate();
+    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate =
+        inventoryTypeEnumOptionsExtensionListener.getValuesToGenerate();
 
     // Assert
     assertEquals(1, actualValuesToGenerate.size());

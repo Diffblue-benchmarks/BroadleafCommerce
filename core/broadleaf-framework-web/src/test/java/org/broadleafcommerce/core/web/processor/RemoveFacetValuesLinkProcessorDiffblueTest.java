@@ -18,46 +18,43 @@
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.core.web.service.SearchFacetDTOService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class RemoveFacetValuesLinkProcessorDiffblueTest {
-  @InjectMocks
-  private RemoveFacetValuesLinkProcessor removeFacetValuesLinkProcessor;
-
-  @Mock
-  private SearchFacetDTOService searchFacetDTOService;
+  @InjectMocks private RemoveFacetValuesLinkProcessor removeFacetValuesLinkProcessor;
 
   /**
    * Test {@link RemoveFacetValuesLinkProcessor#getName()}.
-   * <p>
-   * Method under test: {@link RemoveFacetValuesLinkProcessor#getName()}
+   *
+   * <p>Method under test: {@link RemoveFacetValuesLinkProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String RemoveFacetValuesLinkProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("removefacetvalueslink", (new RemoveFacetValuesLinkProcessor()).getName());
+    assertEquals("removefacetvalueslink", new RemoveFacetValuesLinkProcessor().getName());
   }
 
   /**
    * Test {@link RemoveFacetValuesLinkProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link RemoveFacetValuesLinkProcessor#getPrecedence()}
+   *
+   * <p>Method under test: {@link RemoveFacetValuesLinkProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"int RemoveFacetValuesLinkProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert

@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.cache.engine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,19 +29,26 @@ import org.junit.experimental.categories.Category;
 public class CacheFactoryExceptionDiffblueTest {
   /**
    * Test {@link CacheFactoryException#CacheFactoryException(String)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link CacheFactoryException#CacheFactoryException(String)}
+   *
+   * <p>Method under test: {@link CacheFactoryException#CacheFactoryException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
-      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CacheFactoryException.<init>()",
+    "void CacheFactoryException.<init>(String)",
+    "void CacheFactoryException.<init>(String, Throwable)",
+    "void CacheFactoryException.<init>(Throwable)"
+  })
   public void testNewCacheFactoryException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    CacheFactoryException actualCacheFactoryException = new CacheFactoryException("An error occurred");
+    CacheFactoryException actualCacheFactoryException =
+        new CacheFactoryException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualCacheFactoryException.getMessage());
@@ -50,22 +58,29 @@ public class CacheFactoryExceptionDiffblueTest {
 
   /**
    * Test {@link CacheFactoryException#CacheFactoryException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link CacheFactoryException#CacheFactoryException(String, Throwable)}
+   *
+   * <p>Method under test: {@link CacheFactoryException#CacheFactoryException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
-      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CacheFactoryException.<init>()",
+    "void CacheFactoryException.<init>(String)",
+    "void CacheFactoryException.<init>(String, Throwable)",
+    "void CacheFactoryException.<init>(Throwable)"
+  })
   public void testNewCacheFactoryException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    CacheFactoryException actualCacheFactoryException = new CacheFactoryException("An error occurred", cause);
+    CacheFactoryException actualCacheFactoryException =
+        new CacheFactoryException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualCacheFactoryException.getMessage());
@@ -75,16 +90,22 @@ public class CacheFactoryExceptionDiffblueTest {
 
   /**
    * Test {@link CacheFactoryException#CacheFactoryException()}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CacheFactoryException#CacheFactoryException()}
+   *
+   * <p>Method under test: {@link CacheFactoryException#CacheFactoryException()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
-      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CacheFactoryException.<init>()",
+    "void CacheFactoryException.<init>(String)",
+    "void CacheFactoryException.<init>(String, Throwable)",
+    "void CacheFactoryException.<init>(Throwable)"
+  })
   public void testNewCacheFactoryException_thenReturnMessageIsNull() {
     // Arrange and Act
     CacheFactoryException actualCacheFactoryException = new CacheFactoryException();
@@ -97,17 +118,23 @@ public class CacheFactoryExceptionDiffblueTest {
 
   /**
    * Test {@link CacheFactoryException#CacheFactoryException(Throwable)}.
+   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code Throwable}.</li>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Message is {@code Throwable}.
    * </ul>
-   * <p>
-   * Method under test: {@link CacheFactoryException#CacheFactoryException(Throwable)}
+   *
+   * <p>Method under test: {@link CacheFactoryException#CacheFactoryException(Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CacheFactoryException.<init>()", "void CacheFactoryException.<init>(String)",
-      "void CacheFactoryException.<init>(String, Throwable)", "void CacheFactoryException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CacheFactoryException.<init>()",
+    "void CacheFactoryException.<init>(String)",
+    "void CacheFactoryException.<init>(String, Throwable)",
+    "void CacheFactoryException.<init>(Throwable)"
+  })
   public void testNewCacheFactoryException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

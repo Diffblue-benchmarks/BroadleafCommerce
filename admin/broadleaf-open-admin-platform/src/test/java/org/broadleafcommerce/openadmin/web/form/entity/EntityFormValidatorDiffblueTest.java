@@ -24,7 +24,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,16 +47,17 @@ import org.springframework.validation.ObjectError;
 @ContextConfiguration(classes = {EntityFormValidator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityFormValidatorDiffblueTest {
-  @Autowired
-  private EntityFormValidator entityFormValidator;
+  @Autowired private EntityFormValidator entityFormValidator;
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code
+   * entity}, {@code errors}.
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors() {
     // Arrange
@@ -63,6 +65,7 @@ public class EntityFormValidatorDiffblueTest {
 
     ArrayList<String> stringList = new ArrayList<>();
     stringList.add("foo");
+
     Entity entity = mock(Entity.class);
     when(entity.getGlobalValidationErrors()).thenReturn(stringList);
     when(entity.getPropertyValidationErrors()).thenReturn(new HashMap<>());
@@ -94,20 +97,24 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code
+   * entity}, {@code errors}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors_givenArrayList_thenReturnTrue() {
     // Arrange
     EntityForm form = new EntityForm();
+
     Entity entity = mock(Entity.class);
     when(entity.getGlobalValidationErrors()).thenReturn(new ArrayList<>());
     when(entity.getPropertyValidationErrors()).thenReturn(new HashMap<>());
@@ -121,8 +128,11 @@ public class EntityFormValidatorDiffblueTest {
     verify(entity).getGlobalValidationErrors();
     verify(entity).getPropertyValidationErrors();
     verify(entity).isValidationFailure();
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
     assertFalse(errors.hasErrors());
@@ -133,16 +143,60 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code
+   * entity}, {@code errors}.
+   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
+  public void testValidateWithFormEntityErrors_givenFalse() {
+    // Arrange
+    EntityForm form = new EntityForm();
+
+    Entity entity = mock(Entity.class);
+    when(entity.isValidationFailure()).thenReturn(false);
+    BindException errors = new BindException("Target", "Object Name");
+
+    // Act
+    boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
+
+    // Assert
+    verify(entity).isValidationFailure();
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(0, errors.getErrorCount());
+    assertEquals(0, errors.getGlobalErrorCount());
+    assertFalse(errors.hasErrors());
+    assertFalse(errors.hasGlobalErrors());
+    assertTrue(errors.getAllErrors().isEmpty());
+    assertTrue(errors.getGlobalErrors().isEmpty());
+    assertTrue(actualValidateResult);
+  }
+
+  /**
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code
+   * entity}, {@code errors}.
+   *
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors_givenHashMapFooIsArrayList_thenReturnFalse() {
     // Arrange
@@ -150,6 +204,7 @@ public class EntityFormValidatorDiffblueTest {
 
     HashMap<String, List<String>> stringListMap = new HashMap<>();
     stringListMap.put("foo", new ArrayList<>());
+
     Entity entity = mock(Entity.class);
     when(entity.getGlobalValidationErrors()).thenReturn(new ArrayList<>());
     when(entity.getPropertyValidationErrors()).thenReturn(stringListMap);
@@ -163,8 +218,11 @@ public class EntityFormValidatorDiffblueTest {
     verify(entity).getGlobalValidationErrors();
     verify(entity).getPropertyValidationErrors();
     verify(entity).isValidationFailure();
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
     assertFalse(actualValidateResult);
@@ -175,16 +233,19 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code entity}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with {@code form}, {@code
+   * entity}, {@code errors}.
+   *
    * <ul>
-   *   <li>When {@link Entity} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link Entity} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Entity, Errors)"})
   public void testValidateWithFormEntityErrors_whenEntity_thenReturnTrue() {
     // Arrange
@@ -196,8 +257,11 @@ public class EntityFormValidatorDiffblueTest {
     boolean actualValidateResult = entityFormValidator.validate(form, entity, errors);
 
     // Assert
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
     assertFalse(errors.hasErrors());
@@ -208,16 +272,19 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code propertyErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code
+   * propertyErrors}, {@code errors}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, Errors)"})
   public void testValidateWithFormPropertyErrorsErrors_givenFoo_thenReturnFalse() {
     // Arrange
@@ -227,20 +294,25 @@ public class EntityFormValidatorDiffblueTest {
     propertyErrors.put("foo", new ArrayList<>());
 
     // Act and Assert
-    assertFalse(entityFormValidator.validate(form, propertyErrors, new BindException("Target", "Object Name")));
+    assertFalse(
+        entityFormValidator.validate(
+            form, propertyErrors, new BindException("Target", "Object Name")));
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code propertyErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with {@code form}, {@code
+   * propertyErrors}, {@code errors}.
+   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, Errors)"})
   public void testValidateWithFormPropertyErrorsErrors_whenHashMap_thenReturnTrue() {
     // Arrange
@@ -248,16 +320,20 @@ public class EntityFormValidatorDiffblueTest {
     HashMap<String, List<String>> propertyErrors = new HashMap<>();
 
     // Act and Assert
-    assertTrue(entityFormValidator.validate(form, propertyErrors, new BindException("Target", "Object Name")));
+    assertTrue(
+        entityFormValidator.validate(
+            form, propertyErrors, new BindException("Target", "Object Name")));
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form},
+   * {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors() {
     // Arrange
@@ -293,12 +369,14 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form},
+   * {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors2() {
     // Arrange
@@ -342,15 +420,18 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form},
+   * {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_givenArrayList() {
     // Arrange
@@ -365,8 +446,11 @@ public class EntityFormValidatorDiffblueTest {
     entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
 
     // Assert that nothing has changed
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
     assertTrue(errors.getAllErrors().isEmpty());
@@ -374,15 +458,18 @@ public class EntityFormValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with {@code form},
+   * {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   *
+   * <p>Method under test: {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormValidator.validate(EntityForm, Map, List, Errors)"})
   public void testValidateWithFormPropertyErrorsGlobalErrorsErrors_thenReturnTrue() {
     // Arrange
@@ -392,11 +479,15 @@ public class EntityFormValidatorDiffblueTest {
     BindException errors = new BindException("Target", "Object Name");
 
     // Act
-    boolean actualValidateResult = entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
+    boolean actualValidateResult =
+        entityFormValidator.validate(form, propertyErrors, globalErrors, errors);
 
     // Assert
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
     assertEquals(0, errors.getErrorCount());
     assertEquals(0, errors.getGlobalErrorCount());
     assertTrue(errors.getAllErrors().isEmpty());

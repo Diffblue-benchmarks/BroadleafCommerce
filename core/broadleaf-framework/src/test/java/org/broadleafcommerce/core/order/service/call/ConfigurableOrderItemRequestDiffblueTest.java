@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,31 +39,35 @@ import org.junit.experimental.categories.Category;
 public class ConfigurableOrderItemRequestDiffblueTest {
   /**
    * Test {@link ConfigurableOrderItemRequest#getIsMultiSelect()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getIsMultiSelect()"})
   public void testGetIsMultiSelect_givenConfigurableOrderItemRequest_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new ConfigurableOrderItemRequest()).getIsMultiSelect());
+    assertFalse(new ConfigurableOrderItemRequest().getIsMultiSelect());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getIsMultiSelect()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getIsMultiSelect()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getIsMultiSelect()"})
   public void testGetIsMultiSelect_thenReturnTrue() {
     // Arrange
@@ -100,14 +105,16 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) MinQuantity is one.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) MinQuantity is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
   public void testGetQuantity_givenConfigurableOrderItemRequestMinQuantityIsOne() {
     // Arrange
@@ -145,14 +152,16 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) Quantity is one.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor) Quantity is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
   public void testGetQuantity_givenConfigurableOrderItemRequestQuantityIsOne() {
     // Arrange
@@ -190,48 +199,54 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return intValue is zero.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return intValue is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getQuantity()"})
   public void testGetQuantity_givenConfigurableOrderItemRequest_thenReturnIntValueIsZero() {
     // Arrange, Act and Assert
-    assertEquals(0, (new ConfigurableOrderItemRequest()).getQuantity().intValue());
+    assertEquals(0, new ConfigurableOrderItemRequest().getQuantity().intValue());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getMinQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return intValue is zero.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return intValue is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getMinQuantity()"})
   public void testGetMinQuantity_givenConfigurableOrderItemRequest_thenReturnIntValueIsZero() {
     // Arrange, Act and Assert
-    assertEquals(0, (new ConfigurableOrderItemRequest()).getMinQuantity().intValue());
+    assertEquals(0, new ConfigurableOrderItemRequest().getMinQuantity().intValue());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getMinQuantity()}.
+   *
    * <ul>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getMinQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer ConfigurableOrderItemRequest.getMinQuantity()"})
   public void testGetMinQuantity_thenReturnIntValueIsOne() {
     // Arrange
@@ -269,31 +284,35 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasOverridenPrice()"})
   public void testGetHasOverridenPrice_givenConfigurableOrderItemRequest_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new ConfigurableOrderItemRequest()).getHasOverridenPrice());
+    assertFalse(new ConfigurableOrderItemRequest().getHasOverridenPrice());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasOverridenPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasOverridenPrice()"})
   public void testGetHasOverridenPrice_thenReturnTrue() {
     // Arrange
@@ -331,31 +350,35 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getHasConfigurationError()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasConfigurationError()"})
   public void testGetHasConfigurationError_givenConfigurableOrderItemRequest_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new ConfigurableOrderItemRequest()).getHasConfigurationError());
+    assertFalse(new ConfigurableOrderItemRequest().getHasConfigurationError());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getHasConfigurationError()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getHasConfigurationError()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getHasConfigurationError()"})
   public void testGetHasConfigurationError_thenReturnTrue() {
     // Arrange
@@ -393,31 +416,35 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}.
+   *
    * <ul>
-   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ConfigurableOrderItemRequest} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getDiscountsAllowed()"})
   public void testGetDiscountsAllowed_givenConfigurableOrderItemRequest_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new ConfigurableOrderItemRequest()).getDiscountsAllowed());
+    assertFalse(new ConfigurableOrderItemRequest().getDiscountsAllowed());
   }
 
   /**
    * Test {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
+   *
+   * <p>Method under test: {@link ConfigurableOrderItemRequest#getDiscountsAllowed()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean ConfigurableOrderItemRequest.getDiscountsAllowed()"})
   public void testGetDiscountsAllowed_thenReturnTrue() {
     // Arrange
@@ -455,8 +482,9 @@ public class ConfigurableOrderItemRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ConfigurableOrderItemRequest}
    *   <li>{@link ConfigurableOrderItemRequest#setDiscountsAllowed(Boolean)}
@@ -485,30 +513,38 @@ public class ConfigurableOrderItemRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ConfigurableOrderItemRequest.<init>()",
-      "Money ConfigurableOrderItemRequest.getDisplayPrice()", "Integer ConfigurableOrderItemRequest.getMaxQuantity()",
-      "Integer ConfigurableOrderItemRequest.getOrderItemIndex()",
-      "String ConfigurableOrderItemRequest.getPricingModelType()", "Product ConfigurableOrderItemRequest.getProduct()",
-      "List ConfigurableOrderItemRequest.getProductChoices()", "Sku ConfigurableOrderItemRequest.getSku()",
-      "boolean ConfigurableOrderItemRequest.isExpandable()", "boolean ConfigurableOrderItemRequest.isFirstExpandable()",
-      "boolean ConfigurableOrderItemRequest.isLastExpandable()",
-      "void ConfigurableOrderItemRequest.setDiscountsAllowed(Boolean)",
-      "void ConfigurableOrderItemRequest.setDisplayPrice(Money)",
-      "void ConfigurableOrderItemRequest.setExpandable(boolean)",
-      "void ConfigurableOrderItemRequest.setFirstExpandable(boolean)",
-      "void ConfigurableOrderItemRequest.setHasConfigurationError(Boolean)",
-      "void ConfigurableOrderItemRequest.setHasOverridenPrice(Boolean)",
-      "void ConfigurableOrderItemRequest.setIsMultiSelect(Boolean)",
-      "void ConfigurableOrderItemRequest.setLastExpandable(boolean)",
-      "void ConfigurableOrderItemRequest.setMaxQuantity(Integer)",
-      "void ConfigurableOrderItemRequest.setMinQuantity(Integer)",
-      "void ConfigurableOrderItemRequest.setOrderItemIndex(Integer)",
-      "void ConfigurableOrderItemRequest.setPricingModelType(String)",
-      "void ConfigurableOrderItemRequest.setProductChoices(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ConfigurableOrderItemRequest.<init>()",
+    "Money ConfigurableOrderItemRequest.getDisplayPrice()",
+    "Integer ConfigurableOrderItemRequest.getMaxQuantity()",
+    "Integer ConfigurableOrderItemRequest.getOrderItemIndex()",
+    "String ConfigurableOrderItemRequest.getPricingModelType()",
+    "Product ConfigurableOrderItemRequest.getProduct()",
+    "List ConfigurableOrderItemRequest.getProductChoices()",
+    "Sku ConfigurableOrderItemRequest.getSku()",
+    "boolean ConfigurableOrderItemRequest.isExpandable()",
+    "boolean ConfigurableOrderItemRequest.isFirstExpandable()",
+    "boolean ConfigurableOrderItemRequest.isLastExpandable()",
+    "void ConfigurableOrderItemRequest.setDiscountsAllowed(Boolean)",
+    "void ConfigurableOrderItemRequest.setDisplayPrice(Money)",
+    "void ConfigurableOrderItemRequest.setExpandable(boolean)",
+    "void ConfigurableOrderItemRequest.setFirstExpandable(boolean)",
+    "void ConfigurableOrderItemRequest.setHasConfigurationError(Boolean)",
+    "void ConfigurableOrderItemRequest.setHasOverridenPrice(Boolean)",
+    "void ConfigurableOrderItemRequest.setIsMultiSelect(Boolean)",
+    "void ConfigurableOrderItemRequest.setLastExpandable(boolean)",
+    "void ConfigurableOrderItemRequest.setMaxQuantity(Integer)",
+    "void ConfigurableOrderItemRequest.setMinQuantity(Integer)",
+    "void ConfigurableOrderItemRequest.setOrderItemIndex(Integer)",
+    "void ConfigurableOrderItemRequest.setPricingModelType(String)",
+    "void ConfigurableOrderItemRequest.setProductChoices(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    ConfigurableOrderItemRequest actualConfigurableOrderItemRequest = new ConfigurableOrderItemRequest();
+    ConfigurableOrderItemRequest actualConfigurableOrderItemRequest =
+        new ConfigurableOrderItemRequest();
     actualConfigurableOrderItemRequest.setDiscountsAllowed(true);
     Money displayPrice = new Money();
     actualConfigurableOrderItemRequest.setDisplayPrice(displayPrice);
@@ -529,7 +565,8 @@ public class ConfigurableOrderItemRequestDiffblueTest {
     Integer actualOrderItemIndex = actualConfigurableOrderItemRequest.getOrderItemIndex();
     String actualPricingModelType = actualConfigurableOrderItemRequest.getPricingModelType();
     Product actualProduct = actualConfigurableOrderItemRequest.getProduct();
-    List<ConfigurableOrderItemRequest> actualProductChoices = actualConfigurableOrderItemRequest.getProductChoices();
+    List<ConfigurableOrderItemRequest> actualProductChoices =
+        actualConfigurableOrderItemRequest.getProductChoices();
     Sku actualSku = actualConfigurableOrderItemRequest.getSku();
     boolean actualIsExpandableResult = actualConfigurableOrderItemRequest.isExpandable();
     boolean actualIsFirstExpandableResult = actualConfigurableOrderItemRequest.isFirstExpandable();

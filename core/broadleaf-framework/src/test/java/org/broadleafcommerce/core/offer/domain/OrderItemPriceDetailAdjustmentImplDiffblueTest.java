@@ -28,12 +28,14 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import org.broadleafcommerce.common.audit.Auditable;
@@ -66,168 +68,372 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
-  @Autowired
-  private OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
+  @Autowired private OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl;
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
-   * <ul>
-   *   <li>Given {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
-  public void testInit_givenFuture_credit_thenOrderItemPriceDetailAdjustmentImplIsFutureCredit() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    OfferImpl offer = new OfferImpl();
+    offer.setMarketingMessage("marketingMessage");
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+
+    // Assert
+    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
+    assertTrue(offer2 instanceof OfferImpl);
+    assertEquals("marketingMessage", offer2.getMarketingMessage());
+    assertEquals("marketingMessage", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertEquals("marketingMessage", ((OfferImpl) offer2).marketingMessage);
+    assertNull(((OfferImpl) offer2).adjustmentType);
+    assertFalse(offer2.isFutureCredit());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferAdjustmentType#FUTURE_CREDIT} Type is {@code Adjustment Type}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_givenFuture_creditTypeIsAdjustmentType() {
+    // Arrange
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    OfferAdjustmentType offerAdjustmentType = OfferAdjustmentType.FUTURE_CREDIT;
+    offerAdjustmentType.setType("Adjustment Type");
+
     Offer offer = mock(Offer.class);
+    when(offer.getAdjustmentType()).thenReturn(offerAdjustmentType);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
     when(offer.getName()).thenReturn("Name");
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+
+    // Assert
+    verify(offer).getAdjustmentType();
+    verify(offer, atLeast(1)).getMarketingMessage();
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferAdjustmentType#FUTURE_CREDIT}.
+   *   <li>When {@link Offer} {@link Offer#getAdjustmentType()} return {@link
+   *       OfferAdjustmentType#FUTURE_CREDIT}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_givenFuture_credit_whenOfferGetAdjustmentTypeReturnFuture_credit() {
+    // Arrange
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    Offer offer = mock(Offer.class);
+    when(offer.getMarketingMessage()).thenReturn(null);
     when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
+    when(offer.getName()).thenReturn("Name");
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
     verify(offer).getAdjustmentType();
-    verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    verify(offer).getMarketingMessage();
+    verify(offer).getName();
+    assertEquals("Name", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>Then not {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit}.</li>
+   *   <li>Given {@link OfferAdjustmentType#ORDER_DISCOUNT} Type is {@code Adjustment Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
-  public void testInit_givenNull_thenNotOrderItemPriceDetailAdjustmentImplIsFutureCredit() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_givenOrder_discountTypeIsAdjustmentType() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    OfferAdjustmentType offerAdjustmentType = OfferAdjustmentType.ORDER_DISCOUNT;
+    offerAdjustmentType.setType("Adjustment Type");
+
     Offer offer = mock(Offer.class);
+    when(offer.getAdjustmentType()).thenReturn(offerAdjustmentType);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
     when(offer.getName()).thenReturn("Name");
-    when(offer.getAdjustmentType()).thenReturn(null);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
     verify(offer).getAdjustmentType();
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertFalse(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Reason is {@code Marketing Message}.</li>
+   *   <li>Given {@link OfferAdjustmentType#ORDER_DISCOUNT} Type is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
-  public void testInit_thenOrderItemPriceDetailAdjustmentImplReasonIsMarketingMessage() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_givenOrder_discountTypeIsNull() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    OfferAdjustmentType offerAdjustmentType = OfferAdjustmentType.ORDER_DISCOUNT;
+    offerAdjustmentType.setType(null);
+
     Offer offer = mock(Offer.class);
-    when(offer.getMarketingMessage()).thenReturn("Marketing Message");
+    when(offer.getMarketingMessage()).thenReturn(null);
+    when(offer.getAdjustmentType()).thenReturn(offerAdjustmentType);
     when(offer.getName()).thenReturn("Name");
-    when(offer.getAdjustmentType()).thenReturn(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, null);
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
     verify(offer).getAdjustmentType();
-    verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getReason());
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    verify(offer).getMarketingMessage();
+    verify(offer).getName();
+    assertEquals("Name", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} {@link
+   *       OrderItemPriceDetailAdjustmentImpl#offer} FutureCredit.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
-  public void testInit_whenNull_thenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_thenOrderItemPriceDetailAdjustmentImplOfferFutureCredit() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    OfferImpl offer = new OfferImpl();
+    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.init(new OrderItemPriceDetailImpl(), null, "Just cause");
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
+
+    // Assert
+    Offer offer2 = orderItemPriceDetailAdjustmentImpl.offer;
+    assertTrue(offer2 instanceof OfferImpl);
+    assertNull(offer2.getMarketingMessage());
+    assertNull(((OfferImpl) offer2).marketingMessage);
+    assertTrue(offer2.isFutureCredit());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Reason is {@code foo}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_thenOrderItemPriceDetailAdjustmentImplReasonIsFoo() {
+    // Arrange
+    orderItemPriceDetailAdjustmentImpl.setOfferName("foo");
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.init(new OrderItemPriceDetailImpl(), null, null);
+
+    // Assert
+    assertEquals("foo", orderItemPriceDetailAdjustmentImpl.getReason());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertNull(orderItemPriceDetailAdjustmentImpl.offer);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Reason is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_thenOrderItemPriceDetailAdjustmentImplReasonIsNull() {
+    // Arrange
+    orderItemPriceDetailAdjustmentImpl.setOfferName(null);
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.init(new OrderItemPriceDetailImpl(), null, null);
 
     // Assert that nothing has changed
-    assertNull(orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertNull(orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertNull(orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
-    assertNull(orderItemPriceDetailAdjustmentImpl2.offer);
+    assertNull(orderItemPriceDetailAdjustmentImpl.getReason());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertNull(orderItemPriceDetailAdjustmentImpl.offer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#offer} {@link OfferImpl}.</li>
+   *   <li>When {@link Offer} {@link Offer#getAdjustmentType()} return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"})
-  public void testInit_whenOfferImpl_thenOrderItemPriceDetailAdjustmentImplOfferOfferImpl() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_whenOfferGetAdjustmentTypeReturnNull() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
-    OfferImpl offer = new OfferImpl();
+
+    Offer offer = mock(Offer.class);
+    when(offer.getMarketingMessage()).thenReturn(null);
+    when(offer.getAdjustmentType()).thenReturn(null);
+    when(offer.getName()).thenReturn("Name");
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.init(orderItemPriceDetail, offer, "Just cause");
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, offer, "Just cause");
 
     // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    verify(offer).getAdjustmentType();
+    verify(offer).getMarketingMessage();
+    verify(offer).getName();
+    assertEquals("Name", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail, Offer, String)}.
+   *
+   * <ul>
+   *   <li>When {@link OfferImpl} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#init(OrderItemPriceDetail,
+   * Offer, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailAdjustmentImpl.init(OrderItemPriceDetail, Offer, String)"
+  })
+  public void testInit_whenOfferImpl() {
+    // Arrange
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.init(orderItemPriceDetail, new OfferImpl(), "Just cause");
+
+    // Assert
+    Offer offer = orderItemPriceDetailAdjustmentImpl.offer;
+    assertTrue(offer instanceof OfferImpl);
+    assertNull(offer.getMarketingMessage());
+    assertNull(((OfferImpl) offer).adjustmentType);
+    assertNull(((OfferImpl) offer).marketingMessage);
+    assertFalse(offer.isFutureCredit());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setAppliedToSalePrice(boolean)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#setId(Long)}
@@ -243,21 +449,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long OrderItemPriceDetailAdjustmentImpl.getId()",
-      "String OrderItemPriceDetailAdjustmentImpl.getOfferName()",
-      "OrderItemPriceDetail OrderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail()",
-      "String OrderItemPriceDetailAdjustmentImpl.getReason()",
-      "boolean OrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice()",
-      "void OrderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(boolean)",
-      "void OrderItemPriceDetailAdjustmentImpl.setId(Long)",
-      "void OrderItemPriceDetailAdjustmentImpl.setOfferName(String)",
-      "void OrderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(OrderItemPriceDetail)",
-      "void OrderItemPriceDetailAdjustmentImpl.setRetailPriceValue(Money)",
-      "void OrderItemPriceDetailAdjustmentImpl.setSalesPriceValue(Money)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long OrderItemPriceDetailAdjustmentImpl.getId()",
+    "String OrderItemPriceDetailAdjustmentImpl.getOfferName()",
+    "OrderItemPriceDetail OrderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail()",
+    "String OrderItemPriceDetailAdjustmentImpl.getReason()",
+    "boolean OrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice()",
+    "void OrderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(boolean)",
+    "void OrderItemPriceDetailAdjustmentImpl.setId(Long)",
+    "void OrderItemPriceDetailAdjustmentImpl.setOfferName(String)",
+    "void OrderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(OrderItemPriceDetail)",
+    "void OrderItemPriceDetailAdjustmentImpl.setRetailPriceValue(Money)",
+    "void OrderItemPriceDetailAdjustmentImpl.setSalesPriceValue(Money)"
+  })
   public void testGettersAndSetters() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
 
     // Act
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
@@ -269,7 +479,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     Long actualId = orderItemPriceDetailAdjustmentImpl.getId();
     String actualOfferName = orderItemPriceDetailAdjustmentImpl.getOfferName();
-    OrderItemPriceDetail actualOrderItemPriceDetail = orderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail();
+    OrderItemPriceDetail actualOrderItemPriceDetail =
+        orderItemPriceDetailAdjustmentImpl.getOrderItemPriceDetail();
     String actualReason = orderItemPriceDetailAdjustmentImpl.getReason();
 
     // Assert
@@ -282,239 +493,195 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OrderItemPriceDetailAdjustmentImpl.getOffer()"})
   public void testGetOffer() {
     // Arrange, Act and Assert
-    assertNull((new OrderItemPriceDetailAdjustmentImpl()).getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Reason is {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
-  public void testSetReason_givenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setOfferName(null);
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.setReason(null);
-
-    // Assert that nothing has changed
-    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl2.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
-   * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).</li>
-   *   <li>When {@code Just cause}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
-  public void testSetReason_givenOrderItemPriceDetailAdjustmentImpl_whenJustCause() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-
-    // Assert
-    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl2.getReason());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Reason is {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
   public void testSetReason_thenOrderItemPriceDetailAdjustmentImplReasonIsFoo() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("foo");
+    orderItemPriceDetailAdjustmentImpl.setOfferName("foo");
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setReason(null);
+    orderItemPriceDetailAdjustmentImpl.setReason(null);
 
     // Assert
-    assertEquals("foo", orderItemPriceDetailAdjustmentImpl2.getReason());
+    assertEquals("foo", orderItemPriceDetailAdjustmentImpl.getReason());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
+   *
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) Offer is {@link OfferImpl} (default constructor).</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Reason is {@code Just cause}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
-  public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferIsOfferImpl() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
+  public void testSetReason_thenOrderItemPriceDetailAdjustmentImplReasonIsJustCause() {
+    // Arrange and Act
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+
+    // Assert
+    assertEquals("Just cause", orderItemPriceDetailAdjustmentImpl.getReason());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}.
+   *
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Reason is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setReason(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setReason(String)"})
+  public void testSetReason_thenOrderItemPriceDetailAdjustmentImplReasonIsNull() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    OfferImpl offer = new OfferImpl();
+    orderItemPriceDetailAdjustmentImpl.setOfferName(null);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
+    orderItemPriceDetailAdjustmentImpl.setReason(null);
 
-    // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    // Assert that nothing has changed
+    assertNull(orderItemPriceDetailAdjustmentImpl.getReason());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
+   *
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code Marketing Message}.</li>
+   *   <li>Given {@code null}.
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} OfferName is {@code Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
+  public void testSetOffer_givenNull_thenOrderItemPriceDetailAdjustmentImplOfferNameIsName() {
+    // Arrange
+    Offer offer = mock(Offer.class);
+    when(offer.getMarketingMessage()).thenReturn(null);
+    when(offer.getName()).thenReturn("Name");
+
+    // Act
+    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
+
+    // Assert
+    verify(offer).getMarketingMessage();
+    verify(offer).getName();
+    assertEquals("Name", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
+   *
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} OfferName is {@code Marketing Message}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
   public void testSetOffer_thenOrderItemPriceDetailAdjustmentImplOfferNameIsMarketingMessage() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     Offer offer = mock(Offer.class);
     when(offer.getMarketingMessage()).thenReturn("Marketing Message");
     when(offer.getName()).thenReturn("Name");
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
+    orderItemPriceDetailAdjustmentImpl.setOffer(offer);
 
     // Assert
     verify(offer, atLeast(1)).getMarketingMessage();
-    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.deproxiedOffer);
+    assertEquals("Marketing Message", orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertSame(offer, orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code Offer Name}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} Offer is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
-  public void testSetOffer_whenNull_thenOrderItemPriceDetailAdjustmentImplOfferNameIsOfferName() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.setOffer(null);
+  public void testSetOffer_whenNull_thenOrderItemPriceDetailAdjustmentImplOfferIsNull() {
+    // Arrange and Act
+    orderItemPriceDetailAdjustmentImpl.setOffer(null);
 
     // Assert that nothing has changed
-    assertEquals("Offer Name", orderItemPriceDetailAdjustmentImpl2.getOfferName());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}.
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) OfferName is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setOffer(Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setOffer(Offer)"})
-  public void testSetOffer_whenOfferImpl_thenOrderItemPriceDetailAdjustmentImplOfferNameIsNull() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.setOffer(offer);
-
-    // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.offer instanceof OfferImpl);
-    assertNull(orderItemPriceDetailAdjustmentImpl2.getOfferName());
-    assertSame(offer, orderItemPriceDetailAdjustmentImpl2.getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getOfferName());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getOffer());
+    assertNull(orderItemPriceDetailAdjustmentImpl.deproxiedOffer);
+    assertNull(orderItemPriceDetailAdjustmentImpl.offer);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link OrderItemPriceDetailAdjustmentImpl#serialVersionUID}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link
+   *       OrderItemPriceDetailAdjustmentImpl#serialVersionUID}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrency()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BroadleafCurrency OrderItemPriceDetailAdjustmentImpl.getCurrency()"})
   public void testGetCurrency_givenAuditableCreatedByIsSerialVersionUID_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderItemImpl orderItemImpl = new OrderItemImpl();
@@ -544,22 +711,24 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemImpl.setSalePriceOverride(true);
     orderItemImpl.setTaxable(true);
     orderItemImpl.updateSaleAndRetailPrices();
+
     OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
     when(orderItemPriceDetail.getOrderItem()).thenReturn(orderItemImpl);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
     // Act
-    BroadleafCurrency actualCurrency = orderItemPriceDetailAdjustmentImpl2.getCurrency();
+    BroadleafCurrency actualCurrency = orderItemPriceDetailAdjustmentImpl.getCurrency();
 
     // Assert
     verify(orderItemPriceDetail).getOrderItem();
@@ -568,59 +737,143 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
+   *
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} {@link OrderItemImpl#getOrder()} return {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link Money#ZERO}.</li>
+   *   <li>Given {@link Money} {@link Money#getAmount()} return {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getValue()"})
-  public void testGetValue_givenBundleOrderItemImplGetOrderReturnNullOrderImpl_thenReturnZero() {
+  public void testGetValue_givenMoneyGetAmountReturnNull_thenReturnNull() {
     // Arrange
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
-    OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
-    when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
+    Money value = mock(Money.class);
+    when(value.getAmount()).thenReturn(null);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(mock(BroadleafCurrency.class));
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setBaseRetailPrice(new Money());
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+    orderItemPriceDetail.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetail.setOrderItemAdjustments(new ArrayList<>());
+    orderItemPriceDetail.setQuantity(1);
+    orderItemPriceDetail.setUseSalePrice(true);
+    orderItemPriceDetail.setOrderItem(orderItem);
+    orderItemPriceDetailAdjustmentImpl.setValue(value);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualValue = orderItemPriceDetailAdjustmentImpl2.getValue();
+    Money actualValue = orderItemPriceDetailAdjustmentImpl.getValue();
 
     // Assert
-    verify(bundleOrderItemImpl).getOrder();
-    verify(orderItemPriceDetail).getOrderItem();
-    assertEquals(actualValue.ZERO, actualValue);
+    verify(value).getAmount();
+    assertNull(actualValue);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getValue()"})
   public void testGetValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -640,7 +893,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -685,90 +939,207 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    Money value = new Money();
+    orderItemPriceDetailAdjustmentImpl.setValue(value);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getValue());
+    assertEquals(value, orderItemPriceDetailAdjustmentImpl.getValue());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#getValue()}.
+   *
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setValue(Money)"})
-  public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith000() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getValue()"})
+  public void testGetValue_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(currency);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setBaseRetailPrice(new Money());
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+    orderItemPriceDetail.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetail.setOrderItemAdjustments(new ArrayList<>());
+    orderItemPriceDetail.setQuantity(1);
+    orderItemPriceDetail.setUseSalePrice(true);
+    orderItemPriceDetail.setOrderItem(orderItem);
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
+    Money actualValue = orderItemPriceDetailAdjustmentImpl.getValue();
 
-    // Assert that nothing has changed
-    assertEquals(new BigDecimal("0.00"), orderItemPriceDetailAdjustmentImpl2.value);
+    // Assert
+    verify(currency).getCurrencyCode();
+    Currency currency2 = actualValue.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    Money actualAbsResult = actualValue.abs();
+    assertEquals(actualValue, actualAbsResult);
+    Money actualZeroResult = actualValue.zero();
+    assertEquals(actualValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} (default constructor) {@link OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} {@link
+   *       OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with
+   *       {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setValue(Money)"})
+  public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith000() {
+    // Arrange and Act
+    orderItemPriceDetailAdjustmentImpl.setValue(new Money());
+
+    // Assert that nothing has changed
+    assertEquals(new BigDecimal("0.00"), orderItemPriceDetailAdjustmentImpl.value);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}.
+   *
+   * <ul>
+   *   <li>Then {@link OrderItemPriceDetailAdjustmentImpl} {@link
+   *       OrderItemPriceDetailAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with
+   *       {@code 2.3}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setValue(Money)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setValue(Money)"})
   public void testSetValue_thenOrderItemPriceDetailAdjustmentImplValueIsBigDecimalWith23() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    orderItemPriceDetailAdjustmentImpl2.setValue(value);
+    orderItemPriceDetailAdjustmentImpl.setValue(value);
 
     // Assert
     verify(value).getAmount();
-    assertEquals(new BigDecimal("2.3"), orderItemPriceDetailAdjustmentImpl2.value);
+    assertEquals(new BigDecimal("2.3"), orderItemPriceDetailAdjustmentImpl.value);
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
   public void testGetRetailPriceValue() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -788,7 +1159,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -833,47 +1205,44 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
     Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(retailPriceValue);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertSame(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue());
+    assertSame(retailPriceValue, orderItemPriceDetailAdjustmentImpl.getRetailPriceValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
   public void testGetRetailPriceValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -893,12 +1262,118 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    Money baseRetailPrice = new Money();
+    orderItem.setBaseRetailPrice(baseRetailPrice);
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+    orderItemPriceDetail.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetail.setOrderItemAdjustments(new ArrayList<>());
+    orderItemPriceDetail.setQuantity(1);
+    orderItemPriceDetail.setUseSalePrice(true);
+    orderItemPriceDetail.setOrderItem(orderItem);
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+
+    // Act and Assert
+    assertEquals(baseRetailPrice, orderItemPriceDetailAdjustmentImpl.getRetailPriceValue());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
+   *
+   * <ul>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
+  public void testGetRetailPriceValue_thenReturnCurrencyDisplayNameIsBritishPound() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(currency);
 
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -938,73 +1413,47 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    Money salesPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(salesPriceValue);
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(null);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
-
-    // Act and Assert
-    assertEquals(salesPriceValue, orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}.
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getRetailPriceValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getRetailPriceValue()"})
-  public void testGetRetailPriceValue_thenReturnZero() {
-    // Arrange
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
-    OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
-    when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualRetailPriceValue = orderItemPriceDetailAdjustmentImpl2.getRetailPriceValue();
+    Money actualRetailPriceValue = orderItemPriceDetailAdjustmentImpl.getRetailPriceValue();
 
     // Assert
-    verify(bundleOrderItemImpl).getOrder();
-    verify(orderItemPriceDetail).getOrderItem();
-    assertEquals(actualRetailPriceValue.ZERO, actualRetailPriceValue);
+    verify(currency).getCurrencyCode();
+    Currency currency2 = actualRetailPriceValue.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
   public void testGetSalesPriceValue() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1024,7 +1473,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1069,47 +1519,44 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
     Money salesPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(salesPriceValue);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(salesPriceValue);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertSame(salesPriceValue, orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue());
+    assertSame(salesPriceValue, orderItemPriceDetailAdjustmentImpl.getSalesPriceValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
   public void testGetSalesPriceValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1129,12 +1576,118 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    orderItem.setAuditable(auditable);
+    Money baseRetailPrice = new Money();
+    orderItem.setBaseRetailPrice(baseRetailPrice);
+    orderItem.setBaseSalePrice(new Money());
+    orderItem.setBundleOrderItemFeePrices(new ArrayList<>());
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setDiscreteOrderItems(new ArrayList<>());
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+    orderItem.setOrder(order);
+
+    OrderItemPriceDetailImpl orderItemPriceDetail = new OrderItemPriceDetailImpl();
+    orderItemPriceDetail.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetail.setOrderItemAdjustments(new ArrayList<>());
+    orderItemPriceDetail.setQuantity(1);
+    orderItemPriceDetail.setUseSalePrice(true);
+    orderItemPriceDetail.setOrderItem(orderItem);
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
+
+    // Act and Assert
+    assertEquals(baseRetailPrice, orderItemPriceDetailAdjustmentImpl.getSalesPriceValue());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
+   *
+   * <ul>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
+  public void testGetSalesPriceValue_thenReturnCurrencyDisplayNameIsBritishPound() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable2);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(currency);
 
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -1174,77 +1727,53 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    Money retailPriceValue = new Money();
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(retailPriceValue);
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(null);
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
-
-    // Act and Assert
-    assertEquals(retailPriceValue, orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}.
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getSalesPriceValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailAdjustmentImpl.getSalesPriceValue()"})
-  public void testGetSalesPriceValue_thenReturnZero() {
-    // Arrange
-    BundleOrderItemImpl bundleOrderItemImpl = mock(BundleOrderItemImpl.class);
-    when(bundleOrderItemImpl.getOrder()).thenReturn(new NullOrderImpl());
-    OrderItemPriceDetailImpl orderItemPriceDetail = mock(OrderItemPriceDetailImpl.class);
-    when(orderItemPriceDetail.getOrderItem()).thenReturn(bundleOrderItemImpl);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(null);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act
-    Money actualSalesPriceValue = orderItemPriceDetailAdjustmentImpl2.getSalesPriceValue();
+    Money actualSalesPriceValue = orderItemPriceDetailAdjustmentImpl.getSalesPriceValue();
 
     // Assert
-    verify(bundleOrderItemImpl).getOrder();
-    verify(orderItemPriceDetail).getOrderItem();
-    assertEquals(actualSalesPriceValue.ZERO, actualSalesPriceValue);
+    verify(currency).getCurrencyCode();
+    Currency currency2 = actualSalesPriceValue.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl}
+   *       (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OrderItemPriceDetailAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1264,7 +1793,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1309,46 +1839,42 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl2.getCurrencyCode());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OrderItemPriceDetailAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1368,7 +1894,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1413,106 +1940,96 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetail.setQuantity(1);
     orderItemPriceDetail.setUseSalePrice(true);
     orderItemPriceDetail.setOrderItem(orderItem);
-
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(orderItemPriceDetail);
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(orderItemPriceDetail);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailAdjustmentImpl2.getCurrencyCode());
+    assertNull(orderItemPriceDetailAdjustmentImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderItemPriceDetailAdjustmentImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOrderItemPriceDetailAdjustmentImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OrderItemPriceDetailAdjustmentImpl()).isFutureCredit());
+    assertFalse(orderItemPriceDetailAdjustmentImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_thenReturnTrue() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
-    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
-    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
-    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(new OrderItemPriceDetailImpl());
-    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
-    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setValue(new Money());
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
 
     // Act and Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit());
+    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#setFutureCredit(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.setFutureCredit(boolean)"})
   public void testSetFutureCredit() {
-    // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
-
-    // Act
-    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    // Arrange and Act
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
 
     // Assert
-    assertTrue(orderItemPriceDetailAdjustmentImpl2.isFutureCredit);
+    assertTrue(orderItemPriceDetailAdjustmentImpl.isFutureCredit);
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link
+   * OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1523,7 +2040,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1536,30 +2054,38 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
-    int notExpectedHashCodeResult = orderItemPriceDetailAdjustmentImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, orderItemPriceDetailAdjustmentImpl2.hashCode());
+    assertNotEquals(
+        orderItemPriceDetailAdjustmentImpl.hashCode(),
+        orderItemPriceDetailAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link
+   * OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1570,7 +2096,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1583,30 +2110,100 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
-    int expectedHashCodeResult = orderItemPriceDetailAdjustmentImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderItemPriceDetailAdjustmentImpl2.hashCode());
+    assertEquals(
+        orderItemPriceDetailAdjustmentImpl.hashCode(),
+        orderItemPriceDetailAdjustmentImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link
+   * OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderItemPriceDetailAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    Money value = mock(Money.class);
+    when(value.getAmount()).thenReturn(null);
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl.setId(null);
+    orderItemPriceDetailAdjustmentImpl.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl.setValue(value);
+
+    Money value2 = mock(Money.class);
+    when(value2.getAmount()).thenReturn(null);
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
+    orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
+    orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
+    orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
+    orderItemPriceDetailAdjustmentImpl2.setOfferName("Offer Name");
+    orderItemPriceDetailAdjustmentImpl2.setOrderItemPriceDetail(null);
+    orderItemPriceDetailAdjustmentImpl2.setReason("Just cause");
+    orderItemPriceDetailAdjustmentImpl2.setRetailPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setSalesPriceValue(new Money());
+    orderItemPriceDetailAdjustmentImpl2.setValue(value2);
+
+    // Act and Assert
+    assertEquals(orderItemPriceDetailAdjustmentImpl, orderItemPriceDetailAdjustmentImpl2);
+    assertEquals(
+        orderItemPriceDetailAdjustmentImpl.hashCode(),
+        orderItemPriceDetailAdjustmentImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}, and {@link
+   * OrderItemPriceDetailAdjustmentImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *   <li>{@link OrderItemPriceDetailAdjustmentImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1625,20 +2222,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(2L);
@@ -1649,7 +2251,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1666,20 +2269,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1690,7 +2298,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1707,20 +2316,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1731,7 +2345,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(null);
@@ -1748,20 +2363,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1772,7 +2392,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1789,20 +2410,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(false);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1813,7 +2439,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1830,20 +2457,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1854,7 +2486,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1871,20 +2504,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1895,7 +2533,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(new Money(10.0d));
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1912,23 +2551,28 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(null);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(null);
@@ -1939,7 +2583,8 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemPriceDetailAdjustmentImpl.setValue(value);
 
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl2.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl2.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl2.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1956,20 +2601,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -1986,20 +2636,25 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
-      "int OrderItemPriceDetailAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemPriceDetailAdjustmentImpl.equals(Object)",
+    "int OrderItemPriceDetailAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -2011,29 +2666,33 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
     orderItemPriceDetailAdjustmentImpl.setValue(new Money());
 
     // Act and Assert
-    assertNotEquals(orderItemPriceDetailAdjustmentImpl, "Different type to OrderItemPriceDetailAdjustmentImpl");
+    assertNotEquals(
+        orderItemPriceDetailAdjustmentImpl, "Different type to OrderItemPriceDetailAdjustmentImpl");
   }
 
   /**
-   * Test {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailAdjustmentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse OrderItemPriceDetailAdjustmentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse OrderItemPriceDetailAdjustmentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl2 = new OrderItemPriceDetailAdjustmentImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new OrderItemPriceDetailAdjustmentImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderItemPriceDetailAdjustment> actualCreateOrRetrieveCopyInstanceResult = orderItemPriceDetailAdjustmentImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OrderItemPriceDetailAdjustment> actualCreateOrRetrieveCopyInstanceResult =
+        orderItemPriceDetailAdjustmentImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -2042,15 +2701,18 @@ public class OrderItemPriceDetailAdjustmentImplDiffblueTest {
 
   /**
    * Test new {@link OrderItemPriceDetailAdjustmentImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link OrderItemPriceDetailAdjustmentImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * OrderItemPriceDetailAdjustmentImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderItemPriceDetailAdjustmentImpl.<init>()"})
   public void testNewOrderItemPriceDetailAdjustmentImpl() {
     // Arrange and Act
-    OrderItemPriceDetailAdjustmentImpl actualOrderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl actualOrderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
 
     // Assert
     assertNull(actualOrderItemPriceDetailAdjustmentImpl.getId());

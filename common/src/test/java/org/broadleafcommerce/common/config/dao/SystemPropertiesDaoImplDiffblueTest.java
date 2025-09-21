@@ -22,14 +22,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.cache.CacheManager;
 import javax.persistence.NoResultException;
-import org.broadleafcommerce.common.cache.StatisticsService;
 import org.broadleafcommerce.common.config.domain.NullSystemProperty;
 import org.broadleafcommerce.common.config.domain.SystemProperty;
 import org.broadleafcommerce.common.config.domain.SystemPropertyImpl;
@@ -45,31 +44,52 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class SystemPropertiesDaoImplDiffblueTest {
-  @Mock
-  private CacheManager cacheManager;
+  @Mock private CacheManager cacheManager;
 
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @Mock
-  private StatisticsService statisticsService;
+  @InjectMocks private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
 
-  @InjectMocks
-  private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
+  /**
+   * Test {@link SystemPropertiesDaoImpl#removeFromCache(SystemProperty)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link NoResultException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#removeFromCache(SystemProperty)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SystemPropertiesDaoImpl.removeFromCache(SystemProperty)"})
+  public void testRemoveFromCache_thenThrowNoResultException() {
+    // Arrange
+    when(cacheManager.getCache(Mockito.<String>any()))
+        .thenThrow(new NoResultException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(
+        NoResultException.class,
+        () -> systemPropertiesDaoImpl.removeFromCache(new NullSystemProperty()));
+    verify(cacheManager).getCache("blSystemPropertyNullCheckCache");
+  }
 
   /**
    * Test {@link SystemPropertiesDaoImpl#createNewSystemProperty()}.
+   *
    * <ul>
-   *   <li>Then return {@link SystemPropertyImpl} (default constructor).</li>
+   *   <li>Then return {@link SystemPropertyImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertiesDaoImpl#createNewSystemProperty()}
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#createNewSystemProperty()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SystemProperty SystemPropertiesDaoImpl.createNewSystemProperty()"})
   public void testCreateNewSystemProperty_thenReturnSystemPropertyImpl() {
     // Arrange
@@ -82,26 +102,31 @@ public class SystemPropertiesDaoImplDiffblueTest {
     systemPropertyImpl.setOverrideGeneratedPropertyName(true);
     systemPropertyImpl.setPropertyType(SystemPropertyFieldType.BOOLEAN_TYPE);
     systemPropertyImpl.setValue("42");
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(systemPropertyImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(systemPropertyImpl);
 
     // Act
-    SystemProperty actualCreateNewSystemPropertyResult = systemPropertiesDaoImpl.createNewSystemProperty();
+    SystemProperty actualCreateNewSystemPropertyResult =
+        systemPropertiesDaoImpl.createNewSystemProperty();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.config.domain.SystemProperty"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.common.config.domain.SystemProperty");
     assertSame(systemPropertyImpl, actualCreateNewSystemPropertyResult);
   }
 
   /**
    * Test {@link SystemPropertiesDaoImpl#createNewSystemProperty()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
+   *   <li>Then throw {@link NoResultException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SystemPropertiesDaoImpl#createNewSystemProperty()}
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#createNewSystemProperty()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SystemProperty SystemPropertiesDaoImpl.createNewSystemProperty()"})
   public void testCreateNewSystemProperty_thenThrowNoResultException() {
     // Arrange
@@ -110,32 +135,32 @@ public class SystemPropertiesDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> systemPropertiesDaoImpl.createNewSystemProperty());
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.config.domain.SystemProperty"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.common.config.domain.SystemProperty");
   }
 
   /**
    * Test {@link SystemPropertiesDaoImpl#getLogger()}.
-   * <p>
-   * Method under test: {@link SystemPropertiesDaoImpl#getLogger()}
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#getLogger()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"org.apache.commons.logging.Log SystemPropertiesDaoImpl.getLogger()"})
   public void testGetLogger() {
-    // Arrange
-    SystemPropertiesDaoImpl systemPropertiesDaoImpl = new SystemPropertiesDaoImpl();
-
-    // Act and Assert
-    assertSame(systemPropertiesDaoImpl.LOG, systemPropertiesDaoImpl.getLogger());
+    // Arrange, Act and Assert
+    assertSame(SystemPropertiesDaoImpl.LOG, new SystemPropertiesDaoImpl().getLogger());
   }
 
   /**
    * Test {@link SystemPropertiesDaoImpl#getSite()}.
-   * <p>
-   * Method under test: {@link SystemPropertiesDaoImpl#getSite()}
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#getSite()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SystemPropertiesDaoImpl.getSite()"})
   public void testGetSite() {
     // Arrange, Act and Assert
@@ -144,11 +169,12 @@ public class SystemPropertiesDaoImplDiffblueTest {
 
   /**
    * Test {@link SystemPropertiesDaoImpl#getNullObject(Class)}.
-   * <p>
-   * Method under test: {@link SystemPropertiesDaoImpl#getNullObject(Class)}
+   *
+   * <p>Method under test: {@link SystemPropertiesDaoImpl#getNullObject(Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SystemProperty SystemPropertiesDaoImpl.getNullObject(Class)"})
   public void testGetNullObject() {
     // Arrange

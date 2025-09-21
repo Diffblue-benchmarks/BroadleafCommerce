@@ -18,7 +18,8 @@
 package org.broadleafcommerce.core.geolocation;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,8 +27,9 @@ import org.junit.experimental.categories.Category;
 public class GeolocationDTODiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link GeolocationDTO}
    *   <li>{@link GeolocationDTO#setCity(String)}
@@ -54,18 +56,32 @@ public class GeolocationDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GeolocationDTO.<init>()", "String GeolocationDTO.getCity()",
-      "String GeolocationDTO.getCountryCode()", "String GeolocationDTO.getCountryName()",
-      "String GeolocationDTO.getIpAddress()", "Double GeolocationDTO.getLatitude()",
-      "Double GeolocationDTO.getLongitude()", "String GeolocationDTO.getPostalCode()",
-      "String GeolocationDTO.getRegionCode()", "String GeolocationDTO.getRegionName()",
-      "String GeolocationDTO.getSource()", "void GeolocationDTO.setCity(String)",
-      "void GeolocationDTO.setCountryCode(String)", "void GeolocationDTO.setCountryName(String)",
-      "void GeolocationDTO.setIpAddress(String)", "void GeolocationDTO.setLatitude(Double)",
-      "void GeolocationDTO.setLongitude(Double)", "void GeolocationDTO.setPostalCode(String)",
-      "void GeolocationDTO.setRegionCode(String)", "void GeolocationDTO.setRegionName(String)",
-      "void GeolocationDTO.setSource(String)", "String GeolocationDTO.toString()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GeolocationDTO.<init>()",
+    "String GeolocationDTO.getCity()",
+    "String GeolocationDTO.getCountryCode()",
+    "String GeolocationDTO.getCountryName()",
+    "String GeolocationDTO.getIpAddress()",
+    "Double GeolocationDTO.getLatitude()",
+    "Double GeolocationDTO.getLongitude()",
+    "String GeolocationDTO.getPostalCode()",
+    "String GeolocationDTO.getRegionCode()",
+    "String GeolocationDTO.getRegionName()",
+    "String GeolocationDTO.getSource()",
+    "void GeolocationDTO.setCity(String)",
+    "void GeolocationDTO.setCountryCode(String)",
+    "void GeolocationDTO.setCountryName(String)",
+    "void GeolocationDTO.setIpAddress(String)",
+    "void GeolocationDTO.setLatitude(Double)",
+    "void GeolocationDTO.setLongitude(Double)",
+    "void GeolocationDTO.setPostalCode(String)",
+    "void GeolocationDTO.setRegionCode(String)",
+    "void GeolocationDTO.setRegionName(String)",
+    "void GeolocationDTO.setSource(String)",
+    "String GeolocationDTO.toString()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     GeolocationDTO actualGeolocationDTO = new GeolocationDTO();
@@ -94,9 +110,11 @@ public class GeolocationDTODiffblueTest {
     assertEquals("42 Main St", actualIpAddress);
     assertEquals("GB", actualCountryCode);
     assertEquals("GB", actualCountryName);
-    assertEquals("GeolocationCDTO{source='Source', ipAddress='42 Main St', countryCode='GB', countryName='GB',"
-        + " regionCode='us-east-2', regionName='us-east-2', city='Oxford', postalCode='Postal Code', latitude=10.0,"
-        + " longitude=10.0}", actualToStringResult);
+    assertEquals(
+        "GeolocationCDTO{source='Source', ipAddress='42 Main St', countryCode='GB', countryName='GB',"
+            + " regionCode='us-east-2', regionName='us-east-2', city='Oxford', postalCode='Postal Code', latitude=10.0,"
+            + " longitude=10.0}",
+        actualToStringResult);
     assertEquals("Oxford", actualCity);
     assertEquals("Postal Code", actualPostalCode);
     assertEquals("Source", actualGeolocationDTO.getSource());

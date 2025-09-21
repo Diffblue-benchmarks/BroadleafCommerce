@@ -20,6 +20,7 @@ package org.broadleafcommerce.core.web.controller.account;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -48,25 +49,31 @@ import org.junit.jupiter.api.Test;
 class BroadleafManageWishlistControllerDiffblueTest {
   /**
    * Test {@link BroadleafManageWishlistController#isWishlistValid(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafManageWishlistController#isWishlistValid(Order)}
+   *
+   * <p>Method under test: {@link BroadleafManageWishlistController#isWishlistValid(Order)}
    */
   @Test
-  @DisplayName("Test isWishlistValid(Order); given Auditable (default constructor) CreatedBy is one; then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test isWishlistValid(Order); given Auditable (default constructor) CreatedBy is one; then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BroadleafManageWishlistController.isWishlistValid(Order)"})
   void testIsWishlistValid_givenAuditableCreatedByIsOne_thenReturnTrue() {
     // Arrange
-    BroadleafManageWishlistController broadleafManageWishlistController = new BroadleafManageWishlistController();
+    BroadleafManageWishlistController broadleafManageWishlistController =
+        new BroadleafManageWishlistController();
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl wishlist = new OrderImpl();
@@ -87,7 +94,8 @@ class BroadleafManageWishlistControllerDiffblueTest {
     wishlist.setPayments(new ArrayList<>());
     wishlist.setStatus(new OrderStatus("Type", "Friendly Type"));
     wishlist.setSubTotal(new Money());
-    wishlist.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    wishlist.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     wishlist.setTaxOverride(true);
     wishlist.setTotal(new Money());
     wishlist.setTotalFulfillmentCharges(new Money());
@@ -99,31 +107,40 @@ class BroadleafManageWishlistControllerDiffblueTest {
 
   /**
    * Test {@link BroadleafManageWishlistController#isWishlistValid(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Auditable is {@link Auditable} (default
+   *       constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafManageWishlistController#isWishlistValid(Order)}
+   *
+   * <p>Method under test: {@link BroadleafManageWishlistController#isWishlistValid(Order)}
    */
   @Test
-  @DisplayName("Test isWishlistValid(Order); given OrderItemImpl (default constructor) Auditable is Auditable (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test isWishlistValid(Order); given OrderItemImpl (default constructor) Auditable is Auditable (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BroadleafManageWishlistController.isWishlistValid(Order)"})
   void testIsWishlistValid_givenOrderItemImplAuditableIsAuditable_thenReturnFalse() {
     // Arrange
-    BroadleafManageWishlistController broadleafManageWishlistController = new BroadleafManageWishlistController();
+    BroadleafManageWishlistController broadleafManageWishlistController =
+        new BroadleafManageWishlistController();
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     OrderItemImpl orderItemImpl = new OrderItemImpl();
@@ -174,7 +191,8 @@ class BroadleafManageWishlistControllerDiffblueTest {
     wishlist.setPayments(new ArrayList<>());
     wishlist.setStatus(new OrderStatus("Type", "Friendly Type"));
     wishlist.setSubTotal(new Money());
-    wishlist.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    wishlist.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     wishlist.setTaxOverride(true);
     wishlist.setTotal(new Money());
     wishlist.setTotalFulfillmentCharges(new Money());
@@ -187,8 +205,9 @@ class BroadleafManageWishlistControllerDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafManageWishlistController}
    *   <li>{@link BroadleafManageWishlistController#getAccountWishlistRedirect()}
@@ -197,17 +216,23 @@ class BroadleafManageWishlistControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void BroadleafManageWishlistController.<init>()",
-      "String BroadleafManageWishlistController.getAccountWishlistRedirect()",
-      "String BroadleafManageWishlistController.getAccountWishlistView()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafManageWishlistController.<init>()",
+    "String BroadleafManageWishlistController.getAccountWishlistRedirect()",
+    "String BroadleafManageWishlistController.getAccountWishlistView()"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
-    BroadleafManageWishlistController actualBroadleafManageWishlistController = new BroadleafManageWishlistController();
-    String actualAccountWishlistRedirect = actualBroadleafManageWishlistController.getAccountWishlistRedirect();
+    BroadleafManageWishlistController actualBroadleafManageWishlistController =
+        new BroadleafManageWishlistController();
+    String actualAccountWishlistRedirect =
+        actualBroadleafManageWishlistController.getAccountWishlistRedirect();
 
     // Assert
-    assertEquals("account/manageWishlist", actualBroadleafManageWishlistController.getAccountWishlistView());
+    assertEquals(
+        "account/manageWishlist", actualBroadleafManageWishlistController.getAccountWishlistView());
     assertEquals("redirect:/account/wishlist", actualAccountWishlistRedirect);
   }
 }

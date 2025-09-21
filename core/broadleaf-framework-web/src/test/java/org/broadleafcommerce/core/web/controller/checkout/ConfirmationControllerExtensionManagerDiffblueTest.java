@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.controller.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -30,17 +31,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {ConfirmationControllerExtensionManager.class})
 @ExtendWith(SpringExtension.class)
 class ConfirmationControllerExtensionManagerDiffblueTest {
-  @Autowired
-  private ConfirmationControllerExtensionManager confirmationControllerExtensionManager;
+  @Autowired private ConfirmationControllerExtensionManager confirmationControllerExtensionManager;
 
   /**
    * Test {@link ConfirmationControllerExtensionManager#continueOnHandled()}.
-   * <p>
-   * Method under test: {@link ConfirmationControllerExtensionManager#continueOnHandled()}
+   *
+   * <p>Method under test: {@link ConfirmationControllerExtensionManager#continueOnHandled()}
    */
   @Test
   @DisplayName("Test continueOnHandled()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ConfirmationControllerExtensionManager.continueOnHandled()"})
   void testContinueOnHandled() {
     // Arrange, Act and Assert

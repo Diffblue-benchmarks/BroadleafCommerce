@@ -26,12 +26,12 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.metadata.IIOMetadataNode;
-import org.apache.xerces.impl.xs.opti.DefaultNode;
 import org.broadleafcommerce.common.extensibility.context.merge.handlers.SchemaLocationMergeTest.DummyNode;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -45,31 +45,34 @@ import org.w3c.dom.Node;
 @ContextConfiguration(classes = {MetadataOverrideNodeReplaceInsert.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class MetadataOverrideNodeReplaceInsertDiffblueTest {
-  @Autowired
-  private MetadataOverrideNodeReplaceInsert metadataOverrideNodeReplaceInsert;
+  @Autowired private MetadataOverrideNodeReplaceInsert metadataOverrideNodeReplaceInsert;
 
   /**
    * Test {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}.
+   *
    * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>When {@link DummyNode} {@link DefaultNode#isEqualNode(Node)} return {@code false}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code false}.
+   *   <li>When {@link DummyNode} {@link DummyNode#isEqualNode(Node)} return {@code false}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
+   *
+   * <p>Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MetadataOverrideNodeReplaceInsert.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenFalse_whenDummyNodeIsEqualNodeReturnFalse_thenReturnFalse() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
+
     DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(false);
 
     // Act
-    boolean actualCheckNodeResult = metadataOverrideNodeReplaceInsert.checkNode(usedNodes, new Node[]{dummyNode},
-        new IIOMetadataNode("foo"));
+    boolean actualCheckNodeResult =
+        metadataOverrideNodeReplaceInsert.checkNode(
+            usedNodes, new Node[] {dummyNode}, new IIOMetadataNode());
 
     // Assert
     verify(dummyNode).isEqualNode(isA(Node.class));
@@ -79,26 +82,29 @@ public class MetadataOverrideNodeReplaceInsertDiffblueTest {
 
   /**
    * Test {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}.
+   *
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Given {@code true}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
+   *
+   * <p>Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MetadataOverrideNodeReplaceInsert.checkNode(List, Node[], Node)"})
   public void testCheckNode_givenTrue_thenArrayListSizeIsOne() {
     // Arrange
     ArrayList<Node> usedNodes = new ArrayList<>();
+
     DummyNode dummyNode = mock(DummyNode.class);
     when(dummyNode.isEqualNode(Mockito.<Node>any())).thenReturn(true);
-    Node[] primaryNodes = new Node[]{dummyNode};
+    Node[] primaryNodes = new Node[] {dummyNode};
 
     // Act
-    boolean actualCheckNodeResult = metadataOverrideNodeReplaceInsert.checkNode(usedNodes, primaryNodes,
-        new IIOMetadataNode("foo"));
+    boolean actualCheckNodeResult =
+        metadataOverrideNodeReplaceInsert.checkNode(usedNodes, primaryNodes, new IIOMetadataNode());
 
     // Assert
     verify(dummyNode).isEqualNode(isA(Node.class));
@@ -109,16 +115,44 @@ public class MetadataOverrideNodeReplaceInsertDiffblueTest {
   }
 
   /**
-   * Test new {@link MetadataOverrideNodeReplaceInsert} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link MetadataOverrideNodeReplaceInsert}
+   * Test {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}.
+   *
+   * <ul>
+   *   <li>When empty array of {@link Node}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MetadataOverrideNodeReplaceInsert#checkNode(List, Node[], Node)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean MetadataOverrideNodeReplaceInsert.checkNode(List, Node[], Node)"})
+  public void testCheckNode_whenEmptyArrayOfNode_thenReturnFalse() {
+    // Arrange
+    ArrayList<Node> usedNodes = new ArrayList<>();
+
+    // Act and Assert
+    assertFalse(
+        metadataOverrideNodeReplaceInsert.checkNode(
+            usedNodes, new Node[] {}, new IIOMetadataNode()));
+    assertTrue(usedNodes.isEmpty());
+  }
+
+  /**
+   * Test new {@link MetadataOverrideNodeReplaceInsert} (default constructor).
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * MetadataOverrideNodeReplaceInsert}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MetadataOverrideNodeReplaceInsert.<init>()"})
   public void testNewMetadataOverrideNodeReplaceInsert() {
     // Arrange and Act
-    MetadataOverrideNodeReplaceInsert actualMetadataOverrideNodeReplaceInsert = new MetadataOverrideNodeReplaceInsert();
+    MetadataOverrideNodeReplaceInsert actualMetadataOverrideNodeReplaceInsert =
+        new MetadataOverrideNodeReplaceInsert();
 
     // Assert
     assertNull(actualMetadataOverrideNodeReplaceInsert.getName());

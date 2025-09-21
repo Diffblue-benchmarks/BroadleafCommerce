@@ -17,28 +17,23 @@
  */
 package org.broadleafcommerce.admin.web.controller.inventory;
 
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.security.service.ExploitProtectionService;
+import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.catalog.service.CatalogService;
+import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
-import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
-import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
-import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
-import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
-import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
-import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
-import org.broadleafcommerce.openadmin.web.service.SearchFieldResolver;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -49,201 +44,302 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminInventoryBasicOperationsControllerDiffblueTest {
-  @Mock
-  private AdminEntityService adminEntityService;
-
   @InjectMocks
   private AdminInventoryBasicOperationsController adminInventoryBasicOperationsController;
 
-  @Mock
-  private AdminNavigationService adminNavigationService;
-
-  @Mock
-  private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
-
-  @Mock
-  private CatalogService catalogService;
-
-  @Mock
-  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
-
-  @Mock
-  private ExploitProtectionService exploitProtectionService;
-
-  @Mock
-  private FormBuilderService formBuilderService;
-
-  @Mock
-  private SearchFieldResolver searchFieldResolver;
-
-  @Mock
-  private SecurityVerifier securityVerifier;
+  @Mock private CatalogService catalogService;
 
   /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
   public void testModifyFetchPersistencePackageRequest() {
     // Arrange
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
-    when(ppr.getFilterAndSortCriteria()).thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("42")});
+    when(ppr.getFilterAndSortCriteria())
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("42")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
 
     // Assert
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
     verify(ppr, atLeast(1)).getFilterAndSortCriteria();
   }
 
   /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
   public void testModifyFetchPersistencePackageRequest2() {
     // Arrange
+    SkuImpl skuImpl = new SkuImpl();
+    skuImpl.setDefaultProduct(new ProductBundleImpl());
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("inventory");
+
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
     when(ppr.getFilterAndSortCriteria())
-        .thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("fulfillmentType")});
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("inventoryParameter")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
 
     // Assert
+    verify(catalogService).findSkuById(42L);
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
     verify(ppr, atLeast(1)).getFilterAndSortCriteria();
+    verify(ppr).getSectionCrumbs();
   }
 
   /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
   public void testModifyFetchPersistencePackageRequest3() {
+    // Arrange
+    SkuImpl skuImpl = new SkuImpl();
+    skuImpl.setFulfillmentType(new FulfillmentType("fulfillmentType", "fulfillmentType"));
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(skuImpl);
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("inventory");
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
+    when(ppr.getFilterAndSortCriteria())
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("inventoryParameter")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
+
+    // Act
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
+
+    // Assert
+    verify(catalogService).findSkuById(42L);
+    verify(ppr, atLeast(1)).addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any());
+    verify(ppr, atLeast(1)).getFilterAndSortCriteria();
+    verify(ppr).getSectionCrumbs();
+  }
+
+  /**
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <ul>
+   *   <li>Given empty array of {@link SectionCrumb}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
+  public void testModifyFetchPersistencePackageRequest_givenEmptyArrayOfSectionCrumb() {
+    // Arrange
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[] {});
+    when(ppr.getFilterAndSortCriteria())
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("inventoryParameter")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
+
+    // Act
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
+
+    // Assert
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
+    verify(ppr, atLeast(1)).getFilterAndSortCriteria();
+    verify(ppr).getSectionCrumbs();
+  }
+
+  /**
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <ul>
+   *   <li>Given {@link SectionCrumb} (default constructor) SectionIdentifier is {@code 42}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
+  public void testModifyFetchPersistencePackageRequest_givenSectionCrumbSectionIdentifierIs42() {
     // Arrange
     SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
     sectionCrumb.setSectionIdentifier("42");
+
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
-    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[]{sectionCrumb});
+    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
     when(ppr.getFilterAndSortCriteria())
-        .thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("inventoryParameter")});
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("inventoryParameter")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
 
     // Assert
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
     verify(ppr, atLeast(1)).getFilterAndSortCriteria();
     verify(ppr).getSectionCrumbs();
   }
 
   /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link CatalogService#findSkuById(Long)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
-  public void testModifyFetchPersistencePackageRequest4() {
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
+  public void testModifyFetchPersistencePackageRequest_thenCallsFindSkuById() {
     // Arrange
-    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
-    FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
-    when(ppr.getFilterAndSortCriteria())
-        .thenReturn(new FilterAndSortCriteria[]{filterAndSortCriteria, new FilterAndSortCriteria("42")});
-    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
-    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
+    when(catalogService.findSkuById(Mockito.<Long>any())).thenReturn(new SkuImpl());
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
     sectionCrumb.setOriginalSectionIdentifier("42");
     sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
+    sectionCrumb.setSectionIdentifier("inventory");
 
-    // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
-
-    // Assert
-    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
-    verify(sectionCrumb).setSectionId(eq("42"));
-    verify(sectionCrumb).setSectionIdentifier(eq("42"));
-    verify(ppr, atLeast(1)).getFilterAndSortCriteria();
-  }
-
-  /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
-   * <ul>
-   *   <li>Given empty array of {@link SectionCrumb}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
-  public void testModifyFetchPersistencePackageRequest_givenEmptyArrayOfSectionCrumb() {
-    // Arrange
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
-    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[]{});
+    when(ppr.getSectionCrumbs()).thenReturn(new SectionCrumb[] {sectionCrumb});
     when(ppr.getFilterAndSortCriteria())
-        .thenReturn(new FilterAndSortCriteria[]{new FilterAndSortCriteria("inventoryParameter")});
+        .thenReturn(new FilterAndSortCriteria[] {new FilterAndSortCriteria("inventoryParameter")});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
 
     // Assert
+    verify(catalogService).findSkuById(42L);
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
     verify(ppr, atLeast(1)).getFilterAndSortCriteria();
     verify(ppr).getSectionCrumbs();
   }
 
   /**
-   * Test {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}.
+   * Test {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}.
+   *
    * <ul>
-   *   <li>Then calls {@link FilterAndSortCriteria#getPropertyId()}.</li>
+   *   <li>Then calls {@link FilterAndSortCriteria#getPropertyId()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)}
+   *
+   * <p>Method under test: {@link
+   * AdminInventoryBasicOperationsController#modifyFetchPersistencePackageRequest(PersistencePackageRequest,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"})
+    "void AdminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(PersistencePackageRequest, Map)"
+  })
   public void testModifyFetchPersistencePackageRequest_thenCallsGetPropertyId() {
     // Arrange
     FilterAndSortCriteria filterAndSortCriteria = mock(FilterAndSortCriteria.class);
     when(filterAndSortCriteria.getPropertyId()).thenReturn("42");
+
     PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
-    when(ppr.getFilterAndSortCriteria()).thenReturn(new FilterAndSortCriteria[]{filterAndSortCriteria});
-    SectionCrumb sectionCrumb = mock(SectionCrumb.class);
-    doNothing().when(sectionCrumb).setOriginalSectionIdentifier(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionId(Mockito.<String>any());
-    doNothing().when(sectionCrumb).setSectionIdentifier(Mockito.<String>any());
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
+    when(ppr.getFilterAndSortCriteria())
+        .thenReturn(new FilterAndSortCriteria[] {filterAndSortCriteria});
+    when(ppr.addFilterAndSortCriteria(Mockito.<FilterAndSortCriteria>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    ppr.addFilterAndSortCriteria(new FilterAndSortCriteria("42"));
 
     // Act
-    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(ppr, new HashMap<>());
+    adminInventoryBasicOperationsController.modifyFetchPersistencePackageRequest(
+        ppr, new HashMap<>());
 
     // Assert
     verify(filterAndSortCriteria, atLeast(1)).getPropertyId();
-    verify(sectionCrumb).setOriginalSectionIdentifier(eq("42"));
-    verify(sectionCrumb).setSectionId(eq("42"));
-    verify(sectionCrumb).setSectionIdentifier(eq("42"));
+    verify(ppr).addFilterAndSortCriteria(isA(FilterAndSortCriteria.class));
     verify(ppr, atLeast(1)).getFilterAndSortCriteria();
   }
 }

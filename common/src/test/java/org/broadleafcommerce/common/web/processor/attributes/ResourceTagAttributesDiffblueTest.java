@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,8 +31,9 @@ import org.junit.experimental.categories.Category;
 public class ResourceTagAttributesDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ResourceTagAttributes#ResourceTagAttributes()}
    *   <li>{@link ResourceTagAttributes#async(boolean)}
@@ -55,34 +57,43 @@ public class ResourceTagAttributesDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ResourceTagAttributes.<init>()", "boolean ResourceTagAttributes.async()",
-      "ResourceTagAttributes ResourceTagAttributes.async(boolean)",
-      "String ResourceTagAttributes.bundleCompletedEvent()",
-      "ResourceTagAttributes ResourceTagAttributes.bundleCompletedEvent(String)",
-      "String ResourceTagAttributes.bundleDependencyEvent()",
-      "ResourceTagAttributes ResourceTagAttributes.bundleDependencyEvent(String)",
-      "boolean ResourceTagAttributes.defer()", "ResourceTagAttributes ResourceTagAttributes.defer(boolean)",
-      "String ResourceTagAttributes.files()", "ResourceTagAttributes ResourceTagAttributes.files(String)",
-      "boolean ResourceTagAttributes.includeAsyncDeferUnbundled()",
-      "ResourceTagAttributes ResourceTagAttributes.includeAsyncDeferUnbundled(boolean)",
-      "String ResourceTagAttributes.mappingPrefix()",
-      "ResourceTagAttributes ResourceTagAttributes.mappingPrefix(String)", "String ResourceTagAttributes.name()",
-      "ResourceTagAttributes ResourceTagAttributes.name(String)", "String ResourceTagAttributes.src()",
-      "ResourceTagAttributes ResourceTagAttributes.src(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ResourceTagAttributes.<init>()",
+    "boolean ResourceTagAttributes.async()",
+    "ResourceTagAttributes ResourceTagAttributes.async(boolean)",
+    "String ResourceTagAttributes.bundleCompletedEvent()",
+    "ResourceTagAttributes ResourceTagAttributes.bundleCompletedEvent(String)",
+    "String ResourceTagAttributes.bundleDependencyEvent()",
+    "ResourceTagAttributes ResourceTagAttributes.bundleDependencyEvent(String)",
+    "boolean ResourceTagAttributes.defer()",
+    "ResourceTagAttributes ResourceTagAttributes.defer(boolean)",
+    "String ResourceTagAttributes.files()",
+    "ResourceTagAttributes ResourceTagAttributes.files(String)",
+    "boolean ResourceTagAttributes.includeAsyncDeferUnbundled()",
+    "ResourceTagAttributes ResourceTagAttributes.includeAsyncDeferUnbundled(boolean)",
+    "String ResourceTagAttributes.mappingPrefix()",
+    "ResourceTagAttributes ResourceTagAttributes.mappingPrefix(String)",
+    "String ResourceTagAttributes.name()",
+    "ResourceTagAttributes ResourceTagAttributes.name(String)",
+    "String ResourceTagAttributes.src()",
+    "ResourceTagAttributes ResourceTagAttributes.src(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ResourceTagAttributes actualResourceTagAttributes = new ResourceTagAttributes();
     ResourceTagAttributes actualAsyncResult = actualResourceTagAttributes.async(true);
-    ResourceTagAttributes actualBundleCompletedEventResult = actualResourceTagAttributes
-        .bundleCompletedEvent("Bundle Completed Event");
-    ResourceTagAttributes actualBundleDependencyEventResult = actualResourceTagAttributes
-        .bundleDependencyEvent("Bundle Dependency Event");
+    ResourceTagAttributes actualBundleCompletedEventResult =
+        actualResourceTagAttributes.bundleCompletedEvent("Bundle Completed Event");
+    ResourceTagAttributes actualBundleDependencyEventResult =
+        actualResourceTagAttributes.bundleDependencyEvent("Bundle Dependency Event");
     ResourceTagAttributes actualDeferResult = actualResourceTagAttributes.defer(true);
     ResourceTagAttributes actualFilesResult = actualResourceTagAttributes.files("Files");
-    ResourceTagAttributes actualIncludeAsyncDeferUnbundledResult = actualResourceTagAttributes
-        .includeAsyncDeferUnbundled(true);
-    ResourceTagAttributes actualMappingPrefixResult = actualResourceTagAttributes.mappingPrefix("Mapping Prefix");
+    ResourceTagAttributes actualIncludeAsyncDeferUnbundledResult =
+        actualResourceTagAttributes.includeAsyncDeferUnbundled(true);
+    ResourceTagAttributes actualMappingPrefixResult =
+        actualResourceTagAttributes.mappingPrefix("Mapping Prefix");
     ResourceTagAttributes actualNameResult = actualResourceTagAttributes.name("Name");
     ResourceTagAttributes actualSrcResult = actualResourceTagAttributes.src("Src");
     boolean actualAsyncResult2 = actualResourceTagAttributes.async();
@@ -90,7 +101,8 @@ public class ResourceTagAttributesDiffblueTest {
     String actualBundleDependencyEventResult2 = actualResourceTagAttributes.bundleDependencyEvent();
     boolean actualDeferResult2 = actualResourceTagAttributes.defer();
     String actualFilesResult2 = actualResourceTagAttributes.files();
-    boolean actualIncludeAsyncDeferUnbundledResult2 = actualResourceTagAttributes.includeAsyncDeferUnbundled();
+    boolean actualIncludeAsyncDeferUnbundledResult2 =
+        actualResourceTagAttributes.includeAsyncDeferUnbundled();
     String actualMappingPrefixResult2 = actualResourceTagAttributes.mappingPrefix();
     String actualNameResult2 = actualResourceTagAttributes.name();
 
@@ -117,18 +129,22 @@ public class ResourceTagAttributesDiffblueTest {
 
   /**
    * Test {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}.
+   *
    * <ul>
-   *   <li>Then return bundleCompletedEvent is {@code null}.</li>
+   *   <li>Then return bundleCompletedEvent is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}
+   *
+   * <p>Method under test: {@link
+   * ResourceTagAttributes#ResourceTagAttributes(ResourceTagAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourceTagAttributes.<init>(ResourceTagAttributes)"})
   public void testNewResourceTagAttributes_thenReturnBundleCompletedEventIsNull() {
     // Arrange and Act
-    ResourceTagAttributes actualResourceTagAttributes = new ResourceTagAttributes(new ResourceTagAttributes());
+    ResourceTagAttributes actualResourceTagAttributes =
+        new ResourceTagAttributes(new ResourceTagAttributes());
 
     // Assert
     assertNull(actualResourceTagAttributes.bundleCompletedEvent());

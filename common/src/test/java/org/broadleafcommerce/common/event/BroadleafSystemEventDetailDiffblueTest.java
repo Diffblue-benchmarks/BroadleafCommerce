@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -29,11 +30,13 @@ import org.junit.experimental.categories.Category;
 public class BroadleafSystemEventDetailDiffblueTest {
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
+   *   <li>When {@code 42}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
@@ -45,16 +48,24 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
-      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
-      "void BroadleafSystemEventDetail.setBlob(Serializable)",
-      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafSystemEventDetail.<init>(Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String)",
+    "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String, String)",
+    "Serializable BroadleafSystemEventDetail.getBlob()",
+    "String BroadleafSystemEventDetail.getFriendlyName()",
+    "String BroadleafSystemEventDetail.getValue()",
+    "void BroadleafSystemEventDetail.setBlob(Serializable)",
+    "void BroadleafSystemEventDetail.setFriendlyName(String)",
+    "void BroadleafSystemEventDetail.setValue(String)"
+  })
   public void testGettersAndSetters_when42() {
     // Arrange and Act
-    BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("42");
+    BroadleafSystemEventDetail actualBroadleafSystemEventDetail =
+        new BroadleafSystemEventDetail("42");
     SimpleDateFormat blob = new SimpleDateFormat("yyyy/mm/dd");
     actualBroadleafSystemEventDetail.setBlob(blob);
     actualBroadleafSystemEventDetail.setFriendlyName("Friendly Name");
@@ -70,11 +81,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Friendly Name}.</li>
+   *   <li>When {@code Friendly Name}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
@@ -86,17 +99,24 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
-      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
-      "void BroadleafSystemEventDetail.setBlob(Serializable)",
-      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafSystemEventDetail.<init>(Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String)",
+    "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String, String)",
+    "Serializable BroadleafSystemEventDetail.getBlob()",
+    "String BroadleafSystemEventDetail.getFriendlyName()",
+    "String BroadleafSystemEventDetail.getValue()",
+    "void BroadleafSystemEventDetail.setBlob(Serializable)",
+    "void BroadleafSystemEventDetail.setFriendlyName(String)",
+    "void BroadleafSystemEventDetail.setValue(String)"
+  })
   public void testGettersAndSetters_whenFriendlyName() {
     // Arrange and Act
-    BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("Friendly Name",
-        new SimpleDateFormat("yyyy/mm/dd"));
+    BroadleafSystemEventDetail actualBroadleafSystemEventDetail =
+        new BroadleafSystemEventDetail("Friendly Name", new SimpleDateFormat("yyyy/mm/dd"));
     SimpleDateFormat blob = new SimpleDateFormat("yyyy/mm/dd");
     actualBroadleafSystemEventDetail.setBlob(blob);
     actualBroadleafSystemEventDetail.setFriendlyName("Friendly Name");
@@ -112,11 +132,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Friendly Name}.</li>
+   *   <li>When {@code Friendly Name}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(String, String)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
@@ -128,16 +150,24 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
-      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
-      "void BroadleafSystemEventDetail.setBlob(Serializable)",
-      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafSystemEventDetail.<init>(Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String)",
+    "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String, String)",
+    "Serializable BroadleafSystemEventDetail.getBlob()",
+    "String BroadleafSystemEventDetail.getFriendlyName()",
+    "String BroadleafSystemEventDetail.getValue()",
+    "void BroadleafSystemEventDetail.setBlob(Serializable)",
+    "void BroadleafSystemEventDetail.setFriendlyName(String)",
+    "void BroadleafSystemEventDetail.setValue(String)"
+  })
   public void testGettersAndSetters_whenFriendlyName2() {
     // Arrange and Act
-    BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail("Friendly Name", "42");
+    BroadleafSystemEventDetail actualBroadleafSystemEventDetail =
+        new BroadleafSystemEventDetail("Friendly Name", "42");
     SimpleDateFormat blob = new SimpleDateFormat("yyyy/mm/dd");
     actualBroadleafSystemEventDetail.setBlob(blob);
     actualBroadleafSystemEventDetail.setFriendlyName("Friendly Name");
@@ -153,11 +183,13 @@ public class BroadleafSystemEventDetailDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.</li>
+   *   <li>When {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafSystemEventDetail#BroadleafSystemEventDetail(Serializable)}
    *   <li>{@link BroadleafSystemEventDetail#setBlob(Serializable)}
@@ -169,17 +201,24 @@ public class BroadleafSystemEventDetailDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void BroadleafSystemEventDetail.<init>(Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String)", "void BroadleafSystemEventDetail.<init>(String, Serializable)",
-      "void BroadleafSystemEventDetail.<init>(String, String)", "Serializable BroadleafSystemEventDetail.getBlob()",
-      "String BroadleafSystemEventDetail.getFriendlyName()", "String BroadleafSystemEventDetail.getValue()",
-      "void BroadleafSystemEventDetail.setBlob(Serializable)",
-      "void BroadleafSystemEventDetail.setFriendlyName(String)", "void BroadleafSystemEventDetail.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafSystemEventDetail.<init>(Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String)",
+    "void BroadleafSystemEventDetail.<init>(String, Serializable)",
+    "void BroadleafSystemEventDetail.<init>(String, String)",
+    "Serializable BroadleafSystemEventDetail.getBlob()",
+    "String BroadleafSystemEventDetail.getFriendlyName()",
+    "String BroadleafSystemEventDetail.getValue()",
+    "void BroadleafSystemEventDetail.setBlob(Serializable)",
+    "void BroadleafSystemEventDetail.setFriendlyName(String)",
+    "void BroadleafSystemEventDetail.setValue(String)"
+  })
   public void testGettersAndSetters_whenSimpleDateFormatWithYyyyMmDd() {
     // Arrange and Act
-    BroadleafSystemEventDetail actualBroadleafSystemEventDetail = new BroadleafSystemEventDetail(
-        new SimpleDateFormat("yyyy/mm/dd"));
+    BroadleafSystemEventDetail actualBroadleafSystemEventDetail =
+        new BroadleafSystemEventDetail(new SimpleDateFormat("yyyy/mm/dd"));
     SimpleDateFormat blob = new SimpleDateFormat("yyyy/mm/dd");
     actualBroadleafSystemEventDetail.setBlob(blob);
     actualBroadleafSystemEventDetail.setFriendlyName("Friendly Name");

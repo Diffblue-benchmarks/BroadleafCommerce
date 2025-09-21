@@ -21,49 +21,40 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {EmailNotification.class, NotificationEventType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class NotificationDiffblueTest {
-  @Autowired
-  private Notification notification;
-
-  @Autowired
-  private NotificationEventType notificationEventType;
-
   /**
    * Test {@link Notification#getContext()}.
-   * <p>
-   * Method under test: {@link Notification#getContext()}
+   *
+   * <p>Method under test: {@link Notification#getContext()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map Notification.getContext()"})
   public void testGetContext() {
     // Arrange, Act and Assert
-    assertTrue((new EmailNotification()).getContext().isEmpty());
+    assertTrue(new EmailNotification().getContext().isEmpty());
   }
 
   /**
    * Test {@link Notification#setContext(Map)}.
-   * <p>
-   * Method under test: {@link Notification#setContext(Map)}
+   *
+   * <p>Method under test: {@link Notification#setContext(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Notification.setContext(Map)"})
   public void testSetContext() {
     // Arrange
@@ -79,66 +70,69 @@ public class NotificationDiffblueTest {
 
   /**
    * Test {@link Notification#getType()}.
+   *
    * <ul>
-   *   <li>Given {@link EmailNotification#EmailNotification()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link EmailNotification#EmailNotification()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link Notification#getType()}
+   *
+   * <p>Method under test: {@link Notification#getType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"NotificationEventType Notification.getType()"})
   public void testGetType_givenEmailNotification_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new EmailNotification()).getType());
+    assertNull(new EmailNotification().getType());
   }
 
   /**
    * Test {@link Notification#getType()}.
+   *
    * <ul>
-   *   <li>Then return {@link NotificationEventType#ADMIN_FORGOT_PASSWORD}.</li>
+   *   <li>Then return {@link NotificationEventType#ADMIN_FORGOT_PASSWORD}.
    * </ul>
-   * <p>
-   * Method under test: {@link Notification#getType()}
+   *
+   * <p>Method under test: {@link Notification#getType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"NotificationEventType Notification.getType()"})
   public void testGetType_thenReturnAdmin_forgot_password() {
     // Arrange
-    EmailNotification emailNotification = new EmailNotification();
+    EmailNotification emailNotification =
+        new EmailNotification(NotificationEventType.ADMIN_FORGOT_PASSWORD, new HashMap<>());
     emailNotification.setType(NotificationEventType.ADMIN_FORGOT_PASSWORD);
 
-    // Act
-    NotificationEventType actualType = emailNotification.getType();
-
-    // Assert
-    assertSame(actualType.ADMIN_FORGOT_PASSWORD, actualType);
+    // Act and Assert
+    assertSame(NotificationEventType.ADMIN_FORGOT_PASSWORD, emailNotification.getType());
   }
 
   /**
    * Test {@link Notification#setType(NotificationEventType)}.
+   *
    * <ul>
-   *   <li>Then {@link Notification} {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
+   *   <li>Then {@link EmailNotification#EmailNotification()} {@link Notification#notificationType}
+   *       is {@code ADMIN_FORGOT_PASSWORD}.
    * </ul>
-   * <p>
-   * Method under test: {@link Notification#setType(NotificationEventType)}
+   *
+   * <p>Method under test: {@link Notification#setType(NotificationEventType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Notification.setType(NotificationEventType)"})
-  public void testSetType_thenNotificationNotificationTypeIsAdminForgotPassword() {
+  public void testSetType_thenEmailNotificationNotificationTypeIsAdminForgotPassword() {
     // Arrange
-    NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;
+    EmailNotification emailNotification = new EmailNotification();
 
     // Act
-    notification.setType(notificationEventType2);
+    emailNotification.setType(NotificationEventType.ADMIN_FORGOT_PASSWORD);
 
     // Assert
-    assertTrue(notification instanceof EmailNotification);
-    assertEquals("ADMIN_FORGOT_PASSWORD", ((EmailNotification) notification).notificationType);
-    NotificationEventType expectedType = notificationEventType2.ADMIN_FORGOT_PASSWORD;
-    assertSame(expectedType, notification.getType());
+    assertEquals("ADMIN_FORGOT_PASSWORD", emailNotification.notificationType);
+    assertSame(NotificationEventType.ADMIN_FORGOT_PASSWORD, emailNotification.getType());
   }
 }

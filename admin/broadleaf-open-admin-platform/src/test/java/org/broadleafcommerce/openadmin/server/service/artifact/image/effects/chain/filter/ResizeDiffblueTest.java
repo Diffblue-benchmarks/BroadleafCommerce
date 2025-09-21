@@ -21,7 +21,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -44,16 +45,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {Resize.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ResizeDiffblueTest {
-  @Autowired
-  private Resize resize;
+  @Autowired private Resize resize;
 
   /**
    * Test {@link Resize#Resize()}.
-   * <p>
-   * Method under test: {@link Resize#Resize()}
+   *
+   * <p>Method under test: {@link Resize#Resize()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Resize.<init>()"})
   public void testNewResize() {
     // Arrange and Act
@@ -66,12 +67,16 @@ public class ResizeDiffblueTest {
 
   /**
    * Test {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}.
-   * <p>
-   * Method under test: {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean, RenderingHints)}
+   *
+   * <p>Method under test: {@link Resize#Resize(int, int, boolean, boolean, boolean, boolean,
+   * RenderingHints)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Resize.<init>(int, int, boolean, boolean, boolean, boolean, RenderingHints)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void Resize.<init>(int, int, boolean, boolean, boolean, boolean, RenderingHints)"
+  })
   public void testNewResize2() {
     // Arrange and Act
     Resize actualResize = new Resize(1, 1, true, true, true, true, null);
@@ -83,29 +88,33 @@ public class ResizeDiffblueTest {
 
   /**
    * Test {@link Resize#buildOperation(Map, InputStream, String)}.
-   * <p>
-   * Method under test: {@link Resize#buildOperation(Map, InputStream, String)}
+   *
+   * <p>Method under test: {@link Resize#buildOperation(Map, InputStream, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Resize.buildOperation(Map, InputStream, String)"})
+    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Resize.buildOperation(Map, InputStream, String)"
+  })
   public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
     assertNull(
-        resize.buildOperation(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Mime Type"));
+        resize.buildOperation(
+            parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain"));
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter() {
     // Arrange
@@ -122,21 +131,25 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter2() {
     // Arrange
@@ -153,21 +166,25 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter3() {
     // Arrange
@@ -184,21 +201,25 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter4() {
     // Arrange
@@ -215,23 +236,132 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter5() {
+    // Arrange
+    Resize resize = new Resize(2, 1, true, true, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter6() {
+    // Arrange
+    Resize resize = new Resize(1, 1, false, true, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter7() {
+    // Arrange
+    Resize resize = new Resize(1, 1, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter8() {
     // Arrange
     Resize resize = new Resize(2, 0, true, true, true, false, null);
     BufferedImage src = new BufferedImage(1, 1, 1);
@@ -246,23 +376,167 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
-  public void testFilter6() {
+  public void testFilter9() {
+    // Arrange
+    Resize resize = new Resize(1, 1, false, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter10() {
+    // Arrange
+    Resize resize = new Resize(3, 1, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter11() {
+    // Arrange
+    Resize resize = new Resize(1, 4, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter12() {
+    // Arrange
+    Resize resize = new Resize(3, 3, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter13() {
     // Arrange
     Resize resize = new Resize(1, 1, true, true, false, true, null);
     resize.setImageFormat("bmp");
@@ -276,24 +550,29 @@ public class ResizeDiffblueTest {
     assertTrue(colorModel instanceof DirectColorModel);
     SampleModel sampleModel = actualFilterResult.getSampleModel();
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one and four.</li>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one and four.
    * </ul>
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter_whenBufferedImageWithOneAndOneAndFour() {
     // Arrange
@@ -308,24 +587,146 @@ public class ResizeDiffblueTest {
     assertTrue(colorModel instanceof DirectColorModel);
     SampleModel sampleModel = actualFilterResult.getSampleModel();
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and one and two.
    * </ul>
-   * <p>
-   * Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_whenBufferedImageWithOneAndOneAndTwo() {
+    // Arrange
+    Resize resize = new Resize(1, 1, true, true, false, true, null);
+    BufferedImage src = new BufferedImage(1, 1, 2);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <ul>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with one and two and one.
+   * </ul>
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_whenBufferedImageWithOneAndTwoAndOne() {
+    // Arrange
+    Resize resize = new Resize(1, 1, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(1, 2, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <ul>
+   *   <li>When {@link BufferedImage#BufferedImage(int, int, int)} with two and one and one.
+   * </ul>
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_whenBufferedImageWithTwoAndOneAndOne() {
+    // Arrange
+    Resize resize = new Resize(1, 1, true, false, false, true, null);
+    BufferedImage src = new BufferedImage(2, 1, 1);
+
+    // Act
+    BufferedImage actualFilterResult = resize.filter(src, new BufferedImage(1, 1, 1));
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Resize#filter(BufferedImage, BufferedImage)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link Resize#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Resize.filter(BufferedImage, BufferedImage)"})
   public void testFilter_whenNull() {
     // Arrange
@@ -341,11 +742,14 @@ public class ResizeDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

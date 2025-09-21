@@ -29,7 +29,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
@@ -60,81 +60,87 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class StaticAssetViewControllerDiffblueTest {
-  @Mock
-  private ApplicationContext applicationContext;
+  @Mock private ApplicationContext applicationContext;
 
-  @Mock
-  private BroadleafSiteResolver broadleafSiteResolver;
+  @Mock private BroadleafSiteResolver broadleafSiteResolver;
 
-  @Mock
-  private Environment environment;
+  @Mock private Environment environment;
 
-  @Mock
-  private NamedOperationManager namedOperationManager;
+  @Mock private NamedOperationManager namedOperationManager;
 
-  @Mock
-  private StaticAssetStorageService staticAssetStorageService;
+  @Mock private StaticAssetStorageService staticAssetStorageService;
 
-  @InjectMocks
-  private StaticAssetViewController staticAssetViewController;
+  @InjectMocks private StaticAssetViewController staticAssetViewController;
 
   /**
    * Test {@link StaticAssetViewController#init()}.
+   *
    * <ul>
-   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code false}.</li>
+   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
+   *       false}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#init()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StaticAssetViewController.init()"})
   public void testInit_givenEnvironmentGetPropertyReturnFalse() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
+        .thenReturn(false);
 
     // Act
     staticAssetViewController.init();
 
     // Assert
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetViewController#init()}.
+   *
    * <ul>
-   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class)} return {@code true}.</li>
+   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class)} return {@code
+   *       true}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#init()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StaticAssetViewController.init()"})
   public void testInit_givenEnvironmentGetPropertyReturnTrue() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
+        .thenReturn(true);
 
     // Act
     staticAssetViewController.init();
 
     // Assert
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetViewController#init()}.
+   *
    * <ul>
-   *   <li>Then throw {@link AssetNotFoundException}.</li>
+   *   <li>Then throw {@link AssetNotFoundException}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#init()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StaticAssetViewController.init()"})
   public void testInit_thenThrowAssetNotFoundException() {
     // Arrange
@@ -143,76 +149,86 @@ public class StaticAssetViewControllerDiffblueTest {
 
     // Act and Assert
     assertThrows(AssetNotFoundException.class, () -> staticAssetViewController.init());
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
   }
 
   /**
    * Test {@link StaticAssetViewController#convertParameterMap(Map)}.
+   *
    * <ul>
-   *   <li>Given {@link Environment}.</li>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#convertParameterMap(Map)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#convertParameterMap(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map StaticAssetViewController.convertParameterMap(Map)"})
-  public void testConvertParameterMap_givenEnvironment_whenHashMap_thenReturnEmpty() {
-    // Arrange, Act and Assert
-    assertTrue(staticAssetViewController.convertParameterMap(new HashMap<>()).isEmpty());
-  }
-
-  /**
-   * Test {@link StaticAssetViewController#convertParameterMap(Map)}.
-   * <ul>
-   *   <li>Then return size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#convertParameterMap(Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map StaticAssetViewController.convertParameterMap(Map)"})
   public void testConvertParameterMap_thenReturnSizeIsOne() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
+        .thenReturn(true);
     when(namedOperationManager.getNamedOperationComponents()).thenReturn(new ArrayList<>());
 
     HashMap<String, String[]> parameterMap = new HashMap<>();
-    parameterMap.put("foo", new String[]{"foo"});
+    parameterMap.put("foo", new String[] {"foo"});
 
     // Act
-    Map<String, String> actualConvertParameterMapResult = staticAssetViewController.convertParameterMap(parameterMap);
+    Map<String, String> actualConvertParameterMapResult =
+        staticAssetViewController.convertParameterMap(parameterMap);
 
     // Assert
     verify(namedOperationManager).getNamedOperationComponents();
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
     assertEquals(1, actualConvertParameterMapResult.size());
     assertEquals("foo", actualConvertParameterMapResult.get("foo"));
   }
 
   /**
-   * Test {@link StaticAssetViewController#isAllowedUrlParameter(String)}.
+   * Test {@link StaticAssetViewController#convertParameterMap(Map)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link NamedOperationComponent}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#convertParameterMap(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Map StaticAssetViewController.convertParameterMap(Map)"})
+  public void testConvertParameterMap_whenHashMap_thenReturnEmpty() {
+    // Arrange, Act and Assert
+    assertTrue(staticAssetViewController.convertParameterMap(new HashMap<>()).isEmpty());
+  }
+
+  /**
+   * Test {@link StaticAssetViewController#isAllowedUrlParameter(String)}.
+   *
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link NamedOperationComponent}.
+   * </ul>
+   *
+   * <p>Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.isAllowedUrlParameter(String)"})
   public void testIsAllowedUrlParameter_givenArrayListAddNamedOperationComponent() {
     // Arrange
     ArrayList<NamedOperationComponent> namedOperationComponentList = new ArrayList<>();
     namedOperationComponentList.add(mock(NamedOperationComponent.class));
-    when(namedOperationManager.getNamedOperationComponents()).thenReturn(namedOperationComponentList);
+    when(namedOperationManager.getNamedOperationComponents())
+        .thenReturn(namedOperationComponentList);
 
     // Act
-    boolean actualIsAllowedUrlParameterResult = staticAssetViewController
-        .isAllowedUrlParameter("https://example.org/example");
+    boolean actualIsAllowedUrlParameterResult =
+        staticAssetViewController.isAllowedUrlParameter("https://example.org/example");
 
     // Assert
     verify(namedOperationManager).getNamedOperationComponents();
@@ -221,22 +237,24 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#isAllowedUrlParameter(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.isAllowedUrlParameter(String)"})
   public void testIsAllowedUrlParameter_thenReturnFalse() {
     // Arrange
     when(namedOperationManager.getNamedOperationComponents()).thenReturn(new ArrayList<>());
 
     // Act
-    boolean actualIsAllowedUrlParameterResult = staticAssetViewController
-        .isAllowedUrlParameter("https://example.org/example");
+    boolean actualIsAllowedUrlParameterResult =
+        staticAssetViewController.isAllowedUrlParameter("https://example.org/example");
 
     // Assert
     verify(namedOperationManager).getNamedOperationComponents();
@@ -245,14 +263,16 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#isAllowedUrlParameter(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link AssetNotFoundException}.</li>
+   *   <li>Then throw {@link AssetNotFoundException}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#isAllowedUrlParameter(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.isAllowedUrlParameter(String)"})
   public void testIsAllowedUrlParameter_thenThrowAssetNotFoundException() {
     // Arrange
@@ -260,34 +280,43 @@ public class StaticAssetViewControllerDiffblueTest {
         .thenThrow(new AssetNotFoundException("An error occurred"));
 
     // Act and Assert
-    assertThrows(AssetNotFoundException.class,
+    assertThrows(
+        AssetNotFoundException.class,
         () -> staticAssetViewController.isAllowedUrlParameter("https://example.org/example"));
     verify(namedOperationManager).getNamedOperationComponents();
   }
 
   /**
-   * Test {@link StaticAssetViewController#handleRequestInternal(HttpServletRequest, HttpServletResponse)}.
+   * Test {@link StaticAssetViewController#handleRequestInternal(HttpServletRequest,
+   * HttpServletResponse)}.
+   *
    * <ul>
-   *   <li>Then return ViewName is {@code null}.</li>
+   *   <li>Then return ViewName is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#handleRequestInternal(HttpServletRequest, HttpServletResponse)}
+   *
+   * <p>Method under test: {@link
+   * StaticAssetViewController#handleRequestInternal(HttpServletRequest, HttpServletResponse)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ModelAndView StaticAssetViewController.handleRequestInternal(HttpServletRequest, HttpServletResponse)"})
+    "ModelAndView StaticAssetViewController.handleRequestInternal(HttpServletRequest, HttpServletResponse)"
+  })
   public void testHandleRequestInternal_thenReturnViewNameIsNull() throws Exception {
     // Arrange
-    when(applicationContext.getBean(Mockito.<String>any(), Mockito.<Class<View>>any())).thenReturn(mock(View.class));
+    when(applicationContext.getBean(Mockito.<String>any(), Mockito.<Class<View>>any()))
+        .thenReturn(mock(View.class));
     when(broadleafSiteResolver.resolveSite(Mockito.<WebRequest>any())).thenReturn(new SiteImpl());
-    when(staticAssetStorageService.getCacheFileModel(Mockito.<String>any(), Mockito.<Map<String, String>>any()))
+    when(staticAssetStorageService.getCacheFileModel(
+            Mockito.<String>any(), Mockito.<Map<String, String>>any()))
         .thenReturn(new HashMap<>());
     MockHttpServletRequest request = new MockHttpServletRequest();
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    ModelAndView actualHandleRequestInternalResult = staticAssetViewController.handleRequestInternal(request, response);
+    ModelAndView actualHandleRequestInternalResult =
+        staticAssetViewController.handleRequestInternal(request, response);
 
     // Assert
     verify(staticAssetStorageService).getCacheFileModel(eq(""), isA(Map.class));
@@ -306,15 +335,17 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#removeAssetPrefix(String)}.
+   *
    * <ul>
-   *   <li>Given {@link StaticAssetViewController}.</li>
-   *   <li>Then return {@code Request URI}.</li>
+   *   <li>Given {@link StaticAssetViewController}.
+   *   <li>Then return {@code Request URI}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String StaticAssetViewController.removeAssetPrefix(String)"})
   public void testRemoveAssetPrefix_givenStaticAssetViewController_thenReturnRequestUri() {
     // Arrange, Act and Assert
@@ -323,14 +354,16 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#removeAssetPrefix(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code /quest URI}.</li>
+   *   <li>Then return {@code /quest URI}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String StaticAssetViewController.removeAssetPrefix(String)"})
   public void testRemoveAssetPrefix_thenReturnQuestUri() {
     // Arrange
@@ -342,14 +375,16 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#removeAssetPrefix(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code /}.</li>
+   *   <li>Then return {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#removeAssetPrefix(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String StaticAssetViewController.removeAssetPrefix(String)"})
   public void testRemoveAssetPrefix_thenReturnSlash() {
     // Arrange
@@ -361,60 +396,72 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.getAllowUnnamedImageManipulation()"})
   public void testGetAllowUnnamedImageManipulation_thenReturnFalse() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(false);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
+        .thenReturn(false);
 
     // Act
-    boolean actualAllowUnnamedImageManipulation = staticAssetViewController.getAllowUnnamedImageManipulation();
+    boolean actualAllowUnnamedImageManipulation =
+        staticAssetViewController.getAllowUnnamedImageManipulation();
 
     // Assert
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
     assertFalse(actualAllowUnnamedImageManipulation);
   }
 
   /**
    * Test {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.getAllowUnnamedImageManipulation()"})
   public void testGetAllowUnnamedImageManipulation_thenReturnTrue() {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any())).thenReturn(true);
+    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Boolean>>any()))
+        .thenReturn(true);
 
     // Act
-    boolean actualAllowUnnamedImageManipulation = staticAssetViewController.getAllowUnnamedImageManipulation();
+    boolean actualAllowUnnamedImageManipulation =
+        staticAssetViewController.getAllowUnnamedImageManipulation();
 
     // Assert
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
     assertTrue(actualAllowUnnamedImageManipulation);
   }
 
   /**
    * Test {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}.
+   *
    * <ul>
-   *   <li>Then throw {@link AssetNotFoundException}.</li>
+   *   <li>Then throw {@link AssetNotFoundException}.
    * </ul>
-   * <p>
-   * Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
+   *
+   * <p>Method under test: {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StaticAssetViewController.getAllowUnnamedImageManipulation()"})
   public void testGetAllowUnnamedImageManipulation_thenThrowAssetNotFoundException() {
     // Arrange
@@ -422,14 +469,18 @@ public class StaticAssetViewControllerDiffblueTest {
         .thenThrow(new AssetNotFoundException("An error occurred"));
 
     // Act and Assert
-    assertThrows(AssetNotFoundException.class, () -> staticAssetViewController.getAllowUnnamedImageManipulation());
-    verify(environment).getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
+    assertThrows(
+        AssetNotFoundException.class,
+        () -> staticAssetViewController.getAllowUnnamedImageManipulation());
+    verify(environment)
+        .getProperty(eq("asset.server.allow.unnamed.image.manipulation"), isA(Class.class));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StaticAssetViewController#setAssetServerUrlPrefix(String)}
    *   <li>{@link StaticAssetViewController#setViewResolverName(String)}
@@ -438,11 +489,14 @@ public class StaticAssetViewControllerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String StaticAssetViewController.getAssetServerUrlPrefix()",
-      "String StaticAssetViewController.getViewResolverName()",
-      "void StaticAssetViewController.setAssetServerUrlPrefix(String)",
-      "void StaticAssetViewController.setViewResolverName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String StaticAssetViewController.getAssetServerUrlPrefix()",
+    "String StaticAssetViewController.getViewResolverName()",
+    "void StaticAssetViewController.setAssetServerUrlPrefix(String)",
+    "void StaticAssetViewController.setViewResolverName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     StaticAssetViewController staticAssetViewController = new StaticAssetViewController();
@@ -459,11 +513,12 @@ public class StaticAssetViewControllerDiffblueTest {
 
   /**
    * Test new {@link StaticAssetViewController} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link StaticAssetViewController}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link StaticAssetViewController}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StaticAssetViewController.<init>()"})
   public void testNewStaticAssetViewController() {
     // Arrange and Act

@@ -18,7 +18,8 @@
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,13 +31,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SearchQuery.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchQueryDiffblueTest {
-  @Autowired
-  private SearchQuery searchQuery;
+  @Autowired private SearchQuery searchQuery;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SearchQuery#SearchQuery()}
    *   <li>{@link SearchQuery#setQueryString(String)}
@@ -44,9 +45,13 @@ public class SearchQueryDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SearchQuery.<init>()", "String SearchQuery.getQueryString()",
-      "void SearchQuery.setQueryString(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SearchQuery.<init>()",
+    "String SearchQuery.getQueryString()",
+    "void SearchQuery.setQueryString(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchQuery actualSearchQuery = new SearchQuery();
@@ -58,14 +63,15 @@ public class SearchQueryDiffblueTest {
 
   /**
    * Test {@link SearchQuery#SearchQuery(String)}.
-   * <p>
-   * Method under test: {@link SearchQuery#SearchQuery(String)}
+   *
+   * <p>Method under test: {@link SearchQuery#SearchQuery(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SearchQuery.<init>(String)"})
   public void testNewSearchQuery() {
     // Arrange, Act and Assert
-    assertEquals("Query String", (new SearchQuery("Query String")).getQueryString());
+    assertEquals("Query String", new SearchQuery("Query String").getQueryString());
   }
 }

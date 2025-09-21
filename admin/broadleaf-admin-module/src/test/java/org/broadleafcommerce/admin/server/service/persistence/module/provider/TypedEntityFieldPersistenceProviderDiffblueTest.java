@@ -25,7 +25,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -52,94 +53,146 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {TypedEntityFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TypedEntityFieldPersistenceProviderDiffblueTest {
-  @Autowired
-  private TypedEntityFieldPersistenceProvider typedEntityFieldPersistenceProvider;
+  @Autowired private TypedEntityFieldPersistenceProvider typedEntityFieldPersistenceProvider;
 
   /**
-   * Test {@link TypedEntityFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * Test {@link TypedEntityFieldPersistenceProvider#populateValue(PopulateValueRequest,
+   * Serializable)}.
+   *
    * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "MetadataProviderResponse TypedEntityFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"})
+    "MetadataProviderResponse TypedEntityFieldPersistenceProvider.populateValue(PopulateValueRequest, Serializable)"
+  })
   public void testPopulateValue_thenReturnNotHandled() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider =
+        new AdornedTargetListPersistenceModule();
 
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        typedEntityFieldPersistenceProvider.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+    PopulateValueRequest populateValueRequest =
+        new PopulateValueRequest(
+            true,
+            fieldManager,
+            property,
+            metadata,
+            returnType,
+            "42",
+            persistenceManager,
+            dataFormatProvider,
+            true,
+            new Entity());
+
+    // Act
+    MetadataProviderResponse actualPopulateValueResult =
+        typedEntityFieldPersistenceProvider.populateValue(
+            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
   }
 
   /**
    * Test {@link TypedEntityFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   *
    * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "MetadataProviderResponse TypedEntityFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+    "MetadataProviderResponse TypedEntityFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
+  })
   public void testExtractValue_thenReturnNotHandled() throws PersistenceException {
     // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    ExtractValueRequest extractValueRequest =
+        new ExtractValueRequest(
+            props,
+            fieldManager,
+            metadata,
+            "Requested Value",
+            "Display Val",
+            persistenceManager,
+            recordHelper,
+            new SimpleDateFormat("yyyy/mm/dd"),
+            customCriteria);
 
     // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+    assertEquals(
+        MetadataProviderResponse.NOT_HANDLED,
         typedEntityFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
   }
 
   /**
-   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object,
+   * Object)}.
+   *
    * <ul>
-   *   <li>Given {@code Check Value}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code Check Value}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"})
+    "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"
+  })
   public void testCheckDirtyState_givenCheckValue_thenReturnFalse() throws Exception {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Check Value");
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
+        .thenReturn("Check Value");
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider =
+        new AdornedTargetListPersistenceModule();
+
+    PopulateValueRequest request =
+        new PopulateValueRequest(
+            true,
+            fieldManager,
+            property,
+            metadata,
+            returnType,
+            "42",
+            persistenceManager,
+            dataFormatProvider,
+            true,
+            new Entity());
 
     // Act
-    boolean actualCheckDirtyStateResult = typedEntityFieldPersistenceProvider
-        .checkDirtyState(new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42",
-            persistenceManager, dataFormatProvider, true, new Entity()), "Instance", "Check Value");
+    boolean actualCheckDirtyStateResult =
+        typedEntityFieldPersistenceProvider.checkDirtyState(request, "Instance", "Check Value");
 
     // Assert
     verify(fieldManager).getFieldValue(isA(Object.class), isNull());
@@ -147,31 +200,50 @@ public class TypedEntityFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object,
+   * Object)}.
+   *
    * <ul>
-   *   <li>Given {@code Field Value}.</li>
+   *   <li>Given {@code Field Value}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"})
+    "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"
+  })
   public void testCheckDirtyState_givenFieldValue() throws Exception {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
-    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn("Field Value");
+    when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any()))
+        .thenReturn("Field Value");
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider =
+        new AdornedTargetListPersistenceModule();
+
+    PopulateValueRequest request =
+        new PopulateValueRequest(
+            true,
+            fieldManager,
+            property,
+            metadata,
+            returnType,
+            "42",
+            persistenceManager,
+            dataFormatProvider,
+            true,
+            new Entity());
 
     // Act
-    boolean actualCheckDirtyStateResult = typedEntityFieldPersistenceProvider
-        .checkDirtyState(new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42",
-            persistenceManager, dataFormatProvider, true, new Entity()), "Instance", "Check Value");
+    boolean actualCheckDirtyStateResult =
+        typedEntityFieldPersistenceProvider.checkDirtyState(request, "Instance", "Check Value");
 
     // Assert
     verify(fieldManager).getFieldValue(isA(Object.class), isNull());
@@ -179,19 +251,26 @@ public class TypedEntityFieldPersistenceProviderDiffblueTest {
   }
 
   /**
-   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * Test {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object,
+   * Object)}.
+   *
    * <ul>
-   *   <li>Given {@code /}.</li>
-   *   <li>When {@link FieldManager} {@link FieldManager#getFieldValue(Object, String)} return {@code /}.</li>
+   *   <li>Given {@code /}.
+   *   <li>When {@link FieldManager} {@link FieldManager#getFieldValue(Object, String)} return
+   *       {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#checkDirtyState(PopulateValueRequest, Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"})
-  public void testCheckDirtyState_givenSlash_whenFieldManagerGetFieldValueReturnSlash() throws Exception {
+    "boolean TypedEntityFieldPersistenceProvider.checkDirtyState(PopulateValueRequest, Object, Object)"
+  })
+  public void testCheckDirtyState_givenSlash_whenFieldManagerGetFieldValueReturnSlash()
+      throws Exception {
     // Arrange
     FieldManager fieldManager = mock(FieldManager.class);
     when(fieldManager.getFieldValue(Mockito.<Object>any(), Mockito.<String>any())).thenReturn(" /");
@@ -199,12 +278,25 @@ public class TypedEntityFieldPersistenceProviderDiffblueTest {
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AdornedTargetListPersistenceModule dataFormatProvider =
+        new AdornedTargetListPersistenceModule();
+
+    PopulateValueRequest request =
+        new PopulateValueRequest(
+            true,
+            fieldManager,
+            property,
+            metadata,
+            returnType,
+            "42",
+            persistenceManager,
+            dataFormatProvider,
+            true,
+            new Entity());
 
     // Act
-    boolean actualCheckDirtyStateResult = typedEntityFieldPersistenceProvider
-        .checkDirtyState(new PopulateValueRequest(true, fieldManager, property, metadata, returnType, "42",
-            persistenceManager, dataFormatProvider, true, new Entity()), "Instance", "Check Value");
+    boolean actualCheckDirtyStateResult =
+        typedEntityFieldPersistenceProvider.checkDirtyState(request, "Instance", "Check Value");
 
     // Assert
     verify(fieldManager).getFieldValue(isA(Object.class), isNull());
@@ -213,43 +305,64 @@ public class TypedEntityFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link TypedEntityFieldPersistenceProvider#getOrder()}.
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#getOrder()}
+   *
+   * <p>Method under test: {@link TypedEntityFieldPersistenceProvider#getOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int TypedEntityFieldPersistenceProvider.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(2147482647, (new TypedEntityFieldPersistenceProvider()).getOrder());
+    assertEquals(2147482647, new TypedEntityFieldPersistenceProvider().getOrder());
   }
 
   /**
-   * Test {@link TypedEntityFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * Test {@link TypedEntityFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest,
+   * Serializable)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link TypedEntityFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   *
+   * <p>Method under test: {@link
+   * TypedEntityFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean TypedEntityFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"})
+    "boolean TypedEntityFieldPersistenceProvider.canHandlePersistence(PopulateValueRequest, Serializable)"
+  })
   public void testCanHandlePersistence_thenReturnFalse() {
     // Arrange
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
     Property property = new Property();
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     Class<Object> returnType = Object.class;
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
-    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
-        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+    AdornedTargetListPersistenceModule dataFormatProvider =
+        new AdornedTargetListPersistenceModule();
 
-    // Act and Assert
-    assertFalse(typedEntityFieldPersistenceProvider.canHandlePersistence(populateValueRequest,
-        new SimpleDateFormat("yyyy/mm/dd")));
+    PopulateValueRequest populateValueRequest =
+        new PopulateValueRequest(
+            true,
+            fieldManager,
+            property,
+            metadata,
+            returnType,
+            "42",
+            persistenceManager,
+            dataFormatProvider,
+            true,
+            new Entity());
+
+    // Act
+    boolean actualCanHandlePersistenceResult =
+        typedEntityFieldPersistenceProvider.canHandlePersistence(
+            populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    assertFalse(actualCanHandlePersistenceResult);
   }
 }

@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.web.expression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
@@ -30,28 +31,32 @@ import org.junit.experimental.categories.Category;
 public class EntityFormVariableExpressionDiffblueTest {
   /**
    * Test {@link EntityFormVariableExpression#getName()}.
-   * <p>
-   * Method under test: {@link EntityFormVariableExpression#getName()}
+   *
+   * <p>Method under test: {@link EntityFormVariableExpression#getName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String EntityFormVariableExpression.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("ef", (new EntityFormVariableExpression()).getName());
+    assertEquals("ef", new EntityFormVariableExpression().getName());
   }
 
   /**
    * Test {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}.
+   *
    * <ul>
-   *   <li>Given {@link TabMetadata} (default constructor).</li>
-   *   <li>When {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata} (default constructor).</li>
+   *   <li>Given {@link TabMetadata} (default constructor).
+   *   <li>When {@link EntityForm} (default constructor) addTabFromTabMetadata {@link TabMetadata}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}
+   *
+   * <p>Method under test: {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormVariableExpression.isTabActive(EntityForm, Tab)"})
   public void testIsTabActive_givenTabMetadata_whenEntityFormAddTabFromTabMetadataTabMetadata() {
     // Arrange
@@ -66,15 +71,17 @@ public class EntityFormVariableExpressionDiffblueTest {
 
   /**
    * Test {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}.
+   *
    * <ul>
-   *   <li>When {@link EntityForm} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link EntityForm} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}
+   *
+   * <p>Method under test: {@link EntityFormVariableExpression#isTabActive(EntityForm, Tab)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormVariableExpression.isTabActive(EntityForm, Tab)"})
   public void testIsTabActive_whenEntityForm_thenReturnFalse() {
     // Arrange

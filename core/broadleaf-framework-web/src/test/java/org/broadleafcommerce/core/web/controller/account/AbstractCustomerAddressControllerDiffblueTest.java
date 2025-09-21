@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 class AbstractCustomerAddressControllerDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AbstractCustomerAddressController}
    *   <li>{@link AbstractCustomerAddressController#getCustomerAddressesRedirect()}
@@ -36,17 +38,24 @@ class AbstractCustomerAddressControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void AbstractCustomerAddressController.<init>()",
-      "String AbstractCustomerAddressController.getCustomerAddressesRedirect()",
-      "String AbstractCustomerAddressController.getCustomerAddressesView()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AbstractCustomerAddressController.<init>()",
+    "String AbstractCustomerAddressController.getCustomerAddressesRedirect()",
+    "String AbstractCustomerAddressController.getCustomerAddressesView()"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
-    AbstractCustomerAddressController actualAbstractCustomerAddressController = new AbstractCustomerAddressController();
-    String actualCustomerAddressesRedirect = actualAbstractCustomerAddressController.getCustomerAddressesRedirect();
+    AbstractCustomerAddressController actualAbstractCustomerAddressController =
+        new AbstractCustomerAddressController();
+    String actualCustomerAddressesRedirect =
+        actualAbstractCustomerAddressController.getCustomerAddressesRedirect();
 
     // Assert
-    assertEquals("account/manageCustomerAddresses", actualAbstractCustomerAddressController.getCustomerAddressesView());
+    assertEquals(
+        "account/manageCustomerAddresses",
+        actualAbstractCustomerAddressController.getCustomerAddressesView());
     assertEquals("redirect:/account/addresses", actualCustomerAddressesRedirect);
   }
 }

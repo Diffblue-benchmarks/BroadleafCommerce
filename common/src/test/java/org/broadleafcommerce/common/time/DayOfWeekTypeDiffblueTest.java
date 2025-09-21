@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,8 +29,9 @@ import org.junit.experimental.categories.Category;
 public class DayOfWeekTypeDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DayOfWeekType#DayOfWeekType()}
    *   <li>{@link DayOfWeekType#getFriendlyType()}
@@ -37,9 +39,13 @@ public class DayOfWeekTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void DayOfWeekType.<init>()", "String DayOfWeekType.getFriendlyType()",
-      "String DayOfWeekType.getType()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DayOfWeekType.<init>()",
+    "String DayOfWeekType.getFriendlyType()",
+    "String DayOfWeekType.getType()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     DayOfWeekType actualDayOfWeekType = new DayOfWeekType();
@@ -52,19 +58,22 @@ public class DayOfWeekTypeDiffblueTest {
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}, and {@link DayOfWeekType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DayOfWeekType#equals(Object)}
    *   <li>{@link DayOfWeekType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -73,25 +82,27 @@ public class DayOfWeekTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(dayOfWeekType, dayOfWeekType2);
-    int expectedHashCodeResult = dayOfWeekType.hashCode();
-    assertEquals(expectedHashCodeResult, dayOfWeekType2.hashCode());
+    assertEquals(dayOfWeekType.hashCode(), dayOfWeekType2.hashCode());
   }
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}, and {@link DayOfWeekType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DayOfWeekType#equals(Object)}
    *   <li>{@link DayOfWeekType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -100,25 +111,27 @@ public class DayOfWeekTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(dayOfWeekType, dayOfWeekType2);
-    int expectedHashCodeResult = dayOfWeekType.hashCode();
-    assertEquals(expectedHashCodeResult, dayOfWeekType2.hashCode());
+    assertEquals(dayOfWeekType.hashCode(), dayOfWeekType2.hashCode());
   }
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}, and {@link DayOfWeekType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DayOfWeekType#equals(Object)}
    *   <li>{@link DayOfWeekType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -132,15 +145,17 @@ public class DayOfWeekTypeDiffblueTest {
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DayOfWeekType#equals(Object)}
+   *
+   * <p>Method under test: {@link DayOfWeekType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -149,15 +164,17 @@ public class DayOfWeekTypeDiffblueTest {
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DayOfWeekType#equals(Object)}
+   *
+   * <p>Method under test: {@link DayOfWeekType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -166,15 +183,17 @@ public class DayOfWeekTypeDiffblueTest {
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DayOfWeekType#equals(Object)}
+   *
+   * <p>Method under test: {@link DayOfWeekType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -183,15 +202,17 @@ public class DayOfWeekTypeDiffblueTest {
 
   /**
    * Test {@link DayOfWeekType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DayOfWeekType#equals(Object)}
+   *
+   * <p>Method under test: {@link DayOfWeekType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DayOfWeekType.equals(Object)", "int DayOfWeekType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

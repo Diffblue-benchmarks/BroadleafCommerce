@@ -23,14 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.google.common.collect.ImmutableMap;
 import com.google.javascript.jscomp.AnonymousFunctionNamingPolicy;
@@ -47,8 +41,6 @@ import com.google.javascript.jscomp.CompilerOptions.TracerMode;
 import com.google.javascript.jscomp.CompilerOptions.TweakProcessing;
 import com.google.javascript.jscomp.ErrorFormat;
 import com.google.javascript.jscomp.PropertyRenamingPolicy;
-import com.google.javascript.jscomp.SimpleRegion;
-import com.google.javascript.jscomp.SourceFile;
 import com.google.javascript.jscomp.SourceMap;
 import com.google.javascript.jscomp.SourceMap.DetailLevel;
 import com.google.javascript.jscomp.SourceMap.Format;
@@ -73,27 +65,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {GoogleClosureJavascriptMinificationServiceImpl.class, String.class})
+@ContextConfiguration(
+    classes = {GoogleClosureJavascriptMinificationServiceImpl.class, String.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
   @Autowired
-  private GoogleClosureJavascriptMinificationServiceImpl googleClosureJavascriptMinificationServiceImpl;
+  private GoogleClosureJavascriptMinificationServiceImpl
+      googleClosureJavascriptMinificationServiceImpl;
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code A;}.</li>
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code A;}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
-  public void testMinifyJs_thenStringWriterToStringIsA() throws IOException, ResourceMinificationException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
+  public void testMinifyJs_thenStringWriterToStringIsA()
+      throws IOException, ResourceMinificationException {
     // Arrange
     CharArrayReader reader = new CharArrayReader("\u0001A\u0001A".toCharArray(), 1, 1);
-
     StringWriter writer = new StringWriter();
 
     // Act
@@ -106,15 +105,20 @@ public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@code '\'\''}.</li>
+   *   <li>When {@code '\'\''}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
   public void testMinifyJs_whenApostropheBackslashApostropheBackslashApostropheApostrophe()
       throws ResourceMinificationException {
     // Arrange
@@ -130,37 +134,53 @@ public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link CharArrayReader#CharArrayReader(char[])} with A start of heading A toCharArray.</li>
+   *   <li>When {@link CharArrayReader#CharArrayReader(char[])} with A start of heading A
+   *       toCharArray.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
-  public void testMinifyJs_whenCharArrayReaderWithAStartOfHeadingAToCharArray() throws ResourceMinificationException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
+  public void testMinifyJs_whenCharArrayReaderWithAStartOfHeadingAToCharArray()
+      throws ResourceMinificationException {
     // Arrange
     CharArrayReader reader = new CharArrayReader("\u0001A\u0001A".toCharArray());
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.minifyJs("foo.txt", reader, new StringWriter()));
+    assertThrows(
+        ResourceMinificationException.class,
+        () ->
+            googleClosureJavascriptMinificationServiceImpl.minifyJs(
+                "foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@code ./}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo;}.</li>
+   *   <li>When {@code ./}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo;}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
-  public void testMinifyJs_whenDotSlash_thenStringWriterToStringIsFoo() throws ResourceMinificationException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
+  public void testMinifyJs_whenDotSlash_thenStringWriterToStringIsFoo()
+      throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("foo");
     StringWriter writer = new StringWriter();
@@ -174,58 +194,80 @@ public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link FileReader#FileReader(FileDescriptor)} with {@link FileDescriptor#FileDescriptor()}.</li>
+   *   <li>When {@link FileReader#FileReader(FileDescriptor)} with {@link
+   *       FileDescriptor#FileDescriptor()}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
   public void testMinifyJs_whenFileReaderWithFileDescriptor() throws ResourceMinificationException {
     // Arrange
     FileReader reader = new FileReader(new FileDescriptor());
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.minifyJs("foo.txt", reader, new StringWriter()));
+    assertThrows(
+        ResourceMinificationException.class,
+        () ->
+            googleClosureJavascriptMinificationServiceImpl.minifyJs(
+                "foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with cr.</li>
-   *   <li>Then throw {@link ResourceMinificationException}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with cr.
+   *   <li>Then throw {@link ResourceMinificationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
   public void testMinifyJs_whenStringReaderWithCr_thenThrowResourceMinificationException()
       throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("\r");
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.minifyJs("foo.txt", reader, new StringWriter()));
+    assertThrows(
+        ResourceMinificationException.class,
+        () ->
+            googleClosureJavascriptMinificationServiceImpl.minifyJs(
+                "foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo;}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo;}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
   public void testMinifyJs_whenStringReaderWithFoo_thenStringWriterToStringIsFoo()
       throws ResourceMinificationException {
     // Arrange
@@ -241,208 +283,77 @@ public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code import Ufrom "U" ;}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code import Ufrom "U" ;}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
   public void testMinifyJs_whenStringReaderWithImportUfromU() throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("import Ufrom \"U\" ;");
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.minifyJs("foo.txt", reader, new StringWriter()));
+    assertThrows(
+        ResourceMinificationException.class,
+        () ->
+            googleClosureJavascriptMinificationServiceImpl.minifyJs(
+                "foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code U= goog.provide (UU)}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code U= goog.provide (UU)}.
    * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#minifyJs(String,
+   * Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"})
-  public void testMinifyJs_whenStringReaderWithUGoogProvideUu() throws ResourceMinificationException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GoogleClosureJavascriptMinificationServiceImpl.minifyJs(String, Reader, Writer)"
+  })
+  public void testMinifyJs_whenStringReaderWithUGoogProvideUu()
+      throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("U= goog.provide (UU)");
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.minifyJs("foo.txt", reader, new StringWriter()));
-  }
-
-  /**
-   * Test {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}.
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String GoogleClosureJavascriptMinificationServiceImpl.compileJs(SourceFile, String)"})
-  public void testCompileJs() throws IOException, ResourceMinificationException {
-    // Arrange
-    SourceFile input = mock(SourceFile.class);
-    when(input.getLines(anyInt(), anyInt())).thenReturn(new SimpleRegion(1, 3, "Source"));
-    when(input.isExtern()).thenReturn(true);
-    doNothing().when(input).clearCachedSource();
-    when(input.getCode()).thenReturn("U= goog.provide (UU)");
-    when(input.isWeak()).thenReturn(true);
-    when(input.getName()).thenReturn("Name");
-
-    // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.compileJs(input, "foo.txt"));
-    verify(input).clearCachedSource();
-    verify(input, atLeast(1)).getCode();
-    verify(input).getLines(eq(1), eq(0));
-    verify(input, atLeast(1)).getName();
-    verify(input).isExtern();
-    verify(input, atLeast(1)).isWeak();
-  }
-
-  /**
-   * Test {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}.
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String GoogleClosureJavascriptMinificationServiceImpl.compileJs(SourceFile, String)"})
-  public void testCompileJs2() throws IOException, ResourceMinificationException {
-    // Arrange
-    SourceFile input = mock(SourceFile.class);
-    when(input.getLines(anyInt(), anyInt())).thenReturn(new SimpleRegion(1, 10, "Source"));
-    when(input.isExtern()).thenReturn(true);
-    doNothing().when(input).clearCachedSource();
-    when(input.getCode()).thenReturn("U= goog.provide (UU)");
-    when(input.isWeak()).thenReturn(true);
-    when(input.getName()).thenReturn("Name");
-
-    // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.compileJs(input, "foo.txt"));
-    verify(input).clearCachedSource();
-    verify(input, atLeast(1)).getCode();
-    verify(input).getLines(eq(1), eq(0));
-    verify(input, atLeast(1)).getName();
-    verify(input).isExtern();
-    verify(input, atLeast(1)).isWeak();
-  }
-
-  /**
-   * Test {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}.
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String GoogleClosureJavascriptMinificationServiceImpl.compileJs(SourceFile, String)"})
-  public void testCompileJs3() throws IOException, ResourceMinificationException {
-    // Arrange
-    SourceFile input = mock(SourceFile.class);
-    when(input.getLines(anyInt(), anyInt())).thenReturn(new SimpleRegion(1, Integer.MIN_VALUE, "Source"));
-    when(input.isExtern()).thenReturn(true);
-    doNothing().when(input).clearCachedSource();
-    when(input.getCode()).thenReturn("U= goog.provide (UU)");
-    when(input.isWeak()).thenReturn(true);
-    when(input.getName()).thenReturn("Name");
-
-    // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.compileJs(input, "foo.txt"));
-    verify(input).clearCachedSource();
-    verify(input, atLeast(1)).getCode();
-    verify(input).getLines(eq(1), eq(0));
-    verify(input, atLeast(1)).getName();
-    verify(input).isExtern();
-    verify(input, atLeast(1)).isWeak();
-  }
-
-  /**
-   * Test {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}.
-   * <ul>
-   *   <li>Given {@code Code}.</li>
-   *   <li>When {@link SourceFile} {@link SourceFile#getCode()} return {@code Code}.</li>
-   *   <li>Then return {@code Code;}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String GoogleClosureJavascriptMinificationServiceImpl.compileJs(SourceFile, String)"})
-  public void testCompileJs_givenCode_whenSourceFileGetCodeReturnCode_thenReturnCode()
-      throws IOException, ResourceMinificationException {
-    // Arrange
-    SourceFile input = mock(SourceFile.class);
-    when(input.isExtern()).thenReturn(true);
-    doNothing().when(input).clearCachedSource();
-    when(input.getCode()).thenReturn("Code");
-    when(input.isWeak()).thenReturn(true);
-    when(input.getName()).thenReturn("Name");
-
-    // Act
-    String actualCompileJsResult = googleClosureJavascriptMinificationServiceImpl.compileJs(input, "foo.txt");
-
-    // Assert
-    verify(input).clearCachedSource();
-    verify(input, atLeast(1)).getCode();
-    verify(input, atLeast(1)).getName();
-    verify(input, atLeast(1)).isExtern();
-    verify(input, atLeast(1)).isWeak();
-    assertEquals("Code;", actualCompileJsResult);
-  }
-
-  /**
-   * Test {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}.
-   * <ul>
-   *   <li>Given cr.</li>
-   *   <li>When {@link SourceFile} {@link SourceFile#getCode()} return cr.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#compileJs(SourceFile, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String GoogleClosureJavascriptMinificationServiceImpl.compileJs(SourceFile, String)"})
-  public void testCompileJs_givenCr_whenSourceFileGetCodeReturnCr() throws IOException, ResourceMinificationException {
-    // Arrange
-    SourceFile input = mock(SourceFile.class);
-    when(input.isExtern()).thenReturn(true);
-    doNothing().when(input).clearCachedSource();
-    when(input.getCode()).thenReturn("\r");
-    when(input.isWeak()).thenReturn(true);
-    when(input.getName()).thenReturn("Name");
-
-    // Act and Assert
-    assertThrows(ResourceMinificationException.class,
-        () -> googleClosureJavascriptMinificationServiceImpl.compileJs(input, "foo.txt"));
-    verify(input).clearCachedSource();
-    verify(input, atLeast(1)).getCode();
-    verify(input, atLeast(1)).getName();
-    verify(input, atLeast(1)).isExtern();
-    verify(input, atLeast(1)).isWeak();
+    assertThrows(
+        ResourceMinificationException.class,
+        () ->
+            googleClosureJavascriptMinificationServiceImpl.minifyJs(
+                "foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link GoogleClosureJavascriptMinificationServiceImpl#getCompilerOptions()}.
-   * <p>
-   * Method under test: {@link GoogleClosureJavascriptMinificationServiceImpl#getCompilerOptions()}
+   *
+   * <p>Method under test: {@link
+   * GoogleClosureJavascriptMinificationServiceImpl#getCompilerOptions()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CompilerOptions GoogleClosureJavascriptMinificationServiceImpl.getCompilerOptions()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CompilerOptions GoogleClosureJavascriptMinificationServiceImpl.getCompilerOptions()"
+  })
   public void testGetCompilerOptions() {
     // Arrange and Act
-    CompilerOptions actualCompilerOptions = googleClosureJavascriptMinificationServiceImpl.getCompilerOptions();
+    CompilerOptions actualCompilerOptions =
+        googleClosureJavascriptMinificationServiceImpl.getCompilerOptions();
 
     // Assert
     assertTrue(actualCompilerOptions.getCodingConvention() instanceof ClosureCodingConvention);
@@ -523,8 +434,8 @@ public class GoogleClosureJavascriptMinificationServiceImplDiffblueTest {
     assertFalse(actualCompilerOptions.rewriteFunctionExpressions);
     assertFalse(actualCompilerOptions.rewriteGlobalDeclarationsForTryCatchWrapping);
     assertFalse(actualCompilerOptions.smartNameRemoval);
-    ImmutableMap<String, String> browserResolverPrefixReplacements = actualCompilerOptions
-        .getBrowserResolverPrefixReplacements();
+    ImmutableMap<String, String> browserResolverPrefixReplacements =
+        actualCompilerOptions.getBrowserResolverPrefixReplacements();
     assertTrue(browserResolverPrefixReplacements.isEmpty());
     assertTrue(actualCompilerOptions.getAssumeGettersArePure());
     assertTrue(actualCompilerOptions.getCollapseObjectLiterals());

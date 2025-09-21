@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -30,10 +31,8 @@ import java.util.Date;
 import java.util.HashMap;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.broadleafcommerce.common.i18n.service.ISOService;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.checkout.service.CheckoutService;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
@@ -41,31 +40,16 @@ import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
-import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
-import org.broadleafcommerce.core.order.service.FulfillmentOptionService;
-import org.broadleafcommerce.core.order.service.OrderMultishipOptionService;
-import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.order.service.type.FulfillmentGroupStatusType;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.core.payment.service.OrderPaymentService;
-import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
 import org.broadleafcommerce.core.web.checkout.model.BillingInfoForm;
-import org.broadleafcommerce.core.web.order.service.CartStateService;
-import org.broadleafcommerce.core.web.service.InitBinderService;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.service.AddressService;
-import org.broadleafcommerce.profile.core.service.CountryService;
-import org.broadleafcommerce.profile.core.service.CountrySubdivisionService;
-import org.broadleafcommerce.profile.core.service.CustomerAddressService;
-import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
-import org.broadleafcommerce.profile.core.service.CustomerService;
-import org.broadleafcommerce.profile.core.service.PhoneService;
-import org.broadleafcommerce.profile.core.service.StateService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -77,83 +61,39 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class BroadleafBillingInfoControllerDiffblueTest {
-  @Mock
-  private AddressService addressService;
+  @Mock private AddressService addressService;
 
-  @InjectMocks
-  private BroadleafBillingInfoController broadleafBillingInfoController;
-
-  @Mock
-  private CartStateService cartStateService;
-
-  @Mock
-  private CheckoutService checkoutService;
-
-  @Mock
-  private CountryService countryService;
-
-  @Mock
-  private CountrySubdivisionService countrySubdivisionService;
-
-  @Mock
-  private CustomerAddressService customerAddressService;
-
-  @Mock
-  private CustomerPaymentService customerPaymentService;
-
-  @Mock
-  private CustomerService customerService;
-
-  @Mock
-  private FulfillmentGroupService fulfillmentGroupService;
-
-  @Mock
-  private FulfillmentOptionService fulfillmentOptionService;
-
-  @Mock
-  private ISOService iSOService;
-
-  @Mock
-  private InitBinderService initBinderService;
-
-  @Mock
-  private OrderMultishipOptionService orderMultishipOptionService;
-
-  @Mock
-  private OrderPaymentService orderPaymentService;
-
-  @Mock
-  private OrderService orderService;
-
-  @Mock
-  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
-
-  @Mock
-  private PhoneService phoneService;
-
-  @Mock
-  private StateService stateService;
+  @InjectMocks private BroadleafBillingInfoController broadleafBillingInfoController;
 
   /**
-   * Test {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}.
+   * Test {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order,
+   * BillingInfoForm)}.
+   *
    * <ul>
-   *   <li>Then calls {@link AddressService#copyAddress(Address)}.</li>
+   *   <li>Then calls {@link AddressService#copyAddress(Address)}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}
+   *
+   * <p>Method under test: {@link
+   * BroadleafBillingInfoController#copyShippingAddressToBillingAddress(Order, BillingInfoForm)}
    */
   @Test
-  @DisplayName("Test copyShippingAddressToBillingAddress(Order, BillingInfoForm); then calls copyAddress(Address)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void BroadleafBillingInfoController.copyShippingAddressToBillingAddress(Order, BillingInfoForm)"})
+  @DisplayName(
+      "Test copyShippingAddressToBillingAddress(Order, BillingInfoForm); then calls copyAddress(Address)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafBillingInfoController.copyShippingAddressToBillingAddress(Order, BillingInfoForm)"
+  })
   void testCopyShippingAddressToBillingAddress_thenCallsCopyAddress() {
     // Arrange
     when(addressService.copyAddress(Mockito.<Address>any())).thenReturn(new AddressImpl());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -208,7 +148,8 @@ class BroadleafBillingInfoControllerDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(new OrderStatus("Type", "Friendly Type"));
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -233,23 +174,31 @@ class BroadleafBillingInfoControllerDiffblueTest {
 
   /**
    * Test new {@link BroadleafBillingInfoController} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link BroadleafBillingInfoController}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * BroadleafBillingInfoController}
    */
   @Test
   @DisplayName("Test new BroadleafBillingInfoController (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BroadleafBillingInfoController.<init>()"})
   void testNewBroadleafBillingInfoController() {
     // Arrange and Act
-    BroadleafBillingInfoController actualBroadleafBillingInfoController = new BroadleafBillingInfoController();
+    BroadleafBillingInfoController actualBroadleafBillingInfoController =
+        new BroadleafBillingInfoController();
 
     // Assert
-    assertEquals("ajaxredirect:/confirmation", actualBroadleafBillingInfoController.getBaseConfirmationView());
+    assertEquals(
+        "ajaxredirect:/confirmation",
+        actualBroadleafBillingInfoController.getBaseConfirmationView());
     assertEquals("checkout/checkout", actualBroadleafBillingInfoController.getCheckoutView());
-    assertEquals("checkout/partials/checkoutStages", actualBroadleafBillingInfoController.getCheckoutStagesPartial());
+    assertEquals(
+        "checkout/partials/checkoutStages",
+        actualBroadleafBillingInfoController.getCheckoutStagesPartial());
     assertEquals("redirect:/cart", actualBroadleafBillingInfoController.getCartPageRedirect());
-    assertEquals("redirect:/checkout", actualBroadleafBillingInfoController.getCheckoutPageRedirect());
+    assertEquals(
+        "redirect:/checkout", actualBroadleafBillingInfoController.getCheckoutPageRedirect());
     assertNull(actualBroadleafBillingInfoController.isoService);
     assertNull(actualBroadleafBillingInfoController.paymentGatewayCheckoutService);
     assertNull(actualBroadleafBillingInfoController.checkoutService);

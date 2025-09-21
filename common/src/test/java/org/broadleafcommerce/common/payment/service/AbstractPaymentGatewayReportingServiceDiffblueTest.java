@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
@@ -27,20 +28,28 @@ import org.junit.experimental.categories.Category;
 
 public class AbstractPaymentGatewayReportingServiceDiffblueTest {
   /**
-   * Test {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}.
-   * <p>
-   * Method under test: {@link AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}
+   * Test {@link
+   * AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractPaymentGatewayReportingService#findDetailsByTransaction(PaymentRequestDTO)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayReportingService.findDetailsByTransaction(PaymentRequestDTO)"})
+    "org.broadleafcommerce.common.payment.dto.PaymentResponseDTO AbstractPaymentGatewayReportingService.findDetailsByTransaction(PaymentRequestDTO)"
+  })
   public void testFindDetailsByTransaction() throws PaymentException {
     // Arrange
-    AbstractPaymentGatewayReportingService abstractPaymentGatewayReportingService = new AbstractPaymentGatewayReportingService();
+    AbstractPaymentGatewayReportingService abstractPaymentGatewayReportingService =
+        new AbstractPaymentGatewayReportingService();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> abstractPaymentGatewayReportingService.findDetailsByTransaction(new PaymentRequestDTO()));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            abstractPaymentGatewayReportingService.findDetailsByTransaction(
+                new PaymentRequestDTO()));
   }
 }

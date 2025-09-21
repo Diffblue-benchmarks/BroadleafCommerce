@@ -18,7 +18,8 @@
 package org.broadleafcommerce.core.order.service.call;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,9 @@ import org.junit.experimental.categories.Category;
 public class UpdateCartResponseDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link UpdateCartResponse}
    *   <li>{@link UpdateCartResponse#setOrder(Order)}
@@ -42,10 +44,15 @@ public class UpdateCartResponseDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void UpdateCartResponse.<init>()", "Order UpdateCartResponse.getOrder()",
-      "List UpdateCartResponse.getRemovedItems()", "void UpdateCartResponse.setOrder(Order)",
-      "void UpdateCartResponse.setRemovedItems(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UpdateCartResponse.<init>()",
+    "Order UpdateCartResponse.getOrder()",
+    "List UpdateCartResponse.getRemovedItems()",
+    "void UpdateCartResponse.setOrder(Order)",
+    "void UpdateCartResponse.setRemovedItems(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     UpdateCartResponse actualUpdateCartResponse = new UpdateCartResponse();

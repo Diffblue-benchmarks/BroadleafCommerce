@@ -24,7 +24,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -46,16 +47,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TaxDetailImplDiffblueTest {
-  @Autowired
-  private TaxDetailImpl taxDetailImpl;
+  @Autowired private TaxDetailImpl taxDetailImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TaxDetailImpl#TaxDetailImpl()}
    *   <li>{@link TaxDetailImpl#setCountry(String)}
@@ -77,15 +78,27 @@ public class TaxDetailImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void TaxDetailImpl.<init>()", "String TaxDetailImpl.getCountry()",
-      "BroadleafCurrency TaxDetailImpl.getCurrency()", "Long TaxDetailImpl.getId()",
-      "String TaxDetailImpl.getJurisdictionName()", "ModuleConfiguration TaxDetailImpl.getModuleConfiguration()",
-      "BigDecimal TaxDetailImpl.getRate()", "String TaxDetailImpl.getRegion()", "String TaxDetailImpl.getTaxName()",
-      "void TaxDetailImpl.setCountry(String)", "void TaxDetailImpl.setCurrency(BroadleafCurrency)",
-      "void TaxDetailImpl.setId(Long)", "void TaxDetailImpl.setJurisdictionName(String)",
-      "void TaxDetailImpl.setModuleConfiguration(ModuleConfiguration)", "void TaxDetailImpl.setRate(BigDecimal)",
-      "void TaxDetailImpl.setRegion(String)", "void TaxDetailImpl.setTaxName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void TaxDetailImpl.<init>()",
+    "String TaxDetailImpl.getCountry()",
+    "BroadleafCurrency TaxDetailImpl.getCurrency()",
+    "Long TaxDetailImpl.getId()",
+    "String TaxDetailImpl.getJurisdictionName()",
+    "ModuleConfiguration TaxDetailImpl.getModuleConfiguration()",
+    "BigDecimal TaxDetailImpl.getRate()",
+    "String TaxDetailImpl.getRegion()",
+    "String TaxDetailImpl.getTaxName()",
+    "void TaxDetailImpl.setCountry(String)",
+    "void TaxDetailImpl.setCurrency(BroadleafCurrency)",
+    "void TaxDetailImpl.setId(Long)",
+    "void TaxDetailImpl.setJurisdictionName(String)",
+    "void TaxDetailImpl.setModuleConfiguration(ModuleConfiguration)",
+    "void TaxDetailImpl.setRate(BigDecimal)",
+    "void TaxDetailImpl.setRegion(String)",
+    "void TaxDetailImpl.setTaxName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     TaxDetailImpl actualTaxDetailImpl = new TaxDetailImpl();
@@ -122,20 +135,24 @@ public class TaxDetailImplDiffblueTest {
 
   /**
    * Test {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}.
+   *
    * <ul>
-   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@link TaxDetailImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
+   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@link TaxDetailImpl#amount} is {@link BigDecimal#BigDecimal(String)} with
+   *       {@code 2.3}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.<init>(TaxType, Money, BigDecimal)"})
   public void testNewTaxDetailImpl_givenBigDecimalWith23_thenReturnAmountIsBigDecimalWith23() {
     // Arrange
     TaxType type = mock(TaxType.class);
     when(type.getType()).thenReturn("Type");
+
     Money amount = mock(Money.class);
     when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
 
@@ -146,25 +163,26 @@ public class TaxDetailImplDiffblueTest {
     verify(amount).getAmount();
     verify(type).getType();
     assertEquals(new BigDecimal("2.3"), actualTaxDetailImpl.amount);
-    BigDecimal expectedAmount = new BigDecimal("2.30");
     Money amount2 = actualTaxDetailImpl.getAmount();
-    assertEquals(expectedAmount, amount2.getAmount());
-    assertEquals(amount2, amount2.abs());
-    Money expectedZeroResult = amount.ZERO;
-    assertEquals(expectedZeroResult, amount2.zero());
+    assertEquals(new BigDecimal("2.30"), amount2.getAmount());
+    Money actualAbsResult = amount2.abs();
+    assertEquals(amount2, actualAbsResult);
+    assertEquals(Money.ZERO, amount2.zero());
   }
 
   /**
    * Test {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}.
+   *
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then return Amount abs abs Amount is {@link TaxDetailImpl#amount}.</li>
+   *   <li>Given {@code Type}.
+   *   <li>Then return Amount abs abs Amount is {@link TaxDetailImpl#amount}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.<init>(TaxType, Money, BigDecimal)"})
   public void testNewTaxDetailImpl_givenType_thenReturnAmountAbsAbsAmountIsAmount() {
     // Arrange
@@ -192,23 +210,25 @@ public class TaxDetailImplDiffblueTest {
 
   /**
    * Test {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}.
+   *
    * <ul>
-   *   <li>When {@link TaxType#CITY}.</li>
-   *   <li>Then return {@link TaxDetailImpl#type} is {@code CITY}.</li>
+   *   <li>When {@link TaxType#CITY}.
+   *   <li>Then return {@link TaxDetailImpl#type} is {@code CITY}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#TaxDetailImpl(TaxType, Money, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.<init>(TaxType, Money, BigDecimal)"})
   public void testNewTaxDetailImpl_whenCity_thenReturnTypeIsCity() {
     // Arrange
-    TaxType type = TaxType.CITY;
     Money amount = new Money();
 
     // Act
-    TaxDetailImpl actualTaxDetailImpl = new TaxDetailImpl(type, amount, new BigDecimal("2.3"));
+    TaxDetailImpl actualTaxDetailImpl =
+        new TaxDetailImpl(TaxType.CITY, amount, new BigDecimal("2.3"));
 
     // Assert
     assertEquals("CITY", actualTaxDetailImpl.type);
@@ -217,235 +237,189 @@ public class TaxDetailImplDiffblueTest {
     assertSame(bigDecimal, amount2.abs().getAmount());
     assertSame(bigDecimal, amount2.zero().getAmount());
     assertSame(bigDecimal, amount2.getAmount());
-    TaxType expectedType = type.CITY;
-    assertSame(expectedType, actualTaxDetailImpl.getType());
+    assertSame(TaxType.CITY, actualTaxDetailImpl.getType());
   }
 
   /**
    * Test {@link TaxDetailImpl#getType()}.
-   * <p>
-   * Method under test: {@link TaxDetailImpl#getType()}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#getType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"TaxType TaxDetailImpl.getType()"})
   public void testGetType() {
     // Arrange, Act and Assert
-    assertNull((new TaxDetailImpl()).getType());
+    assertNull(taxDetailImpl.getType());
   }
 
   /**
    * Test {@link TaxDetailImpl#setType(TaxType)}.
+   *
    * <ul>
-   *   <li>When {@link TaxType#CITY}.</li>
-   *   <li>Then {@link TaxDetailImpl#TaxDetailImpl()} {@link TaxDetailImpl#type} is {@code CITY}.</li>
+   *   <li>When {@link TaxType#CITY}.
+   *   <li>Then {@link TaxDetailImpl} {@link TaxDetailImpl#type} is {@code CITY}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#setType(TaxType)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#setType(TaxType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.setType(TaxType)"})
   public void testSetType_whenCity_thenTaxDetailImplTypeIsCity() {
-    // Arrange
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
-    TaxType type = TaxType.CITY;
-
-    // Act
-    taxDetailImpl2.setType(type);
+    // Arrange and Act
+    taxDetailImpl.setType(TaxType.CITY);
 
     // Assert
-    assertEquals("CITY", taxDetailImpl2.type);
-    TaxType expectedType = type.CITY;
-    assertSame(expectedType, taxDetailImpl2.getType());
+    assertEquals("CITY", taxDetailImpl.type);
+    assertSame(TaxType.CITY, taxDetailImpl.getType());
   }
 
   /**
    * Test {@link TaxDetailImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl#TaxDetailImpl()} Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link TaxDetailImpl} Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#getAmount()}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money TaxDetailImpl.getAmount()"})
   public void testGetAmount_givenTaxDetailImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
-    taxDetailImpl2.setCountry("GB");
-    taxDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    taxDetailImpl2.setJurisdictionName("Jurisdiction");
-    taxDetailImpl2.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl2.setRate(new BigDecimal("2.3"));
-    taxDetailImpl2.setRegion("us-east-2");
-    taxDetailImpl2.setTaxName("Tax Name");
-    taxDetailImpl2.setType(TaxType.CITY);
     Money amount = new Money();
-    taxDetailImpl2.setAmount(amount);
-    taxDetailImpl2.setCurrency(null);
+    taxDetailImpl.setAmount(amount);
+    taxDetailImpl.setCurrency(null);
 
     // Act and Assert
-    assertEquals(amount, taxDetailImpl2.getAmount());
+    assertEquals(amount, taxDetailImpl.getAmount());
   }
 
   /**
    * Test {@link TaxDetailImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Given {@link TaxDetailImpl#TaxDetailImpl()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link TaxDetailImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#getAmount()}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money TaxDetailImpl.getAmount()"})
   public void testGetAmount_givenTaxDetailImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new TaxDetailImpl()).getAmount());
+    assertNull(taxDetailImpl.getAmount());
   }
 
   /**
    * Test {@link TaxDetailImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#getAmount()}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money TaxDetailImpl.getAmount()"})
-  public void testGetAmount_thenCallsGetCurrencyCode() {
+  public void testGetAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
-    BroadleafCurrencyImpl currency = mock(BroadleafCurrencyImpl.class);
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
-    taxDetailImpl2.setCountry("GB");
-    taxDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    taxDetailImpl2.setJurisdictionName("Jurisdiction");
-    taxDetailImpl2.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl2.setRate(new BigDecimal("2.3"));
-    taxDetailImpl2.setRegion("us-east-2");
-    taxDetailImpl2.setTaxName("Tax Name");
-    taxDetailImpl2.setType(TaxType.CITY);
-    Money amount = new Money();
-    taxDetailImpl2.setAmount(amount);
-    taxDetailImpl2.setCurrency(currency);
-
-    // Act
-    Money actualAmount = taxDetailImpl2.getAmount();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    assertEquals(amount, actualAmount);
-  }
-
-  /**
-   * Test {@link TaxDetailImpl#getAmount()}.
-   * <ul>
-   *   <li>Then return Amount is {@link BigDecimal#BigDecimal(String)} with {@code 2.30}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#getAmount()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money TaxDetailImpl.getAmount()"})
-  public void testGetAmount_thenReturnAmountIsBigDecimalWith230() {
-    // Arrange
-    Money amount = mock(Money.class);
-    when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
-
-    TaxDetailImpl taxDetailImpl = new TaxDetailImpl();
-    taxDetailImpl.setCountry("GB");
-    taxDetailImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    taxDetailImpl.setJurisdictionName("Jurisdiction");
-    taxDetailImpl.setModuleConfiguration(new SiteMapConfigurationImpl());
-    taxDetailImpl.setRate(new BigDecimal("2.3"));
-    taxDetailImpl.setRegion("us-east-2");
-    taxDetailImpl.setTaxName("Tax Name");
-    taxDetailImpl.setType(TaxType.CITY);
-    taxDetailImpl.setAmount(amount);
-    taxDetailImpl.setCurrency(null);
+    taxDetailImpl.setAmount(new Money());
+    taxDetailImpl.setCurrency(currency);
 
     // Act
     Money actualAmount = taxDetailImpl.getAmount();
 
     // Assert
-    verify(amount).getAmount();
-    BigDecimal expectedAmount = new BigDecimal("2.30");
-    assertEquals(expectedAmount, actualAmount.getAmount());
-    assertEquals(actualAmount, actualAmount.abs());
-    Money expectedZeroResult = actualAmount.ZERO;
-    assertEquals(expectedZeroResult, actualAmount.zero());
+    verify(currency).getCurrencyCode();
+    Currency currency2 = actualAmount.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    Money actualAbsResult = actualAmount.abs();
+    assertEquals(actualAmount, actualAbsResult);
+    Money actualZeroResult = actualAmount.zero();
+    assertEquals(actualAmount, actualZeroResult);
   }
 
   /**
    * Test {@link TaxDetailImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link TaxDetailImpl#TaxDetailImpl()} Amount Currency DisplayName is {@code British Pound}.</li>
+   *   <li>Then {@link TaxDetailImpl} Amount Currency Symbol is {@code $}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.setAmount(Money)"})
-  public void testSetAmount_thenTaxDetailImplAmountCurrencyDisplayNameIsBritishPound() {
+  public void testSetAmount_thenTaxDetailImplAmountCurrencySymbolIsDollarSign() {
     // Arrange
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
     Money amount = mock(Money.class);
     when(amount.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    taxDetailImpl2.setAmount(amount);
+    taxDetailImpl.setAmount(amount);
 
     // Assert
     verify(amount).getAmount();
-    Money amount2 = taxDetailImpl2.getAmount();
+    Money amount2 = taxDetailImpl.getAmount();
     Currency currency = amount2.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
     assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    assertEquals(new BigDecimal("2.3"), taxDetailImpl2.amount);
-    BigDecimal expectedAmount = new BigDecimal("2.30");
-    assertEquals(expectedAmount, amount2.getAmount());
-    assertEquals(amount2, amount2.abs());
-    Money expectedZeroResult = amount.ZERO;
-    assertEquals(expectedZeroResult, amount2.zero());
+    assertEquals(840, currency.getNumericCode());
+    assertEquals(new BigDecimal("2.3"), taxDetailImpl.amount);
+    assertEquals(new BigDecimal("2.30"), amount2.getAmount());
+    Money actualAbsResult = amount2.abs();
+    assertEquals(amount2, actualAbsResult);
+    assertEquals(Money.ZERO, amount2.zero());
   }
 
   /**
    * Test {@link TaxDetailImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link TaxDetailImpl#TaxDetailImpl()} {@link TaxDetailImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then {@link TaxDetailImpl} {@link TaxDetailImpl#amount} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxDetailImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link TaxDetailImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TaxDetailImpl.setAmount(Money)"})
   public void testSetAmount_whenMoney_thenTaxDetailImplAmountIsBigDecimalWith000() {
     // Arrange
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
     Money amount = new Money();
 
     // Act
-    taxDetailImpl2.setAmount(amount);
+    taxDetailImpl.setAmount(amount);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), taxDetailImpl2.amount);
-    BigDecimal bigDecimal = taxDetailImpl2.amount;
+    assertEquals(new BigDecimal("0.00"), taxDetailImpl.amount);
+    BigDecimal bigDecimal = taxDetailImpl.amount;
     Money absResult = amount.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -470,23 +444,25 @@ public class TaxDetailImplDiffblueTest {
 
   /**
    * Test {@link TaxDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link TaxDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * TaxDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse TaxDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse TaxDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    TaxDetailImpl taxDetailImpl2 = new TaxDetailImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new TaxDetailImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<TaxDetail> actualCreateOrRetrieveCopyInstanceResult = taxDetailImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<TaxDetail> actualCreateOrRetrieveCopyInstanceResult =
+        taxDetailImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));

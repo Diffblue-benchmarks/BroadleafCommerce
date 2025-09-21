@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +40,17 @@ import org.mockito.Mockito;
 public class TabMetadataDiffblueTest {
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is one.</li>
-   *   <li>Then return {@link GroupMetadata} (default constructor).</li>
+   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is one.
+   *   <li>Then return {@link GroupMetadata} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenGroupMetadataGroupOrderIsOne_thenReturnGroupMetadata() {
     // Arrange
@@ -67,15 +70,17 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is one.</li>
-   *   <li>Then return {@link GroupMetadata} (default constructor).</li>
+   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is one.
+   *   <li>Then return {@link GroupMetadata} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenGroupMetadataGroupOrderIsOne_thenReturnGroupMetadata2() {
     // Arrange
@@ -98,15 +103,17 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is zero.</li>
-   *   <li>Then return {@link GroupMetadata} (default constructor).</li>
+   *   <li>Given {@link GroupMetadata} (default constructor) GroupOrder is zero.
+   *   <li>Then return {@link GroupMetadata} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenGroupMetadataGroupOrderIsZero_thenReturnGroupMetadata() {
     // Arrange
@@ -129,15 +136,18 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link GroupMetadata} (default constructor).</li>
-   *   <li>Then return {@link GroupMetadata} (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@link GroupMetadata} (default
+   *       constructor).
+   *   <li>Then return {@link GroupMetadata} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenHashMap42IsGroupMetadata_thenReturnGroupMetadata() {
     // Arrange
@@ -155,15 +165,18 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link GroupMetadata} (default constructor).</li>
-   *   <li>Then return {@link GroupMetadata} (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@link GroupMetadata} (default
+   *       constructor).
+   *   <li>Then return {@link GroupMetadata} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenHashMapFooIsGroupMetadata_thenReturnGroupMetadata() {
     // Arrange
@@ -180,15 +193,18 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#getFirstGroup()}.
+   *
    * <ul>
-   *   <li>Given {@link TabMetadata} (default constructor) GroupMetadata is {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link TabMetadata} (default constructor) GroupMetadata is {@link
+   *       HashMap#HashMap()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#getFirstGroup()}
+   *
+   * <p>Method under test: {@link TabMetadata#getFirstGroup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GroupMetadata TabMetadata.getFirstGroup()"})
   public void testGetFirstGroup_givenTabMetadataGroupMetadataIsHashMap_thenReturnNull() {
     // Arrange
@@ -201,15 +217,16 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link TabMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link TabMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"TabMetadata TabMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata() {
     // Arrange and Act
-    TabMetadata actualCloneFieldMetadataResult = (new TabMetadata()).cloneFieldMetadata();
+    TabMetadata actualCloneFieldMetadataResult = new TabMetadata().cloneFieldMetadata();
 
     // Assert
     assertNull(actualCloneFieldMetadataResult.getTabOrder());
@@ -220,19 +237,23 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#accept(MetadataVisitor)}.
+   *
    * <ul>
-   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(TabMetadata)} does nothing.</li>
-   *   <li>Then calls {@link MetadataVisitorAdapter#visit(TabMetadata)}.</li>
+   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(TabMetadata)}
+   *       does nothing.
+   *   <li>Then calls {@link MetadataVisitorAdapter#visit(TabMetadata)}.
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#accept(MetadataVisitor)}
+   *
+   * <p>Method under test: {@link TabMetadata#accept(MetadataVisitor)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TabMetadata.accept(MetadataVisitor)"})
   public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
     // Arrange
     TabMetadata tabMetadata = new TabMetadata();
+
     MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
     doNothing().when(visitor).visit(Mockito.<TabMetadata>any());
 
@@ -245,19 +266,22 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#equals(Object)}, and {@link TabMetadata#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TabMetadata#equals(Object)}
    *   <li>{@link TabMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TabMetadata.equals(Object)", "int TabMetadata.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -271,15 +295,17 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link TabMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TabMetadata.equals(Object)", "int TabMetadata.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -291,15 +317,17 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link TabMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TabMetadata.equals(Object)", "int TabMetadata.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -308,15 +336,17 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test {@link TabMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link TabMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link TabMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean TabMetadata.equals(Object)", "int TabMetadata.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -325,8 +355,9 @@ public class TabMetadataDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link TabMetadata}
    *   <li>{@link TabMetadata#setGroupMetadata(Map)}
@@ -340,11 +371,19 @@ public class TabMetadataDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void TabMetadata.<init>()", "Map TabMetadata.getGroupMetadata()",
-      "String TabMetadata.getOwningClass()", "String TabMetadata.getTabName()", "Integer TabMetadata.getTabOrder()",
-      "void TabMetadata.setGroupMetadata(Map)", "void TabMetadata.setOwningClass(String)",
-      "void TabMetadata.setTabName(String)", "void TabMetadata.setTabOrder(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void TabMetadata.<init>()",
+    "Map TabMetadata.getGroupMetadata()",
+    "String TabMetadata.getOwningClass()",
+    "String TabMetadata.getTabName()",
+    "Integer TabMetadata.getTabOrder()",
+    "void TabMetadata.setGroupMetadata(Map)",
+    "void TabMetadata.setOwningClass(String)",
+    "void TabMetadata.setTabName(String)",
+    "void TabMetadata.setTabOrder(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     TabMetadata actualTabMetadata = new TabMetadata();

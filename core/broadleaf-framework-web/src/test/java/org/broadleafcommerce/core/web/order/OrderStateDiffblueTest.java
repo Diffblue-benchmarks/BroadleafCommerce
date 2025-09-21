@@ -19,8 +19,8 @@ package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.core.order.dao.OrderDao;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.profile.core.domain.Customer;
@@ -29,108 +29,118 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @ExtendWith(MockitoExtension.class)
 class OrderStateDiffblueTest {
-  @Mock
-  private OrderDao orderDao;
+  @InjectMocks private OrderState orderState;
 
   /**
    * Test {@link OrderState#getOrder(Customer)}.
+   *
    * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link CustomerImpl} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderState#getOrder(Customer)}
+   *
+   * <p>Method under test: {@link OrderState#getOrder(Customer)}
    */
   @Test
-  @DisplayName("Test getOrder(Customer); when CustomerImpl (default constructor); then return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getOrder(Customer); when CustomerImpl (default constructor); then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderState.getOrder(Customer)"})
   void testGetOrder_whenCustomerImpl_thenReturnNull() {
-    // Arrange
-    OrderState orderState = new OrderState();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(orderState.getOrder(new CustomerImpl()));
   }
 
   /**
    * Test {@link OrderState#setOrder(Customer, Order)}.
+   *
    * <ul>
-   *   <li>When {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link CustomerImpl} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   *
+   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
    */
   @Test
-  @DisplayName("Test setOrder(Customer, Order); when CustomerImpl (default constructor); then return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setOrder(Customer, Order); when CustomerImpl (default constructor); then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
   void testSetOrder_whenCustomerImpl_thenReturnNull() {
-    // Arrange
-    OrderState orderState = new OrderState();
-
-    // Act and Assert
+    // Arrange, Act and Assert
     assertNull(orderState.setOrder(new CustomerImpl(), null));
   }
 
   /**
    * Test {@link OrderState#setOrder(Customer, Order)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   *
+   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
    */
   @Test
-  @DisplayName("Test setOrder(Customer, Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setOrder(Customer, Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
   void testSetOrder_whenNullOrderImpl_thenReturnNullOrderImpl() {
     // Arrange
-    OrderState orderState = new OrderState();
     CustomerImpl customer = new CustomerImpl();
     NullOrderImpl order = new NullOrderImpl();
 
-    // Act and Assert
-    assertSame(order, orderState.setOrder(customer, order));
+    // Act
+    Order actualSetOrderResult = orderState.setOrder(customer, order);
+
+    // Assert
+    assertSame(order, actualSetOrderResult);
   }
 
   /**
    * Test {@link OrderState#setOrder(Customer, Order)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderState#setOrder(Customer, Order)}
+   *
+   * <p>Method under test: {@link OrderState#setOrder(Customer, Order)}
    */
   @Test
   @DisplayName("Test setOrder(Customer, Order); when 'null'; then return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderState.setOrder(Customer, Order)"})
   void testSetOrder_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new OrderState()).setOrder(null, null));
+    assertNull(orderState.setOrder(null, null));
   }
 
   /**
    * Test new {@link OrderState} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link OrderState}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link OrderState}
    */
   @Test
   @DisplayName("Test new OrderState (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderState.<init>()"})
   void testNewOrderState() {
     // Arrange, Act and Assert
-    assertNull((new OrderState()).orderDao);
+    assertNull(new OrderState().orderDao);
   }
 }

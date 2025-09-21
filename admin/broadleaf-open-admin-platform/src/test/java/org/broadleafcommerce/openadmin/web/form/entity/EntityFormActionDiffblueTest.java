@@ -23,28 +23,32 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {EntityFormAction.class, String.class})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EntityFormActionDiffblueTest {
-  @Autowired
-  private EntityFormAction entityFormAction;
+  @Autowired private EntityFormAction entityFormAction;
 
   /**
    * Test {@link EntityFormAction#EntityFormAction(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#EntityFormAction(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#EntityFormAction(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EntityFormAction.<init>(String)"})
   public void testNewEntityFormAction() {
     // Arrange and Act
@@ -64,16 +68,18 @@ public class EntityFormActionDiffblueTest {
   }
 
   /**
-   * Test {@link EntityFormAction#equals(Object)}, and {@link Object#hashCode()}.
+   * Test {@link EntityFormAction#equals(Object)}, and {@link EntityFormAction#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#equals(Object)}
+   *
+   * <p>Method under test: {@link EntityFormAction#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormAction.equals(Object)"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -82,21 +88,22 @@ public class EntityFormActionDiffblueTest {
 
     // Act and Assert
     assertEquals(entityFormAction, entityFormAction2);
-    int expectedHashCodeResult = entityFormAction.hashCode();
-    assertEquals(expectedHashCodeResult, entityFormAction2.hashCode());
+    assertEquals(entityFormAction.hashCode(), entityFormAction2.hashCode());
   }
 
   /**
-   * Test {@link EntityFormAction#equals(Object)}, and {@link Object#hashCode()}.
+   * Test {@link EntityFormAction#equals(Object)}, and {@link EntityFormAction#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#equals(Object)}
+   *
+   * <p>Method under test: {@link EntityFormAction#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormAction.equals(Object)"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -110,15 +117,17 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#equals(Object)}
+   *
+   * <p>Method under test: {@link EntityFormAction#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormAction.equals(Object)"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -127,15 +136,17 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#equals(Object)}
+   *
+   * <p>Method under test: {@link EntityFormAction#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormAction.equals(Object)"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -144,15 +155,17 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#equals(Object)}
+   *
+   * <p>Method under test: {@link EntityFormAction#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityFormAction.equals(Object)"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -161,136 +174,158 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#withButtonType(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withButtonType(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withButtonType(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withButtonType(String)"})
   public void testWithButtonType() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithButtonTypeResult = entityFormAction.withButtonType("Button Type");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withButtonType("Button Type"));
+    // Assert
+    assertEquals("Button Type", entityFormAction.getButtonType());
+    assertSame(entityFormAction, actualWithButtonTypeResult);
   }
 
   /**
    * Test {@link EntityFormAction#withButtonClass(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withButtonClass(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withButtonClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withButtonClass(String)"})
   public void testWithButtonClass() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithButtonClassResult = entityFormAction.withButtonClass("Button Class");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withButtonClass("Button Class"));
+    // Assert
+    assertEquals("Button Class", entityFormAction.getButtonClass());
+    assertSame(entityFormAction, actualWithButtonClassResult);
   }
 
   /**
    * Test {@link EntityFormAction#withUrlPostfix(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withUrlPostfix(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withUrlPostfix(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withUrlPostfix(String)"})
   public void testWithUrlPostfix() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithUrlPostfixResult =
+        entityFormAction.withUrlPostfix("https://example.org/example");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withUrlPostfix("https://example.org/example"));
+    // Assert
+    assertEquals("https://example.org/example", entityFormAction.getUrlPostfix());
+    assertSame(entityFormAction, actualWithUrlPostfixResult);
   }
 
   /**
    * Test {@link EntityFormAction#withIconClass(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withIconClass(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withIconClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withIconClass(String)"})
   public void testWithIconClass() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithIconClassResult = entityFormAction.withIconClass("Icon Class");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withIconClass("Icon Class"));
+    // Assert
+    assertEquals("Icon Class", entityFormAction.getIconClass());
+    assertSame(entityFormAction, actualWithIconClassResult);
   }
 
   /**
    * Test {@link EntityFormAction#withDisplayText(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withDisplayText(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withDisplayText(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withDisplayText(String)"})
   public void testWithDisplayText() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithDisplayTextResult = entityFormAction.withDisplayText("Display Text");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withDisplayText("Display Text"));
+    // Assert
+    assertEquals("Display Text", entityFormAction.getDisplayText());
+    assertSame(entityFormAction, actualWithDisplayTextResult);
   }
 
   /**
    * Test {@link EntityFormAction#withUrlOverride(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withUrlOverride(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withUrlOverride(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withUrlOverride(String)"})
   public void testWithUrlOverride() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithUrlOverrideResult =
+        entityFormAction.withUrlOverride("https://example.org/example");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withUrlOverride("https://example.org/example"));
+    // Assert
+    assertEquals("https://example.org/example", entityFormAction.getUrlOverride());
+    assertSame(entityFormAction, actualWithUrlOverrideResult);
   }
 
   /**
    * Test {@link EntityFormAction#withIsConfirmEnabled(Boolean)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withIsConfirmEnabled(Boolean)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withIsConfirmEnabled(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withIsConfirmEnabled(Boolean)"})
   public void testWithIsConfirmEnabled() {
     // Arrange
     EntityFormAction entityFormAction = DefaultAdornedEntityFormActions.Add;
 
-    // Act and Assert
-    assertSame(entityFormAction, entityFormAction.withIsConfirmEnabled(true));
+    // Act
+    EntityFormAction actualWithIsConfirmEnabledResult = entityFormAction.withIsConfirmEnabled(true);
+
+    // Assert
+    assertSame(entityFormAction, actualWithIsConfirmEnabledResult);
   }
 
   /**
    * Test {@link EntityFormAction#withConfirmEnabledText(String)}.
-   * <p>
-   * Method under test: {@link EntityFormAction#withConfirmEnabledText(String)}
+   *
+   * <p>Method under test: {@link EntityFormAction#withConfirmEnabledText(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityFormAction EntityFormAction.withConfirmEnabledText(String)"})
   public void testWithConfirmEnabledText() {
-    // Arrange
-    EntityFormAction entityFormAction2 = DefaultAdornedEntityFormActions.Add;
+    // Arrange and Act
+    EntityFormAction actualWithConfirmEnabledTextResult =
+        entityFormAction.withConfirmEnabledText("Confirm Enabled Text");
 
-    // Act and Assert
-    assertSame(entityFormAction2, entityFormAction2.withConfirmEnabledText("Confirm Enabled Text"));
+    // Assert
+    assertEquals("Confirm Enabled Text", entityFormAction.getConfirmEnabledText());
+    assertSame(entityFormAction, actualWithConfirmEnabledTextResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EntityFormAction#setButtonClass(String)}
    *   <li>{@link EntityFormAction#setButtonType(String)}
@@ -311,15 +346,26 @@ public class EntityFormActionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String EntityFormAction.getButtonClass()", "String EntityFormAction.getButtonType()",
-      "String EntityFormAction.getConfirmEnabledText()", "String EntityFormAction.getDisplayText()",
-      "String EntityFormAction.getIconClass()", "String EntityFormAction.getId()",
-      "String EntityFormAction.getUrlOverride()", "String EntityFormAction.getUrlPostfix()",
-      "void EntityFormAction.setButtonClass(String)", "void EntityFormAction.setButtonType(String)",
-      "void EntityFormAction.setConfirmEnabledText(String)", "void EntityFormAction.setDisplayText(String)",
-      "void EntityFormAction.setIconClass(String)", "void EntityFormAction.setIsConfirmEnabled(Boolean)",
-      "void EntityFormAction.setUrlOverride(String)", "void EntityFormAction.setUrlPostfix(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String EntityFormAction.getButtonClass()",
+    "String EntityFormAction.getButtonType()",
+    "String EntityFormAction.getConfirmEnabledText()",
+    "String EntityFormAction.getDisplayText()",
+    "String EntityFormAction.getIconClass()",
+    "String EntityFormAction.getId()",
+    "String EntityFormAction.getUrlOverride()",
+    "String EntityFormAction.getUrlPostfix()",
+    "void EntityFormAction.setButtonClass(String)",
+    "void EntityFormAction.setButtonType(String)",
+    "void EntityFormAction.setConfirmEnabledText(String)",
+    "void EntityFormAction.setDisplayText(String)",
+    "void EntityFormAction.setIconClass(String)",
+    "void EntityFormAction.setIsConfirmEnabled(Boolean)",
+    "void EntityFormAction.setUrlOverride(String)",
+    "void EntityFormAction.setUrlPostfix(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     EntityFormAction entityFormAction = new EntityFormAction("42");
@@ -354,15 +400,17 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#getIsConfirmEnabled()}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add} IsConfirmEnabled is {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add} IsConfirmEnabled is {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#getIsConfirmEnabled()}
+   *
+   * <p>Method under test: {@link EntityFormAction#getIsConfirmEnabled()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean EntityFormAction.getIsConfirmEnabled()"})
   public void testGetIsConfirmEnabled_givenAddIsConfirmEnabledIsNull_thenReturnFalse() {
     // Arrange
@@ -375,15 +423,17 @@ public class EntityFormActionDiffblueTest {
 
   /**
    * Test {@link EntityFormAction#getIsConfirmEnabled()}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add} IsConfirmEnabled is {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add} IsConfirmEnabled is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityFormAction#getIsConfirmEnabled()}
+   *
+   * <p>Method under test: {@link EntityFormAction#getIsConfirmEnabled()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean EntityFormAction.getIsConfirmEnabled()"})
   public void testGetIsConfirmEnabled_givenAddIsConfirmEnabledIsTrue_thenReturnTrue() {
     // Arrange

@@ -18,23 +18,25 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import java.util.Currency;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -46,175 +48,117 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuBundleItemImplDiffblueTest {
-  @Autowired
-  private SkuBundleItemImpl skuBundleItemImpl;
+  @Autowired private SkuBundleItemImpl skuBundleItemImpl;
 
   /**
    * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
+   *
    * <ul>
-   *   <li>Given {@link SkuBundleItemImpl} (default constructor).</li>
-   *   <li>Then return abs abs zero is {@link Money#ZERO}.</li>
+   *   <li>Then return Currency Symbol is {@code $}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuBundleItemImpl.getDynamicSalePrice(Sku, BigDecimal)"})
-  public void testGetDynamicSalePrice_givenSkuBundleItemImpl_thenReturnAbsAbsZeroIsZero() {
+  public void testGetDynamicSalePrice_thenReturnCurrencySymbolIsDollarSign() {
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
     SkuImpl sku = new SkuImpl();
 
     // Act
-    Money actualDynamicSalePrice = skuBundleItemImpl2.getDynamicSalePrice(sku, new BigDecimal("2.3"));
+    Money actualDynamicSalePrice =
+        skuBundleItemImpl.getDynamicSalePrice(sku, new BigDecimal("2.3"));
 
     // Assert
-    Money money = actualDynamicSalePrice.ZERO;
-    Money absResult = actualDynamicSalePrice.abs();
-    assertEquals(money, absResult.abs().zero());
-    assertEquals(money, absResult.zero());
-    assertEquals(money, actualDynamicSalePrice.zero());
+    Currency currency = actualDynamicSalePrice.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    assertEquals(new BigDecimal("2.30"), actualDynamicSalePrice.getAmount());
+    Money actualAbsResult = actualDynamicSalePrice.abs();
+    assertEquals(actualDynamicSalePrice, actualAbsResult);
+    assertEquals(Money.ZERO, actualDynamicSalePrice.zero());
   }
 
   /**
    * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
+   *
    * <ul>
-   *   <li>Given {@link SkuBundleItemImpl} (default constructor).</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuBundleItemImpl.getDynamicSalePrice(Sku, BigDecimal)"})
-  public void testGetDynamicSalePrice_givenSkuBundleItemImpl_whenNull_thenReturnNull() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-
-    // Act and Assert
-    assertNull(skuBundleItemImpl2.getDynamicSalePrice(new SkuImpl(), null));
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
-   * <ul>
-   *   <li>Then return abs abs zero is {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getDynamicSalePrice(Sku, BigDecimal)"})
-  public void testGetDynamicSalePrice_thenReturnAbsAbsZeroIsMoney() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    Money salePrice = new Money();
-    skuBundleItemImpl2.setSalePrice(salePrice);
-    SkuImpl sku = new SkuImpl();
-
-    // Act
-    Money actualDynamicSalePrice = skuBundleItemImpl2.getDynamicSalePrice(sku, new BigDecimal("2.3"));
-
-    // Assert
-    Money absResult = actualDynamicSalePrice.abs();
-    assertEquals(salePrice, absResult.abs().zero());
-    assertEquals(salePrice, absResult.zero());
-    assertEquals(salePrice, actualDynamicSalePrice.zero());
+  public void testGetDynamicSalePrice_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(skuBundleItemImpl.getDynamicSalePrice(new SkuImpl(), null));
   }
 
   /**
    * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Bundle {@link ProductBundleImpl}.</li>
+   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 2.3}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
-  public void testSetSalePrice_thenSkuBundleItemImplBundleProductBundleImpl() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setBundle(new ProductBundleImpl());
-    skuBundleItemImpl2.setId(1L);
-    skuBundleItemImpl2.setQuantity(1);
-    skuBundleItemImpl2.setSalePrice(new Money());
-    skuBundleItemImpl2.setSequence(new BigDecimal("2.3"));
-    skuBundleItemImpl2.setSku(new SkuImpl());
-
-    // Act
-    skuBundleItemImpl2.setSalePrice(null);
-
-    // Assert
-    ProductBundle bundle = skuBundleItemImpl2.getBundle();
-    assertTrue(bundle instanceof ProductBundleImpl);
-    ProductBundle productBundle = skuBundleItemImpl2.bundle;
-    assertTrue(productBundle instanceof ProductBundleImpl);
-    assertNull(skuBundleItemImpl2.itemSalePrice);
-    assertNull(skuBundleItemImpl2.getSalePrice());
-    BigDecimal expectedPotentialSavings = new BigDecimal("0.00");
-    BigDecimal potentialSavings = bundle.getPotentialSavings();
-    assertEquals(expectedPotentialSavings, potentialSavings);
-    assertSame(potentialSavings, bundle.getBundleItemsRetailPrice().getAmount());
-    assertSame(potentialSavings, productBundle.getPotentialSavings());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#itemSalePrice} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
   public void testSetSalePrice_thenSkuBundleItemImplItemSalePriceIsBigDecimalWith23() {
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
     Money salePrice = mock(Money.class);
     when(salePrice.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    skuBundleItemImpl2.setSalePrice(salePrice);
+    skuBundleItemImpl.setSalePrice(salePrice);
 
     // Assert
     verify(salePrice).getAmount();
-    assertEquals(new BigDecimal("2.3"), skuBundleItemImpl2.itemSalePrice);
+    assertEquals(new BigDecimal("2.3"), skuBundleItemImpl.itemSalePrice);
   }
 
   /**
    * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#itemSalePrice} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
   public void testSetSalePrice_whenMoney_thenSkuBundleItemImplItemSalePriceIsBigDecimalWith000() {
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
     Money salePrice = new Money();
 
     // Act
-    skuBundleItemImpl2.setSalePrice(salePrice);
+    skuBundleItemImpl.setSalePrice(salePrice);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuBundleItemImpl2.itemSalePrice);
-    BigDecimal bigDecimal = skuBundleItemImpl2.itemSalePrice;
+    assertEquals(new BigDecimal("0.00"), skuBundleItemImpl.itemSalePrice);
+    BigDecimal bigDecimal = skuBundleItemImpl.itemSalePrice;
     Money absResult = salePrice.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -238,59 +182,53 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
+   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link SkuBundleItemImpl} {@link SkuBundleItemImpl#itemSalePrice} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_givenSkuGetIdReturnOne_thenReturnMoney() {
-    // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SkuBundleItemImpl.setSalePrice(Money)"})
+  public void testSetSalePrice_whenNull_thenSkuBundleItemImplItemSalePriceIsNull() {
+    // Arrange and Act
+    skuBundleItemImpl.setSalePrice(null);
 
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    Money salePrice = new Money();
-    skuBundleItemImpl2.setSalePrice(salePrice);
-    skuBundleItemImpl2.setSku(sku);
-
-    // Act
-    Money actualSalePrice = skuBundleItemImpl2.getSalePrice();
-
-    // Assert
-    verify(sku).getId();
-    assertEquals(salePrice, actualSalePrice);
+    // Assert that nothing has changed
+    assertNull(skuBundleItemImpl.itemSalePrice);
   }
 
   /**
    * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getSalePrice()} return {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Sku#getSalePrice()}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
+   *   <li>Then calls {@link Sku#getId()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
-  public void testGetSalePrice_givenSkuGetSalePriceReturnMoney_thenCallsGetSalePrice() {
+  public void testGetSalePrice_givenSkuGetIdReturnOne_thenCallsGetId() {
     // Arrange
     Sku sku = mock(Sku.class);
     when(sku.getId()).thenReturn(1L);
     Money money = new Money();
     when(sku.getSalePrice()).thenReturn(money);
 
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setSku(sku);
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    Money actualSalePrice = skuBundleItemImpl2.getSalePrice();
+    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
 
     // Assert
     verify(sku).getId();
@@ -300,145 +238,126 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   *
    * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.</li>
+   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link
+   *       SkuBundleItemImpl#deproxiedSku} {@link SkuImpl#salePrice} is {@link SkuImpl} (default
+   *       constructor) {@link SkuImpl#salePrice}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
+  public void testGetSalePrice_thenSkuBundleItemImplDeproxiedSkuSalePriceIsSkuImplSalePrice() {
+    // Arrange
+    SkuImpl sku = new SkuImpl();
+    Money salePrice = new Money();
+    sku.setSalePrice(salePrice);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    // Act
+    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
+
+    // Assert
+    Sku sku2 = skuBundleItemImpl.deproxiedSku;
+    assertTrue(sku2 instanceof SkuImpl);
+    assertEquals(salePrice, actualSalePrice);
+    assertSame(sku.salePrice, ((SkuImpl) sku2).salePrice);
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   *
+   * <ul>
+   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
   public void testGetSalePrice_thenSkuBundleItemImplSkuSkuImpl() {
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
     SkuImpl sku = new SkuImpl();
-    skuBundleItemImpl2.setSku(sku);
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    Money actualSalePrice = skuBundleItemImpl2.getSalePrice();
+    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
 
     // Assert
-    Sku sku2 = skuBundleItemImpl2.getSku();
+    Sku sku2 = skuBundleItemImpl.getSku();
     assertTrue(sku2 instanceof SkuImpl);
-    assertTrue(skuBundleItemImpl2.deproxiedSku instanceof SkuImpl);
     assertNull(actualSalePrice);
     assertSame(sku, sku2);
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#getRetailPrice()}.
+   * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#sku} {@link
+   *       SkuImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getRetailPrice()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#getSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_givenSkuGetIdReturnOne_thenReturnMoney() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money SkuBundleItemImpl.getSalePrice()"})
+  public void testGetSalePrice_thenSkuBundleItemImplSkuSkuImpl2() {
     // Arrange
-    Sku sku = mock(Sku.class);
-    when(sku.getId()).thenReturn(1L);
-    Money money = new Money();
-    when(sku.getRetailPrice()).thenReturn(money);
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
 
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setSku(sku);
-
-    // Act
-    Money actualRetailPrice = skuBundleItemImpl2.getRetailPrice();
-
-    // Assert
-    verify(sku).getId();
-    verify(sku).getRetailPrice();
-    assertSame(money, actualRetailPrice);
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#getRetailPrice()}.
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getRetailPrice()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money SkuBundleItemImpl.getRetailPrice()"})
-  public void testGetRetailPrice_thenSkuBundleItemImplSkuSkuImpl() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
     SkuImpl sku = new SkuImpl();
-    skuBundleItemImpl2.setSku(sku);
+    sku.setCurrency(currency);
+    sku.setSalePrice(new Money());
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    Money actualRetailPrice = skuBundleItemImpl2.getRetailPrice();
+    Money actualSalePrice = skuBundleItemImpl.getSalePrice();
 
     // Assert
-    Sku sku2 = skuBundleItemImpl2.getSku();
+    verify(currency).getCurrencyCode();
+    Sku sku2 = skuBundleItemImpl.deproxiedSku;
     assertTrue(sku2 instanceof SkuImpl);
-    assertTrue(skuBundleItemImpl2.deproxiedSku instanceof SkuImpl);
-    assertNull(actualRetailPrice);
-    assertSame(sku, sku2);
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#getBundle()}.
-   * <ul>
-   *   <li>Then return {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getBundle()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProductBundle SkuBundleItemImpl.getBundle()"})
-  public void testGetBundle_thenReturnProductBundleImpl() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    ProductBundleImpl bundle = new ProductBundleImpl();
-    skuBundleItemImpl2.setBundle(bundle);
-
-    // Act and Assert
-    assertSame(bundle, skuBundleItemImpl2.getBundle());
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#getSku()}.
-   * <ul>
-   *   <li>Given {@link SkuBundleItemImpl} (default constructor) Sku is {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#getSku()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Sku SkuBundleItemImpl.getSku()"})
-  public void testGetSku_givenSkuBundleItemImplSkuIsSkuImpl_thenReturnSkuImpl() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    SkuImpl sku = new SkuImpl();
-    skuBundleItemImpl2.setSku(sku);
-
-    // Act and Assert
-    assertSame(sku, skuBundleItemImpl2.getSku());
+    Sku sku3 = skuBundleItemImpl.sku;
+    assertTrue(sku3 instanceof SkuImpl);
+    Currency currency2 = actualSalePrice.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    BroadleafCurrency broadleafCurrency = sku.currency;
+    assertSame(broadleafCurrency, ((SkuImpl) sku2).currency);
+    assertSame(broadleafCurrency, ((SkuImpl) sku3).currency);
   }
 
   /**
    * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
+   *
    * <ul>
-   *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#sku}.</li>
+   *   <li>Given {@link Sku} {@link Sku#getId()} return one.
+   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#sku}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuBundleItemImpl.clearDynamicPrices()"})
   public void testClearDynamicPrices_givenSkuGetIdReturnOne_thenSkuBundleItemImplSku() {
     // Arrange
@@ -446,107 +365,79 @@ public class SkuBundleItemImplDiffblueTest {
     when(sku.getId()).thenReturn(1L);
     doNothing().when(sku).clearDynamicPrices();
 
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setSku(sku);
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(new ProductBundleImpl());
+    skuBundleItemImpl.setId(1L);
+    skuBundleItemImpl.setQuantity(1);
+    skuBundleItemImpl.setSalePrice(new Money());
+    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    skuBundleItemImpl2.clearDynamicPrices();
+    skuBundleItemImpl.clearDynamicPrices();
 
     // Assert
     verify(sku).clearDynamicPrices();
     verify(sku).getId();
-    Sku expectedSku = skuBundleItemImpl2.sku;
-    assertSame(expectedSku, skuBundleItemImpl2.getSku());
+    Sku expectedSku = skuBundleItemImpl.sku;
+    assertSame(expectedSku, skuBundleItemImpl.getSku());
   }
 
   /**
    * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
+   *
    * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#deproxiedSku} hasSalePrice.</li>
+   *   <li>Then {@link SkuBundleItemImpl} (default constructor) Sku {@link SkuImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuBundleItemImpl.clearDynamicPrices()"})
-  public void testClearDynamicPrices_thenSkuBundleItemImplDeproxiedSkuHasSalePrice() {
+  public void testClearDynamicPrices_thenSkuBundleItemImplSkuSkuImpl() {
     // Arrange
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(new ProductBundleImpl());
+    skuBundleItemImpl.setId(1L);
+    skuBundleItemImpl.setQuantity(1);
+    skuBundleItemImpl.setSalePrice(new Money());
+    skuBundleItemImpl.setSequence(new BigDecimal("2.3"));
     SkuImpl sku = new SkuImpl();
-    Money salePrice = new Money();
-    sku.setSalePrice(salePrice);
-
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setSku(sku);
+    skuBundleItemImpl.setSku(sku);
 
     // Act
-    skuBundleItemImpl2.clearDynamicPrices();
+    skuBundleItemImpl.clearDynamicPrices();
 
     // Assert
-    Sku sku2 = skuBundleItemImpl2.deproxiedSku;
+    Sku sku2 = skuBundleItemImpl.getSku();
     assertTrue(sku2 instanceof SkuImpl);
-    assertTrue(sku2.hasSalePrice());
-    assertEquals(salePrice, sku2.getBaseSalePrice());
-    assertEquals(salePrice, sku2.getSalePrice());
-    DynamicSkuPrices priceData = sku2.getPriceData();
-    Money price = priceData.getPrice();
-    assertEquals(salePrice, price);
-    assertSame(price, priceData.getSalePrice());
-    Money expectedMargin = salePrice.ZERO;
-    assertSame(expectedMargin, sku2.getMargin());
-    assertSame(sku.salePrice, ((SkuImpl) sku2).salePrice);
-  }
-
-  /**
-   * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
-   * <ul>
-   *   <li>Then {@link SkuBundleItemImpl} (default constructor) {@link SkuBundleItemImpl#deproxiedSku} {@link SkuImpl#salePrice} is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SkuBundleItemImpl.clearDynamicPrices()"})
-  public void testClearDynamicPrices_thenSkuBundleItemImplDeproxiedSkuSalePriceIsNull() {
-    // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
-    skuBundleItemImpl2.setSku(new SkuImpl());
-
-    // Act
-    skuBundleItemImpl2.clearDynamicPrices();
-
-    // Assert
-    Sku sku = skuBundleItemImpl2.deproxiedSku;
-    assertTrue(sku instanceof SkuImpl);
-    assertNull(((SkuImpl) sku).salePrice);
-    assertNull(sku.getBaseSalePrice());
-    assertNull(sku.getSalePrice());
-    DynamicSkuPrices priceData = sku.getPriceData();
-    assertNull(priceData.getPrice());
-    assertNull(priceData.getSalePrice());
-    assertFalse(sku.hasSalePrice());
+    assertTrue(skuBundleItemImpl.deproxiedSku instanceof SkuImpl);
+    assertSame(sku, sku2);
   }
 
   /**
    * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new SkuBundleItemImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<SkuBundleItem> actualCreateOrRetrieveCopyInstanceResult = skuBundleItemImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<SkuBundleItem> actualCreateOrRetrieveCopyInstanceResult =
+        skuBundleItemImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -554,21 +445,413 @@ public class SkuBundleItemImplDiffblueTest {
   }
 
   /**
-   * Test {@link SkuBundleItemImpl#equals(Object)}, and {@link SkuBundleItemImpl#hashCode()}.
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+    when(sku.getSalePrice()).thenReturn(new Money());
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    when(createResponse.getClone()).thenReturn(skuBundleItemImpl2);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+    BigDecimal bigDecimal = skuBundleItemImpl2.itemSalePrice;
+    Money salePrice = skuBundleItemImpl.getSalePrice();
+    Money absResult = salePrice.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = salePrice.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new CloneNotSupportedException());
+    when(sku.getSalePrice()).thenReturn(new Money());
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(
+        CloneNotSupportedException.class,
+        () -> skuBundleItemImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+    when(sku.getSalePrice()).thenReturn(money);
+
+    ProductBundleImpl bundle = mock(ProductBundleImpl.class);
+    when(bundle.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new ProductBundleImpl(), true));
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(bundle);
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(money).getAmount();
+    verify(bundle).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+    Sku expectedSku = skuBundleItemImpl.sku;
+    assertSame(expectedSku, skuBundleItemImpl.getSku());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+    when(sku.getSalePrice()).thenReturn(money);
+
+    ProductBundleImpl bundle = mock(ProductBundleImpl.class);
+    when(bundle.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new CloneNotSupportedException());
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setBundle(bundle);
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(
+        CloneNotSupportedException.class,
+        () -> skuBundleItemImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(money).getAmount();
+    verify(bundle).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>Given {@link SkuBundleItemImpl} (default constructor) SalePrice is {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_givenSkuBundleItemImplSalePriceIsMoney()
+      throws CloneNotSupportedException {
+    // Arrange
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSalePrice(new Money());
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    when(createResponse.getClone()).thenReturn(skuBundleItemImpl2);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    BigDecimal bigDecimal = skuBundleItemImpl2.itemSalePrice;
+    Money salePrice = skuBundleItemImpl.getSalePrice();
+    Money absResult = salePrice.abs();
+    Money absResult2 = absResult.abs();
+    assertSame(bigDecimal, absResult2.abs().getAmount());
+    Money zeroResult = salePrice.zero();
+    Money absResult3 = zeroResult.abs();
+    assertSame(bigDecimal, absResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult2.getAmount());
+    Money zeroResult2 = absResult.zero();
+    assertSame(bigDecimal, zeroResult2.abs().getAmount());
+    Money zeroResult3 = zeroResult.zero();
+    assertSame(bigDecimal, zeroResult3.abs().getAmount());
+    assertSame(bigDecimal, absResult3.getAmount());
+    assertSame(bigDecimal, absResult.getAmount());
+    assertSame(bigDecimal, absResult2.zero().getAmount());
+    assertSame(bigDecimal, absResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult2.getAmount());
+    assertSame(bigDecimal, zeroResult2.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.zero().getAmount());
+    assertSame(bigDecimal, zeroResult3.getAmount());
+    assertSame(bigDecimal, zeroResult.getAmount());
+    Sku expectedSku = skuBundleItemImpl.sku;
+    assertSame(expectedSku, skuBundleItemImpl.getSku());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <ul>
+   *   <li>Given {@link SkuImpl} {@link SkuImpl#getSalePrice()} return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_givenSkuImplGetSalePriceReturnNull()
+      throws CloneNotSupportedException {
+    // Arrange
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+    when(sku.getSalePrice()).thenReturn(null);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+    Sku expectedSku = skuBundleItemImpl.sku;
+    assertSame(expectedSku, skuBundleItemImpl.getSku());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link Money#getAmount()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse SkuBundleItemImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_thenCallsGetAmount()
+      throws CloneNotSupportedException {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.getAmount()).thenReturn(new BigDecimal("2.3"));
+
+    SkuImpl sku = mock(SkuImpl.class);
+    when(sku.getId()).thenReturn(1L);
+    when(sku.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new SkuImpl(), true));
+    when(sku.getSalePrice()).thenReturn(money);
+
+    SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
+    skuBundleItemImpl.setSku(sku);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new SkuBundleItemImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    skuBundleItemImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(money).getAmount();
+    verify(sku).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(sku).getId();
+    verify(sku).getSalePrice();
+    Sku expectedSku = skuBundleItemImpl.sku;
+    assertSame(expectedSku, skuBundleItemImpl.getSku());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#equals(Object)}, and {@link SkuBundleItemImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuBundleItemImpl#equals(Object)}
    *   <li>{@link SkuBundleItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SkuBundleItemImpl.equals(Object)", "int SkuBundleItemImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SkuBundleItemImpl.equals(Object)",
+    "int SkuBundleItemImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -589,26 +872,31 @@ public class SkuBundleItemImplDiffblueTest {
 
     // Act and Assert
     assertEquals(skuBundleItemImpl, skuBundleItemImpl2);
-    int expectedHashCodeResult = skuBundleItemImpl.hashCode();
-    assertEquals(expectedHashCodeResult, skuBundleItemImpl2.hashCode());
+    assertEquals(skuBundleItemImpl.hashCode(), skuBundleItemImpl2.hashCode());
   }
 
   /**
    * Test {@link SkuBundleItemImpl#equals(Object)}, and {@link SkuBundleItemImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuBundleItemImpl#equals(Object)}
    *   <li>{@link SkuBundleItemImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SkuBundleItemImpl.equals(Object)", "int SkuBundleItemImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SkuBundleItemImpl.equals(Object)",
+    "int SkuBundleItemImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -627,16 +915,21 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SkuBundleItemImpl.equals(Object)", "int SkuBundleItemImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SkuBundleItemImpl.equals(Object)",
+    "int SkuBundleItemImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -661,16 +954,21 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SkuBundleItemImpl.equals(Object)", "int SkuBundleItemImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SkuBundleItemImpl.equals(Object)",
+    "int SkuBundleItemImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -687,16 +985,21 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuBundleItemImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuBundleItemImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SkuBundleItemImpl.equals(Object)", "int SkuBundleItemImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SkuBundleItemImpl.equals(Object)",
+    "int SkuBundleItemImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     SkuBundleItemImpl skuBundleItemImpl = new SkuBundleItemImpl();
@@ -713,8 +1016,9 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SkuBundleItemImpl}
    *   <li>{@link SkuBundleItemImpl#setBundle(ProductBundle)}
@@ -728,12 +1032,19 @@ public class SkuBundleItemImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SkuBundleItemImpl.<init>()", "Long SkuBundleItemImpl.getId()",
-      "Integer SkuBundleItemImpl.getQuantity()", "BigDecimal SkuBundleItemImpl.getSequence()",
-      "void SkuBundleItemImpl.setBundle(ProductBundle)", "void SkuBundleItemImpl.setId(Long)",
-      "void SkuBundleItemImpl.setQuantity(Integer)", "void SkuBundleItemImpl.setSequence(BigDecimal)",
-      "void SkuBundleItemImpl.setSku(Sku)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SkuBundleItemImpl.<init>()",
+    "Long SkuBundleItemImpl.getId()",
+    "Integer SkuBundleItemImpl.getQuantity()",
+    "BigDecimal SkuBundleItemImpl.getSequence()",
+    "void SkuBundleItemImpl.setBundle(ProductBundle)",
+    "void SkuBundleItemImpl.setId(Long)",
+    "void SkuBundleItemImpl.setQuantity(Integer)",
+    "void SkuBundleItemImpl.setSequence(BigDecimal)",
+    "void SkuBundleItemImpl.setSku(Sku)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SkuBundleItemImpl actualSkuBundleItemImpl = new SkuBundleItemImpl();

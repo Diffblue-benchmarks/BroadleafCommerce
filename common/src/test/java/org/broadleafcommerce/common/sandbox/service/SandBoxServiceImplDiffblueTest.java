@@ -29,7 +29,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,22 +52,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class SandBoxServiceImplDiffblueTest {
-  @Mock
-  private SandBoxDao sandBoxDao;
+  @Mock private SandBoxDao sandBoxDao;
 
-  @InjectMocks
-  private SandBoxServiceImpl sandBoxServiceImpl;
+  @InjectMocks private SandBoxServiceImpl sandBoxServiceImpl;
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandBoxById(Long)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandBoxById(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandBoxById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveSandBoxById(Long)"})
   public void testRetrieveSandBoxById() {
     // Arrange
@@ -77,17 +77,18 @@ public class SandBoxServiceImplDiffblueTest {
     SandBox actualRetrieveSandBoxByIdResult = sandBoxServiceImpl.retrieveSandBoxById(1L);
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(1L));
+    verify(sandBoxDao).retrieve(1L);
     assertSame(sandBoxImpl, actualRetrieveSandBoxByIdResult);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveAllSandBoxes()}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveAllSandBoxes()}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveAllSandBoxes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrieveAllSandBoxes()"})
   public void testRetrieveAllSandBoxes() {
     // Arrange
@@ -103,19 +104,21 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandBoxesByType(SandBoxType)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandBoxesByType(SandBoxType)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandBoxesByType(SandBoxType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrieveSandBoxesByType(SandBoxType)"})
   public void testRetrieveSandBoxesByType() {
     // Arrange
-    when(sandBoxDao.retrieveSandBoxesByType(Mockito.<SandBoxType>any())).thenReturn(new ArrayList<>());
+    when(sandBoxDao.retrieveSandBoxesByType(Mockito.<SandBoxType>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
-    List<SandBox> actualRetrieveSandBoxesByTypeResult = sandBoxServiceImpl
-        .retrieveSandBoxesByType(SandBoxType.APPROVAL);
+    List<SandBox> actualRetrieveSandBoxesByTypeResult =
+        sandBoxServiceImpl.retrieveSandBoxesByType(SandBoxType.APPROVAL);
 
     // Assert
     verify(sandBoxDao).retrieveSandBoxesByType(isA(SandBoxType.class));
@@ -124,32 +127,36 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveUserSandBoxForParent(Long, Long)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveUserSandBoxForParent(Long, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveUserSandBoxForParent(Long, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveUserSandBoxForParent(Long, Long)"})
   public void testRetrieveUserSandBoxForParent() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.retrieveUserSandBoxForParent(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(sandBoxImpl);
+    when(sandBoxDao.retrieveUserSandBoxForParent(Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualRetrieveUserSandBoxForParentResult = sandBoxServiceImpl.retrieveUserSandBoxForParent(1L, 1L);
+    SandBox actualRetrieveUserSandBoxForParentResult =
+        sandBoxServiceImpl.retrieveUserSandBoxForParent(1L, 1L);
 
     // Assert
-    verify(sandBoxDao).retrieveUserSandBoxForParent(eq(1L), eq(1L));
+    verify(sandBoxDao).retrieveUserSandBoxForParent(1L, 1L);
     assertSame(sandBoxImpl, actualRetrieveUserSandBoxForParentResult);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandBoxManagementById(Long)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandBoxManagementById(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandBoxManagementById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveSandBoxManagementById(Long)"})
   public void testRetrieveSandBoxManagementById() {
     // Arrange
@@ -157,24 +164,27 @@ public class SandBoxServiceImplDiffblueTest {
     when(sandBoxDao.retrieveSandBoxManagementById(Mockito.<Long>any())).thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualRetrieveSandBoxManagementByIdResult = sandBoxServiceImpl.retrieveSandBoxManagementById(1L);
+    SandBox actualRetrieveSandBoxManagementByIdResult =
+        sandBoxServiceImpl.retrieveSandBoxManagementById(1L);
 
     // Assert
-    verify(sandBoxDao).retrieveSandBoxManagementById(eq(1L));
+    verify(sandBoxDao).retrieveSandBoxManagementById(1L);
     assertSame(sandBoxImpl, actualRetrieveSandBoxManagementByIdResult);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SandBoxImpl} (default constructor).</li>
-   *   <li>Then return size is two.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SandBoxImpl} (default constructor).
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_givenArrayListAddSandBoxImpl_thenReturnSizeIsTwo() {
     // Arrange
@@ -186,7 +196,8 @@ public class SandBoxServiceImplDiffblueTest {
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -199,15 +210,17 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getId()} return one.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getId()} return one.
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_givenSandBoxImplGetIdReturnOne_thenReturnSizeIsOne() {
     // Arrange
@@ -216,6 +229,7 @@ public class SandBoxServiceImplDiffblueTest {
 
     ArrayList<SandBox> sandBoxList = new ArrayList<>();
     sandBoxList.add(sandBoxImpl);
+
     SandBoxImpl sandBoxImpl2 = mock(SandBoxImpl.class);
     when(sandBoxImpl2.getId()).thenReturn(1L);
 
@@ -226,7 +240,8 @@ public class SandBoxServiceImplDiffblueTest {
         .thenReturn(sandBoxList2);
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -238,14 +253,16 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getId()} return zero.</li>
+   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getId()} return zero.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_givenSandBoxImplGetIdReturnZero() {
     // Arrange
@@ -256,8 +273,10 @@ public class SandBoxServiceImplDiffblueTest {
     SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
     sandBoxList.add(sandBoxImpl2);
     sandBoxList.add(sandBoxImpl);
+
     SandBoxImpl sandBoxImpl3 = mock(SandBoxImpl.class);
     when(sandBoxImpl3.getId()).thenReturn(1L);
+
     SandBoxImpl sandBoxImpl4 = mock(SandBoxImpl.class);
     when(sandBoxImpl4.getId()).thenReturn(0L);
     when(sandBoxImpl4.getParentSandBox()).thenReturn(sandBoxImpl3);
@@ -269,7 +288,8 @@ public class SandBoxServiceImplDiffblueTest {
         .thenReturn(sandBoxList2);
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -296,14 +316,16 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getParentSandBox()} return {@code null}.</li>
+   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getParentSandBox()} return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_givenSandBoxImplGetParentSandBoxReturnNull() {
     // Arrange
@@ -314,6 +336,7 @@ public class SandBoxServiceImplDiffblueTest {
     SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
     sandBoxList.add(sandBoxImpl2);
     sandBoxList.add(sandBoxImpl);
+
     SandBoxImpl sandBoxImpl3 = mock(SandBoxImpl.class);
     when(sandBoxImpl3.getId()).thenReturn(1L);
     when(sandBoxImpl3.getParentSandBox()).thenReturn(null);
@@ -325,7 +348,8 @@ public class SandBoxServiceImplDiffblueTest {
         .thenReturn(sandBoxList2);
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -351,14 +375,17 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getParentSandBox()} return {@link SandBoxImpl}.</li>
+   *   <li>Given {@link SandBoxImpl} {@link SandBoxImpl#getParentSandBox()} return {@link
+   *       SandBoxImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_givenSandBoxImplGetParentSandBoxReturnSandBoxImpl() {
     // Arrange
@@ -369,8 +396,10 @@ public class SandBoxServiceImplDiffblueTest {
     SandBoxImpl sandBoxImpl2 = new SandBoxImpl();
     sandBoxList.add(sandBoxImpl2);
     sandBoxList.add(sandBoxImpl);
+
     SandBoxImpl sandBoxImpl3 = mock(SandBoxImpl.class);
     when(sandBoxImpl3.getId()).thenReturn(1L);
+
     SandBoxImpl sandBoxImpl4 = mock(SandBoxImpl.class);
     when(sandBoxImpl4.getId()).thenReturn(1L);
     when(sandBoxImpl4.getParentSandBox()).thenReturn(sandBoxImpl3);
@@ -382,7 +411,8 @@ public class SandBoxServiceImplDiffblueTest {
         .thenReturn(sandBoxList2);
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -409,23 +439,27 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrievePreviewSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrievePreviewSandBoxes(Long)"})
   public void testRetrievePreviewSandBoxes_thenReturnEmpty() {
     // Arrange
-    when(sandBoxDao.retrieveSandBoxesByType(Mockito.<SandBoxType>any())).thenReturn(new ArrayList<>());
+    when(sandBoxDao.retrieveSandBoxesByType(Mockito.<SandBoxType>any()))
+        .thenReturn(new ArrayList<>());
     when(sandBoxDao.retrieveSandBoxesForAuthor(Mockito.<Long>any(), Mockito.<SandBoxType>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<SandBox> actualRetrievePreviewSandBoxesResult = sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
+    List<SandBox> actualRetrievePreviewSandBoxesResult =
+        sandBoxServiceImpl.retrievePreviewSandBoxes(1L);
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveSandBoxesByType(Mockito.<SandBoxType>any());
@@ -435,22 +469,27 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}.
+   *
    * <ul>
-   *   <li>Given {@link SandBoxDao} {@link SandBoxDao#retrieveNamedSandBox(SandBoxType, String)} return {@link SandBoxImpl} (default constructor).</li>
+   *   <li>Given {@link SandBoxDao} {@link SandBoxDao#retrieveNamedSandBox(SandBoxType, String)}
+   *       return {@link SandBoxImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveUserSandBox(Long, Long, String)"})
   public void testRetrieveUserSandBox_givenSandBoxDaoRetrieveNamedSandBoxReturnSandBoxImpl() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any())).thenReturn(sandBoxImpl);
+    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any()))
+        .thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualRetrieveUserSandBoxResult = sandBoxServiceImpl.retrieveUserSandBox(1L, null, "Sand Box Name");
+    SandBox actualRetrieveUserSandBoxResult =
+        sandBoxServiceImpl.retrieveUserSandBox(1L, null, "Sand Box Name");
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sand Box Name"));
@@ -459,23 +498,28 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SandBoxDao#createSandBox(String, SandBoxType)}.</li>
+   *   <li>Then calls {@link SandBoxDao#createSandBox(String, SandBoxType)}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveUserSandBox(Long, Long, String)"})
   public void testRetrieveUserSandBox_thenCallsCreateSandBox() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.createSandBox(Mockito.<String>any(), Mockito.<SandBoxType>any())).thenReturn(sandBoxImpl);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any())).thenReturn(null);
+    when(sandBoxDao.createSandBox(Mockito.<String>any(), Mockito.<SandBoxType>any()))
+        .thenReturn(sandBoxImpl);
+    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any()))
+        .thenReturn(null);
 
     // Act
-    SandBox actualRetrieveUserSandBoxResult = sandBoxServiceImpl.retrieveUserSandBox(1L, null, "Sand Box Name");
+    SandBox actualRetrieveUserSandBoxResult =
+        sandBoxServiceImpl.retrieveUserSandBox(1L, null, "Sand Box Name");
 
     // Assert
     verify(sandBoxDao).createSandBox(eq("Sand Box Name"), isA(SandBoxType.class));
@@ -485,14 +529,16 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SandBoxDao#retrieve(Long)}.</li>
+   *   <li>Then calls {@link SandBoxDao#retrieve(Long)}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveUserSandBox(Long, Long, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveUserSandBox(Long, Long, String)"})
   public void testRetrieveUserSandBox_thenCallsRetrieve() {
     // Arrange
@@ -500,35 +546,39 @@ public class SandBoxServiceImplDiffblueTest {
     when(sandBoxDao.retrieve(Mockito.<Long>any())).thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualRetrieveUserSandBoxResult = sandBoxServiceImpl.retrieveUserSandBox(1L, 1L, "Sand Box Name");
+    SandBox actualRetrieveUserSandBoxResult =
+        sandBoxServiceImpl.retrieveUserSandBox(1L, 1L, "Sand Box Name");
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(1L));
+    verify(sandBoxDao).retrieve(1L);
     assertSame(sandBoxImpl, actualRetrieveUserSandBoxResult);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link HashSet#HashSet()} add one.</li>
+   *   <li>Given one.
+   *   <li>When {@link HashSet#HashSet()} add one.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(Set)"})
   public void testRetrieveAuthorNamesForSandBoxes_givenOne_whenHashSetAddOne() {
     // Arrange
-    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     HashSet<Long> sandBoxIds = new HashSet<>();
     sandBoxIds.add(1L);
 
     // Act
-    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveAuthorNamesForSandBoxes(sandBoxIds);
+    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(sandBoxIds);
 
     // Assert
     verify(sandBoxDao).retrieveAuthorNamesForSandBoxes(isA(Set.class));
@@ -537,27 +587,30 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link HashSet#HashSet()} add zero.</li>
+   *   <li>Given zero.
+   *   <li>When {@link HashSet#HashSet()} add zero.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(Set)"})
   public void testRetrieveAuthorNamesForSandBoxes_givenZero_whenHashSetAddZero() {
     // Arrange
-    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     HashSet<Long> sandBoxIds = new HashSet<>();
     sandBoxIds.add(0L);
     sandBoxIds.add(1L);
 
     // Act
-    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveAuthorNamesForSandBoxes(sandBoxIds);
+    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(sandBoxIds);
 
     // Assert
     verify(sandBoxDao).retrieveAuthorNamesForSandBoxes(isA(Set.class));
@@ -566,22 +619,25 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>When {@link HashSet#HashSet()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveAuthorNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(Set)"})
   public void testRetrieveAuthorNamesForSandBoxes_whenHashSet() {
     // Arrange
-    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveAuthorNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     // Act
-    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveAuthorNamesForSandBoxes(new HashSet<>());
+    Map<Long, String> actualRetrieveAuthorNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveAuthorNamesForSandBoxes(new HashSet<>());
 
     // Assert
     verify(sandBoxDao).retrieveAuthorNamesForSandBoxes(isA(Set.class));
@@ -590,26 +646,29 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link HashSet#HashSet()} add one.</li>
+   *   <li>Given one.
+   *   <li>When {@link HashSet#HashSet()} add one.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(Set)"})
   public void testRetrieveSandboxNamesForSandBoxes_givenOne_whenHashSetAddOne() {
     // Arrange
-    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     HashSet<Long> sandBoxIds = new HashSet<>();
     sandBoxIds.add(1L);
 
     // Act
-    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveSandboxNamesForSandBoxes(sandBoxIds);
+    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(sandBoxIds);
 
     // Assert
     verify(sandBoxDao).retrieveSandboxNamesForSandBoxes(isA(Set.class));
@@ -618,27 +677,30 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link HashSet#HashSet()} add zero.</li>
+   *   <li>Given zero.
+   *   <li>When {@link HashSet#HashSet()} add zero.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(Set)"})
   public void testRetrieveSandboxNamesForSandBoxes_givenZero_whenHashSetAddZero() {
     // Arrange
-    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     HashSet<Long> sandBoxIds = new HashSet<>();
     sandBoxIds.add(0L);
     sandBoxIds.add(1L);
 
     // Act
-    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveSandboxNamesForSandBoxes(sandBoxIds);
+    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(sandBoxIds);
 
     // Assert
     verify(sandBoxDao).retrieveSandboxNamesForSandBoxes(isA(Set.class));
@@ -647,22 +709,25 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}.
+   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>When {@link HashSet#HashSet()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandboxNamesForSandBoxes(Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(Set)"})
   public void testRetrieveSandboxNamesForSandBoxes_whenHashSet() {
     // Arrange
-    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any())).thenReturn(new HashMap<>());
+    when(sandBoxDao.retrieveSandboxNamesForSandBoxes(Mockito.<Set<Long>>any()))
+        .thenReturn(new HashMap<>());
 
     // Act
-    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult = sandBoxServiceImpl
-        .retrieveSandboxNamesForSandBoxes(new HashSet<>());
+    Map<Long, String> actualRetrieveSandboxNamesForSandBoxesResult =
+        sandBoxServiceImpl.retrieveSandboxNamesForSandBoxes(new HashSet<>());
 
     // Assert
     verify(sandBoxDao).retrieveSandboxNamesForSandBoxes(isA(Set.class));
@@ -671,19 +736,22 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#createSandBox(String, SandBoxType)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createSandBox(String, SandBoxType)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createSandBox(String, SandBoxType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.createSandBox(String, SandBoxType)"})
   public void testCreateSandBox() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.createSandBox(Mockito.<String>any(), Mockito.<SandBoxType>any())).thenReturn(sandBoxImpl);
+    when(sandBoxDao.createSandBox(Mockito.<String>any(), Mockito.<SandBoxType>any()))
+        .thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualCreateSandBoxResult = sandBoxServiceImpl.createSandBox("Sand Box Name", SandBoxType.APPROVAL);
+    SandBox actualCreateSandBoxResult =
+        sandBoxServiceImpl.createSandBox("Sand Box Name", SandBoxType.APPROVAL);
 
     // Assert
     verify(sandBoxDao).createSandBox(eq("Sand Box Name"), isA(SandBoxType.class));
@@ -691,25 +759,31 @@ public class SandBoxServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)} with {@code authorId}, {@code approvalSandBox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)} with {@code authorId}, {@code
+   * approvalSandBox}.
+   *
    * <ul>
-   *   <li>Then calls {@link SandBoxDao#createUserSandBox(Long, SandBox)}.</li>
+   *   <li>Then calls {@link SandBoxDao#createUserSandBox(Long, SandBox)}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.createUserSandBox(Long, SandBox)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandBox_thenCallsCreateUserSandBox() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.createUserSandBox(Mockito.<Long>any(), Mockito.<SandBox>any())).thenReturn(sandBoxImpl);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.createUserSandBox(Mockito.<Long>any(), Mockito.<SandBox>any()))
+        .thenReturn(sandBoxImpl);
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(null);
 
     // Act
-    SandBox actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(1L, new SandBoxImpl());
+    SandBox actualCreateUserSandBoxResult =
+        sandBoxServiceImpl.createUserSandBox(1L, new SandBoxImpl());
 
     // Assert
     verify(sandBoxDao).createUserSandBox(eq(1L), isA(SandBox.class));
@@ -718,24 +792,29 @@ public class SandBoxServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)} with {@code authorId}, {@code approvalSandBox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)} with {@code authorId}, {@code
+   * approvalSandBox}.
+   *
    * <ul>
-   *   <li>Then return {@link SandBoxImpl} (default constructor).</li>
+   *   <li>Then return {@link SandBoxImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, SandBox)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.createUserSandBox(Long, SandBox)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandBox_thenReturnSandBoxImpl() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(1L, new SandBoxImpl());
+    SandBox actualCreateUserSandBoxResult =
+        sandBoxServiceImpl.createUserSandBox(1L, new SandBoxImpl());
 
     // Assert
     verify(sandBoxDao, atLeast(1)).retrieveNamedSandBox(isA(SandBoxType.class), isNull(), eq(1L));
@@ -743,21 +822,25 @@ public class SandBoxServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code approvalSandbox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code
+   * approvalSandbox}.
+   *
    * <ul>
-   *   <li>Then return longValue is one.</li>
+   *   <li>Then return longValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SandBoxServiceImpl.createUserSandBox(Long, Long)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandbox_thenReturnLongValueIsOne() {
     // Arrange
     SandBoxImpl sandBoxImpl = mock(SandBoxImpl.class);
     when(sandBoxImpl.getId()).thenReturn(1L);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(sandBoxImpl);
     when(sandBoxDao.retrieve(Mockito.<Long>any())).thenReturn(new SandBoxImpl());
 
@@ -765,28 +848,32 @@ public class SandBoxServiceImplDiffblueTest {
     Long actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(1L, 42L);
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(42L));
+    verify(sandBoxDao).retrieve(42L);
     verify(sandBoxDao, atLeast(1)).retrieveNamedSandBox(isA(SandBoxType.class), isNull(), eq(1L));
     verify(sandBoxImpl).getId();
     assertEquals(1L, actualCreateUserSandBoxResult.longValue());
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code approvalSandbox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code
+   * approvalSandbox}.
+   *
    * <ul>
-   *   <li>When four.</li>
+   *   <li>When four.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SandBoxServiceImpl.createUserSandBox(Long, Long)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandbox_whenFour() {
     // Arrange
     SandBoxImpl sandBoxImpl = mock(SandBoxImpl.class);
     when(sandBoxImpl.getId()).thenReturn(1L);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(sandBoxImpl);
     when(sandBoxDao.retrieve(Mockito.<Long>any())).thenReturn(new SandBoxImpl());
 
@@ -794,28 +881,32 @@ public class SandBoxServiceImplDiffblueTest {
     Long actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(4L, 42L);
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(42L));
+    verify(sandBoxDao).retrieve(42L);
     verify(sandBoxDao, atLeast(1)).retrieveNamedSandBox(isA(SandBoxType.class), isNull(), eq(4L));
     verify(sandBoxImpl).getId();
     assertEquals(1L, actualCreateUserSandBoxResult.longValue());
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code approvalSandbox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code
+   * approvalSandbox}.
+   *
    * <ul>
-   *   <li>When three.</li>
+   *   <li>When three.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SandBoxServiceImpl.createUserSandBox(Long, Long)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandbox_whenThree() {
     // Arrange
     SandBoxImpl sandBoxImpl = mock(SandBoxImpl.class);
     when(sandBoxImpl.getId()).thenReturn(1L);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(sandBoxImpl);
     when(sandBoxDao.retrieve(Mockito.<Long>any())).thenReturn(new SandBoxImpl());
 
@@ -823,28 +914,32 @@ public class SandBoxServiceImplDiffblueTest {
     Long actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(3L, 42L);
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(42L));
+    verify(sandBoxDao).retrieve(42L);
     verify(sandBoxDao, atLeast(1)).retrieveNamedSandBox(isA(SandBoxType.class), isNull(), eq(3L));
     verify(sandBoxImpl).getId();
     assertEquals(1L, actualCreateUserSandBoxResult.longValue());
   }
 
   /**
-   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code approvalSandbox}.
+   * Test {@link SandBoxServiceImpl#createUserSandBox(Long, Long)} with {@code authorId}, {@code
+   * approvalSandbox}.
+   *
    * <ul>
-   *   <li>When two.</li>
+   *   <li>When two.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createUserSandBox(Long, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SandBoxServiceImpl.createUserSandBox(Long, Long)"})
   public void testCreateUserSandBoxWithAuthorIdApprovalSandbox_whenTwo() {
     // Arrange
     SandBoxImpl sandBoxImpl = mock(SandBoxImpl.class);
     when(sandBoxImpl.getId()).thenReturn(1L);
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(sandBoxImpl);
     when(sandBoxDao.retrieve(Mockito.<Long>any())).thenReturn(new SandBoxImpl());
 
@@ -852,7 +947,7 @@ public class SandBoxServiceImplDiffblueTest {
     Long actualCreateUserSandBoxResult = sandBoxServiceImpl.createUserSandBox(2L, 42L);
 
     // Assert
-    verify(sandBoxDao).retrieve(eq(42L));
+    verify(sandBoxDao).retrieve(42L);
     verify(sandBoxDao, atLeast(1)).retrieveNamedSandBox(isA(SandBoxType.class), isNull(), eq(2L));
     verify(sandBoxImpl).getId();
     assertEquals(1L, actualCreateUserSandBoxResult.longValue());
@@ -860,11 +955,12 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#createDefaultSandBox()}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#createDefaultSandBox()}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#createDefaultSandBox()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.createDefaultSandBox()"})
   public void testCreateDefaultSandBox() {
     // Arrange
@@ -881,19 +977,22 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveSandBox(String, SandBoxType)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveSandBox(String, SandBoxType)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveSandBox(String, SandBoxType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBox SandBoxServiceImpl.retrieveSandBox(String, SandBoxType)"})
   public void testRetrieveSandBox() {
     // Arrange
     SandBoxImpl sandBoxImpl = new SandBoxImpl();
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any())).thenReturn(sandBoxImpl);
+    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any()))
+        .thenReturn(sandBoxImpl);
 
     // Act
-    SandBox actualRetrieveSandBoxResult = sandBoxServiceImpl.retrieveSandBox("Sand Box Name", SandBoxType.APPROVAL);
+    SandBox actualRetrieveSandBoxResult =
+        sandBoxServiceImpl.retrieveSandBox("Sand Box Name", SandBoxType.APPROVAL);
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sand Box Name"));
@@ -902,35 +1001,39 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveAllUserSandBoxes(Long)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveAllUserSandBoxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveAllUserSandBoxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrieveAllUserSandBoxes(Long)"})
   public void testRetrieveAllUserSandBoxes() {
     // Arrange
     when(sandBoxDao.retrieveAllUserSandBoxes(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<SandBox> actualRetrieveAllUserSandBoxesResult = sandBoxServiceImpl.retrieveAllUserSandBoxes(1L);
+    List<SandBox> actualRetrieveAllUserSandBoxesResult =
+        sandBoxServiceImpl.retrieveAllUserSandBoxes(1L);
 
     // Assert
-    verify(sandBoxDao).retrieveAllUserSandBoxes(eq(1L));
+    verify(sandBoxDao).retrieveAllUserSandBoxes(1L);
     assertTrue(actualRetrieveAllUserSandBoxesResult.isEmpty());
   }
 
   /**
    * Test {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link SandBoxImpl} (default constructor).</li>
-   *   <li>Then calls {@link SandBoxDao#merge(SandBox)}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link SandBoxImpl} (default constructor).
+   *   <li>Then calls {@link SandBoxDao#merge(SandBox)}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SandBoxServiceImpl.archiveChildSandboxes(Long)"})
   public void testArchiveChildSandboxes_givenArrayListAddSandBoxImpl_thenCallsMerge() {
     // Arrange
@@ -944,71 +1047,80 @@ public class SandBoxServiceImplDiffblueTest {
 
     // Assert
     verify(sandBoxDao).merge(isA(SandBox.class));
-    verify(sandBoxDao).retrieveChildSandBoxesByParentId(eq(1L));
+    verify(sandBoxDao).retrieveChildSandBoxesByParentId(1L);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}.
+   *
    * <ul>
-   *   <li>Then calls {@link SandBoxDao#retrieveChildSandBoxesByParentId(Long)}.</li>
+   *   <li>Then calls {@link SandBoxDao#retrieveChildSandBoxesByParentId(Long)}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#archiveChildSandboxes(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SandBoxServiceImpl.archiveChildSandboxes(Long)"})
   public void testArchiveChildSandboxes_thenCallsRetrieveChildSandBoxesByParentId() {
     // Arrange
-    when(sandBoxDao.retrieveChildSandBoxesByParentId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+    when(sandBoxDao.retrieveChildSandBoxesByParentId(Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
     sandBoxServiceImpl.archiveChildSandboxes(1L);
 
     // Assert
-    verify(sandBoxDao).retrieveChildSandBoxesByParentId(eq(1L));
+    verify(sandBoxDao).retrieveChildSandBoxesByParentId(1L);
   }
 
   /**
    * Test {@link SandBoxServiceImpl#retrieveChildSandBoxesByParentId(Long)}.
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#retrieveChildSandBoxesByParentId(Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#retrieveChildSandBoxesByParentId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SandBoxServiceImpl.retrieveChildSandBoxesByParentId(Long)"})
   public void testRetrieveChildSandBoxesByParentId() {
     // Arrange
-    when(sandBoxDao.retrieveChildSandBoxesByParentId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
+    when(sandBoxDao.retrieveChildSandBoxesByParentId(Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
-    List<SandBox> actualRetrieveChildSandBoxesByParentIdResult = sandBoxServiceImpl
-        .retrieveChildSandBoxesByParentId(1L);
+    List<SandBox> actualRetrieveChildSandBoxesByParentIdResult =
+        sandBoxServiceImpl.retrieveChildSandBoxesByParentId(1L);
 
     // Assert
-    verify(sandBoxDao).retrieveChildSandBoxesByParentId(eq(1L));
+    verify(sandBoxDao).retrieveChildSandBoxesByParentId(1L);
     assertTrue(actualRetrieveChildSandBoxesByParentIdResult.isEmpty());
   }
 
   /**
    * Test {@link SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}
+   *
+   * <p>Method under test: {@link
+   * SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxServiceImpl.checkForExistingApprovalSandboxWithName(String)"})
   public void testCheckForExistingApprovalSandboxWithName_thenReturnFalse() {
     // Arrange
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(new SandBoxImpl());
 
     // Act
-    boolean actualCheckForExistingApprovalSandboxWithNameResult = sandBoxServiceImpl
-        .checkForExistingApprovalSandboxWithName("Sandbox Name");
+    boolean actualCheckForExistingApprovalSandboxWithNameResult =
+        sandBoxServiceImpl.checkForExistingApprovalSandboxWithName("Sandbox Name");
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sandbox Name"), isNull());
@@ -1017,23 +1129,27 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}
+   *
+   * <p>Method under test: {@link
+   * SandBoxServiceImpl#checkForExistingApprovalSandboxWithName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxServiceImpl.checkForExistingApprovalSandboxWithName(String)"})
   public void testCheckForExistingApprovalSandboxWithName_thenReturnTrue() {
     // Arrange
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(null);
 
     // Act
-    boolean actualCheckForExistingApprovalSandboxWithNameResult = sandBoxServiceImpl
-        .checkForExistingApprovalSandboxWithName("Sandbox Name");
+    boolean actualCheckForExistingApprovalSandboxWithNameResult =
+        sandBoxServiceImpl.checkForExistingApprovalSandboxWithName("Sandbox Name");
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sandbox Name"), isNull());
@@ -1042,23 +1158,29 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String, Long)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String,
+   * Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SandBoxServiceImpl.checkForExistingSandbox(SandBoxType, String, Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SandBoxServiceImpl.checkForExistingSandbox(SandBoxType, String, Long)"
+  })
   public void testCheckForExistingSandbox_thenReturnFalse() {
     // Arrange
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(new SandBoxImpl());
 
     // Act
-    boolean actualCheckForExistingSandboxResult = sandBoxServiceImpl.checkForExistingSandbox(SandBoxType.APPROVAL,
-        "Sandbox Name", 1L);
+    boolean actualCheckForExistingSandboxResult =
+        sandBoxServiceImpl.checkForExistingSandbox(SandBoxType.APPROVAL, "Sandbox Name", 1L);
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sandbox Name"), eq(1L));
@@ -1067,23 +1189,29 @@ public class SandBoxServiceImplDiffblueTest {
 
   /**
    * Test {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String, Long)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String, Long)}
+   *
+   * <p>Method under test: {@link SandBoxServiceImpl#checkForExistingSandbox(SandBoxType, String,
+   * Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SandBoxServiceImpl.checkForExistingSandbox(SandBoxType, String, Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SandBoxServiceImpl.checkForExistingSandbox(SandBoxType, String, Long)"
+  })
   public void testCheckForExistingSandbox_thenReturnTrue() {
     // Arrange
-    when(sandBoxDao.retrieveNamedSandBox(Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
+    when(sandBoxDao.retrieveNamedSandBox(
+            Mockito.<SandBoxType>any(), Mockito.<String>any(), Mockito.<Long>any()))
         .thenReturn(null);
 
     // Act
-    boolean actualCheckForExistingSandboxResult = sandBoxServiceImpl.checkForExistingSandbox(SandBoxType.APPROVAL,
-        "Sandbox Name", 1L);
+    boolean actualCheckForExistingSandboxResult =
+        sandBoxServiceImpl.checkForExistingSandbox(SandBoxType.APPROVAL, "Sandbox Name", 1L);
 
     // Assert
     verify(sandBoxDao).retrieveNamedSandBox(isA(SandBoxType.class), eq("Sandbox Name"), eq(1L));

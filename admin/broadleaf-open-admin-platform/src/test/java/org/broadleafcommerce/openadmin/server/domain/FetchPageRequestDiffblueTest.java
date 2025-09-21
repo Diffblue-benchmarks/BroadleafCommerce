@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,11 +28,12 @@ import org.junit.experimental.categories.Category;
 public class FetchPageRequestDiffblueTest {
   /**
    * Test {@link FetchPageRequest#withStartIndex(Integer)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withStartIndex(Integer)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withStartIndex(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withStartIndex(Integer)"})
   public void testWithStartIndex() {
     // Arrange
@@ -47,11 +49,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withMaxIndex(Integer)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withMaxIndex(Integer)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withMaxIndex(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withMaxIndex(Integer)"})
   public void testWithMaxIndex() {
     // Arrange
@@ -67,11 +70,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withLastId(Long)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withLastId(Long)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withLastId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withLastId(Long)"})
   public void testWithLastId() {
     // Arrange
@@ -87,11 +91,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withFirstId(Long)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withFirstId(Long)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withFirstId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withFirstId(Long)"})
   public void testWithFirstId() {
     // Arrange
@@ -107,11 +112,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withUpperCount(Integer)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withUpperCount(Integer)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withUpperCount(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withUpperCount(Integer)"})
   public void testWithUpperCount() {
     // Arrange
@@ -127,11 +133,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withLowerCount(Integer)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withLowerCount(Integer)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withLowerCount(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withLowerCount(Integer)"})
   public void testWithLowerCount() {
     // Arrange
@@ -147,11 +154,12 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test {@link FetchPageRequest#withPageSize(Integer)}.
-   * <p>
-   * Method under test: {@link FetchPageRequest#withPageSize(Integer)}
+   *
+   * <p>Method under test: {@link FetchPageRequest#withPageSize(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FetchPageRequest FetchPageRequest.withPageSize(Integer)"})
   public void testWithPageSize() {
     // Arrange
@@ -167,8 +175,9 @@ public class FetchPageRequestDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FetchPageRequest}
    *   <li>{@link FetchPageRequest#setFirstId(Long)}
@@ -188,15 +197,25 @@ public class FetchPageRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FetchPageRequest.<init>()", "Long FetchPageRequest.getFirstId()",
-      "Long FetchPageRequest.getLastId()", "Integer FetchPageRequest.getLowerCount()",
-      "Integer FetchPageRequest.getMaxIndex()", "Integer FetchPageRequest.getPageSize()",
-      "Integer FetchPageRequest.getStartIndex()", "Integer FetchPageRequest.getUpperCount()",
-      "void FetchPageRequest.setFirstId(Long)", "void FetchPageRequest.setLastId(Long)",
-      "void FetchPageRequest.setLowerCount(Integer)", "void FetchPageRequest.setMaxIndex(Integer)",
-      "void FetchPageRequest.setPageSize(Integer)", "void FetchPageRequest.setStartIndex(Integer)",
-      "void FetchPageRequest.setUpperCount(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FetchPageRequest.<init>()",
+    "Long FetchPageRequest.getFirstId()",
+    "Long FetchPageRequest.getLastId()",
+    "Integer FetchPageRequest.getLowerCount()",
+    "Integer FetchPageRequest.getMaxIndex()",
+    "Integer FetchPageRequest.getPageSize()",
+    "Integer FetchPageRequest.getStartIndex()",
+    "Integer FetchPageRequest.getUpperCount()",
+    "void FetchPageRequest.setFirstId(Long)",
+    "void FetchPageRequest.setLastId(Long)",
+    "void FetchPageRequest.setLowerCount(Integer)",
+    "void FetchPageRequest.setMaxIndex(Integer)",
+    "void FetchPageRequest.setPageSize(Integer)",
+    "void FetchPageRequest.setStartIndex(Integer)",
+    "void FetchPageRequest.setUpperCount(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FetchPageRequest actualFetchPageRequest = new FetchPageRequest();

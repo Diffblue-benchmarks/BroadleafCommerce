@@ -27,7 +27,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.cms.url.type.URLRedirectType;
 import org.broadleafcommerce.common.copy.CreateResponse;
@@ -43,544 +44,497 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class URLHandlerImplDiffblueTest {
-  @Autowired
-  private URLHandlerImpl uRLHandlerImpl;
+  @Autowired private URLHandlerImpl uRLHandlerImpl;
 
   /**
    * Test {@link URLHandlerImpl#getUrlRedirectType()}.
-   * <p>
-   * Method under test: {@link URLHandlerImpl#getUrlRedirectType()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#getUrlRedirectType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"URLRedirectType URLHandlerImpl.getUrlRedirectType()"})
   public void testGetUrlRedirectType() {
     // Arrange, Act and Assert
-    assertNull((new URLHandlerImpl()).getUrlRedirectType());
+    assertNull(uRLHandlerImpl.getUrlRedirectType());
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}.
+   *
+   * <ul>
+   *   <li>When {@link URLRedirectType#FORWARD}.
+   *   <li>Then {@link URLHandlerImpl} {@link URLHandlerImpl#urlRedirectType} is {@code FORWARD}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void URLHandlerImpl.setUrlRedirectType(URLRedirectType)"})
+  public void testSetUrlRedirectType_whenForward_thenURLHandlerImplUrlRedirectTypeIsForward() {
+    // Arrange and Act
+    uRLHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    // Assert
+    assertEquals("FORWARD", uRLHandlerImpl.urlRedirectType);
+    assertSame(URLRedirectType.FORWARD, uRLHandlerImpl.getUrlRedirectType());
   }
 
   /**
    * Test {@link URLHandlerImpl#isRegexHandler()}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link URLHandlerImpl} RegexHandler is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#isRegexHandler()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#isRegexHandler()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.isRegexHandler()"})
-  public void testIsRegexHandler_givenURLHandlerImplIdIsOne_thenReturnTrue() {
+  public void testIsRegexHandler_givenURLHandlerImplRegexHandlerIsTrue_thenReturnTrue() {
     // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setIncomingURL(".");
+    uRLHandlerImpl.setRegexHandler(true);
+    uRLHandlerImpl.setIncomingURL(".");
 
     // Act and Assert
-    assertTrue(urlHandlerImpl.isRegexHandler());
+    assertTrue(uRLHandlerImpl.isRegexHandler());
   }
 
   /**
    * Test {@link URLHandlerImpl#isRegexHandler()}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link URLHandlerImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#isRegexHandler()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#isRegexHandler()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.isRegexHandler()"})
   public void testIsRegexHandler_givenURLHandlerImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new URLHandlerImpl()).isRegexHandler());
+    assertFalse(uRLHandlerImpl.isRegexHandler());
   }
 
   /**
    * Test {@link URLHandlerImpl#setRegexHandler(boolean)} with {@code boolean}.
-   * <p>
-   * Method under test: {@link URLHandlerImpl#setRegexHandler(boolean)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#setRegexHandler(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void URLHandlerImpl.setRegexHandler(boolean)"})
   public void testSetRegexHandlerWithBoolean() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-
-    // Act
-    urlHandlerImpl.setRegexHandler(true);
+    // Arrange and Act
+    uRLHandlerImpl.setRegexHandler(true);
 
     // Assert
-    assertTrue(urlHandlerImpl.isRegex);
+    assertTrue(uRLHandlerImpl.isRegex);
   }
 
   /**
    * Test {@link URLHandlerImpl#setRegexHandler(Boolean)} with {@code Boolean}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
-   *   <li>Then {@link URLHandlerImpl} (default constructor) {@link URLHandlerImpl#isRegex}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then not {@link URLHandlerImpl} {@link URLHandlerImpl#isRegex}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#setRegexHandler(Boolean)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#setRegexHandler(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void URLHandlerImpl.setRegexHandler(Boolean)"})
-  public void testSetRegexHandlerWithBoolean_givenURLHandlerImpl_thenURLHandlerImplIsRegex() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+  public void testSetRegexHandlerWithBoolean_whenNull_thenNotURLHandlerImplIsRegex() {
+    // Arrange and Act
+    uRLHandlerImpl.setRegexHandler(null);
 
-    // Act
-    urlHandlerImpl.setRegexHandler((Boolean) true);
-
-    // Assert
-    assertTrue(urlHandlerImpl.isRegex);
+    // Assert that nothing has changed
+    assertFalse(uRLHandlerImpl.isRegex);
   }
 
   /**
    * Test {@link URLHandlerImpl#setRegexHandler(Boolean)} with {@code Boolean}.
+   *
    * <ul>
-   *   <li>Then not {@link URLHandlerImpl} (default constructor) {@link URLHandlerImpl#isRegex}.</li>
+   *   <li>When {@code true}.
+   *   <li>Then {@link URLHandlerImpl} {@link URLHandlerImpl#isRegex}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#setRegexHandler(Boolean)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#setRegexHandler(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void URLHandlerImpl.setRegexHandler(Boolean)"})
-  public void testSetRegexHandlerWithBoolean_thenNotURLHandlerImplIsRegex() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act
-    urlHandlerImpl.setRegexHandler(null);
+  public void testSetRegexHandlerWithBoolean_whenTrue_thenURLHandlerImplIsRegex() {
+    // Arrange and Act
+    uRLHandlerImpl.setRegexHandler((Boolean) true);
 
     // Assert
-    assertFalse(urlHandlerImpl.isRegex);
+    assertTrue(uRLHandlerImpl.isRegex);
   }
 
   /**
    * Test {@link URLHandlerImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link URLHandlerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String URLHandlerImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new URLHandlerImpl()).getMainEntityName());
+    assertNull(uRLHandlerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link URLHandlerImpl#getLocation()}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>Then return {@code https://example.org/example}.</li>
+   *   <li>Given {@link URLHandlerImpl} RegexHandler is {@code false}.
+   *   <li>Then return {@code .}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#getLocation()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#getLocation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String URLHandlerImpl.getLocation()"})
-  public void testGetLocation_givenURLHandlerImplIdIsOne_thenReturnHttpsExampleOrgExample() {
+  public void testGetLocation_givenURLHandlerImplRegexHandlerIsFalse_thenReturnDot() {
     // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-    urlHandlerImpl.setIncomingURL(".");
-    urlHandlerImpl.setRegexHandler(true);
+    uRLHandlerImpl.setIncomingURL(".");
+    uRLHandlerImpl.setRegexHandler(false);
 
     // Act and Assert
-    assertEquals("https://example.org/example", urlHandlerImpl.getLocation());
+    assertEquals(".", uRLHandlerImpl.getLocation());
   }
 
   /**
    * Test {@link URLHandlerImpl#getLocation()}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) IncomingURL is {@code https://example.org/example}.</li>
+   *   <li>Given {@link URLHandlerImpl} RegexHandler is {@code true}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#getLocation()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#getLocation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String URLHandlerImpl.getLocation()"})
-  public void testGetLocation_givenURLHandlerImplIncomingURLIsHttpsExampleOrgExample() {
+  public void testGetLocation_givenURLHandlerImplRegexHandlerIsTrue_thenReturnNull() {
     // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    uRLHandlerImpl.setIncomingURL(".");
+    uRLHandlerImpl.setRegexHandler(true);
 
     // Act and Assert
-    assertEquals("https://example.org/example", urlHandlerImpl.getLocation());
+    assertNull(uRLHandlerImpl.getLocation());
   }
 
   /**
    * Test {@link URLHandlerImpl#getLocation()}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link URLHandlerImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#getLocation()}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#getLocation()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String URLHandlerImpl.getLocation()"})
   public void testGetLocation_givenURLHandlerImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new URLHandlerImpl()).getLocation());
+    assertNull(uRLHandlerImpl.getLocation());
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code *}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code *}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenAsterisk_thenReturnTrue() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("*"));
+  public void testHasRegExCharacters_whenAsterisk_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("*"));
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code \}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code \}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenBackslash_thenReturnTrue() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("\\"));
+  public void testHasRegExCharacters_whenBackslash_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("\\"));
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code ^}.</li>
+   *   <li>When {@code ^}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenCircumflexAccent() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("^"));
+  public void testHasRegExCharacters_whenCircumflexAccent_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("^"));
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code $}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code $}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenDollarSign_thenReturnTrue() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+  public void testHasRegExCharacters_whenDollarSign_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("$"));
+  }
 
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("$"));
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code https://example.org/example}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenHttpsExampleOrgExample_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("https://example.org/example"));
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
    *   <li>When {@code {}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenLeftCurlyBracket() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("{"));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code (}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenLeftParenthesis() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("("));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code [}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenLeftSquareBracket() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("["));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code +}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
    * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenPlusSign_thenReturnTrue() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("+"));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code ?}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenQuestionMark() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("?"));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code )}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenRightParenthesis() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters(")"));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
-   *   <li>When {@code |}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImplIdIsOne_whenVerticalLine() {
-    // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    urlHandlerImpl.setId(1L);
-    urlHandlerImpl.setIncomingURL("https://example.org/example");
-    urlHandlerImpl.setNewURL("https://example.org/example");
-    urlHandlerImpl.setRegexHandler(true);
-    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
-
-    // Act and Assert
-    assertTrue(urlHandlerImpl.hasRegExCharacters("|"));
-  }
-
-  /**
-   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
-   * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
-   *   <li>When {@code https://example.org/example}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImpl_whenHttpsExampleOrgExample() {
+  public void testHasRegExCharacters_whenLeftCurlyBracket_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new URLHandlerImpl()).hasRegExCharacters("https://example.org/example"));
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("{"));
   }
 
   /**
    * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
-   *   <li>When {@code Location}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code (}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
-  public void testHasRegExCharacters_givenURLHandlerImpl_whenLocation_thenReturnFalse() {
+  public void testHasRegExCharacters_whenLeftParenthesis_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertFalse((new URLHandlerImpl()).hasRegExCharacters("Location"));
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("("));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code [}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenLeftSquareBracket_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("["));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Location}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenLocation_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(uRLHandlerImpl.hasRegExCharacters("Location"));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code +}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenPlusSign_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("+"));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenQuestionMark_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("?"));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code )}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenRightParenthesis_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters(")"));
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code |}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean URLHandlerImpl.hasRegExCharacters(String)"})
+  public void testHasRegExCharacters_whenVerticalLine_thenReturnTrue() {
+    // Arrange, Act and Assert
+    assertTrue(uRLHandlerImpl.hasRegExCharacters("|"));
   }
 
   /**
    * Test {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new NullURLHandler(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<URLHandler> actualCreateOrRetrieveCopyInstanceResult = urlHandlerImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<URLHandler> actualCreateOrRetrieveCopyInstanceResult =
+        uRLHandlerImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -589,48 +543,116 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(new NullURLHandler(), false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<URLHandler> actualCreateOrRetrieveCopyInstanceResult =
+        uRLHandlerImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
     // Arrange
     URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(new NullURLHandler());
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    URLHandlerImpl urlHandlerImpl2 = new URLHandlerImpl();
+    urlHandlerImpl2.setId(1L);
+    urlHandlerImpl2.setIncomingURL("https://example.org/example");
+    urlHandlerImpl2.setNewURL("https://example.org/example");
+    urlHandlerImpl2.setRegexHandler(true);
+    urlHandlerImpl2.setUrlRedirectType(URLRedirectType.FORWARD);
+    CreateResponse<Object> createResponse = new CreateResponse<>(urlHandlerImpl2, false);
+
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    urlHandlerImpl.createOrRetrieveCopyInstance(context);
+    CreateResponse<URLHandler> actualCreateOrRetrieveCopyInstanceResult =
+        urlHandlerImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse URLHandlerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(new NullURLHandler(), false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<URLHandler> actualCreateOrRetrieveCopyInstanceResult =
+        urlHandlerImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test {@link URLHandlerImpl#equals(Object)}, and {@link URLHandlerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link URLHandlerImpl#equals(Object)}
    *   <li>{@link URLHandlerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.equals(Object)", "int URLHandlerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -650,25 +672,27 @@ public class URLHandlerImplDiffblueTest {
 
     // Act and Assert
     assertEquals(urlHandlerImpl, urlHandlerImpl2);
-    int expectedHashCodeResult = urlHandlerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, urlHandlerImpl2.hashCode());
+    assertEquals(urlHandlerImpl.hashCode(), urlHandlerImpl2.hashCode());
   }
 
   /**
    * Test {@link URLHandlerImpl#equals(Object)}, and {@link URLHandlerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link URLHandlerImpl#equals(Object)}
    *   <li>{@link URLHandlerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.equals(Object)", "int URLHandlerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -687,15 +711,17 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.equals(Object)", "int URLHandlerImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -719,15 +745,17 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.equals(Object)", "int URLHandlerImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -744,15 +772,17 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link URLHandlerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link URLHandlerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean URLHandlerImpl.equals(Object)", "int URLHandlerImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -769,8 +799,9 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link URLHandlerImpl}
    *   <li>{@link URLHandlerImpl#setId(Long)}
@@ -782,10 +813,17 @@ public class URLHandlerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void URLHandlerImpl.<init>()", "Long URLHandlerImpl.getId()",
-      "String URLHandlerImpl.getIncomingURL()", "String URLHandlerImpl.getNewURL()", "void URLHandlerImpl.setId(Long)",
-      "void URLHandlerImpl.setIncomingURL(String)", "void URLHandlerImpl.setNewURL(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void URLHandlerImpl.<init>()",
+    "Long URLHandlerImpl.getId()",
+    "String URLHandlerImpl.getIncomingURL()",
+    "String URLHandlerImpl.getNewURL()",
+    "void URLHandlerImpl.setId(Long)",
+    "void URLHandlerImpl.setIncomingURL(String)",
+    "void URLHandlerImpl.setNewURL(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     URLHandlerImpl actualUrlHandlerImpl = new URLHandlerImpl();

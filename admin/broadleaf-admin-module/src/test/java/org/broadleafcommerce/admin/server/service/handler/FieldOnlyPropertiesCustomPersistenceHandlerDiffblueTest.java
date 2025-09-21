@@ -27,7 +27,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +37,7 @@ import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
+import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
@@ -61,21 +63,78 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given array of {@link String} with {@code fieldImplOnly}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
-  public void testCanHandleInspect_givenArrayOfStringWithFieldImplOnly_thenReturnTrue() {
+    "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
+  })
+  public void testCanHandleInspect() {
     // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setCustomCriteria(new String[]{"fieldImplOnly"});
+    Entity entity = new Entity();
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+
+    // Act and Assert
+    assertFalse(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(persistencePackage));
+  }
+
+  /**
+   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
+  })
+  public void testCanHandleInspect2() {
+    // Arrange
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe", entity, new PersistencePerspective(), new String[] {}, "ABC123");
+
+    // Act and Assert
+    assertFalse(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(persistencePackage));
+  }
+
+  /**
+   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   *
+   * <ul>
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
+  })
+  public void testCanHandleInspect_thenReturnTrue() {
+    // Arrange
+    Entity entity = new Entity();
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe",
+            entity,
+            new PersistencePerspective(),
+            new String[] {"fieldImplOnly", "Custom Criteria"},
+            "ABC123");
 
     // Act and Assert
     assertTrue(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(persistencePackage));
@@ -83,78 +142,48 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>Given array of {@link String} with {@code java.text}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
-  public void testCanHandleInspect_givenArrayOfStringWithJavaText() {
-    // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setCustomCriteria(new String[]{"java.text"});
-
-    // Act and Assert
-    assertFalse(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(persistencePackage));
-  }
-
-  /**
-   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>Given empty array of {@link String}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
-  public void testCanHandleInspect_givenEmptyArrayOfString() {
-    // Arrange
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setCustomCriteria(new String[]{});
-
-    // Act and Assert
-    assertFalse(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(persistencePackage));
-  }
-
-  /**
-   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
-   * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
+    "java.lang.Boolean FieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
+  })
   public void testCanHandleInspect_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
+    assertFalse(
+        fieldOnlyPropertiesCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
   }
 
   /**
-   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage,
+   * DynamicEntityDao, InspectHelper)}.
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
+   * InspectHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+    "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
+  })
   public void testInspect() throws ServiceException {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
+        mock(AdornedTargetCollectionMetadata.class);
     when(adornedTargetCollectionMetadata.getInheritedFromType()).thenReturn("jane.doe@example.org");
 
     HashMap<String, FieldMetadata> stringFieldMetadataMap = new HashMap<>();
@@ -164,22 +193,29 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
     classMetadata.setCeilingType("Type");
     classMetadata.setCurrencyCode("GBP");
     classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setProperties(new Property[] {new Property()});
     classMetadata.setSecurityCeilingType("Security Ceiling Type");
     classMetadata.setTabAndGroupMetadata(new HashMap<>());
+
     PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(
+            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
-    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
-        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+    when(helper.buildClassMetadata(
+            Mockito.<Class<Object>[]>any(),
+            Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
+        .thenReturn(classMetadata);
 
     // Act
-    DynamicResultSet actualInspectResult = fieldOnlyPropertiesCustomPersistenceHandler.inspect(persistencePackage,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualInspectResult =
+        fieldOnlyPropertiesCustomPersistenceHandler.inspect(
+            persistencePackage, dynamicEntityDao, helper);
 
     // Assert
     verify(adornedTargetCollectionMetadata).getInheritedFromType();
-    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper)
+        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
     verify(helper).getSimpleMergedProperties(isNull(), isNull());
     assertNull(actualInspectResult.getPromptSearch());
     assertNull(actualInspectResult.getTotalCountLessThanPageSize());
@@ -198,19 +234,26 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage,
+   * DynamicEntityDao, InspectHelper)}.
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
+   * InspectHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
+    "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
+  })
   public void testInspect2() throws ServiceException {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata =
+        mock(AdornedTargetCollectionMetadata.class);
     when(adornedTargetCollectionMetadata.getInheritedFromType())
         .thenReturn("org.broadleafcommerce.core.search.domain.FieldImpl");
 
@@ -221,22 +264,29 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
     classMetadata.setCeilingType("Type");
     classMetadata.setCurrencyCode("GBP");
     classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setProperties(new Property[] {new Property()});
     classMetadata.setSecurityCeilingType("Security Ceiling Type");
     classMetadata.setTabAndGroupMetadata(new HashMap<>());
+
     PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(
+            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(stringFieldMetadataMap);
-    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
-        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+    when(helper.buildClassMetadata(
+            Mockito.<Class<Object>[]>any(),
+            Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
+        .thenReturn(classMetadata);
 
     // Act
-    DynamicResultSet actualInspectResult = fieldOnlyPropertiesCustomPersistenceHandler.inspect(persistencePackage,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualInspectResult =
+        fieldOnlyPropertiesCustomPersistenceHandler.inspect(
+            persistencePackage, dynamicEntityDao, helper);
 
     // Assert
     verify(adornedTargetCollectionMetadata).getInheritedFromType();
-    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper)
+        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
     verify(helper).getSimpleMergedProperties(isNull(), isNull());
     assertNull(actualInspectResult.getPromptSearch());
     assertNull(actualInspectResult.getTotalCountLessThanPageSize());
@@ -255,20 +305,27 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * Test {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage,
+   * DynamicEntityDao, InspectHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>When {@link DynamicEntityDaoImpl} (default constructor).</li>
-   *   <li>Then return PromptSearch is {@code null}.</li>
+   *   <li>Given {@link HashMap#HashMap()}.
+   *   <li>When {@link DynamicEntityDaoImpl} (default constructor).
+   *   <li>Then return PromptSearch is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   *
+   * <p>Method under test: {@link
+   * FieldOnlyPropertiesCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
+   * InspectHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
-  public void testInspect_givenHashMap_whenDynamicEntityDaoImpl_thenReturnPromptSearchIsNull() throws ServiceException {
+    "DynamicResultSet FieldOnlyPropertiesCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
+  })
+  public void testInspect_givenHashMap_whenDynamicEntityDaoImpl_thenReturnPromptSearchIsNull()
+      throws ServiceException {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
@@ -277,21 +334,28 @@ public class FieldOnlyPropertiesCustomPersistenceHandlerDiffblueTest {
     classMetadata.setCeilingType("Type");
     classMetadata.setCurrencyCode("GBP");
     classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setProperties(new Property[] {new Property()});
     classMetadata.setSecurityCeilingType("Security Ceiling Type");
     classMetadata.setTabAndGroupMetadata(new HashMap<>());
+
     PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(
+            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
-        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+    when(helper.buildClassMetadata(
+            Mockito.<Class<Object>[]>any(),
+            Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
+        .thenReturn(classMetadata);
 
     // Act
-    DynamicResultSet actualInspectResult = fieldOnlyPropertiesCustomPersistenceHandler.inspect(persistencePackage,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualInspectResult =
+        fieldOnlyPropertiesCustomPersistenceHandler.inspect(
+            persistencePackage, dynamicEntityDao, helper);
 
     // Assert
-    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper)
+        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
     verify(helper).getSimpleMergedProperties(isNull(), isNull());
     assertNull(actualInspectResult.getPromptSearch());
     assertNull(actualInspectResult.getTotalCountLessThanPageSize());

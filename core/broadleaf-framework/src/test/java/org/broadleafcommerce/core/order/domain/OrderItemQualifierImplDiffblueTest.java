@@ -21,19 +21,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import org.broadleafcommerce.common.audit.Auditable;
-import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.offer.domain.Offer;
-import org.broadleafcommerce.core.offer.domain.OfferImpl;
-import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -44,60 +34,47 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderItemQualifierImplDiffblueTest {
-  @Autowired
-  private OrderItemQualifierImpl orderItemQualifierImpl;
-
-  /**
-   * Test {@link OrderItemQualifierImpl#setOffer(Offer)}.
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#setOffer(Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemQualifierImpl.setOffer(Offer)"})
-  public void testSetOffer() {
-    // Arrange
-    OrderItemQualifierImpl orderItemQualifierImpl2 = new OrderItemQualifierImpl();
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    orderItemQualifierImpl2.setOffer(offer);
-
-    // Assert
-    assertTrue(orderItemQualifierImpl2.offer instanceof OfferImpl);
-    assertSame(offer, orderItemQualifierImpl2.getOffer());
-    assertSame(offer, orderItemQualifierImpl2.deproxiedOffer);
-  }
+  @Autowired private OrderItemQualifierImpl orderItemQualifierImpl;
 
   /**
    * Test {@link OrderItemQualifierImpl#getOffer()}.
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#getOffer()}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#getOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Offer OrderItemQualifierImpl.getOffer()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "org.broadleafcommerce.core.offer.domain.Offer OrderItemQualifierImpl.getOffer()"
+  })
   public void testGetOffer() {
     // Arrange, Act and Assert
-    assertNull((new OrderItemQualifierImpl()).getOffer());
+    assertNull(orderItemQualifierImpl.getOffer());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link
+   * OrderItemQualifierImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemQualifierImpl#equals(Object)}
    *   <li>{@link OrderItemQualifierImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -112,26 +89,32 @@ public class OrderItemQualifierImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemQualifierImpl, orderItemQualifierImpl2);
-    int expectedHashCodeResult = orderItemQualifierImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderItemQualifierImpl2.hashCode());
+    assertEquals(orderItemQualifierImpl.hashCode(), orderItemQualifierImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link
+   * OrderItemQualifierImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemQualifierImpl#equals(Object)}
    *   <li>{@link OrderItemQualifierImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -146,26 +129,32 @@ public class OrderItemQualifierImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemQualifierImpl, orderItemQualifierImpl2);
-    int expectedHashCodeResult = orderItemQualifierImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderItemQualifierImpl2.hashCode());
+    assertEquals(orderItemQualifierImpl.hashCode(), orderItemQualifierImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link
+   * OrderItemQualifierImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemQualifierImpl#equals(Object)}
    *   <li>{@link OrderItemQualifierImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -180,26 +169,32 @@ public class OrderItemQualifierImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemQualifierImpl, orderItemQualifierImpl2);
-    int expectedHashCodeResult = orderItemQualifierImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderItemQualifierImpl2.hashCode());
+    assertEquals(orderItemQualifierImpl.hashCode(), orderItemQualifierImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link
+   * OrderItemQualifierImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemQualifierImpl#equals(Object)}
    *   <li>{@link OrderItemQualifierImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -214,26 +209,32 @@ public class OrderItemQualifierImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderItemQualifierImpl, orderItemQualifierImpl2);
-    int expectedHashCodeResult = orderItemQualifierImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderItemQualifierImpl2.hashCode());
+    assertEquals(orderItemQualifierImpl.hashCode(), orderItemQualifierImpl2.hashCode());
   }
 
   /**
-   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link OrderItemQualifierImpl#hashCode()}.
+   * Test {@link OrderItemQualifierImpl#equals(Object)}, and {@link
+   * OrderItemQualifierImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemQualifierImpl#equals(Object)}
    *   <li>{@link OrderItemQualifierImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -249,16 +250,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -277,16 +283,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -305,55 +316,26 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-
-    OrderItemImpl orderItem = new OrderItemImpl();
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
     orderItemQualifierImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemQualifierImpl.setOrderItem(orderItem);
+    orderItemQualifierImpl.setOrderItem(new DiscreteOrderItemImpl());
     orderItemQualifierImpl.setQuantity(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemQualifierImpl orderItemQualifierImpl2 = new OrderItemQualifierImpl();
@@ -367,16 +349,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -395,16 +382,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -423,16 +415,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -451,16 +448,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -474,16 +476,21 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test {@link OrderItemQualifierImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemQualifierImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderItemQualifierImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderItemQualifierImpl.equals(Object)", "int OrderItemQualifierImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderItemQualifierImpl.equals(Object)",
+    "int OrderItemQualifierImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OrderItemQualifierImpl orderItemQualifierImpl = new OrderItemQualifierImpl();
@@ -497,8 +504,9 @@ public class OrderItemQualifierImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderItemQualifierImpl}
    *   <li>{@link OrderItemQualifierImpl#setId(Long)}
@@ -510,11 +518,17 @@ public class OrderItemQualifierImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemQualifierImpl.<init>()", "Long OrderItemQualifierImpl.getId()",
-      "OrderItem OrderItemQualifierImpl.getOrderItem()", "Long OrderItemQualifierImpl.getQuantity()",
-      "void OrderItemQualifierImpl.setId(Long)", "void OrderItemQualifierImpl.setOrderItem(OrderItem)",
-      "void OrderItemQualifierImpl.setQuantity(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemQualifierImpl.<init>()",
+    "Long OrderItemQualifierImpl.getId()",
+    "OrderItem OrderItemQualifierImpl.getOrderItem()",
+    "Long OrderItemQualifierImpl.getQuantity()",
+    "void OrderItemQualifierImpl.setId(Long)",
+    "void OrderItemQualifierImpl.setOrderItem(OrderItem)",
+    "void OrderItemQualifierImpl.setQuantity(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemQualifierImpl actualOrderItemQualifierImpl = new OrderItemQualifierImpl();

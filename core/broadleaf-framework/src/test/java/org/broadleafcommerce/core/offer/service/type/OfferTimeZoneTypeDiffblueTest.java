@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -34,16 +35,35 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {OfferTimeZoneType.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferTimeZoneTypeDiffblueTest {
-  @Autowired
-  private OfferTimeZoneType offerTimeZoneType;
+  @Autowired private OfferTimeZoneType offerTimeZoneType;
+
+  /**
+   * Test {@link OfferTimeZoneType#getInstance(String)}.
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#getInstance(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OfferTimeZoneType OfferTimeZoneType.getInstance(String)"})
+  public void testGetInstance() {
+    // Arrange and Act
+    OfferTimeZoneType actualInstance = OfferTimeZoneType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+    assertFalse(actualInstance.getJavaStandardTimeZone());
+  }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferTimeZoneType#OfferTimeZoneType()}
    *   <li>{@link OfferTimeZoneType#setJavaStandardTimeZone(Boolean)}
@@ -53,10 +73,15 @@ public class OfferTimeZoneTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferTimeZoneType.<init>()", "String OfferTimeZoneType.getFriendlyType()",
-      "Boolean OfferTimeZoneType.getJavaStandardTimeZone()", "String OfferTimeZoneType.getType()",
-      "void OfferTimeZoneType.setJavaStandardTimeZone(Boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferTimeZoneType.<init>()",
+    "String OfferTimeZoneType.getFriendlyType()",
+    "Boolean OfferTimeZoneType.getJavaStandardTimeZone()",
+    "String OfferTimeZoneType.getType()",
+    "void OfferTimeZoneType.setJavaStandardTimeZone(Boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferTimeZoneType actualOfferTimeZoneType = new OfferTimeZoneType();
@@ -72,11 +97,12 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#OfferTimeZoneType(String, String)}.
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#OfferTimeZoneType(String, String)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#OfferTimeZoneType(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferTimeZoneType.<init>(String, String)"})
   public void testNewOfferTimeZoneType() {
     // Arrange and Act
@@ -90,15 +116,17 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#OfferTimeZoneType(String, String, Boolean)}.
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#OfferTimeZoneType(String, String, Boolean)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#OfferTimeZoneType(String, String, Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferTimeZoneType.<init>(String, String, Boolean)"})
   public void testNewOfferTimeZoneType2() {
     // Arrange and Act
-    OfferTimeZoneType actualOfferTimeZoneType = new OfferTimeZoneType("Type", "Friendly Type", true);
+    OfferTimeZoneType actualOfferTimeZoneType =
+        new OfferTimeZoneType("Type", "Friendly Type", true);
 
     // Assert
     assertEquals("Friendly Type", actualOfferTimeZoneType.getFriendlyType());
@@ -108,66 +136,70 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#setType(String)}.
+   *
    * <ul>
-   *   <li>When {@code TypeType}.</li>
-   *   <li>Then {@link OfferTimeZoneType#APPLICATION} Type is {@code TypeType}.</li>
+   *   <li>When {@code TypeType}.
+   *   <li>Then {@link OfferTimeZoneType} Type is {@code TypeType}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#setType(String)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#setType(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferTimeZoneType.setType(String)"})
-  public void testSetType_whenTypeType_thenApplicationTypeIsTypeType() {
-    // Arrange
-    OfferTimeZoneType offerTimeZoneType2 = OfferTimeZoneType.APPLICATION;
-
-    // Act
-    offerTimeZoneType2.setType("TypeType");
+  public void testSetType_whenTypeType_thenOfferTimeZoneTypeTypeIsTypeType() {
+    // Arrange and Act
+    offerTimeZoneType.setType("TypeType");
 
     // Assert
-    assertEquals("TypeType", offerTimeZoneType2.getType());
+    assertEquals("TypeType", offerTimeZoneType.getType());
   }
 
   /**
    * Test {@link OfferTimeZoneType#setType(String)}.
+   *
    * <ul>
-   *   <li>When {@code Type}.</li>
-   *   <li>Then {@link OfferTimeZoneType#APPLICATION} Type is {@code Type}.</li>
+   *   <li>When {@code Type}.
+   *   <li>Then {@link OfferTimeZoneType} Type is {@code Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#setType(String)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#setType(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferTimeZoneType.setType(String)"})
-  public void testSetType_whenType_thenApplicationTypeIsType() {
-    // Arrange
-    OfferTimeZoneType offerTimeZoneType2 = OfferTimeZoneType.APPLICATION;
-
-    // Act
-    offerTimeZoneType2.setType("Type");
+  public void testSetType_whenType_thenOfferTimeZoneTypeTypeIsType() {
+    // Arrange and Act
+    offerTimeZoneType.setType("Type");
 
     // Assert
-    assertEquals("Type", offerTimeZoneType2.getType());
+    assertEquals("Type", offerTimeZoneType.getType());
   }
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}, and {@link OfferTimeZoneType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferTimeZoneType#equals(Object)}
    *   <li>{@link OfferTimeZoneType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferTimeZoneType offerTimeZoneType = OfferTimeZoneType.APPLICATION;
@@ -175,53 +207,63 @@ public class OfferTimeZoneTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(offerTimeZoneType, offerTimeZoneType2);
-    int expectedHashCodeResult = offerTimeZoneType.hashCode();
-    assertEquals(expectedHashCodeResult, offerTimeZoneType2.hashCode());
+    assertEquals(offerTimeZoneType.hashCode(), offerTimeZoneType2.hashCode());
   }
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}, and {@link OfferTimeZoneType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferTimeZoneType#equals(Object)}
    *   <li>{@link OfferTimeZoneType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferTimeZoneType offerTimeZoneType = OfferTimeZoneType.CST;
-    OfferTimeZoneType offerTimeZoneType2 = new OfferTimeZoneType("CST", "CST", true);
+    OfferTimeZoneType offerTimeZoneType2 = new OfferTimeZoneType("CST", "CST");
 
     // Act and Assert
     assertEquals(offerTimeZoneType, offerTimeZoneType2);
-    int expectedHashCodeResult = offerTimeZoneType.hashCode();
-    assertEquals(expectedHashCodeResult, offerTimeZoneType2.hashCode());
+    assertEquals(offerTimeZoneType.hashCode(), offerTimeZoneType2.hashCode());
   }
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}, and {@link OfferTimeZoneType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferTimeZoneType#equals(Object)}
    *   <li>{@link OfferTimeZoneType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     OfferTimeZoneType offerTimeZoneType = new OfferTimeZoneType();
@@ -229,26 +271,31 @@ public class OfferTimeZoneTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(offerTimeZoneType, offerTimeZoneType2);
-    int expectedHashCodeResult = offerTimeZoneType.hashCode();
-    assertEquals(expectedHashCodeResult, offerTimeZoneType2.hashCode());
+    assertEquals(offerTimeZoneType.hashCode(), offerTimeZoneType2.hashCode());
   }
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}, and {@link OfferTimeZoneType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferTimeZoneType#equals(Object)}
    *   <li>{@link OfferTimeZoneType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferTimeZoneType offerTimeZoneType = OfferTimeZoneType.APPLICATION;
@@ -261,16 +308,21 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferTimeZoneType.CST, OfferTimeZoneType.APPLICATION);
@@ -278,16 +330,21 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new OfferTimeZoneType(), OfferTimeZoneType.APPLICATION);
@@ -295,16 +352,21 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferTimeZoneType.APPLICATION, null);
@@ -312,16 +374,21 @@ public class OfferTimeZoneTypeDiffblueTest {
 
   /**
    * Test {@link OfferTimeZoneType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTimeZoneType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferTimeZoneType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferTimeZoneType.equals(Object)", "int OfferTimeZoneType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferTimeZoneType.equals(Object)",
+    "int OfferTimeZoneType.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferTimeZoneType.APPLICATION, "Different type to OfferTimeZoneType");

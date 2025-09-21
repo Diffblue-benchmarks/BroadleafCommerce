@@ -18,10 +18,10 @@
 package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,29 +37,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoleServiceImplDiffblueTest {
-  @Mock
-  private RoleDao roleDao;
+  @Mock private RoleDao roleDao;
 
-  @InjectMocks
-  private RoleServiceImpl roleServiceImpl;
+  @InjectMocks private RoleServiceImpl roleServiceImpl;
 
   /**
    * Test {@link RoleServiceImpl#findCustomerRolesByCustomerId(Long)}.
-   * <p>
-   * Method under test: {@link RoleServiceImpl#findCustomerRolesByCustomerId(Long)}
+   *
+   * <p>Method under test: {@link RoleServiceImpl#findCustomerRolesByCustomerId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RoleServiceImpl.findCustomerRolesByCustomerId(Long)"})
   public void testFindCustomerRolesByCustomerId() {
     // Arrange
     when(roleDao.readCustomerRolesByCustomerId(Mockito.<Long>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<CustomerRole> actualFindCustomerRolesByCustomerIdResult = roleServiceImpl.findCustomerRolesByCustomerId(1L);
+    List<CustomerRole> actualFindCustomerRolesByCustomerIdResult =
+        roleServiceImpl.findCustomerRolesByCustomerId(1L);
 
     // Assert
-    verify(roleDao).readCustomerRolesByCustomerId(eq(1L));
+    verify(roleDao).readCustomerRolesByCustomerId(1L);
     assertTrue(actualFindCustomerRolesByCustomerIdResult.isEmpty());
   }
 }

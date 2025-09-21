@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.extensibility.context.merge.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,28 +28,32 @@ import org.junit.experimental.categories.Category;
 public class SpaceDelimitedNodeValueMergeDiffblueTest {
   /**
    * Test {@link SpaceDelimitedNodeValueMerge#getDelimiter()}.
-   * <p>
-   * Method under test: {@link SpaceDelimitedNodeValueMerge#getDelimiter()}
+   *
+   * <p>Method under test: {@link SpaceDelimitedNodeValueMerge#getDelimiter()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String SpaceDelimitedNodeValueMerge.getDelimiter()"})
   public void testGetDelimiter() {
     // Arrange, Act and Assert
-    assertEquals(" ", (new SpaceDelimitedNodeValueMerge()).getDelimiter());
+    assertEquals(" ", new SpaceDelimitedNodeValueMerge().getDelimiter());
   }
 
   /**
    * Test new {@link SpaceDelimitedNodeValueMerge} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SpaceDelimitedNodeValueMerge}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * SpaceDelimitedNodeValueMerge}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SpaceDelimitedNodeValueMerge.<init>()"})
   public void testNewSpaceDelimitedNodeValueMerge() {
     // Arrange and Act
-    SpaceDelimitedNodeValueMerge actualSpaceDelimitedNodeValueMerge = new SpaceDelimitedNodeValueMerge();
+    SpaceDelimitedNodeValueMerge actualSpaceDelimitedNodeValueMerge =
+        new SpaceDelimitedNodeValueMerge();
 
     // Assert
     assertEquals(" ", actualSpaceDelimitedNodeValueMerge.getDelimiter());

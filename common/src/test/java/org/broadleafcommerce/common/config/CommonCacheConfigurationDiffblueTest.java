@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extensibility.cache.JCacheRegionConfiguration;
 import org.junit.Test;
@@ -34,27 +35,32 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CommonCacheConfiguration.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CommonCacheConfigurationDiffblueTest {
-  @Autowired
-  private CommonCacheConfiguration commonCacheConfiguration;
+  @Autowired private CommonCacheConfiguration commonCacheConfiguration;
 
   /**
    * Test {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.defaultUpdateTimestampsRegion()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.defaultUpdateTimestampsRegion()"
+  })
   public void testDefaultUpdateTimestampsRegion_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualDefaultUpdateTimestampsRegionResult = commonCacheConfiguration
-        .defaultUpdateTimestampsRegion();
+    JCacheRegionConfiguration actualDefaultUpdateTimestampsRegionResult =
+        commonCacheConfiguration.defaultUpdateTimestampsRegion();
 
     // Assert
-    assertEquals("default-update-timestamps-region", actualDefaultUpdateTimestampsRegionResult.getCacheName());
+    assertEquals(
+        "default-update-timestamps-region",
+        actualDefaultUpdateTimestampsRegionResult.getCacheName());
     assertNull(actualDefaultUpdateTimestampsRegionResult.getConfiguration());
     assertEquals(-1, actualDefaultUpdateTimestampsRegionResult.getTtlSeconds());
     assertEquals(5000, actualDefaultUpdateTimestampsRegionResult.getMaxElementsInMemory());
@@ -68,22 +74,28 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#defaultUpdateTimestampsRegion()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.defaultUpdateTimestampsRegion()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.defaultUpdateTimestampsRegion()"
+  })
   public void testDefaultUpdateTimestampsRegion_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualDefaultUpdateTimestampsRegionResult = (new CommonCacheConfiguration())
-        .defaultUpdateTimestampsRegion();
+    JCacheRegionConfiguration actualDefaultUpdateTimestampsRegionResult =
+        new CommonCacheConfiguration().defaultUpdateTimestampsRegion();
 
     // Assert
-    assertEquals("default-update-timestamps-region", actualDefaultUpdateTimestampsRegionResult.getCacheName());
+    assertEquals(
+        "default-update-timestamps-region",
+        actualDefaultUpdateTimestampsRegionResult.getCacheName());
     assertNull(actualDefaultUpdateTimestampsRegionResult.getConfiguration());
     assertEquals(-1, actualDefaultUpdateTimestampsRegionResult.getTtlSeconds());
     assertEquals(5000, actualDefaultUpdateTimestampsRegionResult.getMaxElementsInMemory());
@@ -97,22 +109,27 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#defaultQueryResultsRegion()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#defaultQueryResultsRegion()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#defaultQueryResultsRegion()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.defaultQueryResultsRegion()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.defaultQueryResultsRegion()"
+  })
   public void testDefaultQueryResultsRegion_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualDefaultQueryResultsRegionResult = commonCacheConfiguration
-        .defaultQueryResultsRegion();
+    JCacheRegionConfiguration actualDefaultQueryResultsRegionResult =
+        commonCacheConfiguration.defaultQueryResultsRegion();
 
     // Assert
-    assertEquals("default-query-results-region", actualDefaultQueryResultsRegionResult.getCacheName());
+    assertEquals(
+        "default-query-results-region", actualDefaultQueryResultsRegionResult.getCacheName());
     assertNull(actualDefaultQueryResultsRegionResult.getConfiguration());
     assertEquals(600, actualDefaultQueryResultsRegionResult.getTtlSeconds());
     assertTrue(actualDefaultQueryResultsRegionResult.getEnableManagement());
@@ -120,29 +137,35 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualDefaultQueryResultsRegionResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualDefaultQueryResultsRegionResult.getMaxElementsInMemory());
     assertSame(key, actualDefaultQueryResultsRegionResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#defaultQueryResultsRegion()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#defaultQueryResultsRegion()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#defaultQueryResultsRegion()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.defaultQueryResultsRegion()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.defaultQueryResultsRegion()"
+  })
   public void testDefaultQueryResultsRegion_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualDefaultQueryResultsRegionResult = (new CommonCacheConfiguration())
-        .defaultQueryResultsRegion();
+    JCacheRegionConfiguration actualDefaultQueryResultsRegionResult =
+        new CommonCacheConfiguration().defaultQueryResultsRegion();
 
     // Assert
-    assertEquals("default-query-results-region", actualDefaultQueryResultsRegionResult.getCacheName());
+    assertEquals(
+        "default-query-results-region", actualDefaultQueryResultsRegionResult.getCacheName());
     assertNull(actualDefaultQueryResultsRegionResult.getConfiguration());
     assertEquals(600, actualDefaultQueryResultsRegionResult.getTtlSeconds());
     assertTrue(actualDefaultQueryResultsRegionResult.getEnableManagement());
@@ -150,25 +173,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualDefaultQueryResultsRegionResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualDefaultQueryResultsRegionResult.getMaxElementsInMemory());
     assertSame(key, actualDefaultQueryResultsRegionResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blStandardElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blStandardElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blStandardElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blStandardElements()"})
   public void testBlStandardElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlStandardElementsResult = commonCacheConfiguration.blStandardElements();
+    JCacheRegionConfiguration actualBlStandardElementsResult =
+        commonCacheConfiguration.blStandardElements();
 
     // Assert
     assertEquals("blStandardElements", actualBlStandardElementsResult.getCacheName());
@@ -185,18 +212,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blStandardElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blStandardElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blStandardElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blStandardElements()"})
   public void testBlStandardElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlStandardElementsResult = (new CommonCacheConfiguration()).blStandardElements();
+    JCacheRegionConfiguration actualBlStandardElementsResult =
+        new CommonCacheConfiguration().blStandardElements();
 
     // Assert
     assertEquals("blStandardElements", actualBlStandardElementsResult.getCacheName());
@@ -213,14 +243,16 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blProducts()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProducts()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProducts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProducts()"})
   public void testBlProducts_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -241,18 +273,20 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blProducts()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProducts()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProducts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProducts()"})
   public void testBlProducts_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductsResult = (new CommonCacheConfiguration()).blProducts();
+    JCacheRegionConfiguration actualBlProductsResult = new CommonCacheConfiguration().blProducts();
 
     // Assert
     assertEquals("blProducts", actualBlProductsResult.getCacheName());
@@ -269,18 +303,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blProductUrlCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProductUrlCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProductUrlCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProductUrlCache()"})
   public void testBlProductUrlCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductUrlCacheResult = commonCacheConfiguration.blProductUrlCache();
+    JCacheRegionConfiguration actualBlProductUrlCacheResult =
+        commonCacheConfiguration.blProductUrlCache();
 
     // Assert
     assertEquals("blProductUrlCache", actualBlProductUrlCacheResult.getCacheName());
@@ -291,25 +328,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlProductUrlCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlProductUrlCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlProductUrlCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blProductUrlCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProductUrlCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProductUrlCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProductUrlCache()"})
   public void testBlProductUrlCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductUrlCacheResult = (new CommonCacheConfiguration()).blProductUrlCache();
+    JCacheRegionConfiguration actualBlProductUrlCacheResult =
+        new CommonCacheConfiguration().blProductUrlCache();
 
     // Assert
     assertEquals("blProductUrlCache", actualBlProductUrlCacheResult.getCacheName());
@@ -320,21 +361,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlProductUrlCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlProductUrlCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlProductUrlCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blCategories()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCategories()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCategories()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCategories()"})
   public void testBlCategories_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -355,18 +399,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCategories()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCategories()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCategories()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCategories()"})
   public void testBlCategories_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoriesResult = (new CommonCacheConfiguration()).blCategories();
+    JCacheRegionConfiguration actualBlCategoriesResult =
+        new CommonCacheConfiguration().blCategories();
 
     // Assert
     assertEquals("blCategories", actualBlCategoriesResult.getCacheName());
@@ -383,18 +430,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCategoryUrlCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCategoryUrlCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCategoryUrlCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCategoryUrlCache()"})
   public void testBlCategoryUrlCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryUrlCacheResult = commonCacheConfiguration.blCategoryUrlCache();
+    JCacheRegionConfiguration actualBlCategoryUrlCacheResult =
+        commonCacheConfiguration.blCategoryUrlCache();
 
     // Assert
     assertEquals("blCategoryUrlCache", actualBlCategoryUrlCacheResult.getCacheName());
@@ -405,25 +455,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlCategoryUrlCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlCategoryUrlCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlCategoryUrlCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blCategoryUrlCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCategoryUrlCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCategoryUrlCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCategoryUrlCache()"})
   public void testBlCategoryUrlCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryUrlCacheResult = (new CommonCacheConfiguration()).blCategoryUrlCache();
+    JCacheRegionConfiguration actualBlCategoryUrlCacheResult =
+        new CommonCacheConfiguration().blCategoryUrlCache();
 
     // Assert
     assertEquals("blCategoryUrlCache", actualBlCategoryUrlCacheResult.getCacheName());
@@ -434,21 +488,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlCategoryUrlCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlCategoryUrlCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlCategoryUrlCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blOffers()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blOffers()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blOffers()"})
   public void testBlOffers_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -469,18 +526,20 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blOffers()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blOffers()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blOffers()"})
   public void testBlOffers_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlOffersResult = (new CommonCacheConfiguration()).blOffers();
+    JCacheRegionConfiguration actualBlOffersResult = new CommonCacheConfiguration().blOffers();
 
     // Assert
     assertEquals("blOffers", actualBlOffersResult.getCacheName());
@@ -497,18 +556,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blInventoryElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blInventoryElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blInventoryElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blInventoryElements()"})
   public void testBlInventoryElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlInventoryElementsResult = commonCacheConfiguration.blInventoryElements();
+    JCacheRegionConfiguration actualBlInventoryElementsResult =
+        commonCacheConfiguration.blInventoryElements();
 
     // Assert
     assertEquals("blInventoryElements", actualBlInventoryElementsResult.getCacheName());
@@ -525,18 +587,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blInventoryElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blInventoryElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blInventoryElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blInventoryElements()"})
   public void testBlInventoryElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlInventoryElementsResult = (new CommonCacheConfiguration()).blInventoryElements();
+    JCacheRegionConfiguration actualBlInventoryElementsResult =
+        new CommonCacheConfiguration().blInventoryElements();
 
     // Assert
     assertEquals("blInventoryElements", actualBlInventoryElementsResult.getCacheName());
@@ -553,14 +618,16 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#queryCatalog()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryCatalog()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryCatalog()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryCatalog()"})
   public void testQueryCatalog_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -581,18 +648,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#queryCatalog()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryCatalog()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryCatalog()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryCatalog()"})
   public void testQueryCatalog_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryCatalogResult = (new CommonCacheConfiguration()).queryCatalog();
+    JCacheRegionConfiguration actualQueryCatalogResult =
+        new CommonCacheConfiguration().queryCatalog();
 
     // Assert
     assertEquals("query.Catalog", actualQueryCatalogResult.getCacheName());
@@ -609,18 +679,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#queryPriceList()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryPriceList()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryPriceList()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryPriceList()"})
   public void testQueryPriceList_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryPriceListResult = commonCacheConfiguration.queryPriceList();
+    JCacheRegionConfiguration actualQueryPriceListResult =
+        commonCacheConfiguration.queryPriceList();
 
     // Assert
     assertEquals("query.PriceList", actualQueryPriceListResult.getCacheName());
@@ -631,25 +704,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryPriceListResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQueryPriceListResult.getMaxElementsInMemory());
     assertSame(key, actualQueryPriceListResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryPriceList()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryPriceList()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryPriceList()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryPriceList()"})
   public void testQueryPriceList_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryPriceListResult = (new CommonCacheConfiguration()).queryPriceList();
+    JCacheRegionConfiguration actualQueryPriceListResult =
+        new CommonCacheConfiguration().queryPriceList();
 
     // Assert
     assertEquals("query.PriceList", actualQueryPriceListResult.getCacheName());
@@ -660,21 +737,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryPriceListResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQueryPriceListResult.getMaxElementsInMemory());
     assertSame(key, actualQueryPriceListResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryCms()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryCms()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryCms()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryCms()"})
   public void testQueryCms_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -689,24 +769,28 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryCmsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryCmsResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryCmsResult.getMaxElementsInMemory());
     assertSame(key, actualQueryCmsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryCms()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryCms()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryCms()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryCms()"})
   public void testQueryCms_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryCmsResult = (new CommonCacheConfiguration()).queryCms();
+    JCacheRegionConfiguration actualQueryCmsResult = new CommonCacheConfiguration().queryCms();
 
     // Assert
     assertEquals("query.Cms", actualQueryCmsResult.getCacheName());
@@ -717,20 +801,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryCmsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryCmsResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryCmsResult.getMaxElementsInMemory());
     assertSame(key, actualQueryCmsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryOffer()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryOffer()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryOffer()"})
   public void testQueryOffer_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -745,24 +833,28 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryOfferResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryOfferResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryOfferResult.getMaxElementsInMemory());
     assertSame(key, actualQueryOfferResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryOffer()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryOffer()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryOffer()"})
   public void testQueryOffer_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryOfferResult = (new CommonCacheConfiguration()).queryOffer();
+    JCacheRegionConfiguration actualQueryOfferResult = new CommonCacheConfiguration().queryOffer();
 
     // Assert
     assertEquals("query.Offer", actualQueryOfferResult.getCacheName());
@@ -773,24 +865,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryOfferResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryOfferResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryOfferResult.getMaxElementsInMemory());
     assertSame(key, actualQueryOfferResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blOrderElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blOrderElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blOrderElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blOrderElements()"})
   public void testBlOrderElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlOrderElementsResult = commonCacheConfiguration.blOrderElements();
+    JCacheRegionConfiguration actualBlOrderElementsResult =
+        commonCacheConfiguration.blOrderElements();
 
     // Assert
     assertEquals("blOrderElements", actualBlOrderElementsResult.getCacheName());
@@ -807,18 +904,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blOrderElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blOrderElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blOrderElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blOrderElements()"})
   public void testBlOrderElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlOrderElementsResult = (new CommonCacheConfiguration()).blOrderElements();
+    JCacheRegionConfiguration actualBlOrderElementsResult =
+        new CommonCacheConfiguration().blOrderElements();
 
     // Assert
     assertEquals("blOrderElements", actualBlOrderElementsResult.getCacheName());
@@ -835,18 +935,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCustomerElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCustomerElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCustomerElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCustomerElements()"})
   public void testBlCustomerElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCustomerElementsResult = commonCacheConfiguration.blCustomerElements();
+    JCacheRegionConfiguration actualBlCustomerElementsResult =
+        commonCacheConfiguration.blCustomerElements();
 
     // Assert
     assertEquals("blCustomerElements", actualBlCustomerElementsResult.getCacheName());
@@ -863,18 +966,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCustomerElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCustomerElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCustomerElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCustomerElements()"})
   public void testBlCustomerElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCustomerElementsResult = (new CommonCacheConfiguration()).blCustomerElements();
+    JCacheRegionConfiguration actualBlCustomerElementsResult =
+        new CommonCacheConfiguration().blCustomerElements();
 
     // Assert
     assertEquals("blCustomerElements", actualBlCustomerElementsResult.getCacheName());
@@ -891,18 +997,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCustomerAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCustomerAddress()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCustomerAddress()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCustomerAddress()"})
   public void testBlCustomerAddress_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCustomerAddressResult = commonCacheConfiguration.blCustomerAddress();
+    JCacheRegionConfiguration actualBlCustomerAddressResult =
+        commonCacheConfiguration.blCustomerAddress();
 
     // Assert
     assertEquals("blCustomerAddress", actualBlCustomerAddressResult.getCacheName());
@@ -913,25 +1022,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlCustomerAddressResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlCustomerAddressResult.getMaxElementsInMemory());
     assertSame(key, actualBlCustomerAddressResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blCustomerAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCustomerAddress()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCustomerAddress()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCustomerAddress()"})
   public void testBlCustomerAddress_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCustomerAddressResult = (new CommonCacheConfiguration()).blCustomerAddress();
+    JCacheRegionConfiguration actualBlCustomerAddressResult =
+        new CommonCacheConfiguration().blCustomerAddress();
 
     // Assert
     assertEquals("blCustomerAddress", actualBlCustomerAddressResult.getCacheName());
@@ -942,21 +1055,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlCustomerAddressResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlCustomerAddressResult.getMaxElementsInMemory());
     assertSame(key, actualBlCustomerAddressResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryOrder()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryOrder()"})
   public void testQueryOrder_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -971,24 +1087,28 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryOrderResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryOrderResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryOrderResult.getMaxElementsInMemory());
     assertSame(key, actualQueryOrderResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryOrder()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryOrder()"})
   public void testQueryOrder_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryOrderResult = (new CommonCacheConfiguration()).queryOrder();
+    JCacheRegionConfiguration actualQueryOrderResult = new CommonCacheConfiguration().queryOrder();
 
     // Assert
     assertEquals("query.Order", actualQueryOrderResult.getCacheName());
@@ -999,20 +1119,24 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryOrderResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER, actualQueryOrderResult.getMaxElementsInMemory());
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+        actualQueryOrderResult.getMaxElementsInMemory());
     assertSame(key, actualQueryOrderResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#querySearch()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#querySearch()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#querySearch()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.querySearch()"})
   public void testQuerySearch_givenCommonCacheConfiguration() {
     // Arrange and Act
@@ -1027,25 +1151,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQuerySearchResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQuerySearchResult.getMaxElementsInMemory());
     assertSame(key, actualQuerySearchResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#querySearch()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#querySearch()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#querySearch()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.querySearch()"})
   public void testQuerySearch_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQuerySearchResult = (new CommonCacheConfiguration()).querySearch();
+    JCacheRegionConfiguration actualQuerySearchResult =
+        new CommonCacheConfiguration().querySearch();
 
     // Assert
     assertEquals("query.Search", actualQuerySearchResult.getCacheName());
@@ -1056,25 +1184,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQuerySearchResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQuerySearchResult.getMaxElementsInMemory());
     assertSame(key, actualQuerySearchResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#generatedResourceCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#generatedResourceCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#generatedResourceCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.generatedResourceCache()"})
   public void testGeneratedResourceCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualGeneratedResourceCacheResult = commonCacheConfiguration.generatedResourceCache();
+    JCacheRegionConfiguration actualGeneratedResourceCacheResult =
+        commonCacheConfiguration.generatedResourceCache();
 
     // Assert
     assertEquals("generatedResourceCache", actualGeneratedResourceCacheResult.getCacheName());
@@ -1085,26 +1217,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualGeneratedResourceCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
+    assertEquals(
+        BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
         actualGeneratedResourceCacheResult.getMaxElementsInMemory());
     assertSame(key, actualGeneratedResourceCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#generatedResourceCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#generatedResourceCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#generatedResourceCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.generatedResourceCache()"})
   public void testGeneratedResourceCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualGeneratedResourceCacheResult = (new CommonCacheConfiguration())
-        .generatedResourceCache();
+    JCacheRegionConfiguration actualGeneratedResourceCacheResult =
+        new CommonCacheConfiguration().generatedResourceCache();
 
     // Assert
     assertEquals("generatedResourceCache", actualGeneratedResourceCacheResult.getCacheName());
@@ -1115,25 +1250,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualGeneratedResourceCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
+    assertEquals(
+        BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
         actualGeneratedResourceCacheResult.getMaxElementsInMemory());
     assertSame(key, actualGeneratedResourceCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blTemplateElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blTemplateElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blTemplateElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blTemplateElements()"})
   public void testBlTemplateElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlTemplateElementsResult = commonCacheConfiguration.blTemplateElements();
+    JCacheRegionConfiguration actualBlTemplateElementsResult =
+        commonCacheConfiguration.blTemplateElements();
 
     // Assert
     assertEquals("blTemplateElements", actualBlTemplateElementsResult.getCacheName());
@@ -1150,18 +1289,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blTemplateElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blTemplateElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blTemplateElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blTemplateElements()"})
   public void testBlTemplateElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlTemplateElementsResult = (new CommonCacheConfiguration()).blTemplateElements();
+    JCacheRegionConfiguration actualBlTemplateElementsResult =
+        new CommonCacheConfiguration().blTemplateElements();
 
     // Assert
     assertEquals("blTemplateElements", actualBlTemplateElementsResult.getCacheName());
@@ -1178,18 +1320,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blTranslationElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blTranslationElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blTranslationElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blTranslationElements()"})
   public void testBlTranslationElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlTranslationElementsResult = commonCacheConfiguration.blTranslationElements();
+    JCacheRegionConfiguration actualBlTranslationElementsResult =
+        commonCacheConfiguration.blTranslationElements();
 
     // Assert
     assertEquals("blTranslationElements", actualBlTranslationElementsResult.getCacheName());
@@ -1206,19 +1351,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blTranslationElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blTranslationElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blTranslationElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blTranslationElements()"})
   public void testBlTranslationElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlTranslationElementsResult = (new CommonCacheConfiguration())
-        .blTranslationElements();
+    JCacheRegionConfiguration actualBlTranslationElementsResult =
+        new CommonCacheConfiguration().blTranslationElements();
 
     // Assert
     assertEquals("blTranslationElements", actualBlTranslationElementsResult.getCacheName());
@@ -1235,18 +1382,23 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blBatchTranslationCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blBatchTranslationCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blBatchTranslationCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blBatchTranslationCache()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blBatchTranslationCache()"
+  })
   public void testBlBatchTranslationCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlBatchTranslationCacheResult = commonCacheConfiguration.blBatchTranslationCache();
+    JCacheRegionConfiguration actualBlBatchTranslationCacheResult =
+        commonCacheConfiguration.blBatchTranslationCache();
 
     // Assert
     assertEquals("blBatchTranslationCache", actualBlBatchTranslationCacheResult.getCacheName());
@@ -1263,19 +1415,23 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blBatchTranslationCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blBatchTranslationCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blBatchTranslationCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blBatchTranslationCache()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blBatchTranslationCache()"
+  })
   public void testBlBatchTranslationCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlBatchTranslationCacheResult = (new CommonCacheConfiguration())
-        .blBatchTranslationCache();
+    JCacheRegionConfiguration actualBlBatchTranslationCacheResult =
+        new CommonCacheConfiguration().blBatchTranslationCache();
 
     // Assert
     assertEquals("blBatchTranslationCache", actualBlBatchTranslationCacheResult.getCacheName());
@@ -1292,22 +1448,27 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blConfigurationModuleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blConfigurationModuleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blConfigurationModuleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blConfigurationModuleElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blConfigurationModuleElements()"
+  })
   public void testBlConfigurationModuleElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlConfigurationModuleElementsResult = commonCacheConfiguration
-        .blConfigurationModuleElements();
+    JCacheRegionConfiguration actualBlConfigurationModuleElementsResult =
+        commonCacheConfiguration.blConfigurationModuleElements();
 
     // Assert
-    assertEquals("blConfigurationModuleElements", actualBlConfigurationModuleElementsResult.getCacheName());
+    assertEquals(
+        "blConfigurationModuleElements", actualBlConfigurationModuleElementsResult.getCacheName());
     assertNull(actualBlConfigurationModuleElementsResult.getConfiguration());
     assertEquals(600, actualBlConfigurationModuleElementsResult.getTtlSeconds());
     assertTrue(actualBlConfigurationModuleElementsResult.getEnableManagement());
@@ -1315,29 +1476,35 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlConfigurationModuleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlConfigurationModuleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlConfigurationModuleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blConfigurationModuleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blConfigurationModuleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blConfigurationModuleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blConfigurationModuleElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blConfigurationModuleElements()"
+  })
   public void testBlConfigurationModuleElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlConfigurationModuleElementsResult = (new CommonCacheConfiguration())
-        .blConfigurationModuleElements();
+    JCacheRegionConfiguration actualBlConfigurationModuleElementsResult =
+        new CommonCacheConfiguration().blConfigurationModuleElements();
 
     // Assert
-    assertEquals("blConfigurationModuleElements", actualBlConfigurationModuleElementsResult.getCacheName());
+    assertEquals(
+        "blConfigurationModuleElements", actualBlConfigurationModuleElementsResult.getCacheName());
     assertNull(actualBlConfigurationModuleElementsResult.getConfiguration());
     assertEquals(600, actualBlConfigurationModuleElementsResult.getTtlSeconds());
     assertTrue(actualBlConfigurationModuleElementsResult.getEnableManagement());
@@ -1345,29 +1512,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlConfigurationModuleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlConfigurationModuleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlConfigurationModuleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryConfigurationModuleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryConfigurationModuleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryConfigurationModuleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryConfigurationModuleElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.queryConfigurationModuleElements()"
+  })
   public void testQueryConfigurationModuleElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryConfigurationModuleElementsResult = commonCacheConfiguration
-        .queryConfigurationModuleElements();
+    JCacheRegionConfiguration actualQueryConfigurationModuleElementsResult =
+        commonCacheConfiguration.queryConfigurationModuleElements();
 
     // Assert
-    assertEquals("query.ConfigurationModuleElements", actualQueryConfigurationModuleElementsResult.getCacheName());
+    assertEquals(
+        "query.ConfigurationModuleElements",
+        actualQueryConfigurationModuleElementsResult.getCacheName());
     assertNull(actualQueryConfigurationModuleElementsResult.getConfiguration());
     assertEquals(600, actualQueryConfigurationModuleElementsResult.getTtlSeconds());
     assertTrue(actualQueryConfigurationModuleElementsResult.getEnableManagement());
@@ -1375,29 +1549,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryConfigurationModuleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQueryConfigurationModuleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualQueryConfigurationModuleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#queryConfigurationModuleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryConfigurationModuleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryConfigurationModuleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryConfigurationModuleElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.queryConfigurationModuleElements()"
+  })
   public void testQueryConfigurationModuleElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryConfigurationModuleElementsResult = (new CommonCacheConfiguration())
-        .queryConfigurationModuleElements();
+    JCacheRegionConfiguration actualQueryConfigurationModuleElementsResult =
+        new CommonCacheConfiguration().queryConfigurationModuleElements();
 
     // Assert
-    assertEquals("query.ConfigurationModuleElements", actualQueryConfigurationModuleElementsResult.getCacheName());
+    assertEquals(
+        "query.ConfigurationModuleElements",
+        actualQueryConfigurationModuleElementsResult.getCacheName());
     assertNull(actualQueryConfigurationModuleElementsResult.getConfiguration());
     assertEquals(600, actualQueryConfigurationModuleElementsResult.getTtlSeconds());
     assertTrue(actualQueryConfigurationModuleElementsResult.getEnableManagement());
@@ -1405,26 +1586,31 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualQueryConfigurationModuleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualQueryConfigurationModuleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualQueryConfigurationModuleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemPropertyElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemPropertyElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemPropertyElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyElements()"
+  })
   public void testBlSystemPropertyElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertyElementsResult = commonCacheConfiguration
-        .blSystemPropertyElements();
+    JCacheRegionConfiguration actualBlSystemPropertyElementsResult =
+        commonCacheConfiguration.blSystemPropertyElements();
 
     // Assert
     assertEquals("blSystemPropertyElements", actualBlSystemPropertyElementsResult.getCacheName());
@@ -1435,26 +1621,31 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSystemPropertyElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSystemPropertyElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlSystemPropertyElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemPropertyElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemPropertyElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemPropertyElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyElements()"
+  })
   public void testBlSystemPropertyElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertyElementsResult = (new CommonCacheConfiguration())
-        .blSystemPropertyElements();
+    JCacheRegionConfiguration actualBlSystemPropertyElementsResult =
+        new CommonCacheConfiguration().blSystemPropertyElements();
 
     // Assert
     assertEquals("blSystemPropertyElements", actualBlSystemPropertyElementsResult.getCacheName());
@@ -1465,29 +1656,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSystemPropertyElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSystemPropertyElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlSystemPropertyElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyNullCheckCache()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyNullCheckCache()"
+  })
   public void testBlSystemPropertyNullCheckCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertyNullCheckCacheResult = commonCacheConfiguration
-        .blSystemPropertyNullCheckCache();
+    JCacheRegionConfiguration actualBlSystemPropertyNullCheckCacheResult =
+        commonCacheConfiguration.blSystemPropertyNullCheckCache();
 
     // Assert
-    assertEquals("blSystemPropertyNullCheckCache", actualBlSystemPropertyNullCheckCacheResult.getCacheName());
+    assertEquals(
+        "blSystemPropertyNullCheckCache",
+        actualBlSystemPropertyNullCheckCacheResult.getCacheName());
     assertNull(actualBlSystemPropertyNullCheckCacheResult.getConfiguration());
     assertEquals(600, actualBlSystemPropertyNullCheckCacheResult.getTtlSeconds());
     assertTrue(actualBlSystemPropertyNullCheckCacheResult.getEnableManagement());
@@ -1495,29 +1693,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSystemPropertyNullCheckCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSystemPropertyNullCheckCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlSystemPropertyNullCheckCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemPropertyNullCheckCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyNullCheckCache()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blSystemPropertyNullCheckCache()"
+  })
   public void testBlSystemPropertyNullCheckCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertyNullCheckCacheResult = (new CommonCacheConfiguration())
-        .blSystemPropertyNullCheckCache();
+    JCacheRegionConfiguration actualBlSystemPropertyNullCheckCacheResult =
+        new CommonCacheConfiguration().blSystemPropertyNullCheckCache();
 
     // Assert
-    assertEquals("blSystemPropertyNullCheckCache", actualBlSystemPropertyNullCheckCacheResult.getCacheName());
+    assertEquals(
+        "blSystemPropertyNullCheckCache",
+        actualBlSystemPropertyNullCheckCacheResult.getCacheName());
     assertNull(actualBlSystemPropertyNullCheckCacheResult.getConfiguration());
     assertEquals(600, actualBlSystemPropertyNullCheckCacheResult.getTtlSeconds());
     assertTrue(actualBlSystemPropertyNullCheckCacheResult.getEnableManagement());
@@ -1525,25 +1730,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSystemPropertyNullCheckCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSystemPropertyNullCheckCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlSystemPropertyNullCheckCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blBundleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blBundleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blBundleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blBundleElements()"})
   public void testBlBundleElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlBundleElementsResult = commonCacheConfiguration.blBundleElements();
+    JCacheRegionConfiguration actualBlBundleElementsResult =
+        commonCacheConfiguration.blBundleElements();
 
     // Assert
     assertEquals("blBundleElements", actualBlBundleElementsResult.getCacheName());
@@ -1554,25 +1763,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlBundleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlBundleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlBundleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blBundleElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blBundleElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blBundleElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blBundleElements()"})
   public void testBlBundleElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlBundleElementsResult = (new CommonCacheConfiguration()).blBundleElements();
+    JCacheRegionConfiguration actualBlBundleElementsResult =
+        new CommonCacheConfiguration().blBundleElements();
 
     // Assert
     assertEquals("blBundleElements", actualBlBundleElementsResult.getCacheName());
@@ -1583,25 +1796,31 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlBundleElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlBundleElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlBundleElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blResourceCacheElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blResourceCacheElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blResourceCacheElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blResourceCacheElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blResourceCacheElements()"
+  })
   public void testBlResourceCacheElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlResourceCacheElementsResult = commonCacheConfiguration.blResourceCacheElements();
+    JCacheRegionConfiguration actualBlResourceCacheElementsResult =
+        commonCacheConfiguration.blResourceCacheElements();
 
     // Assert
     assertEquals("blResourceCacheElements", actualBlResourceCacheElementsResult.getCacheName());
@@ -1612,26 +1831,31 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlResourceCacheElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlResourceCacheElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlResourceCacheElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blResourceCacheElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blResourceCacheElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blResourceCacheElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blResourceCacheElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blResourceCacheElements()"
+  })
   public void testBlResourceCacheElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlResourceCacheElementsResult = (new CommonCacheConfiguration())
-        .blResourceCacheElements();
+    JCacheRegionConfiguration actualBlResourceCacheElementsResult =
+        new CommonCacheConfiguration().blResourceCacheElements();
 
     // Assert
     assertEquals("blResourceCacheElements", actualBlResourceCacheElementsResult.getCacheName());
@@ -1642,29 +1866,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlResourceCacheElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlResourceCacheElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlResourceCacheElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blResourceTransformerCacheElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blResourceTransformerCacheElements()"
+  })
   public void testBlResourceTransformerCacheElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlResourceTransformerCacheElementsResult = commonCacheConfiguration
-        .blResourceTransformerCacheElements();
+    JCacheRegionConfiguration actualBlResourceTransformerCacheElementsResult =
+        commonCacheConfiguration.blResourceTransformerCacheElements();
 
     // Assert
-    assertEquals("blResourceTransformerCacheElements", actualBlResourceTransformerCacheElementsResult.getCacheName());
+    assertEquals(
+        "blResourceTransformerCacheElements",
+        actualBlResourceTransformerCacheElementsResult.getCacheName());
     assertNull(actualBlResourceTransformerCacheElementsResult.getConfiguration());
     assertEquals(86400, actualBlResourceTransformerCacheElementsResult.getTtlSeconds());
     assertTrue(actualBlResourceTransformerCacheElementsResult.getEnableManagement());
@@ -1672,29 +1903,36 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlResourceTransformerCacheElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlResourceTransformerCacheElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlResourceTransformerCacheElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blResourceTransformerCacheElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blResourceTransformerCacheElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blResourceTransformerCacheElements()"
+  })
   public void testBlResourceTransformerCacheElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlResourceTransformerCacheElementsResult = (new CommonCacheConfiguration())
-        .blResourceTransformerCacheElements();
+    JCacheRegionConfiguration actualBlResourceTransformerCacheElementsResult =
+        new CommonCacheConfiguration().blResourceTransformerCacheElements();
 
     // Assert
-    assertEquals("blResourceTransformerCacheElements", actualBlResourceTransformerCacheElementsResult.getCacheName());
+    assertEquals(
+        "blResourceTransformerCacheElements",
+        actualBlResourceTransformerCacheElementsResult.getCacheName());
     assertNull(actualBlResourceTransformerCacheElementsResult.getConfiguration());
     assertEquals(86400, actualBlResourceTransformerCacheElementsResult.getTtlSeconds());
     assertTrue(actualBlResourceTransformerCacheElementsResult.getEnableManagement());
@@ -1702,25 +1940,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlResourceTransformerCacheElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlResourceTransformerCacheElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlResourceTransformerCacheElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSandBoxElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSandBoxElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSandBoxElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSandBoxElements()"})
   public void testBlSandBoxElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSandBoxElementsResult = commonCacheConfiguration.blSandBoxElements();
+    JCacheRegionConfiguration actualBlSandBoxElementsResult =
+        commonCacheConfiguration.blSandBoxElements();
 
     // Assert
     assertEquals("blSandBoxElements", actualBlSandBoxElementsResult.getCacheName());
@@ -1737,18 +1979,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSandBoxElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSandBoxElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSandBoxElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSandBoxElements()"})
   public void testBlSandBoxElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSandBoxElementsResult = (new CommonCacheConfiguration()).blSandBoxElements();
+    JCacheRegionConfiguration actualBlSandBoxElementsResult =
+        new CommonCacheConfiguration().blSandBoxElements();
 
     // Assert
     assertEquals("blSandBoxElements", actualBlSandBoxElementsResult.getCacheName());
@@ -1765,18 +2010,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#queryblSandBoxElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryblSandBoxElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryblSandBoxElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryblSandBoxElements()"})
   public void testQueryblSandBoxElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryblSandBoxElementsResult = commonCacheConfiguration.queryblSandBoxElements();
+    JCacheRegionConfiguration actualQueryblSandBoxElementsResult =
+        commonCacheConfiguration.queryblSandBoxElements();
 
     // Assert
     assertEquals("query.blSandBoxElements", actualQueryblSandBoxElementsResult.getCacheName());
@@ -1793,19 +2041,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#queryblSandBoxElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#queryblSandBoxElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#queryblSandBoxElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.queryblSandBoxElements()"})
   public void testQueryblSandBoxElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualQueryblSandBoxElementsResult = (new CommonCacheConfiguration())
-        .queryblSandBoxElements();
+    JCacheRegionConfiguration actualQueryblSandBoxElementsResult =
+        new CommonCacheConfiguration().queryblSandBoxElements();
 
     // Assert
     assertEquals("query.blSandBoxElements", actualQueryblSandBoxElementsResult.getCacheName());
@@ -1822,18 +2072,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSecurityElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSecurityElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSecurityElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSecurityElements()"})
   public void testBlSecurityElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSecurityElementsResult = commonCacheConfiguration.blSecurityElements();
+    JCacheRegionConfiguration actualBlSecurityElementsResult =
+        commonCacheConfiguration.blSecurityElements();
 
     // Assert
     assertEquals("blSecurityElements", actualBlSecurityElementsResult.getCacheName());
@@ -1844,25 +2097,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSecurityElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSecurityElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlSecurityElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSecurityElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSecurityElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSecurityElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSecurityElements()"})
   public void testBlSecurityElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSecurityElementsResult = (new CommonCacheConfiguration()).blSecurityElements();
+    JCacheRegionConfiguration actualBlSecurityElementsResult =
+        new CommonCacheConfiguration().blSecurityElements();
 
     // Assert
     assertEquals("blSecurityElements", actualBlSecurityElementsResult.getCacheName());
@@ -1873,25 +2130,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSecurityElementsResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSecurityElementsResult.getMaxElementsInMemory());
     assertSame(key, actualBlSecurityElementsResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSiteElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSiteElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSiteElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSiteElements()"})
   public void testBlSiteElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSiteElementsResult = commonCacheConfiguration.blSiteElements();
+    JCacheRegionConfiguration actualBlSiteElementsResult =
+        commonCacheConfiguration.blSiteElements();
 
     // Assert
     assertEquals("blSiteElements", actualBlSiteElementsResult.getCacheName());
@@ -1908,18 +2169,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSiteElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSiteElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSiteElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSiteElements()"})
   public void testBlSiteElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSiteElementsResult = (new CommonCacheConfiguration()).blSiteElements();
+    JCacheRegionConfiguration actualBlSiteElementsResult =
+        new CommonCacheConfiguration().blSiteElements();
 
     // Assert
     assertEquals("blSiteElements", actualBlSiteElementsResult.getCacheName());
@@ -1936,18 +2200,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSiteElementsQuery()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSiteElementsQuery()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSiteElementsQuery()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSiteElementsQuery()"})
   public void testBlSiteElementsQuery_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSiteElementsQueryResult = commonCacheConfiguration.blSiteElementsQuery();
+    JCacheRegionConfiguration actualBlSiteElementsQueryResult =
+        commonCacheConfiguration.blSiteElementsQuery();
 
     // Assert
     assertEquals("blSiteElementsQuery", actualBlSiteElementsQueryResult.getCacheName());
@@ -1958,25 +2225,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSiteElementsQueryResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSiteElementsQueryResult.getMaxElementsInMemory());
     assertSame(key, actualBlSiteElementsQueryResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blSiteElementsQuery()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSiteElementsQuery()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSiteElementsQuery()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSiteElementsQuery()"})
   public void testBlSiteElementsQuery_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSiteElementsQueryResult = (new CommonCacheConfiguration()).blSiteElementsQuery();
+    JCacheRegionConfiguration actualBlSiteElementsQueryResult =
+        new CommonCacheConfiguration().blSiteElementsQuery();
 
     // Assert
     assertEquals("blSiteElementsQuery", actualBlSiteElementsQueryResult.getCacheName());
@@ -1987,25 +2258,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlSiteElementsQueryResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlSiteElementsQueryResult.getMaxElementsInMemory());
     assertSame(key, actualBlSiteElementsQueryResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blProductOverrideCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProductOverrideCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProductOverrideCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProductOverrideCache()"})
   public void testBlProductOverrideCache_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductOverrideCacheResult = commonCacheConfiguration.blProductOverrideCache();
+    JCacheRegionConfiguration actualBlProductOverrideCacheResult =
+        commonCacheConfiguration.blProductOverrideCache();
 
     // Assert
     assertEquals("blProductOverrideCache", actualBlProductOverrideCacheResult.getCacheName());
@@ -2016,26 +2291,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlProductOverrideCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
+    assertEquals(
+        BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
         actualBlProductOverrideCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlProductOverrideCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blProductOverrideCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blProductOverrideCache()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blProductOverrideCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blProductOverrideCache()"})
   public void testBlProductOverrideCache_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductOverrideCacheResult = (new CommonCacheConfiguration())
-        .blProductOverrideCache();
+    JCacheRegionConfiguration actualBlProductOverrideCacheResult =
+        new CommonCacheConfiguration().blProductOverrideCache();
 
     // Assert
     assertEquals("blProductOverrideCache", actualBlProductOverrideCacheResult.getCacheName());
@@ -2046,25 +2324,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlProductOverrideCacheResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
+    assertEquals(
+        BroadleafSharedOverrideProfileAwarePropertySource.DEFAULT_ORDER,
         actualBlProductOverrideCacheResult.getMaxElementsInMemory());
     assertSame(key, actualBlProductOverrideCacheResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blCountryElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCountryElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCountryElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCountryElements()"})
   public void testBlCountryElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCountryElementsResult = commonCacheConfiguration.blCountryElements();
+    JCacheRegionConfiguration actualBlCountryElementsResult =
+        commonCacheConfiguration.blCountryElements();
 
     // Assert
     assertEquals("blCountryElements", actualBlCountryElementsResult.getCacheName());
@@ -2081,18 +2363,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blCountryElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blCountryElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blCountryElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blCountryElements()"})
   public void testBlCountryElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCountryElementsResult = (new CommonCacheConfiguration()).blCountryElements();
+    JCacheRegionConfiguration actualBlCountryElementsResult =
+        new CommonCacheConfiguration().blCountryElements();
 
     // Assert
     assertEquals("blCountryElements", actualBlCountryElementsResult.getCacheName());
@@ -2109,18 +2394,23 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blDataDrivenEnumeration()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blDataDrivenEnumeration()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blDataDrivenEnumeration()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blDataDrivenEnumeration()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blDataDrivenEnumeration()"
+  })
   public void testBlDataDrivenEnumeration_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlDataDrivenEnumerationResult = commonCacheConfiguration.blDataDrivenEnumeration();
+    JCacheRegionConfiguration actualBlDataDrivenEnumerationResult =
+        commonCacheConfiguration.blDataDrivenEnumeration();
 
     // Assert
     assertEquals("blDataDrivenEnumeration", actualBlDataDrivenEnumerationResult.getCacheName());
@@ -2131,26 +2421,31 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlDataDrivenEnumerationResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlDataDrivenEnumerationResult.getMaxElementsInMemory());
     assertSame(key, actualBlDataDrivenEnumerationResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blDataDrivenEnumeration()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blDataDrivenEnumeration()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blDataDrivenEnumeration()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blDataDrivenEnumeration()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration CommonCacheConfiguration.blDataDrivenEnumeration()"
+  })
   public void testBlDataDrivenEnumeration_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlDataDrivenEnumerationResult = (new CommonCacheConfiguration())
-        .blDataDrivenEnumeration();
+    JCacheRegionConfiguration actualBlDataDrivenEnumerationResult =
+        new CommonCacheConfiguration().blDataDrivenEnumeration();
 
     // Assert
     assertEquals("blDataDrivenEnumeration", actualBlDataDrivenEnumerationResult.getCacheName());
@@ -2161,25 +2456,29 @@ public class CommonCacheConfigurationDiffblueTest {
     Class<Object> expectedKey = Object.class;
     Class<?> key = actualBlDataDrivenEnumerationResult.getKey();
     assertEquals(expectedKey, key);
-    assertEquals(FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
+    assertEquals(
+        FrameworkCommonClasspathPropertySource.DEFAULT_ORDER,
         actualBlDataDrivenEnumerationResult.getMaxElementsInMemory());
     assertSame(key, actualBlDataDrivenEnumerationResult.getValue());
   }
 
   /**
    * Test {@link CommonCacheConfiguration#blMediaElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blMediaElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blMediaElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blMediaElements()"})
   public void testBlMediaElements_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlMediaElementsResult = commonCacheConfiguration.blMediaElements();
+    JCacheRegionConfiguration actualBlMediaElementsResult =
+        commonCacheConfiguration.blMediaElements();
 
     // Assert
     assertEquals("blMediaElements", actualBlMediaElementsResult.getCacheName());
@@ -2196,18 +2495,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blMediaElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blMediaElements()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blMediaElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blMediaElements()"})
   public void testBlMediaElements_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlMediaElementsResult = (new CommonCacheConfiguration()).blMediaElements();
+    JCacheRegionConfiguration actualBlMediaElementsResult =
+        new CommonCacheConfiguration().blMediaElements();
 
     // Assert
     assertEquals("blMediaElements", actualBlMediaElementsResult.getCacheName());
@@ -2224,18 +2526,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemProperties()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration}.</li>
+   *   <li>Given {@link CommonCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemProperties()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemProperties()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemProperties()"})
   public void testBlSystemProperties_givenCommonCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertiesResult = commonCacheConfiguration.blSystemProperties();
+    JCacheRegionConfiguration actualBlSystemPropertiesResult =
+        commonCacheConfiguration.blSystemProperties();
 
     // Assert
     assertEquals("blSystemProperties", actualBlSystemPropertiesResult.getCacheName());
@@ -2252,18 +2557,21 @@ public class CommonCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CommonCacheConfiguration#blSystemProperties()}.
+   *
    * <ul>
-   *   <li>Given {@link CommonCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CommonCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommonCacheConfiguration#blSystemProperties()}
+   *
+   * <p>Method under test: {@link CommonCacheConfiguration#blSystemProperties()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CommonCacheConfiguration.blSystemProperties()"})
   public void testBlSystemProperties_givenCommonCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSystemPropertiesResult = (new CommonCacheConfiguration()).blSystemProperties();
+    JCacheRegionConfiguration actualBlSystemPropertiesResult =
+        new CommonCacheConfiguration().blSystemProperties();
 
     // Assert
     assertEquals("blSystemProperties", actualBlSystemPropertiesResult.getCacheName());

@@ -21,14 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,8 +41,6 @@ import org.broadleafcommerce.common.security.service.ExploitProtectionService;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
-import org.broadleafcommerce.core.catalog.domain.SkuImpl;
-import org.broadleafcommerce.core.inventory.service.InventoryService;
 import org.broadleafcommerce.core.inventory.service.InventoryServiceExtensionHandler;
 import org.broadleafcommerce.core.inventory.service.InventoryServiceExtensionManager;
 import org.broadleafcommerce.core.web.processor.extension.UncacheableDataProcessorExtensionHandler;
@@ -62,29 +59,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class UncacheableDataProcessorDiffblueTest {
-  @Mock
-  private ExploitProtectionService exploitProtectionService;
+  @Mock private ExploitProtectionService exploitProtectionService;
 
-  @Mock
-  private InventoryService inventoryService;
+  @Mock private InventoryServiceExtensionManager inventoryServiceExtensionManager;
 
-  @Mock
-  private InventoryServiceExtensionManager inventoryServiceExtensionManager;
+  @InjectMocks private UncacheableDataProcessor uncacheableDataProcessor;
 
-  @InjectMocks
-  private UncacheableDataProcessor uncacheableDataProcessor;
-
-  @Mock
-  private UncacheableDataProcessorExtensionManager uncacheableDataProcessorExtensionManager;
+  @Mock private UncacheableDataProcessorExtensionManager uncacheableDataProcessorExtensionManager;
 
   /**
    * Test {@link UncacheableDataProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getPrecedence()}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"int UncacheableDataProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
@@ -92,218 +83,368 @@ class UncacheableDataProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
-   * <ul>
-   *   <li>Given {@link ExploitProtectionService} {@link ExploitProtectionService#getCSRFToken()} return {@code ABC123}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
+   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}.
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given ExploitProtectionService getCSRFToken() return 'ABC123'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
-  void testGetReplacementModel_givenExploitProtectionServiceGetCSRFTokenReturnAbc123() throws ServiceException {
+    "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
+  })
+  void testGetReplacementModel() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.getCSRFToken())
+        .thenThrow(new ServiceException("An error occurred"));
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context));
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(exploitProtectionService).getCSRFToken();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Given {@code callbackBlock}.
+   *   <li>Then {@link HashMap#HashMap()} size is two.
+   * </ul>
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName(
+      "Test getReplacementModel(String, Map, BroadleafTemplateContext); given 'callbackBlock'; then HashMap() size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
+  })
+  void testGetReplacementModel_givenCallbackBlock_thenHashMapSizeIsTwo() throws ServiceException {
     // Arrange
     when(exploitProtectionService.getCSRFToken()).thenReturn("ABC123");
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
     when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+
     HashMap<String, String> tagAttributes = new HashMap<>();
+    tagAttributes.put("callbackBlock", "Tag Attributes");
+    tagAttributes.put("callback", "Tag Attributes");
+    tagAttributes.put("callbackBlock", "Tag Attributes");
+    tagAttributes.put("callback", "Tag Attributes");
+
     BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
     doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
-    when(context.createTextElement(Mockito.<String>any())).thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createTextElement(Mockito.<String>any()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
     when(context.createModel()).thenReturn(broadleafTemplateModel);
 
     // Act
     uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context);
 
-    // Assert
+    // Assert that nothing has changed
     verify(uncacheableDataProcessorExtensionManager).getProxy();
     verify(exploitProtectionService).getCSRFToken();
     verify(exploitProtectionService).getCsrfTokenParameter();
     verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
     verify(context).createModel();
-    verify(context).createTextElement(eq(
-        "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  updateUncacheableData(params);\n</SCRIPT>"));
+    verify(context)
+        .createTextElement(
+            "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  Tag Attributes</SCRIPT>");
     verify(context, atLeast(1)).getVariable(Mockito.<String>any());
     verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+    assertEquals(2, tagAttributes.size());
+    assertEquals("Tag Attributes", tagAttributes.get("callback"));
+    assertEquals("Tag Attributes", tagAttributes.get("callbackBlock"));
+    assertEquals("blc", uncacheableDataProcessor.getPrefix());
+    assertEquals("uncacheabledata", uncacheableDataProcessor.getName());
+    assertEquals(
+        "updateUncacheableData(params);\n", uncacheableDataProcessor.getDefaultCallbackFunction());
+    assertEquals(100, uncacheableDataProcessor.getPrecedence());
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
+   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link ExploitProtectionService} {@link ExploitProtectionService#getCSRFToken()} return {@code null}.</li>
+   *   <li>Given {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given ExploitProtectionService getCSRFToken() return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
-  void testGetReplacementModel_givenExploitProtectionServiceGetCSRFTokenReturnNull() throws ServiceException {
+    "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
+  })
+  void testGetReplacementModel_givenNull() throws ServiceException {
     // Arrange
-    when(exploitProtectionService.getCSRFToken()).thenReturn(null);
+    when(exploitProtectionService.getCSRFToken()).thenReturn("ABC123");
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
     when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
     HashMap<String, String> tagAttributes = new HashMap<>();
+
     BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
     doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
-    when(context.createTextElement(Mockito.<String>any())).thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.getVariable(Mockito.<String>any())).thenReturn(null);
+    when(context.createTextElement(Mockito.<String>any()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
     when(context.createModel()).thenReturn(broadleafTemplateModel);
 
     // Act
-    uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context);
+    uncacheableDataProcessor
+        .getReplacementModel("Tag Name", tagAttributes, context)
+        .addElement(mock(BroadleafTemplateElement.class));
 
-    // Assert
+    // Assert that nothing has changed
     verify(uncacheableDataProcessorExtensionManager).getProxy();
     verify(exploitProtectionService).getCSRFToken();
     verify(exploitProtectionService).getCsrfTokenParameter();
     verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
     verify(context).createModel();
-    verify(context).createTextElement(eq(
-        "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":null,\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  updateUncacheableData(params);\n</SCRIPT>"));
+    verify(context)
+        .createTextElement(
+            "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  updateUncacheableData(params);\n</SCRIPT>");
     verify(context, atLeast(1)).getVariable(Mockito.<String>any());
-    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+    verify(broadleafTemplateModel, atLeast(1)).addElement(Mockito.<BroadleafTemplateElement>any());
+    assertEquals("blc", uncacheableDataProcessor.getPrefix());
+    assertEquals("uncacheabledata", uncacheableDataProcessor.getName());
+    assertEquals(
+        "updateUncacheableData(params);\n", uncacheableDataProcessor.getDefaultCallbackFunction());
+    assertEquals(100, uncacheableDataProcessor.getPrecedence());
+    assertTrue(tagAttributes.isEmpty());
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
+   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link ExploitProtectionService} {@link ExploitProtectionService#getCSRFToken()} return {@code <SCRIPT>}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given ExploitProtectionService getCSRFToken() return '<SCRIPT>'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getReplacementModel(String, Map, BroadleafTemplateContext); given RuntimeException()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
-  void testGetReplacementModel_givenExploitProtectionServiceGetCSRFTokenReturnScript() throws ServiceException {
-    // Arrange
-    when(exploitProtectionService.getCSRFToken()).thenReturn("<SCRIPT>\n");
-    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
-    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
-    HashMap<String, String> tagAttributes = new HashMap<>();
-    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
-    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
-    when(context.createTextElement(Mockito.<String>any())).thenReturn(mock(BroadleafTemplateElement.class));
-    when(context.createModel()).thenReturn(broadleafTemplateModel);
-
-    // Act
-    uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context);
-
-    // Assert
-    verify(uncacheableDataProcessorExtensionManager).getProxy();
-    verify(exploitProtectionService).getCSRFToken();
-    verify(exploitProtectionService).getCsrfTokenParameter();
-    verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
-    verify(context).createModel();
-    verify(context).createTextElement(eq(
-        "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"<SCRIPT>\\n\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  updateUncacheableData(params);\n</SCRIPT>"));
-    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
-    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
-   * <ul>
-   *   <li>Given {@link ExploitProtectionService}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map, BroadleafTemplateContext)}
-   */
-  @Test
-  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext); given ExploitProtectionService; then throw RuntimeException")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({
-      "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"})
-  void testGetReplacementModel_givenExploitProtectionService_thenThrowRuntimeException() {
+    "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
+  })
+  void testGetReplacementModel_givenRuntimeException() {
     // Arrange
     HashMap<String, String> tagAttributes = new HashMap<>();
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenThrow(new RuntimeException("<SCRIPT>\n"));
+    when(context.getVariable(Mockito.<String>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
+    assertThrows(
+        RuntimeException.class,
         () -> uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context));
-    verify(context).getVariable(eq("blcAllDisplayedProducts"));
+    verify(context).getVariable("blcAllDisplayedProducts");
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Then {@link HashMap#HashMap()} Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#getReplacementModel(String, Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName(
+      "Test getReplacementModel(String, Map, BroadleafTemplateContext); then HashMap() Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "BroadleafTemplateModel UncacheableDataProcessor.getReplacementModel(String, Map, BroadleafTemplateContext)"
+  })
+  void testGetReplacementModel_thenHashMapEmpty() throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.getCSRFToken()).thenReturn("ABC123");
+    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    BroadleafTemplateModel broadleafTemplateModel = mock(BroadleafTemplateModel.class);
+    doNothing().when(broadleafTemplateModel).addElement(Mockito.<BroadleafTemplateElement>any());
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+    when(context.createTextElement(Mockito.<String>any()))
+        .thenReturn(mock(BroadleafTemplateElement.class));
+    when(context.createModel()).thenReturn(broadleafTemplateModel);
+
+    // Act
+    uncacheableDataProcessor.getReplacementModel("Tag Name", tagAttributes, context);
+
+    // Assert that nothing has changed
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(exploitProtectionService).getCSRFToken();
+    verify(exploitProtectionService).getCsrfTokenParameter();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context).createModel();
+    verify(context)
+        .createTextElement(
+            "<SCRIPT>\n  var params = \n  {\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\",\"outOfStockSkus\":[]};\n  updateUncacheableData(params);\n</SCRIPT>");
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+    verify(broadleafTemplateModel).addElement(isA(BroadleafTemplateElement.class));
+    assertEquals("blc", uncacheableDataProcessor.getPrefix());
+    assertEquals("uncacheabledata", uncacheableDataProcessor.getName());
+    assertEquals(
+        "updateUncacheableData(params);\n", uncacheableDataProcessor.getDefaultCallbackFunction());
+    assertEquals(100, uncacheableDataProcessor.getPrecedence());
+    assertTrue(tagAttributes.isEmpty());
   }
 
   /**
    * Test {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}.
-   * <ul>
-   *   <li>Given {@link ExploitProtectionService}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test buildContentMap(BroadleafTemplateContext); given ExploitProtectionService; then throw RuntimeException")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName("Test buildContentMap(BroadleafTemplateContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String UncacheableDataProcessor.buildContentMap(BroadleafTemplateContext)"})
-  void testBuildContentMap_givenExploitProtectionService_thenThrowRuntimeException() {
+  void testBuildContentMap() throws ServiceException {
     // Arrange
+    when(exploitProtectionService.getCSRFToken())
+        .thenThrow(new ServiceException("An error occurred"));
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any()))
-        .thenThrow(new RuntimeException("ThreadLocalManager.notify.orphans"));
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> uncacheableDataProcessor.buildContentMap(context));
-    verify(context).getVariable(eq("blcAllDisplayedProducts"));
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(exploitProtectionService).getCSRFToken();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
   }
 
   /**
    * Test {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link HashSet#HashSet()}.</li>
+   *   <li>Given {@link ExploitProtectionService} {@link ExploitProtectionService#getCSRFToken()}
+   *       return {@code ABC123}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test buildContentMap(BroadleafTemplateContext); given HashSet()")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test buildContentMap(BroadleafTemplateContext); given ExploitProtectionService getCSRFToken() return 'ABC123'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String UncacheableDataProcessor.buildContentMap(BroadleafTemplateContext)"})
-  void testBuildContentMap_givenHashSet() throws ServiceException {
+  void testBuildContentMap_givenExploitProtectionServiceGetCSRFTokenReturnAbc123()
+      throws ServiceException {
     // Arrange
     when(exploitProtectionService.getCSRFToken()).thenReturn("ABC123");
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
     when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
 
@@ -315,7 +456,8 @@ class UncacheableDataProcessorDiffblueTest {
     verify(exploitProtectionService).getCSRFToken();
     verify(exploitProtectionService).getCsrfTokenParameter();
     verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
     verify(context, atLeast(1)).getVariable(Mockito.<String>any());
     assertEquals(
         "{\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions"
@@ -326,27 +468,92 @@ class UncacheableDataProcessorDiffblueTest {
 
   /**
    * Test {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link BroadleafTemplateContext} {@link BroadleafTemplateContext#getVariable(String)} return {@code null}.</li>
+   *   <li>Given {@link ExploitProtectionService} {@link ExploitProtectionService#getCSRFToken()}
+   *       return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test buildContentMap(BroadleafTemplateContext); given 'null'; when BroadleafTemplateContext getVariable(String) return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test buildContentMap(BroadleafTemplateContext); given ExploitProtectionService getCSRFToken() return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String UncacheableDataProcessor.buildContentMap(BroadleafTemplateContext)"})
-  void testBuildContentMap_givenNull_whenBroadleafTemplateContextGetVariableReturnNull() throws ServiceException {
+  void testBuildContentMap_givenExploitProtectionServiceGetCSRFTokenReturnNull()
+      throws ServiceException {
+    // Arrange
+    when(exploitProtectionService.getCSRFToken()).thenReturn(null);
+    when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+
+    // Act
+    String actualBuildContentMapResult = uncacheableDataProcessor.buildContentMap(context);
+
+    // Assert
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(exploitProtectionService).getCSRFToken();
+    verify(exploitProtectionService).getCsrfTokenParameter();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+    assertEquals(
+        "{\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":null,\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions"
+            + "\":[],\"anonymous\":false,\"cartItemCount\":0,\"outOfStockProducts\":[],\"csrfTokenParameter\":\"ABC123\","
+            + "\"outOfStockSkus\":[]}",
+        actualBuildContentMapResult);
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   *   <li>When {@link BroadleafTemplateContext} {@link
+   *       BroadleafTemplateContext#getVariable(String)} return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName(
+      "Test buildContentMap(BroadleafTemplateContext); given 'null'; when BroadleafTemplateContext getVariable(String) return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String UncacheableDataProcessor.buildContentMap(BroadleafTemplateContext)"})
+  void testBuildContentMap_givenNull_whenBroadleafTemplateContextGetVariableReturnNull()
+      throws ServiceException {
     // Arrange
     when(exploitProtectionService.getCSRFToken()).thenReturn("ABC123");
     when(exploitProtectionService.getCsrfTokenParameter()).thenReturn("ABC123");
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
+
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
     when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.getVariable(Mockito.<String>any())).thenReturn(null);
 
@@ -358,7 +565,8 @@ class UncacheableDataProcessorDiffblueTest {
     verify(exploitProtectionService).getCSRFToken();
     verify(exploitProtectionService).getCsrfTokenParameter();
     verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
     verify(context, atLeast(1)).getVariable(Mockito.<String>any());
     assertEquals(
         "{\"firstName\":\"\",\"lastName\":\"\",\"csrfToken\":\"ABC123\",\"cartItemIdsWithoutOptions\":[],\"cartItemIdsWithOptions"
@@ -368,67 +576,181 @@ class UncacheableDataProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   * Test {@link UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link HashSet#HashSet()}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#buildContentMap(BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test addProductInventoryData(Map, BroadleafTemplateContext); given HashSet()")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"})
-  void testAddProductInventoryData_givenHashSet() {
+  @DisplayName("Test buildContentMap(BroadleafTemplateContext); given RuntimeException()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String UncacheableDataProcessor.buildContentMap(BroadleafTemplateContext)"})
+  void testBuildContentMap_givenRuntimeException() {
     // Arrange
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
-    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
-    HashMap<String, Object> attrMap = new HashMap<>();
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+    when(context.getVariable(Mockito.<String>any())).thenThrow(new RuntimeException());
 
-    // Act
-    uncacheableDataProcessor.addProductInventoryData(attrMap, context);
-
-    // Assert
-    verify(uncacheableDataProcessorExtensionManager).getProxy();
-    verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
-    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
-    assertEquals(2, attrMap.size());
-    Object getResult = attrMap.get("outOfStockSkus");
-    assertTrue(getResult instanceof List);
-    Object getResult2 = attrMap.get("outOfStockProducts");
-    assertTrue(getResult2 instanceof Set);
-    assertTrue(((List<Object>) getResult).isEmpty());
-    assertTrue(((Set<Object>) getResult2).isEmpty());
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> uncacheableDataProcessor.buildContentMap(context));
+    verify(context).getVariable("blcAllDisplayedProducts");
   }
 
   /**
    * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test addProductInventoryData(Map, BroadleafTemplateContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
+  void testAddProductInventoryData() {
+    // Arrange
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenThrow(new RuntimeException());
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+    HashMap<String, Object> attrMap = new HashMap<>();
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> uncacheableDataProcessor.addProductInventoryData(attrMap, context));
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test addProductInventoryData(Map, BroadleafTemplateContext)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
+  void testAddProductInventoryData2() {
+    // Arrange
+    when(uncacheableDataProcessorExtensionManager.getProxy()).thenThrow(new RuntimeException());
+
+    HashMap<String, Object> attrMap = new HashMap<>();
+    attrMap.put("outOfStockProducts", "Attr Map");
+    attrMap.put("outOfStockSkus", "Attr Map");
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> uncacheableDataProcessor.addProductInventoryData(attrMap, context));
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
+   *   <li>Given {@link HashSet#HashSet()} add {@code 42}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName(
+      "Test addProductInventoryData(Map, BroadleafTemplateContext); given HashSet() add '42'; then throw RuntimeException")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
+  void testAddProductInventoryData_givenHashSetAdd42_thenThrowRuntimeException() {
+    // Arrange
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
+        .thenThrow(new RuntimeException());
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+    HashMap<String, Object> attrMap = new HashMap<>();
+
+    HashSet<Object> objectSet = new HashSet<>();
+    objectSet.add("42");
+
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(objectSet);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> uncacheableDataProcessor.addProductInventoryData(attrMap, context));
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
    */
   @Test
   @DisplayName("Test addProductInventoryData(Map, BroadleafTemplateContext); given 'null'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
   void testAddProductInventoryData_givenNull() {
     // Arrange
-    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler = mock(
-        UncacheableDataProcessorExtensionHandler.class);
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
     when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
-        Mockito.<BroadleafTemplateContext>any(), Mockito.<Set<Product>>any(), Mockito.<Set<Sku>>any()))
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(uncacheableDataProcessorExtensionManager.getProxy()).thenReturn(uncacheableDataProcessorExtensionHandler);
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
     HashMap<String, Object> attrMap = new HashMap<>();
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
     when(context.getVariable(Mockito.<String>any())).thenReturn(null);
 
@@ -438,7 +760,8 @@ class UncacheableDataProcessorDiffblueTest {
     // Assert
     verify(uncacheableDataProcessorExtensionManager).getProxy();
     verify(uncacheableDataProcessorExtensionHandler)
-        .modifyProductListForInventoryCheck(isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
     verify(context, atLeast(1)).getVariable(Mockito.<String>any());
     assertEquals(2, attrMap.size());
     Object getResult = attrMap.get("outOfStockSkus");
@@ -451,465 +774,243 @@ class UncacheableDataProcessorDiffblueTest {
 
   /**
    * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@link RuntimeException#RuntimeException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test addProductInventoryData(Map, BroadleafTemplateContext); then throw RuntimeException")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"})
-  void testAddProductInventoryData_thenThrowRuntimeException() {
+  @DisplayName(
+      "Test addProductInventoryData(Map, BroadleafTemplateContext); given RuntimeException()")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
+  void testAddProductInventoryData_givenRuntimeException() {
     // Arrange
     HashMap<String, Object> attrMap = new HashMap<>();
+
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenThrow(new RuntimeException("blcAllDisplayedProducts"));
+    when(context.getVariable(Mockito.<String>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> uncacheableDataProcessor.addProductInventoryData(attrMap, context));
-    verify(context).getVariable(eq("blcAllDisplayedProducts"));
+    assertThrows(
+        RuntimeException.class,
+        () -> uncacheableDataProcessor.addProductInventoryData(attrMap, context));
+    verify(context).getVariable("blcAllDisplayedProducts");
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts() {
-    // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getId()).thenThrow(new RuntimeException("product"));
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(productBundleImpl);
-    HashSet<Product> allProducts = new HashSet<>();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, new HashSet<>()));
-    verify(productBundleImpl).getId();
-    verify(context).getVariable(eq("product"));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts2() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenThrow(new RuntimeException("product"));
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(mock(ProductBundleImpl.class));
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(productBundleImpl);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, new HashSet<>()));
-    verify(productBundleImpl, atLeast(1)).getDefaultSku();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(context).getVariable(eq("product"));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
+   * Test {@link UncacheableDataProcessor#addProductInventoryData(Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link InventoryService}.</li>
-   *   <li>Then {@link HashSet#HashSet()} size is one.</li>
+   *   <li>Then {@link HashMap#HashMap()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addProductInventoryData(Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); given InventoryService; then HashSet() size is one")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_givenInventoryService_thenHashSetSizeIsOne() {
+  @DisplayName(
+      "Test addProductInventoryData(Map, BroadleafTemplateContext); then HashMap() size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UncacheableDataProcessor.addProductInventoryData(Map, BroadleafTemplateContext)"
+  })
+  void testAddProductInventoryData_thenHashMapSizeIsTwo() {
     // Arrange
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getId()).thenReturn(1L);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(productBundleImpl);
-    HashSet<Product> allProducts = new HashSet<>();
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert
-    verify(productBundleImpl).getId();
-    verify(context).getVariable(eq("product"));
-    assertEquals(1, outOfStockProducts.size());
-    assertTrue(outOfStockProducts.contains(1L));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Given {@link Long#MAX_VALUE}.</li>
-   *   <li>Then {@link HashSet#HashSet()} contains {@link Long#MAX_VALUE}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); given MAX_VALUE; then HashSet() contains MAX_VALUE")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_givenMax_value_thenHashSetContainsMax_value() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenReturn(true);
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getId()).thenReturn(1L);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(productBundleImpl);
-    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
-    when(productBundleImpl2.getDefaultSku()).thenReturn(new SkuImpl());
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(productBundleImpl2);
-
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-    outOfStockProducts.add(Long.MAX_VALUE);
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert
-    verify(productBundleImpl2, atLeast(1)).getDefaultSku();
-    verify(productBundleImpl).getId();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(context).getVariable(eq("product"));
-    assertEquals(2, outOfStockProducts.size());
-    assertTrue(outOfStockProducts.contains(1L));
-    assertTrue(outOfStockProducts.contains(Long.MAX_VALUE));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); given ProductBundleImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_givenProductBundleImpl() {
-    // Arrange
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(mock(ProductBundleImpl.class));
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(new ProductBundleImpl());
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert that nothing has changed
-    verify(context).getVariable(eq("product"));
-    assertTrue(outOfStockProducts.isEmpty());
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); given ProductBundleImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_givenProductBundleImpl2() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenReturn(true);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(mock(ProductBundleImpl.class));
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(new ProductBundleImpl());
-    allProducts.add(productBundleImpl);
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert that nothing has changed
-    verify(productBundleImpl, atLeast(1)).getDefaultSku();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(context).getVariable(eq("product"));
-    assertTrue(outOfStockProducts.isEmpty());
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Then {@link HashSet#HashSet()} contains zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); then HashSet() contains zero")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_thenHashSetContainsZero() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenReturn(false);
-    InventoryServiceExtensionHandler inventoryServiceExtensionHandler = mock(InventoryServiceExtensionHandler.class);
-    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(Mockito.<Product>any(),
-        Mockito.<Product>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
+    UncacheableDataProcessorExtensionHandler uncacheableDataProcessorExtensionHandler =
+        mock(UncacheableDataProcessorExtensionHandler.class);
+    when(uncacheableDataProcessorExtensionHandler.modifyProductListForInventoryCheck(
+            Mockito.<BroadleafTemplateContext>any(),
+            Mockito.<Set<Product>>any(),
+            Mockito.<Set<Sku>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(inventoryServiceExtensionManager.getProxy()).thenReturn(inventoryServiceExtensionHandler);
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getId()).thenReturn(0L);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(productBundleImpl);
-    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
-    when(productBundleImpl2.getId()).thenReturn(1L);
-    when(productBundleImpl2.getDefaultSku()).thenReturn(new SkuImpl());
+    when(uncacheableDataProcessorExtensionManager.getProxy())
+        .thenReturn(uncacheableDataProcessorExtensionHandler);
+    HashMap<String, Object> attrMap = new HashMap<>();
 
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(productBundleImpl2);
-    HashSet<Long> outOfStockProducts = new HashSet<>();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+    when(context.getVariable(Mockito.<String>any())).thenReturn(new HashSet<>());
 
     // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
+    uncacheableDataProcessor.addProductInventoryData(attrMap, context);
 
     // Assert
-    verify(inventoryServiceExtensionManager).getProxy();
-    verify(productBundleImpl2, atLeast(1)).getDefaultSku();
-    verify(productBundleImpl, atLeast(1)).getId();
-    verify(productBundleImpl2, atLeast(1)).getId();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(inventoryServiceExtensionHandler).isBlockingAvailabilityOfProduct(isA(Product.class), isA(Product.class),
-        isA(ExtensionResultHolder.class));
-    verify(context).getVariable(eq("product"));
-    assertEquals(2, outOfStockProducts.size());
-    assertTrue(outOfStockProducts.contains(0L));
-    assertTrue(outOfStockProducts.contains(1L));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Then {@link HashSet#HashSet()} Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); then HashSet() Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_thenHashSetEmpty() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenReturn(true);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(mock(ProductBundleImpl.class));
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getDefaultSku()).thenReturn(new SkuImpl());
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(productBundleImpl);
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert that nothing has changed
-    verify(productBundleImpl, atLeast(1)).getDefaultSku();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(context).getVariable(eq("product"));
-    assertTrue(outOfStockProducts.isEmpty());
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>Then {@link HashSet#HashSet()} size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); then HashSet() size is one")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_thenHashSetSizeIsOne() {
-    // Arrange
-    when(inventoryService.isAvailable(Mockito.<Sku>any(), anyInt())).thenReturn(false);
-    ProductBundleImpl productBundleImpl = mock(ProductBundleImpl.class);
-    when(productBundleImpl.getId()).thenReturn(1L);
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(productBundleImpl);
-    ProductBundleImpl productBundleImpl2 = mock(ProductBundleImpl.class);
-    when(productBundleImpl2.getId()).thenReturn(1L);
-    when(productBundleImpl2.getDefaultSku()).thenReturn(new SkuImpl());
-
-    HashSet<Product> allProducts = new HashSet<>();
-    allProducts.add(productBundleImpl2);
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert
-    verify(productBundleImpl2, atLeast(1)).getDefaultSku();
-    verify(productBundleImpl, atLeast(1)).getId();
-    verify(productBundleImpl2, atLeast(1)).getId();
-    verify(inventoryService).isAvailable(isA(Sku.class), eq(1));
-    verify(context).getVariable(eq("product"));
-    assertEquals(1, outOfStockProducts.size());
-    assertTrue(outOfStockProducts.contains(1L));
-  }
-
-  /**
-   * Test {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}.
-   * <ul>
-   *   <li>When {@link BroadleafTemplateContext} {@link BroadleafTemplateContext#getVariable(String)} return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)}
-   */
-  @Test
-  @DisplayName("Test defineOutOfStockProducts(BroadleafTemplateContext, Set, Set); when BroadleafTemplateContext getVariable(String) return 'null'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void UncacheableDataProcessor.defineOutOfStockProducts(BroadleafTemplateContext, Set, Set)"})
-  void testDefineOutOfStockProducts_whenBroadleafTemplateContextGetVariableReturnNull() {
-    // Arrange
-    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
-    when(context.getVariable(Mockito.<String>any())).thenReturn(null);
-    HashSet<Product> allProducts = new HashSet<>();
-    HashSet<Long> outOfStockProducts = new HashSet<>();
-
-    // Act
-    uncacheableDataProcessor.defineOutOfStockProducts(context, allProducts, outOfStockProducts);
-
-    // Assert that nothing has changed
-    verify(context).getVariable(eq("product"));
-    assertTrue(outOfStockProducts.isEmpty());
+    verify(uncacheableDataProcessorExtensionManager).getProxy();
+    verify(uncacheableDataProcessorExtensionHandler)
+        .modifyProductListForInventoryCheck(
+            isA(BroadleafTemplateContext.class), isA(Set.class), isA(Set.class));
+    verify(context, atLeast(1)).getVariable(Mockito.<String>any());
+    assertEquals(2, attrMap.size());
+    Object getResult = attrMap.get("outOfStockSkus");
+    assertTrue(getResult instanceof List);
+    Object getResult2 = attrMap.get("outOfStockProducts");
+    assertTrue(getResult2 instanceof Set);
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(((Set<Object>) getResult2).isEmpty());
   }
 
   /**
    * Test {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product,
+   * Product)}
    */
   @Test
   @DisplayName("Test isBlockingAvailabilityOfProduct(Product, Product)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"
+  })
   void testIsBlockingAvailabilityOfProduct() {
     // Arrange
-    InventoryServiceExtensionHandler inventoryServiceExtensionHandler = mock(InventoryServiceExtensionHandler.class);
-    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(Mockito.<Product>any(),
-        Mockito.<Product>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
+    when(inventoryServiceExtensionManager.getProxy()).thenThrow(new RuntimeException());
+    ProductBundleImpl baseProduct = new ProductBundleImpl();
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () ->
+            uncacheableDataProcessor.isBlockingAvailabilityOfProduct(
+                baseProduct, new ProductBundleImpl()));
+    verify(inventoryServiceExtensionManager).getProxy();
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}.
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product,
+   * Product)}
+   */
+  @Test
+  @DisplayName("Test isBlockingAvailabilityOfProduct(Product, Product)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"
+  })
+  void testIsBlockingAvailabilityOfProduct2() {
+    // Arrange
+    InventoryServiceExtensionHandler inventoryServiceExtensionHandler =
+        mock(InventoryServiceExtensionHandler.class);
+    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(
+            Mockito.<Product>any(),
+            Mockito.<Product>any(),
+            Mockito.<ExtensionResultHolder<Boolean>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(inventoryServiceExtensionManager.getProxy()).thenReturn(inventoryServiceExtensionHandler);
     ProductBundleImpl baseProduct = new ProductBundleImpl();
 
     // Act
-    boolean actualIsBlockingAvailabilityOfProductResult = uncacheableDataProcessor
-        .isBlockingAvailabilityOfProduct(baseProduct, new ProductBundleImpl());
+    boolean actualIsBlockingAvailabilityOfProductResult =
+        uncacheableDataProcessor.isBlockingAvailabilityOfProduct(
+            baseProduct, new ProductBundleImpl());
 
     // Assert
     verify(inventoryServiceExtensionManager).getProxy();
-    verify(inventoryServiceExtensionHandler).isBlockingAvailabilityOfProduct(isA(Product.class), isA(Product.class),
-        isA(ExtensionResultHolder.class));
+    verify(inventoryServiceExtensionHandler)
+        .isBlockingAvailabilityOfProduct(
+            isA(Product.class), isA(Product.class), isA(ExtensionResultHolder.class));
     assertFalse(actualIsBlockingAvailabilityOfProductResult);
   }
 
   /**
    * Test {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product,
+   * Product)}
    */
   @Test
   @DisplayName("Test isBlockingAvailabilityOfProduct(Product, Product)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"})
-  void testIsBlockingAvailabilityOfProduct2() {
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"
+  })
+  void testIsBlockingAvailabilityOfProduct3() {
     // Arrange
-    InventoryServiceExtensionHandler inventoryServiceExtensionHandler = mock(InventoryServiceExtensionHandler.class);
-    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(Mockito.<Product>any(),
-        Mockito.<Product>any(), Mockito.<ExtensionResultHolder<Boolean>>any()))
+    InventoryServiceExtensionHandler inventoryServiceExtensionHandler =
+        mock(InventoryServiceExtensionHandler.class);
+    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(
+            Mockito.<Product>any(),
+            Mockito.<Product>any(),
+            Mockito.<ExtensionResultHolder<Boolean>>any()))
+        .thenThrow(new RuntimeException());
+    when(inventoryServiceExtensionManager.getProxy()).thenReturn(inventoryServiceExtensionHandler);
+    ProductBundleImpl baseProduct = new ProductBundleImpl();
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () ->
+            uncacheableDataProcessor.isBlockingAvailabilityOfProduct(
+                baseProduct, new ProductBundleImpl()));
+    verify(inventoryServiceExtensionManager).getProxy();
+    verify(inventoryServiceExtensionHandler)
+        .isBlockingAvailabilityOfProduct(
+            isA(Product.class), isA(Product.class), isA(ExtensionResultHolder.class));
+  }
+
+  /**
+   * Test {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}.
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product,
+   * Product)}
+   */
+  @Test
+  @DisplayName("Test isBlockingAvailabilityOfProduct(Product, Product)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"
+  })
+  void testIsBlockingAvailabilityOfProduct4() {
+    // Arrange
+    InventoryServiceExtensionHandler inventoryServiceExtensionHandler =
+        mock(InventoryServiceExtensionHandler.class);
+    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(
+            Mockito.<Product>any(),
+            Mockito.<Product>any(),
+            Mockito.<ExtensionResultHolder<Boolean>>any()))
         .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
     when(inventoryServiceExtensionManager.getProxy()).thenReturn(inventoryServiceExtensionHandler);
     ProductBundleImpl baseProduct = new ProductBundleImpl();
 
     // Act
-    boolean actualIsBlockingAvailabilityOfProductResult = uncacheableDataProcessor
-        .isBlockingAvailabilityOfProduct(baseProduct, new ProductBundleImpl());
+    boolean actualIsBlockingAvailabilityOfProductResult =
+        uncacheableDataProcessor.isBlockingAvailabilityOfProduct(
+            baseProduct, new ProductBundleImpl());
 
     // Assert
     verify(inventoryServiceExtensionManager).getProxy();
-    verify(inventoryServiceExtensionHandler).isBlockingAvailabilityOfProduct(isA(Product.class), isA(Product.class),
-        isA(ExtensionResultHolder.class));
+    verify(inventoryServiceExtensionHandler)
+        .isBlockingAvailabilityOfProduct(
+            isA(Product.class), isA(Product.class), isA(ExtensionResultHolder.class));
     assertFalse(actualIsBlockingAvailabilityOfProductResult);
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#isBlockingAvailabilityOfProduct(Product, Product)}
-   */
-  @Test
-  @DisplayName("Test isBlockingAvailabilityOfProduct(Product, Product); then throw RuntimeException")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"boolean UncacheableDataProcessor.isBlockingAvailabilityOfProduct(Product, Product)"})
-  void testIsBlockingAvailabilityOfProduct_thenThrowRuntimeException() {
-    // Arrange
-    InventoryServiceExtensionHandler inventoryServiceExtensionHandler = mock(InventoryServiceExtensionHandler.class);
-    when(inventoryServiceExtensionHandler.isBlockingAvailabilityOfProduct(Mockito.<Product>any(),
-        Mockito.<Product>any(), Mockito.<ExtensionResultHolder<Boolean>>any())).thenThrow(new RuntimeException("foo"));
-    when(inventoryServiceExtensionManager.getProxy()).thenReturn(inventoryServiceExtensionHandler);
-    ProductBundleImpl baseProduct = new ProductBundleImpl();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> uncacheableDataProcessor.isBlockingAvailabilityOfProduct(baseProduct, new ProductBundleImpl()));
-    verify(inventoryServiceExtensionManager).getProxy();
-    verify(inventoryServiceExtensionHandler).isBlockingAvailabilityOfProduct(isA(Product.class), isA(Product.class),
-        isA(ExtensionResultHolder.class));
-  }
-
-  /**
    * Test {@link UncacheableDataProcessor#isBundle(Product)}.
+   *
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#isBundle(Product)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#isBundle(Product)}
    */
   @Test
-  @DisplayName("Test isBundle(Product); when ProductBundleImpl (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test isBundle(Product); when ProductBundleImpl (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean UncacheableDataProcessor.isBundle(Product)"})
   void testIsBundle_whenProductBundleImpl_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -918,12 +1019,13 @@ class UncacheableDataProcessorDiffblueTest {
 
   /**
    * Test {@link UncacheableDataProcessor#addCartData(Map)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#addCartData(Map)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addCartData(Map)}
    */
   @Test
   @DisplayName("Test addCartData(Map)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void UncacheableDataProcessor.addCartData(Map)"})
   void testAddCartData() {
     // Arrange
@@ -943,12 +1045,13 @@ class UncacheableDataProcessorDiffblueTest {
 
   /**
    * Test {@link UncacheableDataProcessor#addCustomerData(Map)}.
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#addCustomerData(Map)}
+   *
+   * <p>Method under test: {@link UncacheableDataProcessor#addCustomerData(Map)}
    */
   @Test
   @DisplayName("Test addCustomerData(Map)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void UncacheableDataProcessor.addCustomerData(Map)"})
   void testAddCustomerData() {
     // Arrange
@@ -965,18 +1068,25 @@ class UncacheableDataProcessorDiffblueTest {
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}.
+   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext,
+   * Map)}.
+   *
    * <ul>
-   *   <li>Given {@code callbackBlock}.</li>
-   *   <li>Then return {@code Tag Attributes}.</li>
+   *   <li>Given {@code callbackBlock}.
+   *   <li>Then return {@code Tag Attributes}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
    */
   @Test
-  @DisplayName("Test getUncacheableDataFunction(BroadleafTemplateContext, Map); given 'callbackBlock'; then return 'Tag Attributes'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"})
+  @DisplayName(
+      "Test getUncacheableDataFunction(BroadleafTemplateContext, Map); given 'callbackBlock'; then return 'Tag Attributes'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"
+  })
   void testGetUncacheableDataFunction_givenCallbackBlock_thenReturnTagAttributes() {
     // Arrange
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
@@ -988,22 +1098,31 @@ class UncacheableDataProcessorDiffblueTest {
     tagAttributes.put("callback", "Tag Attributes");
 
     // Act and Assert
-    assertEquals("Tag Attributes", uncacheableDataProcessor.getUncacheableDataFunction(context, tagAttributes));
+    assertEquals(
+        "Tag Attributes",
+        uncacheableDataProcessor.getUncacheableDataFunction(context, tagAttributes));
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}.
+   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext,
+   * Map)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@code Tag Attributes;}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@code Tag Attributes;}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
    */
   @Test
-  @DisplayName("Test getUncacheableDataFunction(BroadleafTemplateContext, Map); given 'foo'; then return 'Tag Attributes;'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"})
+  @DisplayName(
+      "Test getUncacheableDataFunction(BroadleafTemplateContext, Map); given 'foo'; then return 'Tag Attributes;'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"
+  })
   void testGetUncacheableDataFunction_givenFoo_thenReturnTagAttributes() {
     // Arrange
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
@@ -1015,35 +1134,46 @@ class UncacheableDataProcessorDiffblueTest {
     tagAttributes.put("callback", "Tag Attributes");
 
     // Act and Assert
-    assertEquals("Tag Attributes;\n", uncacheableDataProcessor.getUncacheableDataFunction(context, tagAttributes));
+    assertEquals(
+        "Tag Attributes;\n",
+        uncacheableDataProcessor.getUncacheableDataFunction(context, tagAttributes));
   }
 
   /**
-   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}.
+   * Test {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext,
+   * Map)}.
+   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code updateUncacheableData(params);}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return {@code updateUncacheableData(params);}.
    * </ul>
-   * <p>
-   * Method under test: {@link UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
+   *
+   * <p>Method under test: {@link
+   * UncacheableDataProcessor#getUncacheableDataFunction(BroadleafTemplateContext, Map)}
    */
   @Test
-  @DisplayName("Test getUncacheableDataFunction(BroadleafTemplateContext, Map); when HashMap(); then return 'updateUncacheableData(params);'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"})
+  @DisplayName(
+      "Test getUncacheableDataFunction(BroadleafTemplateContext, Map); when HashMap(); then return 'updateUncacheableData(params);'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String UncacheableDataProcessor.getUncacheableDataFunction(BroadleafTemplateContext, Map)"
+  })
   void testGetUncacheableDataFunction_whenHashMap_thenReturnUpdateUncacheableDataParams() {
     // Arrange
     BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
 
     // Act and Assert
-    assertEquals("updateUncacheableData(params);\n",
+    assertEquals(
+        "updateUncacheableData(params);\n",
         uncacheableDataProcessor.getUncacheableDataFunction(context, new HashMap<>()));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link UncacheableDataProcessor#setDefaultCallbackFunction(String)}
    *   <li>{@link UncacheableDataProcessor#getDefaultCallbackFunction()}
@@ -1052,9 +1182,13 @@ class UncacheableDataProcessorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"String UncacheableDataProcessor.getDefaultCallbackFunction()",
-      "String UncacheableDataProcessor.getName()", "void UncacheableDataProcessor.setDefaultCallbackFunction(String)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String UncacheableDataProcessor.getDefaultCallbackFunction()",
+    "String UncacheableDataProcessor.getName()",
+    "void UncacheableDataProcessor.setDefaultCallbackFunction(String)"
+  })
   void testGettersAndSetters() {
     // Arrange
     UncacheableDataProcessor uncacheableDataProcessor = new UncacheableDataProcessor();

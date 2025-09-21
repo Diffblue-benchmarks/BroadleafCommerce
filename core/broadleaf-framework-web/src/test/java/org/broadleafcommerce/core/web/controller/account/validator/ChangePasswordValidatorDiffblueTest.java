@@ -20,6 +20,7 @@ package org.broadleafcommerce.core.web.controller.account.validator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.common.security.util.PasswordChange;
@@ -31,13 +32,15 @@ import org.springframework.validation.MapBindingResult;
 
 class ChangePasswordValidatorDiffblueTest {
   /**
-   * Test {@link ChangePasswordValidator#validate(PasswordChange, Errors)} with {@code passwordChange}, {@code errors}.
-   * <p>
-   * Method under test: {@link ChangePasswordValidator#validate(PasswordChange, Errors)}
+   * Test {@link ChangePasswordValidator#validate(PasswordChange, Errors)} with {@code
+   * passwordChange}, {@code errors}.
+   *
+   * <p>Method under test: {@link ChangePasswordValidator#validate(PasswordChange, Errors)}
    */
   @Test
   @DisplayName("Test validate(PasswordChange, Errors) with 'passwordChange', 'errors'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ChangePasswordValidator.validate(PasswordChange, Errors)"})
   void testValidateWithPasswordChangeErrors() {
     // Arrange
@@ -58,12 +61,13 @@ class ChangePasswordValidatorDiffblueTest {
 
   /**
    * Test {@link ChangePasswordValidator#supports(Class)}.
-   * <p>
-   * Method under test: {@link ChangePasswordValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link ChangePasswordValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ChangePasswordValidator.supports(Class)"})
   void testSupports() {
     // Arrange

@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.security.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,8 +28,9 @@ import org.junit.experimental.categories.Category;
 public class PasswordResetDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PasswordReset#PasswordReset()}
    *   <li>{@link PasswordReset#setEmail(String)}
@@ -44,13 +46,22 @@ public class PasswordResetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PasswordReset.<init>()", "void PasswordReset.<init>(String)",
-      "String PasswordReset.getEmail()", "boolean PasswordReset.getPasswordChangeRequired()",
-      "int PasswordReset.getPasswordLength()", "String PasswordReset.getUsername()",
-      "boolean PasswordReset.isSendResetEmailReliableAsync()", "void PasswordReset.setEmail(String)",
-      "void PasswordReset.setPasswordChangeRequired(boolean)", "void PasswordReset.setPasswordLength(int)",
-      "void PasswordReset.setSendResetEmailReliableAsync(boolean)", "void PasswordReset.setUsername(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PasswordReset.<init>()",
+    "void PasswordReset.<init>(String)",
+    "String PasswordReset.getEmail()",
+    "boolean PasswordReset.getPasswordChangeRequired()",
+    "int PasswordReset.getPasswordLength()",
+    "String PasswordReset.getUsername()",
+    "boolean PasswordReset.isSendResetEmailReliableAsync()",
+    "void PasswordReset.setEmail(String)",
+    "void PasswordReset.setPasswordChangeRequired(boolean)",
+    "void PasswordReset.setPasswordLength(int)",
+    "void PasswordReset.setSendResetEmailReliableAsync(boolean)",
+    "void PasswordReset.setUsername(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PasswordReset actualPasswordReset = new PasswordReset();
@@ -74,11 +85,13 @@ public class PasswordResetDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code janedoe}.</li>
+   *   <li>When {@code janedoe}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PasswordReset#PasswordReset(String)}
    *   <li>{@link PasswordReset#setEmail(String)}
@@ -94,13 +107,22 @@ public class PasswordResetDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PasswordReset.<init>()", "void PasswordReset.<init>(String)",
-      "String PasswordReset.getEmail()", "boolean PasswordReset.getPasswordChangeRequired()",
-      "int PasswordReset.getPasswordLength()", "String PasswordReset.getUsername()",
-      "boolean PasswordReset.isSendResetEmailReliableAsync()", "void PasswordReset.setEmail(String)",
-      "void PasswordReset.setPasswordChangeRequired(boolean)", "void PasswordReset.setPasswordLength(int)",
-      "void PasswordReset.setSendResetEmailReliableAsync(boolean)", "void PasswordReset.setUsername(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PasswordReset.<init>()",
+    "void PasswordReset.<init>(String)",
+    "String PasswordReset.getEmail()",
+    "boolean PasswordReset.getPasswordChangeRequired()",
+    "int PasswordReset.getPasswordLength()",
+    "String PasswordReset.getUsername()",
+    "boolean PasswordReset.isSendResetEmailReliableAsync()",
+    "void PasswordReset.setEmail(String)",
+    "void PasswordReset.setPasswordChangeRequired(boolean)",
+    "void PasswordReset.setPasswordLength(int)",
+    "void PasswordReset.setSendResetEmailReliableAsync(boolean)",
+    "void PasswordReset.setUsername(String)"
+  })
   public void testGettersAndSetters_whenJanedoe() {
     // Arrange and Act
     PasswordReset actualPasswordReset = new PasswordReset("janedoe");

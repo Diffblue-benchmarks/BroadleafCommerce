@@ -20,6 +20,7 @@ package org.broadleafcommerce.core.web.controller.account.validator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.core.web.controller.account.UpdateAccountForm;
@@ -31,13 +32,15 @@ import org.springframework.validation.MapBindingResult;
 
 class UpdateAccountValidatorDiffblueTest {
   /**
-   * Test {@link UpdateAccountValidator#validate(UpdateAccountForm, Errors)} with {@code form}, {@code errors}.
-   * <p>
-   * Method under test: {@link UpdateAccountValidator#validate(UpdateAccountForm, Errors)}
+   * Test {@link UpdateAccountValidator#validate(UpdateAccountForm, Errors)} with {@code form},
+   * {@code errors}.
+   *
+   * <p>Method under test: {@link UpdateAccountValidator#validate(UpdateAccountForm, Errors)}
    */
   @Test
   @DisplayName("Test validate(UpdateAccountForm, Errors) with 'form', 'errors'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void UpdateAccountValidator.validate(UpdateAccountForm, Errors)"})
   void testValidateWithFormErrors() {
     // Arrange
@@ -62,12 +65,13 @@ class UpdateAccountValidatorDiffblueTest {
 
   /**
    * Test {@link UpdateAccountValidator#supports(Class)}.
-   * <p>
-   * Method under test: {@link UpdateAccountValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link UpdateAccountValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean UpdateAccountValidator.supports(Class)"})
   void testSupports() {
     // Arrange

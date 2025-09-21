@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.promotionMessage.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -37,19 +38,22 @@ import org.junit.experimental.categories.Category;
 public class PromotionMessageDTODiffblueTest {
   /**
    * Test {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}.
+   *
    * <ul>
-   *   <li>Then return MessagePlacement is {@code Message Location}.</li>
+   *   <li>Then return MessagePlacement is {@code Message Location}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
+   *
+   * <p>Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PromotionMessageDTO.<init>(PromotionMessage)"})
   public void testNewPromotionMessageDTO_thenReturnMessagePlacementIsMessageLocation() {
     // Arrange
     PromotionMessageImpl promotionMessage = new PromotionMessageImpl();
-    promotionMessage.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessage.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessage.setId(PromotionMessageImpl.serialVersionUID);
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
     promotionMessage.setMedia(media);
@@ -57,8 +61,8 @@ public class PromotionMessageDTODiffblueTest {
     promotionMessage.setMessagePlacement("Message Location");
     promotionMessage.setName("Name");
     promotionMessage.setPriority(1);
-    promotionMessage
-        .setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    promotionMessage.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     promotionMessage.setLocale(new LocaleImpl());
 
     // Act
@@ -73,19 +77,22 @@ public class PromotionMessageDTODiffblueTest {
 
   /**
    * Test {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}.
+   *
    * <ul>
-   *   <li>When {@link PromotionMessageImpl} (default constructor).</li>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>When {@link PromotionMessageImpl} (default constructor).
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
+   *
+   * <p>Method under test: {@link PromotionMessageDTO#PromotionMessageDTO(PromotionMessage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PromotionMessageDTO.<init>(PromotionMessage)"})
   public void testNewPromotionMessageDTO_whenPromotionMessageImpl_thenReturnMessageIsNull() {
     // Arrange and Act
-    PromotionMessageDTO actualPromotionMessageDTO = new PromotionMessageDTO(new PromotionMessageImpl());
+    PromotionMessageDTO actualPromotionMessageDTO =
+        new PromotionMessageDTO(new PromotionMessageImpl());
 
     // Assert
     assertNull(actualPromotionMessageDTO.getMessage());
@@ -97,8 +104,9 @@ public class PromotionMessageDTODiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PromotionMessageDTO#setCustomerRuleHolder(CustomerRuleHolder)}
    *   <li>{@link PromotionMessageDTO#setEndDate(Date)}
@@ -117,15 +125,24 @@ public class PromotionMessageDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CustomerRuleHolder PromotionMessageDTO.getCustomerRuleHolder()",
-      "Date PromotionMessageDTO.getEndDate()", "String PromotionMessageDTO.getLocaleCode()",
-      "Media PromotionMessageDTO.getMedia()", "String PromotionMessageDTO.getMessage()",
-      "String PromotionMessageDTO.getMessagePlacement()", "Integer PromotionMessageDTO.getPriority()",
-      "void PromotionMessageDTO.setCustomerRuleHolder(CustomerRuleHolder)", "void PromotionMessageDTO.setEndDate(Date)",
-      "void PromotionMessageDTO.setLocaleCode(String)", "void PromotionMessageDTO.setMedia(Media)",
-      "void PromotionMessageDTO.setMessage(String)", "void PromotionMessageDTO.setMessagePlacement(String)",
-      "void PromotionMessageDTO.setPriority(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CustomerRuleHolder PromotionMessageDTO.getCustomerRuleHolder()",
+    "Date PromotionMessageDTO.getEndDate()",
+    "String PromotionMessageDTO.getLocaleCode()",
+    "Media PromotionMessageDTO.getMedia()",
+    "String PromotionMessageDTO.getMessage()",
+    "String PromotionMessageDTO.getMessagePlacement()",
+    "Integer PromotionMessageDTO.getPriority()",
+    "void PromotionMessageDTO.setCustomerRuleHolder(CustomerRuleHolder)",
+    "void PromotionMessageDTO.setEndDate(Date)",
+    "void PromotionMessageDTO.setLocaleCode(String)",
+    "void PromotionMessageDTO.setMedia(Media)",
+    "void PromotionMessageDTO.setMessage(String)",
+    "void PromotionMessageDTO.setMessagePlacement(String)",
+    "void PromotionMessageDTO.setPriority(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     PromotionMessageDTO promotionMessageDTO = new PromotionMessageDTO(new PromotionMessageImpl());
@@ -133,7 +150,8 @@ public class PromotionMessageDTODiffblueTest {
 
     // Act
     promotionMessageDTO.setCustomerRuleHolder(customerRuleHolder);
-    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date endDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     promotionMessageDTO.setEndDate(endDate);
     promotionMessageDTO.setLocaleCode("en");
     CategoryMediaXrefImpl media = new CategoryMediaXrefImpl();
@@ -147,14 +165,13 @@ public class PromotionMessageDTODiffblueTest {
     Media actualMedia = promotionMessageDTO.getMedia();
     String actualMessage = promotionMessageDTO.getMessage();
     String actualMessagePlacement = promotionMessageDTO.getMessagePlacement();
-    Integer actualPriority = promotionMessageDTO.getPriority();
 
     // Assert
     assertEquals("Customer Rule", actualCustomerRuleHolder.getCustomerRule());
     assertEquals("Message Placement", actualMessagePlacement);
     assertEquals("Not all who wander are lost", actualMessage);
     assertEquals("en", actualLocaleCode);
-    assertEquals(1, actualPriority.intValue());
+    assertEquals(1, promotionMessageDTO.getPriority().intValue());
     assertSame(media, actualMedia);
     assertSame(customerRuleHolder, actualCustomerRuleHolder);
     assertSame(endDate, actualEndDate);

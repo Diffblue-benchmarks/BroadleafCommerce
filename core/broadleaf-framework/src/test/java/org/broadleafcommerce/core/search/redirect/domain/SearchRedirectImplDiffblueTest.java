@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.search.redirect.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -35,26 +36,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchRedirectImplDiffblueTest {
-  @Autowired
-  private SearchRedirectImpl searchRedirectImpl;
+  @Autowired private SearchRedirectImpl searchRedirectImpl;
 
   /**
    * Test {@link SearchRedirectImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link SearchRedirectImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link SearchRedirectImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SearchRedirectImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new SearchRedirectImpl()).getMainEntityName());
+    assertNull(searchRedirectImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchRedirectImpl}
    *   <li>{@link SearchRedirectImpl#setActiveEndDate(Date)}
@@ -72,20 +74,31 @@ public class SearchRedirectImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SearchRedirectImpl.<init>()", "Date SearchRedirectImpl.getActiveEndDate()",
-      "Date SearchRedirectImpl.getActiveStartDate()", "Long SearchRedirectImpl.getId()",
-      "Integer SearchRedirectImpl.getSearchPriority()", "String SearchRedirectImpl.getSearchTerm()",
-      "String SearchRedirectImpl.getUrl()", "void SearchRedirectImpl.setActiveEndDate(Date)",
-      "void SearchRedirectImpl.setActiveStartDate(Date)", "void SearchRedirectImpl.setId(Long)",
-      "void SearchRedirectImpl.setSearchPriority(Integer)", "void SearchRedirectImpl.setSearchTerm(String)",
-      "void SearchRedirectImpl.setUrl(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SearchRedirectImpl.<init>()",
+    "Date SearchRedirectImpl.getActiveEndDate()",
+    "Date SearchRedirectImpl.getActiveStartDate()",
+    "Long SearchRedirectImpl.getId()",
+    "Integer SearchRedirectImpl.getSearchPriority()",
+    "String SearchRedirectImpl.getSearchTerm()",
+    "String SearchRedirectImpl.getUrl()",
+    "void SearchRedirectImpl.setActiveEndDate(Date)",
+    "void SearchRedirectImpl.setActiveStartDate(Date)",
+    "void SearchRedirectImpl.setId(Long)",
+    "void SearchRedirectImpl.setSearchPriority(Integer)",
+    "void SearchRedirectImpl.setSearchTerm(String)",
+    "void SearchRedirectImpl.setUrl(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchRedirectImpl actualSearchRedirectImpl = new SearchRedirectImpl();
-    Date activeEndDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date activeEndDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualSearchRedirectImpl.setActiveEndDate(activeEndDate);
-    Date activeStartDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date activeStartDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualSearchRedirectImpl.setActiveStartDate(activeStartDate);
     actualSearchRedirectImpl.setId(1L);
     actualSearchRedirectImpl.setSearchPriority(1);

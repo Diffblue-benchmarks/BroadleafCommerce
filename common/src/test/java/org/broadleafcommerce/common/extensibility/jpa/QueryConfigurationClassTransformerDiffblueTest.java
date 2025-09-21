@@ -20,12 +20,14 @@ package org.broadleafcommerce.common.extensibility.jpa;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import java.io.UnsupportedEncodingException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
@@ -47,26 +49,32 @@ import org.junit.experimental.categories.Category;
 public class QueryConfigurationClassTransformerDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link QueryConfigurationClassTransformer#QueryConfigurationClassTransformer(List, List, List)}
+   *   <li>{@link QueryConfigurationClassTransformer#QueryConfigurationClassTransformer(List, List,
+   *       List)}
    *   <li>{@link QueryConfigurationClassTransformer#compileJPAProperties(Properties, Object)}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void QueryConfigurationClassTransformer.<init>(List, List, List)",
-      "void QueryConfigurationClassTransformer.compileJPAProperties(Properties, Object)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void QueryConfigurationClassTransformer.<init>(List, List, List)",
+    "void QueryConfigurationClassTransformer.compileJPAProperties(Properties, Object)"
+  })
   public void testGettersAndSetters() throws Exception {
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();
     ArrayList<NamedNativeQuery> nativeQueries = new ArrayList<>();
 
     // Act
-    QueryConfigurationClassTransformer actualQueryConfigurationClassTransformer = new QueryConfigurationClassTransformer(
-        namedQueries, nativeQueries, new ArrayList<>());
-    actualQueryConfigurationClassTransformer.compileJPAProperties(new Properties(), BLCFieldUtils.NULL_FIELD);
+    QueryConfigurationClassTransformer actualQueryConfigurationClassTransformer =
+        new QueryConfigurationClassTransformer(namedQueries, nativeQueries, new ArrayList<>());
+    actualQueryConfigurationClassTransformer.compileJPAProperties(
+        new Properties(), BLCFieldUtils.NULL_FIELD);
 
     // Assert
     assertTrue(actualQueryConfigurationClassTransformer.managedClassNames.isEmpty());
@@ -75,92 +83,113 @@ public class QueryConfigurationClassTransformerDiffblueTest {
   }
 
   /**
-   * Test {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class,
+   * ProtectionDomain, byte[])}.
+   *
    * <ul>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code Class Name}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   *
+   * <p>Method under test: {@link QueryConfigurationClassTransformer#transform(ClassLoader, String,
+   * Class, ProtectionDomain, byte[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+    "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
+  })
   public void testTransform_whenClassName_thenReturnNull()
       throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();
     ArrayList<NamedNativeQuery> nativeQueries = new ArrayList<>();
-    QueryConfigurationClassTransformer queryConfigurationClassTransformer = new QueryConfigurationClassTransformer(
-        namedQueries, nativeQueries, new ArrayList<>());
+
+    QueryConfigurationClassTransformer queryConfigurationClassTransformer =
+        new QueryConfigurationClassTransformer(namedQueries, nativeQueries, new ArrayList<>());
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
-        new CodeSigner[]{null});
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSigner[] codeSignerArray = new CodeSigner[] {null};
 
+    CodeSource codeSource = new CodeSource(toURLResult, codeSignerArray);
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
     // Act and Assert
-    assertNull(queryConfigurationClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8")));
+    assertNull(
+        queryConfigurationClassTransformer.transform(
+            loader,
+            "Class Name",
+            classBeingRedefined,
+            protectionDomain,
+            "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
-   * Test {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class,
+   * ProtectionDomain, byte[])}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link QueryConfigurationClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   *
+   * <p>Method under test: {@link QueryConfigurationClassTransformer#transform(ClassLoader, String,
+   * Class, ProtectionDomain, byte[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+    "byte[] QueryConfigurationClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
+  })
   public void testTransform_whenNull_thenReturnNull()
       throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();
     ArrayList<NamedNativeQuery> nativeQueries = new ArrayList<>();
-    QueryConfigurationClassTransformer queryConfigurationClassTransformer = new QueryConfigurationClassTransformer(
-        namedQueries, nativeQueries, new ArrayList<>());
+
+    QueryConfigurationClassTransformer queryConfigurationClassTransformer =
+        new QueryConfigurationClassTransformer(namedQueries, nativeQueries, new ArrayList<>());
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
-        new CodeSigner[]{null});
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSigner[] codeSignerArray = new CodeSigner[] {null};
 
+    CodeSource codeSource = new CodeSource(toURLResult, codeSignerArray);
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
     // Act and Assert
-    assertNull(queryConfigurationClassTransformer.transform(loader, null, classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8")));
+    assertNull(
+        queryConfigurationClassTransformer.transform(
+            loader, null, classBeingRedefined, protectionDomain, "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
-   * Test {@link QueryConfigurationClassTransformer#prepareNativeQueries(ConstPool, ClassPool, ArrayMemberValue)}.
-   * <p>
-   * Method under test: {@link QueryConfigurationClassTransformer#prepareNativeQueries(ConstPool, ClassPool, ArrayMemberValue)}
+   * Test {@link QueryConfigurationClassTransformer#prepareNativeQueries(ConstPool, ClassPool,
+   * ArrayMemberValue)}.
+   *
+   * <ul>
+   *   <li>Then array length is zero.
+   * </ul>
+   *
+   * <p>Method under test: {@link QueryConfigurationClassTransformer#prepareNativeQueries(ConstPool,
+   * ClassPool, ArrayMemberValue)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void QueryConfigurationClassTransformer.prepareNativeQueries(ConstPool, ClassPool, ArrayMemberValue)"})
-  public void testPrepareNativeQueries() throws NotFoundException {
+    "void QueryConfigurationClassTransformer.prepareNativeQueries(ConstPool, ClassPool, ArrayMemberValue)"
+  })
+  public void testPrepareNativeQueries_thenArrayLengthIsZero() throws NotFoundException {
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();
     ArrayList<NamedNativeQuery> nativeQueries = new ArrayList<>();
-    QueryConfigurationClassTransformer queryConfigurationClassTransformer = new QueryConfigurationClassTransformer(
-        namedQueries, nativeQueries, new ArrayList<>());
+
+    QueryConfigurationClassTransformer queryConfigurationClassTransformer =
+        new QueryConfigurationClassTransformer(namedQueries, nativeQueries, new ArrayList<>());
     ConstPool constantPool = new ConstPool("Thisclass");
     ClassPool pool = ClassPool.getDefault();
     ArrayMemberValue queryArray = new ArrayMemberValue(new ConstPool("Thisclass"));
@@ -173,20 +202,29 @@ public class QueryConfigurationClassTransformerDiffblueTest {
   }
 
   /**
-   * Test {@link QueryConfigurationClassTransformer#prepareNamedQueries(ConstPool, ClassPool, ArrayMemberValue)}.
-   * <p>
-   * Method under test: {@link QueryConfigurationClassTransformer#prepareNamedQueries(ConstPool, ClassPool, ArrayMemberValue)}
+   * Test {@link QueryConfigurationClassTransformer#prepareNamedQueries(ConstPool, ClassPool,
+   * ArrayMemberValue)}.
+   *
+   * <ul>
+   *   <li>Then array length is zero.
+   * </ul>
+   *
+   * <p>Method under test: {@link QueryConfigurationClassTransformer#prepareNamedQueries(ConstPool,
+   * ClassPool, ArrayMemberValue)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void QueryConfigurationClassTransformer.prepareNamedQueries(ConstPool, ClassPool, ArrayMemberValue)"})
-  public void testPrepareNamedQueries() throws NotFoundException {
+    "void QueryConfigurationClassTransformer.prepareNamedQueries(ConstPool, ClassPool, ArrayMemberValue)"
+  })
+  public void testPrepareNamedQueries_thenArrayLengthIsZero() throws NotFoundException {
     // Arrange
     ArrayList<NamedQuery> namedQueries = new ArrayList<>();
     ArrayList<NamedNativeQuery> nativeQueries = new ArrayList<>();
-    QueryConfigurationClassTransformer queryConfigurationClassTransformer = new QueryConfigurationClassTransformer(
-        namedQueries, nativeQueries, new ArrayList<>());
+
+    QueryConfigurationClassTransformer queryConfigurationClassTransformer =
+        new QueryConfigurationClassTransformer(namedQueries, nativeQueries, new ArrayList<>());
     ConstPool constantPool = new ConstPool("Thisclass");
     ClassPool pool = ClassPool.getDefault();
     ArrayMemberValue queryArray = new ArrayMemberValue(new ConstPool("Thisclass"));

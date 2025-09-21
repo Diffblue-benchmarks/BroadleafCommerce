@@ -18,7 +18,8 @@
 package org.broadleafcommerce.core.order.domain.dto;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
@@ -28,8 +29,9 @@ import org.junit.experimental.categories.Category;
 public class OrderItemHolderDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderItemHolder#OrderItemHolder(OrderItem)}
    *   <li>{@link OrderItemHolder#setOrderItem(OrderItem)}
@@ -37,9 +39,13 @@ public class OrderItemHolderDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemHolder.<init>(OrderItem)", "OrderItem OrderItemHolder.getOrderItem()",
-      "void OrderItemHolder.setOrderItem(OrderItem)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemHolder.<init>(OrderItem)",
+    "OrderItem OrderItemHolder.getOrderItem()",
+    "void OrderItemHolder.setOrderItem(OrderItem)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemHolder actualOrderItemHolder = new OrderItemHolder(new BundleOrderItemImpl());

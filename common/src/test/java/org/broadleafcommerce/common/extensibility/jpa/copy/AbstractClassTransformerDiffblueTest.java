@@ -20,10 +20,12 @@ package org.broadleafcommerce.common.extensibility.jpa.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.extensibility.jpa.cache.RemoveCacheClassTransformer;
 import org.broadleafcommerce.common.extensibility.jpa.convert.AlterTableNameClassTransformer;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,43 +37,47 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {AlterTableNameClassTransformer.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractClassTransformerDiffblueTest {
-  @Autowired
-  private AbstractClassTransformer abstractClassTransformer;
+  @Autowired private AbstractClassTransformer abstractClassTransformer;
 
   /**
    * Test {@link AbstractClassTransformer#afterPropertiesSet()}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractClassTransformer#afterPropertiesSet()}
+   *
+   * <p>Method under test: {@link AbstractClassTransformer#afterPropertiesSet()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractClassTransformer.afterPropertiesSet()"})
-  public void testAfterPropertiesSet_givenArrayListAddFoo_thenThrowRuntimeException() throws Exception {
+  public void testAfterPropertiesSet_givenArrayListAddFoo_thenThrowRuntimeException()
+      throws Exception {
     // Arrange
     ArrayList<String> fullyQualifiedClassNames = new ArrayList<>();
     fullyQualifiedClassNames.add("foo");
 
-    AlterTableNameClassTransformer alterTableNameClassTransformer = new AlterTableNameClassTransformer();
-    alterTableNameClassTransformer.setPreLoadClassNamePatterns(fullyQualifiedClassNames);
+    RemoveCacheClassTransformer removeCacheClassTransformer =
+        new RemoveCacheClassTransformer("Module Name");
+    removeCacheClassTransformer.setPreLoadClassNamePatterns(fullyQualifiedClassNames);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> alterTableNameClassTransformer.afterPropertiesSet());
+    assertThrows(RuntimeException.class, () -> removeCacheClassTransformer.afterPropertiesSet());
   }
 
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
-   * <p>
-   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   *
+   * <p>Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns() {
     // Arrange and Act
@@ -79,16 +85,19 @@ public class AbstractClassTransformerDiffblueTest {
 
     // Assert that nothing has changed
     assertTrue(abstractClassTransformer instanceof AlterTableNameClassTransformer);
-    assertTrue(((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns.isEmpty());
+    assertTrue(
+        ((AlterTableNameClassTransformer) abstractClassTransformer)
+            .preLoadClassNamePatterns.isEmpty());
   }
 
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
-   * <p>
-   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   *
+   * <p>Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns2() {
     // Arrange
@@ -100,18 +109,20 @@ public class AbstractClassTransformerDiffblueTest {
 
     // Assert
     assertTrue(abstractClassTransformer instanceof AlterTableNameClassTransformer);
-    List<String> stringList = ((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns;
+    List<String> stringList =
+        ((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns;
     assertEquals(1, stringList.size());
     assertEquals("foo", stringList.get(0));
   }
 
   /**
    * Test {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}.
-   * <p>
-   * Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
+   *
+   * <p>Method under test: {@link AbstractClassTransformer#setPreLoadClassNamePatterns(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractClassTransformer.setPreLoadClassNamePatterns(List)"})
   public void testSetPreLoadClassNamePatterns3() {
     // Arrange
@@ -124,7 +135,8 @@ public class AbstractClassTransformerDiffblueTest {
 
     // Assert
     assertTrue(abstractClassTransformer instanceof AlterTableNameClassTransformer);
-    List<String> stringList = ((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns;
+    List<String> stringList =
+        ((AlterTableNameClassTransformer) abstractClassTransformer).preLoadClassNamePatterns;
     assertEquals(2, stringList.size());
     assertEquals("42", stringList.get(0));
     assertEquals("foo", stringList.get(1));

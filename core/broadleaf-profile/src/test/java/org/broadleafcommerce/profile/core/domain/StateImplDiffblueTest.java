@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,19 +30,22 @@ import org.junit.experimental.categories.Category;
 public class StateImplDiffblueTest {
   /**
    * Test {@link StateImpl#equals(Object)}, and {@link StateImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StateImpl#equals(Object)}
    *   <li>{@link StateImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -57,25 +61,27 @@ public class StateImplDiffblueTest {
 
     // Act and Assert
     assertEquals(stateImpl, stateImpl2);
-    int expectedHashCodeResult = stateImpl.hashCode();
-    assertEquals(expectedHashCodeResult, stateImpl2.hashCode());
+    assertEquals(stateImpl.hashCode(), stateImpl2.hashCode());
   }
 
   /**
    * Test {@link StateImpl#equals(Object)}, and {@link StateImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StateImpl#equals(Object)}
    *   <li>{@link StateImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -91,25 +97,27 @@ public class StateImplDiffblueTest {
 
     // Act and Assert
     assertEquals(stateImpl, stateImpl2);
-    int expectedHashCodeResult = stateImpl.hashCode();
-    assertEquals(expectedHashCodeResult, stateImpl2.hashCode());
+    assertEquals(stateImpl.hashCode(), stateImpl2.hashCode());
   }
 
   /**
    * Test {@link StateImpl#equals(Object)}, and {@link StateImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StateImpl#equals(Object)}
    *   <li>{@link StateImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -125,25 +133,27 @@ public class StateImplDiffblueTest {
 
     // Act and Assert
     assertEquals(stateImpl, stateImpl2);
-    int expectedHashCodeResult = stateImpl.hashCode();
-    assertEquals(expectedHashCodeResult, stateImpl2.hashCode());
+    assertEquals(stateImpl.hashCode(), stateImpl2.hashCode());
   }
 
   /**
    * Test {@link StateImpl#equals(Object)}, and {@link StateImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StateImpl#equals(Object)}
    *   <li>{@link StateImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
@@ -159,25 +169,27 @@ public class StateImplDiffblueTest {
 
     // Act and Assert
     assertEquals(stateImpl, stateImpl2);
-    int expectedHashCodeResult = stateImpl.hashCode();
-    assertEquals(expectedHashCodeResult, stateImpl2.hashCode());
+    assertEquals(stateImpl.hashCode(), stateImpl2.hashCode());
   }
 
   /**
    * Test {@link StateImpl#equals(Object)}, and {@link StateImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StateImpl#equals(Object)}
    *   <li>{@link StateImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -194,15 +206,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -222,15 +236,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -250,15 +266,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -278,21 +296,23 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     StateImpl stateImpl = new StateImpl();
     stateImpl.setAbbreviation("Abbreviation");
-    stateImpl.setCountry(mock(CountryImpl.class));
+    stateImpl.setCountry(mock(Country.class));
     stateImpl.setName("Name");
 
     StateImpl stateImpl2 = new StateImpl();
@@ -306,15 +326,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -334,15 +356,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
@@ -362,15 +386,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -385,15 +411,17 @@ public class StateImplDiffblueTest {
 
   /**
    * Test {@link StateImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link StateImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link StateImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StateImpl.equals(Object)", "int StateImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -408,8 +436,9 @@ public class StateImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link StateImpl}
    *   <li>{@link StateImpl#setAbbreviation(String)}
@@ -421,10 +450,17 @@ public class StateImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void StateImpl.<init>()", "String StateImpl.getAbbreviation()", "Country StateImpl.getCountry()",
-      "String StateImpl.getName()", "void StateImpl.setAbbreviation(String)", "void StateImpl.setCountry(Country)",
-      "void StateImpl.setName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void StateImpl.<init>()",
+    "String StateImpl.getAbbreviation()",
+    "Country StateImpl.getCountry()",
+    "String StateImpl.getName()",
+    "void StateImpl.setAbbreviation(String)",
+    "void StateImpl.setCountry(Country)",
+    "void StateImpl.setName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     StateImpl actualStateImpl = new StateImpl();

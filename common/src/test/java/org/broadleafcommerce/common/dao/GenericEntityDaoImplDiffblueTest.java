@@ -21,11 +21,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -38,97 +38,117 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
-import org.springframework.context.ApplicationContext;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GenericEntityDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private GenericEntityDaoImpl genericEntityDaoImpl;
+  @InjectMocks private GenericEntityDaoImpl genericEntityDaoImpl;
 
-  @Mock
-  private PersistenceService persistenceService;
+  @Mock private PersistenceService persistenceService;
+
+  /**
+   * Test {@link GenericEntityDaoImpl#getGenericEntityDao()}.
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getGenericEntityDao()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"GenericEntityDaoImpl GenericEntityDaoImpl.getGenericEntityDao()"})
+  public void testGetGenericEntityDao() {
+    // Arrange, Act and Assert
+    assertNull(GenericEntityDaoImpl.getGenericEntityDao());
+  }
+
+  /**
+   * Test {@link GenericEntityDaoImpl#readGenericEntity(Class, Object)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#readGenericEntity(Class, Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Object GenericEntityDaoImpl.readGenericEntity(Class, Object)"})
+  public void testReadGenericEntity_thenThrowNoSuchBeanDefinitionException() {
+    // Arrange
+    when(persistenceService.identifyEntityManager(Mockito.<Class<Object>>any()))
+        .thenThrow(new NoSuchBeanDefinitionException("Name"));
+    Class<Object> clazz = Object.class;
+
+    // Act and Assert
+    assertThrows(
+        NoSuchBeanDefinitionException.class,
+        () -> genericEntityDaoImpl.readGenericEntity(clazz, BLCFieldUtils.NULL_FIELD));
+    verify(persistenceService).identifyEntityManager(isA(Class.class));
+  }
 
   /**
    * Test {@link GenericEntityDaoImpl#getImplClass(String)}.
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Class GenericEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass() {
     // Arrange
     Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
-        .thenThrow(new RuntimeException("foo"));
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> genericEntityDaoImpl.getImplClass("Class Name"));
-    verify(entityConfiguration).lookupEntityClass(eq("Class Name"));
+    verify(entityConfiguration).lookupEntityClass("Class Name");
   }
 
   /**
    * Test {@link GenericEntityDaoImpl#getImplClass(String)}.
+   *
    * <ul>
-   *   <li>Given Bean Name{blEntityConfiguration} {@link EntityConfiguration#lookupEntityClass(String)} return {@code null}.</li>
+   *   <li>Given {@code Object}.
+   *   <li>When {@code Class Name}.
+   *   <li>Then return {@link Object}.
    * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Class GenericEntityDaoImpl.getImplClass(String)"})
-  public void testGetImplClass_givenBeanNameBlEntityConfigurationLookupEntityClassReturnNull() {
-    // Arrange
-    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any())).thenReturn(null);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> genericEntityDaoImpl.getImplClass("Class Name"));
-    verify(entityConfiguration).lookupEntityClass(eq("Class Name"));
-  }
-
-  /**
-   * Test {@link GenericEntityDaoImpl#getImplClass(String)}.
-   * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then return {@link Object}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Class GenericEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass_givenJavaLangObject_whenClassName_thenReturnObject() {
     // Arrange
     Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any())).thenReturn(forNameResult);
+    Mockito.<Class<?>>when(entityConfiguration.lookupEntityClass(Mockito.<String>any()))
+        .thenReturn(forNameResult);
 
     // Act
     Class<?> actualImplClass = genericEntityDaoImpl.getImplClass("Class Name");
 
     // Assert
-    verify(entityConfiguration).lookupEntityClass(eq("Class Name"));
+    verify(entityConfiguration).lookupEntityClass("Class Name");
     Class<Object> expectedImplClass = Object.class;
     assertEquals(expectedImplClass, actualImplClass);
   }
 
   /**
    * Test {@link GenericEntityDaoImpl#getImplClass(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getImplClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Class GenericEntityDaoImpl.getImplClass(String)"})
   public void testGetImplClass_thenThrowRuntimeException() {
     // Arrange
@@ -137,33 +157,37 @@ public class GenericEntityDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> genericEntityDaoImpl.getImplClass("Class Name"));
-    verify(entityConfiguration).lookupEntityClass(eq("Class Name"));
+    verify(entityConfiguration).lookupEntityClass("Class Name");
   }
 
   /**
    * Test {@link GenericEntityDaoImpl#getCeilingImplClass(String)}.
+   *
    * <ul>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@code Class Name}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getCeilingImplClass(String)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getCeilingImplClass(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Class GenericEntityDaoImpl.getCeilingImplClass(String)"})
   public void testGetCeilingImplClass_whenClassName_thenThrowRuntimeException() {
     // Arrange, Act and Assert
-    assertThrows(RuntimeException.class, () -> genericEntityDaoImpl.getCeilingImplClass("Class Name"));
+    assertThrows(
+        RuntimeException.class, () -> genericEntityDaoImpl.getCeilingImplClass("Class Name"));
   }
 
   /**
    * Test {@link GenericEntityDaoImpl#getIdentifier(Object)}.
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getIdentifier(Object)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getIdentifier(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.io.Serializable GenericEntityDaoImpl.getIdentifier(Object)"})
   public void testGetIdentifier() {
     // Arrange, Act and Assert
@@ -172,15 +196,17 @@ public class GenericEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link GenericEntityDaoImpl#idAssigned(Object)}.
+   *
    * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#idAssigned(Object)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#idAssigned(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean GenericEntityDaoImpl.idAssigned(Object)"})
   public void testIdAssigned_whenNull_field_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -188,15 +214,34 @@ public class GenericEntityDaoImplDiffblueTest {
   }
 
   /**
-   * Test {@link GenericEntityDaoImpl#getEntityManager(Class)} with {@code Class}.
-   * <ul>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getEntityManager(Class)}
+   * Test {@link GenericEntityDaoImpl#getEntityManager()}.
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getEntityManager()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EntityManager GenericEntityDaoImpl.getEntityManager()",
+    "void GenericEntityDaoImpl.setApplicationContext(org.springframework.context.ApplicationContext)"
+  })
+  public void testGetEntityManager() {
+    // Arrange, Act and Assert
+    assertNull(new GenericEntityDaoImpl().getEntityManager());
+  }
+
+  /**
+   * Test {@link GenericEntityDaoImpl#getEntityManager(Class)} with {@code Class}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getEntityManager(Class)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityManager GenericEntityDaoImpl.getEntityManager(Class)"})
   public void testGetEntityManagerWithClass_thenReturnNull() {
     // Arrange
@@ -213,14 +258,16 @@ public class GenericEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link GenericEntityDaoImpl#getEntityManager(Class)} with {@code Class}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoSuchBeanDefinitionException}.</li>
+   *   <li>Then throw {@link NoSuchBeanDefinitionException}.
    * </ul>
-   * <p>
-   * Method under test: {@link GenericEntityDaoImpl#getEntityManager(Class)}
+   *
+   * <p>Method under test: {@link GenericEntityDaoImpl#getEntityManager(Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EntityManager GenericEntityDaoImpl.getEntityManager(Class)"})
   public void testGetEntityManagerWithClass_thenThrowNoSuchBeanDefinitionException() {
     // Arrange
@@ -229,31 +276,8 @@ public class GenericEntityDaoImplDiffblueTest {
     Class<Object> clazz = Object.class;
 
     // Act and Assert
-    assertThrows(NoSuchBeanDefinitionException.class, () -> genericEntityDaoImpl.getEntityManager(clazz));
+    assertThrows(
+        NoSuchBeanDefinitionException.class, () -> genericEntityDaoImpl.getEntityManager(clazz));
     verify(persistenceService).identifyEntityManager(isA(Class.class));
-  }
-
-  /**
-   * Test getters and setters.
-   * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link GenericEntityDaoImpl#setApplicationContext(ApplicationContext)}
-   *   <li>{@link GenericEntityDaoImpl#getEntityManager()}
-   * </ul>
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"EntityManager GenericEntityDaoImpl.getEntityManager()",
-      "void GenericEntityDaoImpl.setApplicationContext(ApplicationContext)"})
-  public void testGettersAndSetters() throws BeansException {
-    // Arrange
-    GenericEntityDaoImpl genericEntityDaoImpl = new GenericEntityDaoImpl();
-
-    // Act
-    genericEntityDaoImpl.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-
-    // Assert
-    assertNull(genericEntityDaoImpl.getEntityManager());
   }
 }

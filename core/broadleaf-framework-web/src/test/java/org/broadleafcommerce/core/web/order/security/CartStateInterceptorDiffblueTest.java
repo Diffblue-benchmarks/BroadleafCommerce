@@ -18,13 +18,13 @@
 package org.broadleafcommerce.core.web.order.security;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -33,8 +33,9 @@ import org.springframework.web.context.request.WebRequest;
 class CartStateInterceptorDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CartStateInterceptor}
    *   <li>{@link CartStateInterceptor#afterCompletion(WebRequest, Exception)}
@@ -43,21 +44,24 @@ class CartStateInterceptorDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void CartStateInterceptor.<init>()",
-      "void CartStateInterceptor.afterCompletion(WebRequest, Exception)",
-      "void CartStateInterceptor.postHandle(WebRequest, ModelMap)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CartStateInterceptor.<init>()",
+    "void CartStateInterceptor.afterCompletion(WebRequest, Exception)",
+    "void CartStateInterceptor.postHandle(WebRequest, ModelMap)"
+  })
   void testGettersAndSetters() throws Exception {
     // Arrange and Act
     CartStateInterceptor actualCartStateInterceptor = new CartStateInterceptor();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    ServletWebRequest request = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-    actualCartStateInterceptor.afterCompletion(request, new Exception("foo"));
-    MockHttpServletRequest servletRequest2 = new MockHttpServletRequest();
-    ServletWebRequest request2 = new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest2,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-    actualCartStateInterceptor.postHandle(request2, new ModelMap());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    ServletWebRequest request2 = new ServletWebRequest(request);
+    actualCartStateInterceptor.afterCompletion(request2, new Exception());
+    HttpServletRequestWrapper request3 =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
+    ServletWebRequest request4 = new ServletWebRequest(request3);
+    actualCartStateInterceptor.postHandle(request4, new ModelMap());
 
     // Assert
     assertNull(actualCartStateInterceptor.cartStateProcessor);

@@ -19,6 +19,7 @@ package org.broadleafcommerce.profile.web.core.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -33,40 +34,52 @@ import org.springframework.web.context.request.WebRequest;
 
 class AbstractAnonymousCustomerExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder, WebRequest)}.
-   * <p>
-   * Method under test: {@link AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder, WebRequest)}
+   * Test {@link
+   * AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder,
+   * WebRequest)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAnonymousCustomerExtensionHandler#getAnonymousCustomer(ExtensionResultHolder,
+   * WebRequest)}
    */
   @Test
   @DisplayName("Test getAnonymousCustomer(ExtensionResultHolder, WebRequest)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAnonymousCustomerExtensionHandler.getAnonymousCustomer(ExtensionResultHolder, WebRequest)"})
+    "ExtensionResultStatusType AbstractAnonymousCustomerExtensionHandler.getAnonymousCustomer(ExtensionResultHolder, WebRequest)"
+  })
   void testGetAnonymousCustomer() {
     // Arrange
-    AbstractAnonymousCustomerExtensionHandler abstractAnonymousCustomerExtensionHandler = new AbstractAnonymousCustomerExtensionHandler();
+    AbstractAnonymousCustomerExtensionHandler abstractAnonymousCustomerExtensionHandler =
+        new AbstractAnonymousCustomerExtensionHandler();
 
     ExtensionResultHolder<Customer> customerHolder = new ExtensionResultHolder<>();
     customerHolder.setResult(new CustomerImpl());
     customerHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAnonymousCustomerExtensionHandler
-        .getAnonymousCustomer(customerHolder, new ServletWebRequest(new MockHttpServletRequest())));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAnonymousCustomerExtensionHandler.getAnonymousCustomer(
+            customerHolder, new ServletWebRequest(new MockHttpServletRequest())));
   }
 
   /**
    * Test new {@link AbstractAnonymousCustomerExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractAnonymousCustomerExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractAnonymousCustomerExtensionHandler}
    */
   @Test
   @DisplayName("Test new AbstractAnonymousCustomerExtensionHandler (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractAnonymousCustomerExtensionHandler.<init>()"})
   void testNewAbstractAnonymousCustomerExtensionHandler() {
     // Arrange and Act
-    AbstractAnonymousCustomerExtensionHandler actualAbstractAnonymousCustomerExtensionHandler = new AbstractAnonymousCustomerExtensionHandler();
+    AbstractAnonymousCustomerExtensionHandler actualAbstractAnonymousCustomerExtensionHandler =
+        new AbstractAnonymousCustomerExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractAnonymousCustomerExtensionHandler.getPriority());

@@ -22,7 +22,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.money.Money;
@@ -47,19 +48,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderPaymentDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private OrderPaymentDaoImpl orderPaymentDaoImpl;
+  @InjectMocks private OrderPaymentDaoImpl orderPaymentDaoImpl;
 
   /**
    * Test {@link OrderPaymentDaoImpl#create()}.
-   * <p>
-   * Method under test: {@link OrderPaymentDaoImpl#create()}
+   *
+   * <p>Method under test: {@link OrderPaymentDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OrderPayment OrderPaymentDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -72,59 +72,67 @@ public class OrderPaymentDaoImplDiffblueTest {
     orderPaymentImpl.setReferenceNumber("42");
     orderPaymentImpl.setTransactions(new ArrayList<>());
     orderPaymentImpl.setType(new PaymentType("Type", "Friendly Type"));
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderPaymentImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(orderPaymentImpl);
 
     // Act
     OrderPayment actualCreateResult = orderPaymentDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.payment.domain.OrderPayment"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.payment.domain.OrderPayment");
     assertSame(orderPaymentImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OrderPaymentDaoImpl#createTransaction()}.
-   * <p>
-   * Method under test: {@link OrderPaymentDaoImpl#createTransaction()}
+   *
+   * <p>Method under test: {@link OrderPaymentDaoImpl#createTransaction()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PaymentTransaction OrderPaymentDaoImpl.createTransaction()"})
   public void testCreateTransaction() {
     // Arrange
     PaymentTransactionImpl paymentTransactionImpl = new PaymentTransactionImpl();
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<PaymentTransaction>>any()))
+    when(entityConfiguration.createEntityInstance(
+            Mockito.<String>any(), Mockito.<Class<PaymentTransaction>>any()))
         .thenReturn(paymentTransactionImpl);
 
     // Act
     PaymentTransaction actualCreateTransactionResult = orderPaymentDaoImpl.createTransaction();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.payment.domain.PaymentTransaction"),
-        isA(Class.class));
+    verify(entityConfiguration)
+        .createEntityInstance(
+            eq("org.broadleafcommerce.core.payment.domain.PaymentTransaction"), isA(Class.class));
     assertSame(paymentTransactionImpl, actualCreateTransactionResult);
   }
 
   /**
    * Test {@link OrderPaymentDaoImpl#createLog()}.
-   * <p>
-   * Method under test: {@link OrderPaymentDaoImpl#createLog()}
+   *
+   * <p>Method under test: {@link OrderPaymentDaoImpl#createLog()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PaymentLog OrderPaymentDaoImpl.createLog()"})
   public void testCreateLog() {
     // Arrange
     PaymentLogImpl paymentLogImpl = new PaymentLogImpl();
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any(), Mockito.<Class<PaymentLog>>any()))
+    when(entityConfiguration.createEntityInstance(
+            Mockito.<String>any(), Mockito.<Class<PaymentLog>>any()))
         .thenReturn(paymentLogImpl);
 
     // Act
     PaymentLog actualCreateLogResult = orderPaymentDaoImpl.createLog();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.payment.domain.PaymentLog"),
-        isA(Class.class));
+    verify(entityConfiguration)
+        .createEntityInstance(
+            eq("org.broadleafcommerce.core.payment.domain.PaymentLog"), isA(Class.class));
     assertSame(paymentLogImpl, actualCreateLogResult);
   }
 }

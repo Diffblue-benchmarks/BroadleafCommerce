@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.List;
 import org.broadleafcommerce.common.money.Money;
@@ -39,22 +40,20 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {PaymentResponseDTO.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PaymentResponseDTODiffblueTest {
-  @MockBean
-  private PaymentGatewayType paymentGatewayType;
+  @MockBean private PaymentGatewayType paymentGatewayType;
 
-  @Autowired
-  private PaymentResponseDTO paymentResponseDTO;
+  @Autowired private PaymentResponseDTO paymentResponseDTO;
 
-  @MockBean
-  private PaymentType paymentType;
+  @MockBean private PaymentType paymentType;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PaymentResponseDTO#PaymentResponseDTO(PaymentType, PaymentGatewayType)}
    *   <li>{@link PaymentResponseDTO#amount(Money)}
@@ -85,54 +84,69 @@ public class PaymentResponseDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PaymentResponseDTO.<init>(PaymentType, PaymentGatewayType)",
-      "PaymentResponseDTO PaymentResponseDTO.amount(Money)",
-      "PaymentResponseDTO PaymentResponseDTO.completeCheckoutOnCallback(boolean)",
-      "Money PaymentResponseDTO.getAmount()", "AddressDTO PaymentResponseDTO.getBillTo()",
-      "CreditCardDTO PaymentResponseDTO.getCreditCard()", "GatewayCustomerDTO PaymentResponseDTO.getCustomer()",
-      "List PaymentResponseDTO.getCustomerCredits()", "List PaymentResponseDTO.getGiftCards()",
-      "String PaymentResponseDTO.getOrderId()", "PaymentGatewayType PaymentResponseDTO.getPaymentGatewayType()",
-      "String PaymentResponseDTO.getPaymentToken()",
-      "PaymentTransactionType PaymentResponseDTO.getPaymentTransactionType()",
-      "PaymentType PaymentResponseDTO.getPaymentType()", "String PaymentResponseDTO.getRawResponse()",
-      "java.util.Map PaymentResponseDTO.getResponseMap()", "AddressDTO PaymentResponseDTO.getShipTo()",
-      "boolean PaymentResponseDTO.isCompleteCheckoutOnCallback()", "boolean PaymentResponseDTO.isSuccessful()",
-      "boolean PaymentResponseDTO.isValid()", "PaymentResponseDTO PaymentResponseDTO.orderId(String)",
-      "PaymentResponseDTO PaymentResponseDTO.paymentToken(String)",
-      "PaymentResponseDTO PaymentResponseDTO.paymentTransactionType(PaymentTransactionType)",
-      "PaymentResponseDTO PaymentResponseDTO.rawResponse(String)",
-      "PaymentResponseDTO PaymentResponseDTO.successful(boolean)",
-      "PaymentResponseDTO PaymentResponseDTO.valid(boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentResponseDTO.<init>(PaymentType, PaymentGatewayType)",
+    "PaymentResponseDTO PaymentResponseDTO.amount(Money)",
+    "PaymentResponseDTO PaymentResponseDTO.completeCheckoutOnCallback(boolean)",
+    "Money PaymentResponseDTO.getAmount()",
+    "AddressDTO PaymentResponseDTO.getBillTo()",
+    "CreditCardDTO PaymentResponseDTO.getCreditCard()",
+    "GatewayCustomerDTO PaymentResponseDTO.getCustomer()",
+    "List PaymentResponseDTO.getCustomerCredits()",
+    "List PaymentResponseDTO.getGiftCards()",
+    "String PaymentResponseDTO.getOrderId()",
+    "PaymentGatewayType PaymentResponseDTO.getPaymentGatewayType()",
+    "String PaymentResponseDTO.getPaymentToken()",
+    "PaymentTransactionType PaymentResponseDTO.getPaymentTransactionType()",
+    "PaymentType PaymentResponseDTO.getPaymentType()",
+    "String PaymentResponseDTO.getRawResponse()",
+    "java.util.Map PaymentResponseDTO.getResponseMap()",
+    "AddressDTO PaymentResponseDTO.getShipTo()",
+    "boolean PaymentResponseDTO.isCompleteCheckoutOnCallback()",
+    "boolean PaymentResponseDTO.isSuccessful()",
+    "boolean PaymentResponseDTO.isValid()",
+    "PaymentResponseDTO PaymentResponseDTO.orderId(String)",
+    "PaymentResponseDTO PaymentResponseDTO.paymentToken(String)",
+    "PaymentResponseDTO PaymentResponseDTO.paymentTransactionType(PaymentTransactionType)",
+    "PaymentResponseDTO PaymentResponseDTO.rawResponse(String)",
+    "PaymentResponseDTO PaymentResponseDTO.successful(boolean)",
+    "PaymentResponseDTO PaymentResponseDTO.valid(boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    PaymentResponseDTO actualPaymentResponseDTO = new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH);
+    PaymentResponseDTO actualPaymentResponseDTO =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH);
     PaymentResponseDTO actualAmountResult = actualPaymentResponseDTO.amount(Money.ZERO);
-    PaymentResponseDTO actualCompleteCheckoutOnCallbackResult = actualPaymentResponseDTO
-        .completeCheckoutOnCallback(true);
+    PaymentResponseDTO actualCompleteCheckoutOnCallbackResult =
+        actualPaymentResponseDTO.completeCheckoutOnCallback(true);
     PaymentResponseDTO actualOrderIdResult = actualPaymentResponseDTO.orderId("42");
     PaymentResponseDTO actualPaymentTokenResult = actualPaymentResponseDTO.paymentToken("ABC123");
-    PaymentResponseDTO actualPaymentTransactionTypeResult = actualPaymentResponseDTO
-        .paymentTransactionType(PaymentTransactionType.AUTHORIZE);
-    PaymentResponseDTO actualRawResponseResult = actualPaymentResponseDTO.rawResponse("Raw Response");
+    PaymentResponseDTO actualPaymentTransactionTypeResult =
+        actualPaymentResponseDTO.paymentTransactionType(PaymentTransactionType.AUTHORIZE);
+    PaymentResponseDTO actualRawResponseResult =
+        actualPaymentResponseDTO.rawResponse("Raw Response");
     PaymentResponseDTO actualSuccessfulResult = actualPaymentResponseDTO.successful(true);
     PaymentResponseDTO actualValidResult = actualPaymentResponseDTO.valid(true);
     Money actualAmount = actualPaymentResponseDTO.getAmount();
     AddressDTO<PaymentResponseDTO> actualBillTo = actualPaymentResponseDTO.getBillTo();
     CreditCardDTO<PaymentResponseDTO> actualCreditCard = actualPaymentResponseDTO.getCreditCard();
     GatewayCustomerDTO<PaymentResponseDTO> actualCustomer = actualPaymentResponseDTO.getCustomer();
-    List<CustomerCreditDTO<PaymentResponseDTO>> actualCustomerCredits = actualPaymentResponseDTO.getCustomerCredits();
+    List<CustomerCreditDTO<PaymentResponseDTO>> actualCustomerCredits =
+        actualPaymentResponseDTO.getCustomerCredits();
     List<GiftCardDTO<PaymentResponseDTO>> actualGiftCards = actualPaymentResponseDTO.getGiftCards();
     String actualOrderId = actualPaymentResponseDTO.getOrderId();
     PaymentGatewayType actualPaymentGatewayType = actualPaymentResponseDTO.getPaymentGatewayType();
     String actualPaymentToken = actualPaymentResponseDTO.getPaymentToken();
-    PaymentTransactionType actualPaymentTransactionType = actualPaymentResponseDTO.getPaymentTransactionType();
+    PaymentTransactionType actualPaymentTransactionType =
+        actualPaymentResponseDTO.getPaymentTransactionType();
     PaymentType actualPaymentType = actualPaymentResponseDTO.getPaymentType();
     String actualRawResponse = actualPaymentResponseDTO.getRawResponse();
     actualPaymentResponseDTO.getResponseMap();
     AddressDTO<PaymentResponseDTO> actualShipTo = actualPaymentResponseDTO.getShipTo();
-    boolean actualIsCompleteCheckoutOnCallbackResult = actualPaymentResponseDTO.isCompleteCheckoutOnCallback();
+    boolean actualIsCompleteCheckoutOnCallbackResult =
+        actualPaymentResponseDTO.isCompleteCheckoutOnCallback();
     boolean actualIsSuccessfulResult = actualPaymentResponseDTO.isSuccessful();
 
     // Assert
@@ -155,24 +169,25 @@ public class PaymentResponseDTODiffblueTest {
     assertSame(actualPaymentResponseDTO, actualRawResponseResult);
     assertSame(actualPaymentResponseDTO, actualSuccessfulResult);
     assertSame(actualPaymentResponseDTO, actualValidResult);
-    assertSame(actualAmount.ZERO, actualAmount);
-    assertSame(actualPaymentGatewayType.PASSTHROUGH, actualPaymentGatewayType);
-    assertSame(actualPaymentTransactionType.AUTHORIZE, actualPaymentTransactionType);
-    assertSame(actualPaymentType.APPLE_PAY, actualPaymentType);
+    assertSame(Money.ZERO, actualAmount);
+    assertSame(PaymentGatewayType.PASSTHROUGH, actualPaymentGatewayType);
+    assertSame(PaymentTransactionType.AUTHORIZE, actualPaymentTransactionType);
+    assertSame(PaymentType.APPLE_PAY, actualPaymentType);
   }
 
   /**
    * Test {@link PaymentResponseDTO#customer()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#customer()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#customer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GatewayCustomerDTO PaymentResponseDTO.customer()"})
   public void testCustomer() {
     // Arrange and Act
-    GatewayCustomerDTO<PaymentResponseDTO> actualCustomerResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).customer();
+    GatewayCustomerDTO<PaymentResponseDTO> actualCustomerResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH).customer();
 
     // Assert
     assertNull(actualCustomerResult.getCompanyName());
@@ -189,16 +204,17 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#creditCard()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#creditCard()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#creditCard()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CreditCardDTO PaymentResponseDTO.creditCard()"})
   public void testCreditCard() {
     // Arrange and Act
-    CreditCardDTO<PaymentResponseDTO> actualCreditCardResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).creditCard();
+    CreditCardDTO<PaymentResponseDTO> actualCreditCardResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH).creditCard();
 
     // Assert
     assertNull(actualCreditCardResult.getCreditCardCvv());
@@ -214,16 +230,17 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#shipTo()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#shipTo()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#shipTo()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AddressDTO PaymentResponseDTO.shipTo()"})
   public void testShipTo() {
     // Arrange and Act
-    AddressDTO<PaymentResponseDTO> actualShipToResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).shipTo();
+    AddressDTO<PaymentResponseDTO> actualShipToResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH).shipTo();
 
     // Assert
     assertNull(actualShipToResult.getAddressCityLocality());
@@ -244,16 +261,17 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#billTo()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#billTo()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#billTo()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AddressDTO PaymentResponseDTO.billTo()"})
   public void testBillTo() {
     // Arrange and Act
-    AddressDTO<PaymentResponseDTO> actualBillToResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).billTo();
+    AddressDTO<PaymentResponseDTO> actualBillToResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH).billTo();
 
     // Assert
     assertNull(actualBillToResult.getAddressCityLocality());
@@ -274,16 +292,17 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#giftCard()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#giftCard()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#giftCard()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GiftCardDTO PaymentResponseDTO.giftCard()"})
   public void testGiftCard() {
     // Arrange and Act
-    GiftCardDTO<PaymentResponseDTO> actualGiftCardResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).giftCard();
+    GiftCardDTO<PaymentResponseDTO> actualGiftCardResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH).giftCard();
 
     // Assert
     PaymentResponseDTO paymentResponseDTO = actualGiftCardResult.parent;
@@ -309,16 +328,18 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#customerCredit()}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#customerCredit()}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#customerCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CustomerCreditDTO PaymentResponseDTO.customerCredit()"})
   public void testCustomerCredit() {
     // Arrange and Act
-    CustomerCreditDTO<PaymentResponseDTO> actualCustomerCreditResult = (new PaymentResponseDTO(PaymentType.APPLE_PAY,
-        PaymentGatewayType.PASSTHROUGH)).customerCredit();
+    CustomerCreditDTO<PaymentResponseDTO> actualCustomerCreditResult =
+        new PaymentResponseDTO(PaymentType.APPLE_PAY, PaymentGatewayType.PASSTHROUGH)
+            .customerCredit();
 
     // Assert
     PaymentResponseDTO paymentResponseDTO = actualCustomerCreditResult.parent;
@@ -344,14 +365,18 @@ public class PaymentResponseDTODiffblueTest {
 
   /**
    * Test {@link PaymentResponseDTO#responseMap(String, String)}.
-   * <p>
-   * Method under test: {@link PaymentResponseDTO#responseMap(String, String)}
+   *
+   * <p>Method under test: {@link PaymentResponseDTO#responseMap(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PaymentResponseDTO PaymentResponseDTO.responseMap(String, String)"})
   public void testResponseMap() {
-    // Arrange, Act and Assert
-    assertSame(paymentResponseDTO, paymentResponseDTO.responseMap("Key", "42"));
+    // Arrange and Act
+    PaymentResponseDTO actualResponseMapResult = paymentResponseDTO.responseMap("Key", "42");
+
+    // Assert
+    assertSame(paymentResponseDTO, actualResponseMapResult);
   }
 }

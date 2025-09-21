@@ -23,16 +23,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
 import java.io.UnsupportedEncodingException;
 import java.lang.instrument.IllegalClassFormatException;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.security.CodeSigner;
 import java.security.CodeSource;
@@ -45,6 +46,7 @@ import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ConstPool;
 import javassist.bytecode.annotation.Annotation;
 import javassist.bytecode.annotation.AnnotationMemberValue;
+import javassist.bytecode.annotation.StringMemberValue;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -59,16 +61,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {RemoveCacheClassTransformer.class, String.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RemoveCacheClassTransformerDiffblueTest {
-  @Autowired
-  private RemoveCacheClassTransformer removeCacheClassTransformer;
+  @Autowired private RemoveCacheClassTransformer removeCacheClassTransformer;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link RemoveCacheClassTransformer#RemoveCacheClassTransformer(String)}
    *   <li>{@link RemoveCacheClassTransformer#setAnnotationClass(String)}
@@ -82,23 +84,31 @@ public class RemoveCacheClassTransformerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void RemoveCacheClassTransformer.<init>(String)",
-      "void RemoveCacheClassTransformer.compileJPAProperties(Properties, Object)",
-      "String RemoveCacheClassTransformer.getAnnotationClass()", "List RemoveCacheClassTransformer.getCacheRegions()",
-      "List RemoveCacheClassTransformer.getClassNames()", "void RemoveCacheClassTransformer.setAnnotationClass(String)",
-      "void RemoveCacheClassTransformer.setBeanFactory(BeanFactory)",
-      "void RemoveCacheClassTransformer.setCacheRegions(List)", "void RemoveCacheClassTransformer.setClassNames(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void RemoveCacheClassTransformer.<init>(String)",
+    "void RemoveCacheClassTransformer.compileJPAProperties(Properties, Object)",
+    "String RemoveCacheClassTransformer.getAnnotationClass()",
+    "List RemoveCacheClassTransformer.getCacheRegions()",
+    "List RemoveCacheClassTransformer.getClassNames()",
+    "void RemoveCacheClassTransformer.setAnnotationClass(String)",
+    "void RemoveCacheClassTransformer.setBeanFactory(BeanFactory)",
+    "void RemoveCacheClassTransformer.setCacheRegions(List)",
+    "void RemoveCacheClassTransformer.setClassNames(List)"
+  })
   public void testGettersAndSetters() throws Exception {
     // Arrange and Act
-    RemoveCacheClassTransformer actualRemoveCacheClassTransformer = new RemoveCacheClassTransformer("Module Name");
+    RemoveCacheClassTransformer actualRemoveCacheClassTransformer =
+        new RemoveCacheClassTransformer("Module Name");
     actualRemoveCacheClassTransformer.setAnnotationClass("Annotation Class");
     actualRemoveCacheClassTransformer.setBeanFactory(new DefaultListableBeanFactory());
     ArrayList<String> cacheRegions = new ArrayList<>();
     actualRemoveCacheClassTransformer.setCacheRegions(cacheRegions);
     ArrayList<String> classNames = new ArrayList<>();
     actualRemoveCacheClassTransformer.setClassNames(classNames);
-    actualRemoveCacheClassTransformer.compileJPAProperties(new Properties(), BLCFieldUtils.NULL_FIELD);
+    actualRemoveCacheClassTransformer.compileJPAProperties(
+        new Properties(), BLCFieldUtils.NULL_FIELD);
     String actualAnnotationClass = actualRemoveCacheClassTransformer.getAnnotationClass();
     List<String> actualCacheRegions = actualRemoveCacheClassTransformer.getCacheRegions();
     List<String> actualClassNames = actualRemoveCacheClassTransformer.getClassNames();
@@ -112,97 +122,119 @@ public class RemoveCacheClassTransformerDiffblueTest {
   }
 
   /**
-   * Test {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain,
+   * byte[])}.
+   *
    * <ul>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code Class Name}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class,
+   * ProtectionDomain, byte[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "byte[] RemoveCacheClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+    "byte[] RemoveCacheClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
+  })
   public void testTransform_whenClassName_thenReturnNull()
       throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
-        new CodeSigner[]{null});
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSigner[] codeSignerArray = new CodeSigner[] {null};
 
+    CodeSource codeSource = new CodeSource(toURLResult, codeSignerArray);
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
     // Act and Assert
-    assertNull(removeCacheClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8")));
+    assertNull(
+        removeCacheClassTransformer.transform(
+            loader,
+            "Class Name",
+            classBeingRedefined,
+            protectionDomain,
+            "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
-   * Test {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * Test {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain,
+   * byte[])}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#transform(ClassLoader, String, Class,
+   * ProtectionDomain, byte[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "byte[] RemoveCacheClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"})
+    "byte[] RemoveCacheClassTransformer.transform(ClassLoader, String, Class, ProtectionDomain, byte[])"
+  })
   public void testTransform_whenNull_thenReturnNull()
       throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
     // Arrange
     JarClassLoader loader = new JarClassLoader();
     Class<Object> classBeingRedefined = Object.class;
-    CodeSource codeSource = new CodeSource(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL(),
-        new CodeSigner[]{null});
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSigner[] codeSignerArray = new CodeSigner[] {null};
 
+    CodeSource codeSource = new CodeSource(toURLResult, codeSignerArray);
     ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
 
     // Act and Assert
-    assertNull(removeCacheClassTransformer.transform(loader, null, classBeingRedefined, protectionDomain,
-        "AXAXAXAX".getBytes("UTF-8")));
+    assertNull(
+        removeCacheClassTransformer.transform(
+            loader, null, classBeingRedefined, protectionDomain, "AXAXAXAX".getBytes("UTF-8")));
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#classQualifies(String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.</li>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add empty string.
+   *   <li>When empty string.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.classQualifies(String)"})
-  public void testClassQualifies_givenArrayListAdd42_when42_thenReturnTrue() {
+  public void testClassQualifies_givenArrayListAddEmptyString_whenEmptyString_thenReturnTrue() {
     // Arrange
     ArrayList<String> classNames = new ArrayList<>();
-    classNames.add("42");
+    classNames.add("");
     classNames.add("foo");
     removeCacheClassTransformer.setClassNames(classNames);
 
     // Act and Assert
-    assertTrue(removeCacheClassTransformer.classQualifies("42"));
+    assertTrue(removeCacheClassTransformer.classQualifies(""));
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#classQualifies(String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>When {@code Class Name}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.classQualifies(String)"})
   public void testClassQualifies_givenArrayListAddFoo_whenClassName_thenReturnFalse() {
     // Arrange
@@ -216,16 +248,18 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#classQualifies(String)}.
+   *
    * <ul>
-   *   <li>Given {@link RemoveCacheClassTransformer}.</li>
-   *   <li>When {@code Class Name}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link RemoveCacheClassTransformer}.
+   *   <li>When {@code Class Name}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#classQualifies(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.classQualifies(String)"})
   public void testClassQualifies_givenRemoveCacheClassTransformer_whenClassName_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -234,15 +268,17 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.annotationQualifies(ConstPool, List)"})
   public void testAnnotationQualifies_givenNull_field_whenArrayListAddNull_field() {
     // Arrange
@@ -257,15 +293,17 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.annotationQualifies(ConstPool, List)"})
   public void testAnnotationQualifies_givenNull_field_whenArrayListAddNull_field2() {
     // Arrange
@@ -281,16 +319,19 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#annotationQualifies(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.annotationQualifies(ConstPool, List)"})
-  public void testAnnotationQualifies_whenArrayList() {
+  public void testAnnotationQualifies_whenArrayList_thenReturnFalse() {
     // Arrange
     ConstPool constantPool = new ConstPool("Thisclass");
 
@@ -300,68 +341,79 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#cacheRegionQualifies(Annotation)}.
+   *
    * <ul>
-   *   <li>Given {@link ConstPool#ConstPool(String)} with {@code Thisclass}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link AnnotationMemberValue#AnnotationMemberValue(ConstPool)} with cp is {@link
+   *       ConstPool#ConstPool(String)}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#cacheRegionQualifies(Annotation)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#cacheRegionQualifies(Annotation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.cacheRegionQualifies(Annotation)"})
-  public void testCacheRegionQualifies_givenConstPoolWithThisclass_thenReturnFalse() {
+  public void testCacheRegionQualifies_givenAnnotationMemberValueWithCpIsConstPool() {
     // Arrange
     Annotation annotation = mock(Annotation.class);
     when(annotation.getMemberValue(Mockito.<String>any()))
         .thenReturn(new AnnotationMemberValue(new ConstPool("Thisclass")));
 
     // Act
-    Boolean actualCacheRegionQualifiesResult = removeCacheClassTransformer.cacheRegionQualifies(annotation);
+    Boolean actualCacheRegionQualifiesResult =
+        removeCacheClassTransformer.cacheRegionQualifies(annotation);
 
     // Assert
-    verify(annotation).getMemberValue(eq("region"));
+    verify(annotation).getMemberValue("region");
+    assertFalse(actualCacheRegionQualifiesResult);
+  }
+
+  /**
+   * Test {@link RemoveCacheClassTransformer#cacheRegionQualifies(Annotation)}.
+   *
+   * <ul>
+   *   <li>Given {@link StringMemberValue#StringMemberValue(ConstPool)} with cp is {@link
+   *       ConstPool#ConstPool(String)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#cacheRegionQualifies(Annotation)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.cacheRegionQualifies(Annotation)"})
+  public void testCacheRegionQualifies_givenStringMemberValueWithCpIsConstPool() {
+    // Arrange
+    Annotation annotation = mock(Annotation.class);
+    when(annotation.getMemberValue(Mockito.<String>any()))
+        .thenReturn(new StringMemberValue(new ConstPool("Thisclass")));
+
+    // Act
+    Boolean actualCacheRegionQualifiesResult =
+        removeCacheClassTransformer.cacheRegionQualifies(annotation);
+
+    // Assert
+    verify(annotation).getMemberValue("region");
     assertFalse(actualCacheRegionQualifiesResult);
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}.
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"})
-  public void testStripAnnotation() {
-    // Arrange
-    ConstPool constantPool = new ConstPool("RuntimeVisibleAnnotations");
-
-    // Act
-    AnnotationsAttribute actualStripAnnotationResult = removeCacheClassTransformer.stripAnnotation(constantPool,
-        new ArrayList<>());
-
-    // Assert
-    assertEquals("RuntimeVisibleAnnotations", actualStripAnnotationResult.getName());
-    assertEquals(0, actualStripAnnotationResult.getAnnotations().length);
-    assertEquals(3, constantPool.getSize());
-    assertEquals(8, actualStripAnnotationResult.length());
-    assertSame(constantPool, actualStripAnnotationResult.getConstPool());
-    assertArrayEquals(new byte[]{0, 0}, actualStripAnnotationResult.get());
-  }
-
-  /**
-   * Test {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"})
-  public void testStripAnnotation_givenNull_field_whenArrayListAddNull_field() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"
+  })
+  public void testStripAnnotation_givenNull_field_thenArrayListSizeIsOne() {
     // Arrange
     ConstPool constantPool = new ConstPool("Thisclass");
 
@@ -369,31 +421,32 @@ public class RemoveCacheClassTransformerDiffblueTest {
     attributes.add(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    AnnotationsAttribute actualStripAnnotationResult = removeCacheClassTransformer.stripAnnotation(constantPool,
-        attributes);
+    AnnotationsAttribute actualStripAnnotationResult =
+        removeCacheClassTransformer.stripAnnotation(constantPool, attributes);
 
     // Assert
-    assertEquals("RuntimeVisibleAnnotations", actualStripAnnotationResult.getName());
-    assertEquals(0, actualStripAnnotationResult.getAnnotations().length);
+    assertEquals(1, attributes.size());
     assertEquals(4, constantPool.getSize());
-    assertEquals(8, actualStripAnnotationResult.length());
-    assertSame(constantPool, actualStripAnnotationResult.getConstPool());
-    assertArrayEquals(new byte[]{0, 0}, actualStripAnnotationResult.get());
+    assertArrayEquals(new byte[] {0, 0}, actualStripAnnotationResult.get());
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"})
-  public void testStripAnnotation_givenNull_field_whenArrayListAddNull_field2() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"
+  })
+  public void testStripAnnotation_givenNull_field_thenArrayListSizeIsTwo() {
     // Arrange
     ConstPool constantPool = new ConstPool("Thisclass");
 
@@ -402,56 +455,89 @@ public class RemoveCacheClassTransformerDiffblueTest {
     attributes.add(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    AnnotationsAttribute actualStripAnnotationResult = removeCacheClassTransformer.stripAnnotation(constantPool,
-        attributes);
+    AnnotationsAttribute actualStripAnnotationResult =
+        removeCacheClassTransformer.stripAnnotation(constantPool, attributes);
 
     // Assert
-    assertEquals("RuntimeVisibleAnnotations", actualStripAnnotationResult.getName());
-    assertEquals(0, actualStripAnnotationResult.getAnnotations().length);
+    assertEquals(2, attributes.size());
     assertEquals(4, constantPool.getSize());
-    assertEquals(8, actualStripAnnotationResult.length());
-    assertSame(constantPool, actualStripAnnotationResult.getConstPool());
-    assertArrayEquals(new byte[]{0, 0}, actualStripAnnotationResult.get());
+    assertArrayEquals(new byte[] {0, 0}, actualStripAnnotationResult.get());
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}.
+   *
    * <ul>
-   *   <li>Then {@link ConstPool#ConstPool(String)} with {@code Thisclass} Size is four.</li>
+   *   <li>Given {@code RuntimeVisibleAnnotations}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"})
-  public void testStripAnnotation_thenConstPoolWithThisclassSizeIsFour() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"
+  })
+  public void testStripAnnotation_givenRuntimeVisibleAnnotations() {
     // Arrange
     ConstPool constantPool = new ConstPool("Thisclass");
+    constantPool.addClassInfo("RuntimeVisibleAnnotations");
+    ArrayList<Object> attributes = new ArrayList<>();
 
     // Act
-    AnnotationsAttribute actualStripAnnotationResult = removeCacheClassTransformer.stripAnnotation(constantPool,
-        new ArrayList<>());
+    AnnotationsAttribute actualStripAnnotationResult =
+        removeCacheClassTransformer.stripAnnotation(constantPool, attributes);
 
     // Assert
-    assertEquals("RuntimeVisibleAnnotations", actualStripAnnotationResult.getName());
-    assertEquals(0, actualStripAnnotationResult.getAnnotations().length);
+    assertEquals(5, constantPool.getSize());
+    assertTrue(attributes.isEmpty());
+    assertArrayEquals(new byte[] {0, 0}, actualStripAnnotationResult.get());
+  }
+
+  /**
+   * Test {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ConstPool#ConstPool(String)} with {@code Thisclass} Size is four.
+   * </ul>
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#stripAnnotation(ConstPool, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "AnnotationsAttribute RemoveCacheClassTransformer.stripAnnotation(ConstPool, List)"
+  })
+  public void testStripAnnotation_whenArrayList_thenConstPoolWithThisclassSizeIsFour() {
+    // Arrange
+    ConstPool constantPool = new ConstPool("Thisclass");
+    ArrayList<Object> attributes = new ArrayList<>();
+
+    // Act
+    AnnotationsAttribute actualStripAnnotationResult =
+        removeCacheClassTransformer.stripAnnotation(constantPool, attributes);
+
+    // Assert
     assertEquals(4, constantPool.getSize());
-    assertEquals(8, actualStripAnnotationResult.length());
-    assertSame(constantPool, actualStripAnnotationResult.getConstPool());
-    assertArrayEquals(new byte[]{0, 0}, actualStripAnnotationResult.get());
+    assertTrue(attributes.isEmpty());
+    assertArrayEquals(new byte[] {0, 0}, actualStripAnnotationResult.get());
   }
 
   /**
    * Test {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}.
+   *
    * <ul>
-   *   <li>Given {@link RemoveCacheClassTransformer}.</li>
+   *   <li>Given {@link RemoveCacheClassTransformer}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.isPropertyEnabled(String)"})
   public void testIsPropertyEnabled_givenRemoveCacheClassTransformer() {
     // Arrange, Act and Assert
@@ -460,17 +546,20 @@ public class RemoveCacheClassTransformerDiffblueTest {
 
   /**
    * Test {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}.
+   *
    * <ul>
-   *   <li>Given {@link RemoveCacheClassTransformer#RemoveCacheClassTransformer(String)} with {@code Module Name}.</li>
+   *   <li>Given {@link RemoveCacheClassTransformer#RemoveCacheClassTransformer(String)} with {@code
+   *       Module Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}
+   *
+   * <p>Method under test: {@link RemoveCacheClassTransformer#isPropertyEnabled(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean RemoveCacheClassTransformer.isPropertyEnabled(String)"})
   public void testIsPropertyEnabled_givenRemoveCacheClassTransformerWithModuleName() {
     // Arrange, Act and Assert
-    assertFalse((new RemoveCacheClassTransformer("Module Name")).isPropertyEnabled("Property Name"));
+    assertFalse(new RemoveCacheClassTransformer("Module Name").isPropertyEnabled("Property Name"));
   }
 }

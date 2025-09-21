@@ -19,13 +19,15 @@ package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -55,44 +57,57 @@ import org.springframework.util.MultiValueMap;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
   @Autowired
-  private AbstractAdminAbstractControllerExtensionHandler abstractAdminAbstractControllerExtensionHandler;
+  private AbstractAdminAbstractControllerExtensionHandler
+      abstractAdminAbstractControllerExtensionHandler;
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String,
+   * List)}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"
+  })
   public void testAddAdditionalMainActions_givenAdd_whenArrayListAddAdd() {
     // Arrange
     ArrayList<EntityFormAction> actions = new ArrayList<>();
     actions.add(DefaultAdornedEntityFormActions.Add);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions("Section Class Name", actions));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(
+            "Section Class Name", actions));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String,
+   * List)}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"
+  })
   public void testAddAdditionalMainActions_givenAdd_whenArrayListAddAdd2() {
     // Arrange
     ArrayList<EntityFormAction> actions = new ArrayList<>();
@@ -100,48 +115,62 @@ public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
     actions.add(DefaultAdornedEntityFormActions.Add);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions("Section Class Name", actions));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(
+            "Section Class Name", actions));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String,
+   * List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#addAdditionalMainActions(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(String, List)"
+  })
   public void testAddAdditionalMainActions_whenArrayList() {
     // Arrange, Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminAbstractControllerExtensionHandler
-        .addAdditionalMainActions("Section Class Name", new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.addAdditionalMainActions(
+            "Section Class Name", new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata,
+   * List)}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"
+  })
   public void testModifyMainActions_givenAdd_whenArrayListAddAdd() {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -149,30 +178,36 @@ public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
     mainActions.add(DefaultAdornedEntityFormActions.Add);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractAdminAbstractControllerExtensionHandler.modifyMainActions(cmd, mainActions));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata,
+   * List)}.
+   *
    * <ul>
-   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.</li>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"
+  })
   public void testModifyMainActions_givenAdd_whenArrayListAddAdd2() {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -181,101 +216,134 @@ public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
     mainActions.add(DefaultAdornedEntityFormActions.Add);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractAdminAbstractControllerExtensionHandler.modifyMainActions(cmd, mainActions));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}.
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata,
+   * List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyMainActions(ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyMainActions(ClassMetadata, List)"
+  })
   public void testModifyMainActions_whenArrayList() {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractAdminAbstractControllerExtensionHandler.modifyMainActions(cmd, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#setAdditionalModelAttributes(Model,
+   * String)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#setAdditionalModelAttributes(Model, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.setAdditionalModelAttributes(Model, String)"
+  })
   public void testSetAdditionalModelAttributes() {
     // Arrange, Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminAbstractControllerExtensionHandler
-        .setAdditionalModelAttributes(new ConcurrentModel(), "Section Key"));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.setAdditionalModelAttributes(
+            new ConcurrentModel(), "Section Key"));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyDynamicForm(EntityForm, String)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyDynamicForm(EntityForm, String)}
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyDynamicForm(EntityForm,
+   * String)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyDynamicForm(EntityForm, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyDynamicForm(EntityForm, String)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyDynamicForm(EntityForm, String)"
+  })
   public void testModifyDynamicForm() {
     // Arrange, Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractAdminAbstractControllerExtensionHandler.modifyDynamicForm(new EntityForm(), "42"));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyModelForAddCollectionType(HttpServletRequest, HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyModelForAddCollectionType(HttpServletRequest, HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)}
+   * Test {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyModelForAddCollectionType(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyModelForAddCollectionType(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyModelForAddCollectionType(HttpServletRequest, HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyModelForAddCollectionType(HttpServletRequest, HttpServletResponse, Model, String, String, MultiValueMap, MapMetadata)"
+  })
   public void testModifyModelForAddCollectionType() {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse response = new MockHttpServletResponse();
     ConcurrentModel model = new ConcurrentModel();
     HttpHeaders requestParams = new HttpHeaders();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractAdminAbstractControllerExtensionHandler.modifyModelForAddCollectionType(request, response, model,
-            "Section Key", "42", requestParams, new MapMetadata()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.modifyModelForAddCollectionType(
+            request, response, model, "Section Key", "42", requestParams, new MapMetadata()));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#isAddRequest(Entity, ExtensionResultHolder)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#isAddRequest(Entity, ExtensionResultHolder)}
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#isAddRequest(Entity,
+   * ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#isAddRequest(Entity, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.isAddRequest(Entity, ExtensionResultHolder)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.isAddRequest(Entity, ExtensionResultHolder)"
+  })
   public void testIsAddRequest() {
     // Arrange
-    AbstractAdminAbstractControllerExtensionHandler abstractAdminAbstractControllerExtensionHandler = new AbstractAdminAbstractControllerExtensionHandler();
+    AbstractAdminAbstractControllerExtensionHandler
+        abstractAdminAbstractControllerExtensionHandler =
+            new AbstractAdminAbstractControllerExtensionHandler();
     Entity entity = new Entity();
 
     ExtensionResultHolder<Boolean> resultHolder = new ExtensionResultHolder<>();
@@ -283,19 +351,26 @@ public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractAdminAbstractControllerExtensionHandler.isAddRequest(entity, resultHolder));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#overrideSaveEntityJsonResponse(HttpServletResponse, boolean, String, String, ExtensionResultHolder)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#overrideSaveEntityJsonResponse(HttpServletResponse, boolean, String, String, ExtensionResultHolder)}
+   * Test {@link
+   * AbstractAdminAbstractControllerExtensionHandler#overrideSaveEntityJsonResponse(HttpServletResponse,
+   * boolean, String, String, ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#overrideSaveEntityJsonResponse(HttpServletResponse,
+   * boolean, String, String, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.overrideSaveEntityJsonResponse(HttpServletResponse, boolean, String, String, ExtensionResultHolder)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.overrideSaveEntityJsonResponse(HttpServletResponse, boolean, String, String, ExtensionResultHolder)"
+  })
   public void testOverrideSaveEntityJsonResponse() {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
@@ -305,48 +380,63 @@ public class AbstractAdminAbstractControllerExtensionHandlerDiffblueTest {
     resultHolder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminAbstractControllerExtensionHandler
-        .overrideSaveEntityJsonResponse(response, true, "Section Key", "42", resultHolder));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.overrideSaveEntityJsonResponse(
+            response, true, "Section Key", "42", resultHolder));
   }
 
   /**
-   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyPreAddEntityForm(EntityForm, ClassMetadata, Map)}.
-   * <p>
-   * Method under test: {@link AbstractAdminAbstractControllerExtensionHandler#modifyPreAddEntityForm(EntityForm, ClassMetadata, Map)}
+   * Test {@link AbstractAdminAbstractControllerExtensionHandler#modifyPreAddEntityForm(EntityForm,
+   * ClassMetadata, Map)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminAbstractControllerExtensionHandler#modifyPreAddEntityForm(EntityForm,
+   * ClassMetadata, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyPreAddEntityForm(EntityForm, ClassMetadata, Map)"})
+    "ExtensionResultStatusType AbstractAdminAbstractControllerExtensionHandler.modifyPreAddEntityForm(EntityForm, ClassMetadata, Map)"
+  })
   public void testModifyPreAddEntityForm() {
     // Arrange
-    AbstractAdminAbstractControllerExtensionHandler abstractAdminAbstractControllerExtensionHandler = new AbstractAdminAbstractControllerExtensionHandler();
+    AbstractAdminAbstractControllerExtensionHandler
+        abstractAdminAbstractControllerExtensionHandler =
+            new AbstractAdminAbstractControllerExtensionHandler();
     EntityForm entityForm = new EntityForm();
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractAdminAbstractControllerExtensionHandler.modifyPreAddEntityForm(entityForm, cmd, new HashMap<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminAbstractControllerExtensionHandler.modifyPreAddEntityForm(
+            entityForm, cmd, new HashMap<>()));
   }
 
   /**
    * Test new {@link AbstractAdminAbstractControllerExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractAdminAbstractControllerExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractAdminAbstractControllerExtensionHandler}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractAdminAbstractControllerExtensionHandler.<init>()"})
   public void testNewAbstractAdminAbstractControllerExtensionHandler() {
     // Arrange and Act
-    AbstractAdminAbstractControllerExtensionHandler actualAbstractAdminAbstractControllerExtensionHandler = new AbstractAdminAbstractControllerExtensionHandler();
+    AbstractAdminAbstractControllerExtensionHandler
+        actualAbstractAdminAbstractControllerExtensionHandler =
+            new AbstractAdminAbstractControllerExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractAdminAbstractControllerExtensionHandler.getPriority());

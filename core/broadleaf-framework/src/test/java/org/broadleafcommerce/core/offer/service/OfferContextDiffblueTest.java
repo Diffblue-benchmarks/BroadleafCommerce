@@ -18,7 +18,8 @@
 package org.broadleafcommerce.core.offer.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,11 +27,12 @@ import org.junit.experimental.categories.Category;
 public class OfferContextDiffblueTest {
   /**
    * Test {@link OfferContext#getOfferContext()}.
-   * <p>
-   * Method under test: {@link OfferContext#getOfferContext()}
+   *
+   * <p>Method under test: {@link OfferContext#getOfferContext()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferContext OfferContext.getOfferContext()"})
   public void testGetOfferContext() {
     // Arrange, Act and Assert
@@ -39,8 +41,9 @@ public class OfferContextDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OfferContext}
    *   <li>{@link OfferContext#setExecutePromotionCalculation(Boolean)}
@@ -48,9 +51,13 @@ public class OfferContextDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferContext.<init>()", "Boolean OfferContext.getExecutePromotionCalculation()",
-      "void OfferContext.setExecutePromotionCalculation(Boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferContext.<init>()",
+    "Boolean OfferContext.getExecutePromotionCalculation()",
+    "void OfferContext.setExecutePromotionCalculation(Boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferContext actualOfferContext = new OfferContext();

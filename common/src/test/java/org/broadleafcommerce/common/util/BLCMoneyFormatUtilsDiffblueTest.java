@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,36 +29,19 @@ import org.junit.experimental.categories.Category;
 
 public class BLCMoneyFormatUtilsDiffblueTest {
   /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
+   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code
+   * localeToChange}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then return {@code £0.00}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code Not Available}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
+   *
+   * <p>Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
-  public void testFormatPriceWithPriceLocaleToChange_whenMoney_thenReturn000() {
-    // Arrange
-    Money price = new Money();
-
-    // Act and Assert
-    assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(price, new HashMap<>()));
-  }
-
-  /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code Not Available}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
   public void testFormatPriceWithPriceLocaleToChange_whenNull_thenReturnNotAvailable() {
     // Arrange, Act and Assert
@@ -65,70 +49,40 @@ public class BLCMoneyFormatUtilsDiffblueTest {
   }
 
   /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money, Map)} with {@code price}, {@code localeToChange}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@code £0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money, Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money, Map)"})
-  public void testFormatPriceWithPriceLocaleToChange_whenZero_thenReturn000() {
-    // Arrange, Act and Assert
-    assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(Money.ZERO, new HashMap<>()));
-  }
-
-  /**
    * Test {@link BLCMoneyFormatUtils#formatPrice(Money)} with {@code price}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then return {@code £0.00}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then return {@code $0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
+   *
+   * <p>Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
   public void testFormatPriceWithPrice_whenMoney_thenReturn000() {
     // Arrange, Act and Assert
-    assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(new Money()));
+    assertEquals("$0.00", BLCMoneyFormatUtils.formatPrice(new Money()));
   }
 
   /**
    * Test {@link BLCMoneyFormatUtils#formatPrice(Money)} with {@code price}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code Not Available}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code Not Available}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
+   *
+   * <p>Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
   public void testFormatPriceWithPrice_whenNull_thenReturnNotAvailable() {
     // Arrange, Act and Assert
     assertEquals("Not Available", BLCMoneyFormatUtils.formatPrice(null));
-  }
-
-  /**
-   * Test {@link BLCMoneyFormatUtils#formatPrice(Money)} with {@code price}.
-   * <ul>
-   *   <li>When {@link Money#ZERO}.</li>
-   *   <li>Then return {@code £0.00}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCMoneyFormatUtils#formatPrice(Money)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String BLCMoneyFormatUtils.formatPrice(Money)"})
-  public void testFormatPriceWithPrice_whenZero_thenReturn000() {
-    // Arrange, Act and Assert
-    assertEquals("£0.00", BLCMoneyFormatUtils.formatPrice(Money.ZERO));
   }
 }

@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver;
 import org.broadleafcommerce.openadmin.web.compatibility.JSFieldNameCompatibilityInterceptor;
@@ -41,26 +42,31 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 public class AdminWebMvcConfigurationDiffblueTest {
   /**
-   * Test AdminDefaultWebMvcConfigurerAdapter {@link AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}.
-   * <p>
-   * Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}
+   * Test AdminDefaultWebMvcConfigurerAdapter {@link
+   * AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}.
+   *
+   * <p>Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"WebMvcRegistrations AdminDefaultWebMvcConfigurerAdapter.blAdminMvcRegistrations()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "WebMvcRegistrations AdminDefaultWebMvcConfigurerAdapter.blAdminMvcRegistrations()"
+  })
   public void testAdminDefaultWebMvcConfigurerAdapterBlAdminMvcRegistrations() {
     // Arrange and Act
-    WebMvcRegistrations actualBlAdminMvcRegistrationsResult = (new AdminDefaultWebMvcConfigurerAdapter())
-        .blAdminMvcRegistrations();
+    WebMvcRegistrations actualBlAdminMvcRegistrationsResult =
+        new AdminDefaultWebMvcConfigurerAdapter().blAdminMvcRegistrations();
 
     // Assert
-    RequestMappingHandlerMapping requestMappingHandlerMapping = actualBlAdminMvcRegistrationsResult
-        .getRequestMappingHandlerMapping();
+    RequestMappingHandlerMapping requestMappingHandlerMapping =
+        actualBlAdminMvcRegistrationsResult.getRequestMappingHandlerMapping();
     assertTrue(requestMappingHandlerMapping instanceof AdminRequestMappingHandlerMapping);
     assertTrue(requestMappingHandlerMapping.getPathMatcher() instanceof AntPathMatcher);
     assertTrue(requestMappingHandlerMapping.getCorsProcessor() instanceof DefaultCorsProcessor);
-    assertTrue(requestMappingHandlerMapping
-        .getNamingStrategy() instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
+    assertTrue(
+        requestMappingHandlerMapping.getNamingStrategy()
+            instanceof RequestMappingInfoHandlerMethodMappingNamingStrategy);
     assertNull(requestMappingHandlerMapping.getDefaultHandler());
     assertNull(requestMappingHandlerMapping.getFileExtensions());
     assertNull(requestMappingHandlerMapping.getCorsConfigurationSource());
@@ -76,37 +82,49 @@ public class AdminWebMvcConfigurationDiffblueTest {
   }
 
   /**
-   * Test AdminDefaultWebMvcConfigurerAdapter {@link AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}.
-   * <p>
-   * Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}
+   * Test AdminDefaultWebMvcConfigurerAdapter {@link
+   * AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}.
+   *
+   * <p>Method under test: {@link
+   * AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MappedInterceptor AdminDefaultWebMvcConfigurerAdapter.blJsFieldNameCompatibilityInterceptor()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "MappedInterceptor AdminDefaultWebMvcConfigurerAdapter.blJsFieldNameCompatibilityInterceptor()"
+  })
   public void testAdminDefaultWebMvcConfigurerAdapterBlJsFieldNameCompatibilityInterceptor() {
     // Arrange and Act
-    MappedInterceptor actualBlJsFieldNameCompatibilityInterceptorResult = (new AdminDefaultWebMvcConfigurerAdapter())
-        .blJsFieldNameCompatibilityInterceptor();
+    MappedInterceptor actualBlJsFieldNameCompatibilityInterceptorResult =
+        new AdminDefaultWebMvcConfigurerAdapter().blJsFieldNameCompatibilityInterceptor();
 
     // Assert
-    assertTrue(actualBlJsFieldNameCompatibilityInterceptorResult
-        .getInterceptor() instanceof JSFieldNameCompatibilityInterceptor);
-    assertTrue(actualBlJsFieldNameCompatibilityInterceptorResult.getPathMatcher() instanceof AntPathMatcher);
+    assertTrue(
+        actualBlJsFieldNameCompatibilityInterceptorResult.getInterceptor()
+            instanceof JSFieldNameCompatibilityInterceptor);
+    assertTrue(
+        actualBlJsFieldNameCompatibilityInterceptorResult.getPathMatcher()
+            instanceof AntPathMatcher);
     assertNull(actualBlJsFieldNameCompatibilityInterceptorResult.getPathPatterns());
   }
 
   /**
-   * Test AdminDefaultWebMvcConfigurerAdapter {@link AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}.
-   * <p>
-   * Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}
+   * Test AdminDefaultWebMvcConfigurerAdapter {@link
+   * AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}.
+   *
+   * <p>Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MappedInterceptor AdminDefaultWebMvcConfigurerAdapter.blLocaleChangeInterceptor()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "MappedInterceptor AdminDefaultWebMvcConfigurerAdapter.blLocaleChangeInterceptor()"
+  })
   public void testAdminDefaultWebMvcConfigurerAdapterBlLocaleChangeInterceptor() {
     // Arrange and Act
-    MappedInterceptor actualBlLocaleChangeInterceptorResult = (new AdminDefaultWebMvcConfigurerAdapter())
-        .blLocaleChangeInterceptor();
+    MappedInterceptor actualBlLocaleChangeInterceptorResult =
+        new AdminDefaultWebMvcConfigurerAdapter().blLocaleChangeInterceptor();
 
     // Assert
     assertTrue(actualBlLocaleChangeInterceptorResult.getPathMatcher() instanceof AntPathMatcher);
@@ -120,27 +138,33 @@ public class AdminWebMvcConfigurationDiffblueTest {
   }
 
   /**
-   * Test AdminDefaultWebMvcConfigurerAdapter {@link AdminDefaultWebMvcConfigurerAdapter#localeResolver()}.
-   * <p>
-   * Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#localeResolver()}
+   * Test AdminDefaultWebMvcConfigurerAdapter {@link
+   * AdminDefaultWebMvcConfigurerAdapter#localeResolver()}.
+   *
+   * <p>Method under test: {@link AdminDefaultWebMvcConfigurerAdapter#localeResolver()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"LocaleResolver AdminDefaultWebMvcConfigurerAdapter.localeResolver()"})
   public void testAdminDefaultWebMvcConfigurerAdapterLocaleResolver() {
     // Arrange and Act
-    LocaleResolver actualLocaleResolverResult = (new AdminDefaultWebMvcConfigurerAdapter()).localeResolver();
+    LocaleResolver actualLocaleResolverResult =
+        new AdminDefaultWebMvcConfigurerAdapter().localeResolver();
 
     // Assert
     assertTrue(actualLocaleResolverResult instanceof BroadleafCookieLocaleResolver);
     assertEquals("/", ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookiePath());
-    assertEquals("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",
+    assertEquals(
+        "org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE",
         ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieName());
     assertNull(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieMaxAge());
     assertNull(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).getCookieDomain());
     assertFalse(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isCookieSecure());
-    assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isLanguageTagCompliant());
-    assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isRejectInvalidCookies());
+    assertTrue(
+        ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isLanguageTagCompliant());
+    assertTrue(
+        ((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isRejectInvalidCookies());
     assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isCookieHttpOnly());
   }
 }

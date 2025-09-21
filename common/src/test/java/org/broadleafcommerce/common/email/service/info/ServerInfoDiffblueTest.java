@@ -18,111 +18,124 @@
 package org.broadleafcommerce.common.email.service.info;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(classes = {ServerInfo.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ServerInfoDiffblueTest {
-  @Autowired
-  private ServerInfo serverInfo;
-
   /**
    * Test {@link ServerInfo#getSecureHost()}.
+   *
    * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) SecurePort is {@code 8080}.</li>
-   *   <li>Then return {@code null:8080}.</li>
+   *   <li>Given {@link ServerInfo} (default constructor) SecurePort is {@code 8080}.
+   *   <li>Then return {@code Server Name:8080}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServerInfo#getSecureHost()}
+   *
+   * <p>Method under test: {@link ServerInfo#getSecureHost()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
-  public void testGetSecureHost_givenServerInfoSecurePortIs8080_thenReturnNull8080() {
+  public void testGetSecureHost_givenServerInfoSecurePortIs8080_thenReturnServerName8080() {
     // Arrange
-    ServerInfo serverInfo2 = new ServerInfo();
-    serverInfo2.setSecurePort(8080);
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("null:8080", serverInfo2.getSecureHost());
+    assertEquals("Server Name:8080", serverInfo.getSecureHost());
   }
 
   /**
    * Test {@link ServerInfo#getSecureHost()}.
+   *
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@code Server Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServerInfo#getSecureHost()}
+   *
+   * <p>Method under test: {@link ServerInfo#getSecureHost()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ServerInfo.getSecureHost()"})
-  public void testGetSecureHost_thenReturnNull() {
+  public void testGetSecureHost_thenReturnServerName() {
     // Arrange
-    ServerInfo serverInfo2 = new ServerInfo();
-    serverInfo2.setSecurePort(443);
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(443);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("null", serverInfo2.getSecureHost());
+    assertEquals("Server Name", serverInfo.getSecureHost());
   }
 
   /**
    * Test {@link ServerInfo#getHost()}.
+   *
    * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is {@code 8080}.</li>
-   *   <li>Then return {@code null:8080}.</li>
+   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is {@code 8080}.
+   *   <li>Then return {@code Server Name:8080}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServerInfo#getHost()}
+   *
+   * <p>Method under test: {@link ServerInfo#getHost()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ServerInfo.getHost()"})
-  public void testGetHost_givenServerInfoServerPortIs8080_thenReturnNull8080() {
+  public void testGetHost_givenServerInfoServerPortIs8080_thenReturnServerName8080() {
     // Arrange
-    ServerInfo serverInfo2 = new ServerInfo();
-    serverInfo2.setServerPort(8080);
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(8080);
 
     // Act and Assert
-    assertEquals("null:8080", serverInfo2.getHost());
+    assertEquals("Server Name:8080", serverInfo.getHost());
   }
 
   /**
    * Test {@link ServerInfo#getHost()}.
+   *
    * <ul>
-   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is eighty.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link ServerInfo} (default constructor) ServerPort is eighty.
+   *   <li>Then return {@code Server Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServerInfo#getHost()}
+   *
+   * <p>Method under test: {@link ServerInfo#getHost()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ServerInfo.getHost()"})
-  public void testGetHost_givenServerInfoServerPortIsEighty_thenReturnNull() {
+  public void testGetHost_givenServerInfoServerPortIsEighty_thenReturnServerName() {
     // Arrange
-    ServerInfo serverInfo2 = new ServerInfo();
-    serverInfo2.setServerPort(80);
+    ServerInfo serverInfo = new ServerInfo();
+    serverInfo.setAppName("App Name");
+    serverInfo.setSecurePort(8080);
+    serverInfo.setServerName("Server Name");
+    serverInfo.setServerPort(80);
 
     // Act and Assert
-    assertEquals("null", serverInfo2.getHost());
+    assertEquals("Server Name", serverInfo.getHost());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ServerInfo}
    *   <li>{@link ServerInfo#setAppName(String)}
@@ -136,11 +149,19 @@ public class ServerInfoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServerInfo.<init>()", "String ServerInfo.getAppName()", "Integer ServerInfo.getSecurePort()",
-      "String ServerInfo.getServerName()", "Integer ServerInfo.getServerPort()", "void ServerInfo.setAppName(String)",
-      "void ServerInfo.setSecurePort(Integer)", "void ServerInfo.setServerName(String)",
-      "void ServerInfo.setServerPort(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServerInfo.<init>()",
+    "String ServerInfo.getAppName()",
+    "Integer ServerInfo.getSecurePort()",
+    "String ServerInfo.getServerName()",
+    "Integer ServerInfo.getServerPort()",
+    "void ServerInfo.setAppName(String)",
+    "void ServerInfo.setSecurePort(Integer)",
+    "void ServerInfo.setServerName(String)",
+    "void ServerInfo.setServerPort(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ServerInfo actualServerInfo = new ServerInfo();

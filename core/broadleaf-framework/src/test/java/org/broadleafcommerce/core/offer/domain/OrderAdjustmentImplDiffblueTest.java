@@ -26,15 +26,18 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import org.broadleafcommerce.common.audit.Auditable;
+import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
@@ -53,39 +56,38 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderAdjustmentImplDiffblueTest {
-  @Autowired
-  private OrderAdjustmentImpl orderAdjustmentImpl;
+  @Autowired private OrderAdjustmentImpl orderAdjustmentImpl;
 
   /**
    * Test {@link OrderAdjustmentImpl#init(Order, Offer, String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then not {@link OrderAdjustmentImpl} (default constructor) {@link OrderAdjustmentImpl#isFutureCredit}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then not {@link OrderAdjustmentImpl} {@link OrderAdjustmentImpl#isFutureCredit}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#init(Order, Offer, String)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#init(Order, Offer, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderAdjustmentImpl.init(Order, Offer, String)"})
   public void testInit_whenNull_thenNotOrderAdjustmentImplIsFutureCredit() {
-    // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-
-    // Act
-    orderAdjustmentImpl2.init(new NullOrderImpl(), null, "Just cause");
+    // Arrange and Act
+    orderAdjustmentImpl.init(new NullOrderImpl(), null, "Just cause");
 
     // Assert that nothing has changed
-    assertFalse(orderAdjustmentImpl2.isFutureCredit);
+    assertFalse(orderAdjustmentImpl.isFutureCredit);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderAdjustmentImpl#setFutureCredit(Boolean)}
    *   <li>{@link OrderAdjustmentImpl#setId(Long)}
@@ -97,11 +99,17 @@ public class OrderAdjustmentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long OrderAdjustmentImpl.getId()", "Order OrderAdjustmentImpl.getOrder()",
-      "String OrderAdjustmentImpl.getReason()", "void OrderAdjustmentImpl.setFutureCredit(Boolean)",
-      "void OrderAdjustmentImpl.setId(Long)", "void OrderAdjustmentImpl.setOrder(Order)",
-      "void OrderAdjustmentImpl.setReason(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long OrderAdjustmentImpl.getId()",
+    "Order OrderAdjustmentImpl.getOrder()",
+    "String OrderAdjustmentImpl.getReason()",
+    "void OrderAdjustmentImpl.setFutureCredit(Boolean)",
+    "void OrderAdjustmentImpl.setId(Long)",
+    "void OrderAdjustmentImpl.setOrder(Order)",
+    "void OrderAdjustmentImpl.setReason(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -123,50 +131,31 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#getOffer()}.
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#getOffer()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OrderAdjustmentImpl.getOffer()"})
   public void testGetOffer() {
     // Arrange, Act and Assert
-    assertNull((new OrderAdjustmentImpl()).getOffer());
-  }
-
-  /**
-   * Test {@link OrderAdjustmentImpl#setOffer(Offer)}.
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#setOffer(Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderAdjustmentImpl.setOffer(Offer)"})
-  public void testSetOffer() {
-    // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    OfferImpl offer = new OfferImpl();
-
-    // Act
-    orderAdjustmentImpl2.setOffer(offer);
-
-    // Assert
-    assertTrue(orderAdjustmentImpl2.offer instanceof OfferImpl);
-    assertSame(offer, orderAdjustmentImpl2.getOffer());
-    assertSame(offer, orderAdjustmentImpl2.deproxiedOffer);
+    assertNull(orderAdjustmentImpl.getOffer());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#getValue()}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#getAmount()} return {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link Money} {@link Money#getAmount()} return {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#getValue()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderAdjustmentImpl.getValue()"})
   public void testGetValue_givenMoneyGetAmountReturnNull_thenReturnNull() {
     // Arrange
@@ -175,8 +164,10 @@ public class OrderAdjustmentImplDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -196,22 +187,18 @@ public class OrderAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
-    order.setCurrency(null);
-
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setFutureCredit(true);
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setReason("Just cause");
-    orderAdjustmentImpl2.setValue(value);
-    orderAdjustmentImpl2.setOrder(order);
+    order.setCurrency(mock(BroadleafCurrency.class));
+    orderAdjustmentImpl.setValue(value);
+    orderAdjustmentImpl.setOrder(order);
 
     // Act
-    Money actualValue = orderAdjustmentImpl2.getValue();
+    Money actualValue = orderAdjustmentImpl.getValue();
 
     // Assert
     verify(value).getAmount();
@@ -220,22 +207,26 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#getValue()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#getValue()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderAdjustmentImpl.getValue()"})
   public void testGetValue_givenOrderImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -255,91 +246,164 @@ public class OrderAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
-
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setFutureCredit(true);
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setReason("Just cause");
     Money value = new Money();
-    orderAdjustmentImpl2.setValue(value);
-    orderAdjustmentImpl2.setOrder(order);
+    orderAdjustmentImpl.setValue(value);
+    orderAdjustmentImpl.setOrder(order);
 
     // Act and Assert
-    assertEquals(value, orderAdjustmentImpl2.getValue());
+    assertEquals(value, orderAdjustmentImpl.getValue());
+  }
+
+  /**
+   * Test {@link OrderAdjustmentImpl#getValue()}.
+   *
+   * <ul>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderAdjustmentImpl.getValue()"})
+  public void testGetValue_thenReturnCurrencyDisplayNameIsBritishPound() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderAdjustmentImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderAdjustmentImpl.serialVersionUID);
+
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(OrderAdjustmentImpl.serialVersionUID);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setCurrency(currency);
+    orderAdjustmentImpl.setValue(new Money());
+    orderAdjustmentImpl.setOrder(order);
+
+    // Act
+    Money actualValue = orderAdjustmentImpl.getValue();
+
+    // Assert
+    verify(currency).getCurrencyCode();
+    Currency currency2 = actualValue.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    Money actualAbsResult = actualValue.abs();
+    assertEquals(actualValue, actualAbsResult);
+    Money actualZeroResult = actualValue.zero();
+    assertEquals(actualValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#setValue(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OrderAdjustmentImpl} (default constructor) {@link OrderAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
+   *   <li>Then {@link OrderAdjustmentImpl} {@link OrderAdjustmentImpl#value} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 2.3}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#setValue(Money)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderAdjustmentImpl.setValue(Money)"})
   public void testSetValue_thenOrderAdjustmentImplValueIsBigDecimalWith23() {
     // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    orderAdjustmentImpl2.setValue(value);
+    orderAdjustmentImpl.setValue(value);
 
     // Assert
     verify(value).getAmount();
-    assertEquals(new BigDecimal("2.3"), orderAdjustmentImpl2.value);
+    assertEquals(new BigDecimal("2.3"), orderAdjustmentImpl.value);
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#setValue(Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link OrderAdjustmentImpl} (default constructor) {@link OrderAdjustmentImpl#value} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then {@link OrderAdjustmentImpl} {@link OrderAdjustmentImpl#value} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#setValue(Money)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#setValue(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderAdjustmentImpl.setValue(Money)"})
   public void testSetValue_whenMoney_thenOrderAdjustmentImplValueIsBigDecimalWith000() {
-    // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-
-    // Act
-    orderAdjustmentImpl2.setValue(new Money());
+    // Arrange and Act
+    orderAdjustmentImpl.setValue(new Money());
 
     // Assert that nothing has changed
-    assertEquals(new BigDecimal("0.00"), orderAdjustmentImpl2.value);
+    assertEquals(new BigDecimal("0.00"), orderAdjustmentImpl.value);
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl}
+   *       (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OrderAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -359,42 +423,41 @@ public class OrderAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(new BroadleafCurrencyImpl());
-
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setFutureCredit(true);
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setReason("Just cause");
-    orderAdjustmentImpl2.setValue(new Money());
-    orderAdjustmentImpl2.setOrder(order);
+    orderAdjustmentImpl.setOrder(order);
 
     // Act and Assert
-    assertNull(orderAdjustmentImpl2.getCurrencyCode());
+    assertNull(orderAdjustmentImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OrderAdjustmentImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderAdjustmentImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderAdjustmentImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -414,107 +477,104 @@ public class OrderAdjustmentImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
     order.setCurrency(null);
-
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setFutureCredit(true);
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setReason("Just cause");
-    orderAdjustmentImpl2.setValue(new Money());
-    orderAdjustmentImpl2.setOrder(order);
+    orderAdjustmentImpl.setOrder(order);
 
     // Act and Assert
-    assertNull(orderAdjustmentImpl2.getCurrencyCode());
+    assertNull(orderAdjustmentImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderAdjustmentImpl} (default constructor) FutureCredit is {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderAdjustmentImpl} FutureCredit is {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OrderAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOrderAdjustmentImplFutureCreditIsNull_thenReturnFalse() {
     // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setOrder(new NullOrderImpl());
-    orderAdjustmentImpl2.setReason("Just cause");
-    orderAdjustmentImpl2.setValue(new Money());
-    orderAdjustmentImpl2.setFutureCredit(null);
+    orderAdjustmentImpl.setFutureCredit(null);
 
     // Act and Assert
-    assertFalse(orderAdjustmentImpl2.isFutureCredit());
+    assertFalse(orderAdjustmentImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderAdjustmentImpl} (default constructor) FutureCredit is {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OrderAdjustmentImpl} FutureCredit is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OrderAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOrderAdjustmentImplFutureCreditIsTrue_thenReturnTrue() {
     // Arrange
-    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
-    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
-    orderAdjustmentImpl2.setOrder(new NullOrderImpl());
-    orderAdjustmentImpl2.setReason("Just cause");
-    orderAdjustmentImpl2.setValue(new Money());
-    orderAdjustmentImpl2.setFutureCredit(true);
+    orderAdjustmentImpl.setFutureCredit(true);
 
     // Act and Assert
-    assertTrue(orderAdjustmentImpl2.isFutureCredit());
+    assertTrue(orderAdjustmentImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderAdjustmentImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderAdjustmentImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OrderAdjustmentImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOrderAdjustmentImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OrderAdjustmentImpl()).isFutureCredit());
+    assertFalse(orderAdjustmentImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}, and {@link OrderAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -533,26 +593,31 @@ public class OrderAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderAdjustmentImpl, orderAdjustmentImpl2);
-    int notExpectedHashCodeResult = orderAdjustmentImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, orderAdjustmentImpl2.hashCode());
+    assertNotEquals(orderAdjustmentImpl.hashCode(), orderAdjustmentImpl2.hashCode());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}, and {@link OrderAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -571,27 +636,75 @@ public class OrderAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderAdjustmentImpl, orderAdjustmentImpl2);
-    int expectedHashCodeResult = orderAdjustmentImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderAdjustmentImpl2.hashCode());
+    assertEquals(orderAdjustmentImpl.hashCode(), orderAdjustmentImpl2.hashCode());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}, and {@link OrderAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
+    orderAdjustmentImpl.setFutureCredit(true);
+    orderAdjustmentImpl.setId(null);
+    orderAdjustmentImpl.setOrder(null);
+    orderAdjustmentImpl.setReason(null);
+    orderAdjustmentImpl.setValue(new Money());
+
+    OrderAdjustmentImpl orderAdjustmentImpl2 = new OrderAdjustmentImpl();
+    orderAdjustmentImpl2.setFutureCredit(true);
+    orderAdjustmentImpl2.setId(OrderAdjustmentImpl.serialVersionUID);
+    orderAdjustmentImpl2.setOrder(null);
+    orderAdjustmentImpl2.setReason(null);
+    orderAdjustmentImpl2.setValue(new Money());
+
+    // Act and Assert
+    assertEquals(orderAdjustmentImpl, orderAdjustmentImpl2);
+    assertEquals(orderAdjustmentImpl.hashCode(), orderAdjustmentImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link OrderAdjustmentImpl#equals(Object)}, and {@link OrderAdjustmentImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link OrderAdjustmentImpl#equals(Object)}
+   *   <li>{@link OrderAdjustmentImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     Money value = mock(Money.class);
     when(value.getAmount()).thenReturn(null);
@@ -602,6 +715,7 @@ public class OrderAdjustmentImplDiffblueTest {
     orderAdjustmentImpl.setOrder(null);
     orderAdjustmentImpl.setReason("Just cause");
     orderAdjustmentImpl.setValue(value);
+
     Money value2 = mock(Money.class);
     when(value2.getAmount()).thenReturn(null);
 
@@ -614,26 +728,31 @@ public class OrderAdjustmentImplDiffblueTest {
 
     // Act and Assert
     assertEquals(orderAdjustmentImpl, orderAdjustmentImpl2);
-    int expectedHashCodeResult = orderAdjustmentImpl.hashCode();
-    assertEquals(expectedHashCodeResult, orderAdjustmentImpl2.hashCode());
+    assertEquals(orderAdjustmentImpl.hashCode(), orderAdjustmentImpl2.hashCode());
   }
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}, and {@link OrderAdjustmentImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OrderAdjustmentImpl#equals(Object)}
    *   <li>{@link OrderAdjustmentImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -651,16 +770,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -683,16 +807,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -715,16 +844,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -747,16 +881,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -779,16 +918,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -811,16 +955,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -843,16 +992,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -875,16 +1029,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -907,16 +1066,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     Money value = mock(Money.class);
@@ -942,16 +1106,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -967,16 +1136,21 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link OrderAdjustmentImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderAdjustmentImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OrderAdjustmentImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderAdjustmentImpl.equals(Object)", "int OrderAdjustmentImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderAdjustmentImpl.equals(Object)",
+    "int OrderAdjustmentImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     OrderAdjustmentImpl orderAdjustmentImpl = new OrderAdjustmentImpl();
@@ -992,11 +1166,12 @@ public class OrderAdjustmentImplDiffblueTest {
 
   /**
    * Test new {@link OrderAdjustmentImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link OrderAdjustmentImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link OrderAdjustmentImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderAdjustmentImpl.<init>()"})
   public void testNewOrderAdjustmentImpl() {
     // Arrange and Act

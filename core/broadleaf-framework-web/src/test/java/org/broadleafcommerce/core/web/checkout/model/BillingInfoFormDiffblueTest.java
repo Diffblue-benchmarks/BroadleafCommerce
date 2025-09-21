@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
@@ -34,12 +35,13 @@ import org.junit.jupiter.api.Test;
 class BillingInfoFormDiffblueTest {
   /**
    * Test new {@link BillingInfoForm} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link BillingInfoForm}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link BillingInfoForm}
    */
   @Test
   @DisplayName("Test new BillingInfoForm (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BillingInfoForm.<init>()"})
   void testNewBillingInfoForm() {
     // Arrange and Act
@@ -59,8 +61,9 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BillingInfoForm#setAddress(Address)}
    *   <li>{@link BillingInfoForm#setCustomerPayment(CustomerPayment)}
@@ -76,12 +79,20 @@ class BillingInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Address BillingInfoForm.getAddress()", "CustomerPayment BillingInfoForm.getCustomerPayment()",
-      "Long BillingInfoForm.getCustomerPaymentId()", "String BillingInfoForm.getPaymentName()",
-      "boolean BillingInfoForm.isUseShippingAddress()", "void BillingInfoForm.setAddress(Address)",
-      "void BillingInfoForm.setCustomerPayment(CustomerPayment)", "void BillingInfoForm.setCustomerPaymentId(Long)",
-      "void BillingInfoForm.setPaymentName(String)", "void BillingInfoForm.setUseShippingAddress(boolean)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address BillingInfoForm.getAddress()",
+    "CustomerPayment BillingInfoForm.getCustomerPayment()",
+    "Long BillingInfoForm.getCustomerPaymentId()",
+    "String BillingInfoForm.getPaymentName()",
+    "boolean BillingInfoForm.isUseShippingAddress()",
+    "void BillingInfoForm.setAddress(Address)",
+    "void BillingInfoForm.setCustomerPayment(CustomerPayment)",
+    "void BillingInfoForm.setCustomerPaymentId(Long)",
+    "void BillingInfoForm.setPaymentName(String)",
+    "void BillingInfoForm.setUseShippingAddress(boolean)"
+  })
   void testGettersAndSetters() {
     // Arrange
     BillingInfoForm billingInfoForm = new BillingInfoForm();
@@ -110,33 +121,38 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#getUseCustomerPayment()}.
+   *
    * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link BillingInfoForm} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
+   *
+   * <p>Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
    */
   @Test
-  @DisplayName("Test getUseCustomerPayment(); given BillingInfoForm (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getUseCustomerPayment(); given BillingInfoForm (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean BillingInfoForm.getUseCustomerPayment()"})
   void testGetUseCustomerPayment_givenBillingInfoForm_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new BillingInfoForm()).getUseCustomerPayment());
+    assertFalse(new BillingInfoForm().getUseCustomerPayment());
   }
 
   /**
    * Test {@link BillingInfoForm#getUseCustomerPayment()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
+   *
+   * <p>Method under test: {@link BillingInfoForm#getUseCustomerPayment()}
    */
   @Test
   @DisplayName("Test getUseCustomerPayment(); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean BillingInfoForm.getUseCustomerPayment()"})
   void testGetUseCustomerPayment_thenReturnTrue() {
     // Arrange
@@ -155,15 +171,18 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#setUseCustomerPayment(Boolean)}.
+   *
    * <ul>
-   *   <li>Then {@link BillingInfoForm} (default constructor) UseCustomerPayment.</li>
+   *   <li>Then {@link BillingInfoForm} (default constructor) UseCustomerPayment.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
+   *
+   * <p>Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
    */
   @Test
-  @DisplayName("Test setUseCustomerPayment(Boolean); then BillingInfoForm (default constructor) UseCustomerPayment")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setUseCustomerPayment(Boolean); then BillingInfoForm (default constructor) UseCustomerPayment")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BillingInfoForm.setUseCustomerPayment(Boolean)"})
   void testSetUseCustomerPayment_thenBillingInfoFormUseCustomerPayment() {
     // Arrange
@@ -179,15 +198,18 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#setUseCustomerPayment(Boolean)}.
+   *
    * <ul>
-   *   <li>Then not {@link BillingInfoForm} (default constructor) UseCustomerPayment.</li>
+   *   <li>Then not {@link BillingInfoForm} (default constructor) UseCustomerPayment.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
+   *
+   * <p>Method under test: {@link BillingInfoForm#setUseCustomerPayment(Boolean)}
    */
   @Test
-  @DisplayName("Test setUseCustomerPayment(Boolean); then not BillingInfoForm (default constructor) UseCustomerPayment")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setUseCustomerPayment(Boolean); then not BillingInfoForm (default constructor) UseCustomerPayment")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BillingInfoForm.setUseCustomerPayment(Boolean)"})
   void testSetUseCustomerPayment_thenNotBillingInfoFormUseCustomerPayment() {
     // Arrange
@@ -210,16 +232,20 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#getSaveNewPayment()}.
+   *
    * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor) Address is {@link AddressImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link BillingInfoForm} (default constructor) Address is {@link AddressImpl}
+   *       (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#getSaveNewPayment()}
+   *
+   * <p>Method under test: {@link BillingInfoForm#getSaveNewPayment()}
    */
   @Test
-  @DisplayName("Test getSaveNewPayment(); given BillingInfoForm (default constructor) Address is AddressImpl (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getSaveNewPayment(); given BillingInfoForm (default constructor) Address is AddressImpl (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean BillingInfoForm.getSaveNewPayment()"})
   void testGetSaveNewPayment_givenBillingInfoFormAddressIsAddressImpl_thenReturnFalse() {
     // Arrange
@@ -238,34 +264,40 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#getSaveNewPayment()}.
+   *
    * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link BillingInfoForm} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#getSaveNewPayment()}
+   *
+   * <p>Method under test: {@link BillingInfoForm#getSaveNewPayment()}
    */
   @Test
-  @DisplayName("Test getSaveNewPayment(); given BillingInfoForm (default constructor); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getSaveNewPayment(); given BillingInfoForm (default constructor); then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean BillingInfoForm.getSaveNewPayment()"})
   void testGetSaveNewPayment_givenBillingInfoForm_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new BillingInfoForm()).getSaveNewPayment());
+    assertTrue(new BillingInfoForm().getSaveNewPayment());
   }
 
   /**
    * Test {@link BillingInfoForm#setSaveNewPayment(Boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link BillingInfoForm} (default constructor).</li>
-   *   <li>Then {@link BillingInfoForm} (default constructor) SaveNewPayment.</li>
+   *   <li>Given {@link BillingInfoForm} (default constructor).
+   *   <li>Then {@link BillingInfoForm} (default constructor) SaveNewPayment.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
+   *
+   * <p>Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
    */
   @Test
-  @DisplayName("Test setSaveNewPayment(Boolean); given BillingInfoForm (default constructor); then BillingInfoForm (default constructor) SaveNewPayment")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setSaveNewPayment(Boolean); given BillingInfoForm (default constructor); then BillingInfoForm (default constructor) SaveNewPayment")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BillingInfoForm.setSaveNewPayment(Boolean)"})
   void testSetSaveNewPayment_givenBillingInfoForm_thenBillingInfoFormSaveNewPayment() {
     // Arrange
@@ -281,15 +313,18 @@ class BillingInfoFormDiffblueTest {
 
   /**
    * Test {@link BillingInfoForm#setSaveNewPayment(Boolean)}.
+   *
    * <ul>
-   *   <li>Then not {@link BillingInfoForm} (default constructor) SaveNewPayment.</li>
+   *   <li>Then not {@link BillingInfoForm} (default constructor) SaveNewPayment.
    * </ul>
-   * <p>
-   * Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
+   *
+   * <p>Method under test: {@link BillingInfoForm#setSaveNewPayment(Boolean)}
    */
   @Test
-  @DisplayName("Test setSaveNewPayment(Boolean); then not BillingInfoForm (default constructor) SaveNewPayment")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setSaveNewPayment(Boolean); then not BillingInfoForm (default constructor) SaveNewPayment")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BillingInfoForm.setSaveNewPayment(Boolean)"})
   void testSetSaveNewPayment_thenNotBillingInfoFormSaveNewPayment() {
     // Arrange

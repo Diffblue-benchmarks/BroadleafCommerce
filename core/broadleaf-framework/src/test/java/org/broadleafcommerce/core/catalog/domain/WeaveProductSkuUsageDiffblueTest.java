@@ -19,7 +19,8 @@ package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,31 +28,35 @@ import org.junit.experimental.categories.Category;
 public class WeaveProductSkuUsageDiffblueTest {
   /**
    * Test {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}.
+   *
    * <ul>
-   *   <li>Given {@link WeaveProductSkuUsage} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link WeaveProductSkuUsage} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
+   *
+   * <p>Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean WeaveProductSkuUsage.getUseDefaultSkuInInventory()"})
   public void testGetUseDefaultSkuInInventory_givenWeaveProductSkuUsage_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new WeaveProductSkuUsage()).getUseDefaultSkuInInventory());
+    assertFalse(new WeaveProductSkuUsage().getUseDefaultSkuInInventory());
   }
 
   /**
    * Test {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
+   *
+   * <p>Method under test: {@link WeaveProductSkuUsage#getUseDefaultSkuInInventory()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean WeaveProductSkuUsage.getUseDefaultSkuInInventory()"})
   public void testGetUseDefaultSkuInInventory_thenReturnTrue() {
     // Arrange
@@ -64,14 +69,38 @@ public class WeaveProductSkuUsageDiffblueTest {
 
   /**
    * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
-   * <ul>
-   *   <li>Then {@link WeaveProductSkuUsage} (default constructor) UseDefaultSkuInInventory.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
+   *
+   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
+  public void testSetUseDefaultSkuInInventory() {
+    // Arrange
+    WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
+    weaveProductSkuUsage.setUseDefaultSkuInInventory(true);
+
+    // Act
+    weaveProductSkuUsage.setUseDefaultSkuInInventory(null);
+
+    // Assert
+    assertFalse(weaveProductSkuUsage.getUseDefaultSkuInInventory());
+    assertFalse(weaveProductSkuUsage.useDefaultSkuInInventory);
+  }
+
+  /**
+   * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
+   *
+   * <ul>
+   *   <li>Then {@link WeaveProductSkuUsage} (default constructor) UseDefaultSkuInInventory.
+   * </ul>
+   *
+   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
   public void testSetUseDefaultSkuInInventory_thenWeaveProductSkuUsageUseDefaultSkuInInventory() {
     // Arrange
@@ -87,14 +116,16 @@ public class WeaveProductSkuUsageDiffblueTest {
 
   /**
    * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
+   *
    * <ul>
-   *   <li>When {@code false}.</li>
+   *   <li>When {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
+   *
+   * <p>Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
   public void testSetUseDefaultSkuInInventory_whenFalse() {
     // Arrange
@@ -109,35 +140,13 @@ public class WeaveProductSkuUsageDiffblueTest {
   }
 
   /**
-   * Test {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link WeaveProductSkuUsage#setUseDefaultSkuInInventory(Boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void WeaveProductSkuUsage.setUseDefaultSkuInInventory(Boolean)"})
-  public void testSetUseDefaultSkuInInventory_whenNull() {
-    // Arrange
-    WeaveProductSkuUsage weaveProductSkuUsage = new WeaveProductSkuUsage();
-
-    // Act
-    weaveProductSkuUsage.setUseDefaultSkuInInventory(null);
-
-    // Assert that nothing has changed
-    assertFalse(weaveProductSkuUsage.getUseDefaultSkuInInventory());
-    assertFalse(weaveProductSkuUsage.useDefaultSkuInInventory);
-  }
-
-  /**
    * Test new {@link WeaveProductSkuUsage} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link WeaveProductSkuUsage}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link WeaveProductSkuUsage}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void WeaveProductSkuUsage.<init>()"})
   public void testNewWeaveProductSkuUsage() {
     // Arrange and Act

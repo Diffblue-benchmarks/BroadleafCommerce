@@ -20,6 +20,7 @@ package org.broadleafcommerce.profile.web.core.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -30,19 +31,21 @@ import org.junit.jupiter.api.Test;
 class CustomerLoggedInEventDiffblueTest {
   /**
    * Test {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}.
-   * <p>
-   * Method under test: {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
+   *
+   * <p>Method under test: {@link CustomerLoggedInEvent#CustomerLoggedInEvent(Customer, Object)}
    */
   @Test
   @DisplayName("Test new CustomerLoggedInEvent(Customer, Object)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerLoggedInEvent.<init>(Customer, Object)"})
   void testNewCustomerLoggedInEvent() {
     // Arrange
     CustomerImpl customer = new CustomerImpl();
 
     // Act
-    CustomerLoggedInEvent actualCustomerLoggedInEvent = new CustomerLoggedInEvent(customer, "Source");
+    CustomerLoggedInEvent actualCustomerLoggedInEvent =
+        new CustomerLoggedInEvent(customer, "Source");
 
     // Assert
     Customer customer2 = actualCustomerLoggedInEvent.getCustomer();
@@ -53,8 +56,9 @@ class CustomerLoggedInEventDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerLoggedInEvent#setCustomer(Customer)}
    *   <li>{@link CustomerLoggedInEvent#getCustomer()}
@@ -62,12 +66,16 @@ class CustomerLoggedInEventDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Customer CustomerLoggedInEvent.getCustomer()",
-      "void CustomerLoggedInEvent.setCustomer(Customer)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Customer CustomerLoggedInEvent.getCustomer()",
+    "void CustomerLoggedInEvent.setCustomer(Customer)"
+  })
   void testGettersAndSetters() {
     // Arrange
-    CustomerLoggedInEvent customerLoggedInEvent = new CustomerLoggedInEvent(new CustomerImpl(), "Source");
+    CustomerLoggedInEvent customerLoggedInEvent =
+        new CustomerLoggedInEvent(new CustomerImpl(), "Source");
     CustomerImpl customer = new CustomerImpl();
 
     // Act

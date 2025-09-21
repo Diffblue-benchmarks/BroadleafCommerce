@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extensibility.cache.JCacheRegionConfiguration;
 import org.junit.Test;
@@ -34,23 +35,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {FrameworkCacheConfiguration.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FrameworkCacheConfigurationDiffblueTest {
-  @Autowired
-  private FrameworkCacheConfiguration frameworkCacheConfiguration;
+  @Autowired private FrameworkCacheConfiguration frameworkCacheConfiguration;
 
   /**
    * Test {@link FrameworkCacheConfiguration#blCategoryProduct()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blCategoryProduct()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blCategoryProduct()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryProduct()"})
   public void testBlCategoryProduct_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryProductResult = frameworkCacheConfiguration.blCategoryProduct();
+    JCacheRegionConfiguration actualBlCategoryProductResult =
+        frameworkCacheConfiguration.blCategoryProduct();
 
     // Assert
     assertEquals("blCategoryProduct", actualBlCategoryProductResult.getCacheName());
@@ -67,18 +70,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blCategoryProduct()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blCategoryProduct()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blCategoryProduct()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryProduct()"})
   public void testBlCategoryProduct_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryProductResult = (new FrameworkCacheConfiguration()).blCategoryProduct();
+    JCacheRegionConfiguration actualBlCategoryProductResult =
+        new FrameworkCacheConfiguration().blCategoryProduct();
 
     // Assert
     assertEquals("blCategoryProduct", actualBlCategoryProductResult.getCacheName());
@@ -95,19 +101,23 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blCategoryRelationships()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blCategoryRelationships()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blCategoryRelationships()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryRelationships()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryRelationships()"
+  })
   public void testBlCategoryRelationships_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryRelationshipsResult = frameworkCacheConfiguration
-        .blCategoryRelationships();
+    JCacheRegionConfiguration actualBlCategoryRelationshipsResult =
+        frameworkCacheConfiguration.blCategoryRelationships();
 
     // Assert
     assertEquals("blCategoryRelationships", actualBlCategoryRelationshipsResult.getCacheName());
@@ -124,19 +134,23 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blCategoryRelationships()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blCategoryRelationships()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blCategoryRelationships()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryRelationships()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blCategoryRelationships()"
+  })
   public void testBlCategoryRelationships_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCategoryRelationshipsResult = (new FrameworkCacheConfiguration())
-        .blCategoryRelationships();
+    JCacheRegionConfiguration actualBlCategoryRelationshipsResult =
+        new FrameworkCacheConfiguration().blCategoryRelationships();
 
     // Assert
     assertEquals("blCategoryRelationships", actualBlCategoryRelationshipsResult.getCacheName());
@@ -153,22 +167,27 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blFulfillmentOptionElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blFulfillmentOptionElements()"
+  })
   public void testBlFulfillmentOptionElements_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlFulfillmentOptionElementsResult = frameworkCacheConfiguration
-        .blFulfillmentOptionElements();
+    JCacheRegionConfiguration actualBlFulfillmentOptionElementsResult =
+        frameworkCacheConfiguration.blFulfillmentOptionElements();
 
     // Assert
-    assertEquals("blFulfillmentOptionElements", actualBlFulfillmentOptionElementsResult.getCacheName());
+    assertEquals(
+        "blFulfillmentOptionElements", actualBlFulfillmentOptionElementsResult.getCacheName());
     assertNull(actualBlFulfillmentOptionElementsResult.getConfiguration());
     assertEquals(1000, actualBlFulfillmentOptionElementsResult.getMaxElementsInMemory());
     assertEquals(86400, actualBlFulfillmentOptionElementsResult.getTtlSeconds());
@@ -182,22 +201,27 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blFulfillmentOptionElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blFulfillmentOptionElements()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blFulfillmentOptionElements()"
+  })
   public void testBlFulfillmentOptionElements_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlFulfillmentOptionElementsResult = (new FrameworkCacheConfiguration())
-        .blFulfillmentOptionElements();
+    JCacheRegionConfiguration actualBlFulfillmentOptionElementsResult =
+        new FrameworkCacheConfiguration().blFulfillmentOptionElements();
 
     // Assert
-    assertEquals("blFulfillmentOptionElements", actualBlFulfillmentOptionElementsResult.getCacheName());
+    assertEquals(
+        "blFulfillmentOptionElements", actualBlFulfillmentOptionElementsResult.getCacheName());
     assertNull(actualBlFulfillmentOptionElementsResult.getConfiguration());
     assertEquals(1000, actualBlFulfillmentOptionElementsResult.getMaxElementsInMemory());
     assertEquals(86400, actualBlFulfillmentOptionElementsResult.getTtlSeconds());
@@ -211,18 +235,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductAttributes()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductAttributes()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductAttributes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductAttributes()"})
   public void testBlProductAttributes_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductAttributesResult = frameworkCacheConfiguration.blProductAttributes();
+    JCacheRegionConfiguration actualBlProductAttributesResult =
+        frameworkCacheConfiguration.blProductAttributes();
 
     // Assert
     assertEquals("blProductAttributes", actualBlProductAttributesResult.getCacheName());
@@ -239,19 +266,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductAttributes()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductAttributes()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductAttributes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductAttributes()"})
   public void testBlProductAttributes_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductAttributesResult = (new FrameworkCacheConfiguration())
-        .blProductAttributes();
+    JCacheRegionConfiguration actualBlProductAttributesResult =
+        new FrameworkCacheConfiguration().blProductAttributes();
 
     // Assert
     assertEquals("blProductAttributes", actualBlProductAttributesResult.getCacheName());
@@ -268,18 +297,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductOptions()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductOptions()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductOptions()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductOptions()"})
   public void testBlProductOptions_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductOptionsResult = frameworkCacheConfiguration.blProductOptions();
+    JCacheRegionConfiguration actualBlProductOptionsResult =
+        frameworkCacheConfiguration.blProductOptions();
 
     // Assert
     assertEquals("blProductOptions", actualBlProductOptionsResult.getCacheName());
@@ -296,18 +328,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductOptions()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductOptions()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductOptions()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductOptions()"})
   public void testBlProductOptions_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductOptionsResult = (new FrameworkCacheConfiguration()).blProductOptions();
+    JCacheRegionConfiguration actualBlProductOptionsResult =
+        new FrameworkCacheConfiguration().blProductOptions();
 
     // Assert
     assertEquals("blProductOptions", actualBlProductOptionsResult.getCacheName());
@@ -324,18 +359,23 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductRelationships()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductRelationships()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductRelationships()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductRelationships()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blProductRelationships()"
+  })
   public void testBlProductRelationships_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductRelationshipsResult = frameworkCacheConfiguration.blProductRelationships();
+    JCacheRegionConfiguration actualBlProductRelationshipsResult =
+        frameworkCacheConfiguration.blProductRelationships();
 
     // Assert
     assertEquals("blProductRelationships", actualBlProductRelationshipsResult.getCacheName());
@@ -352,19 +392,23 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blProductRelationships()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blProductRelationships()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blProductRelationships()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blProductRelationships()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "JCacheRegionConfiguration FrameworkCacheConfiguration.blProductRelationships()"
+  })
   public void testBlProductRelationships_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlProductRelationshipsResult = (new FrameworkCacheConfiguration())
-        .blProductRelationships();
+    JCacheRegionConfiguration actualBlProductRelationshipsResult =
+        new FrameworkCacheConfiguration().blProductRelationships();
 
     // Assert
     assertEquals("blProductRelationships", actualBlProductRelationshipsResult.getCacheName());
@@ -381,18 +425,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blRelatedProducts()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blRelatedProducts()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blRelatedProducts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blRelatedProducts()"})
   public void testBlRelatedProducts_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlRelatedProductsResult = frameworkCacheConfiguration.blRelatedProducts();
+    JCacheRegionConfiguration actualBlRelatedProductsResult =
+        frameworkCacheConfiguration.blRelatedProducts();
 
     // Assert
     assertEquals("blRelatedProducts", actualBlRelatedProductsResult.getCacheName());
@@ -409,18 +456,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blRelatedProducts()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blRelatedProducts()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blRelatedProducts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blRelatedProducts()"})
   public void testBlRelatedProducts_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlRelatedProductsResult = (new FrameworkCacheConfiguration()).blRelatedProducts();
+    JCacheRegionConfiguration actualBlRelatedProductsResult =
+        new FrameworkCacheConfiguration().blRelatedProducts();
 
     // Assert
     assertEquals("blRelatedProducts", actualBlRelatedProductsResult.getCacheName());
@@ -437,18 +487,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blSearchElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blSearchElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blSearchElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blSearchElements()"})
   public void testBlSearchElements_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSearchElementsResult = frameworkCacheConfiguration.blSearchElements();
+    JCacheRegionConfiguration actualBlSearchElementsResult =
+        frameworkCacheConfiguration.blSearchElements();
 
     // Assert
     assertEquals("blSearchElements", actualBlSearchElementsResult.getCacheName());
@@ -465,18 +518,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blSearchElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blSearchElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blSearchElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blSearchElements()"})
   public void testBlSearchElements_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSearchElementsResult = (new FrameworkCacheConfiguration()).blSearchElements();
+    JCacheRegionConfiguration actualBlSearchElementsResult =
+        new FrameworkCacheConfiguration().blSearchElements();
 
     // Assert
     assertEquals("blSearchElements", actualBlSearchElementsResult.getCacheName());
@@ -493,14 +549,16 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blSkuMedia()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blSkuMedia()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blSkuMedia()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blSkuMedia()"})
   public void testBlSkuMedia_givenFrameworkCacheConfiguration() {
     // Arrange and Act
@@ -521,18 +579,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blSkuMedia()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blSkuMedia()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blSkuMedia()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blSkuMedia()"})
   public void testBlSkuMedia_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlSkuMediaResult = (new FrameworkCacheConfiguration()).blSkuMedia();
+    JCacheRegionConfiguration actualBlSkuMediaResult =
+        new FrameworkCacheConfiguration().blSkuMedia();
 
     // Assert
     assertEquals("blSkuMedia", actualBlSkuMediaResult.getCacheName());
@@ -549,18 +610,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blStoreElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration}.</li>
+   *   <li>Given {@link FrameworkCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blStoreElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blStoreElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blStoreElements()"})
   public void testBlStoreElements_givenFrameworkCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlStoreElementsResult = frameworkCacheConfiguration.blStoreElements();
+    JCacheRegionConfiguration actualBlStoreElementsResult =
+        frameworkCacheConfiguration.blStoreElements();
 
     // Assert
     assertEquals("blStoreElements", actualBlStoreElementsResult.getCacheName());
@@ -577,18 +641,21 @@ public class FrameworkCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link FrameworkCacheConfiguration#blStoreElements()}.
+   *
    * <ul>
-   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link FrameworkCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FrameworkCacheConfiguration#blStoreElements()}
+   *
+   * <p>Method under test: {@link FrameworkCacheConfiguration#blStoreElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration FrameworkCacheConfiguration.blStoreElements()"})
   public void testBlStoreElements_givenFrameworkCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlStoreElementsResult = (new FrameworkCacheConfiguration()).blStoreElements();
+    JCacheRegionConfiguration actualBlStoreElementsResult =
+        new FrameworkCacheConfiguration().blStoreElements();
 
     // Assert
     assertEquals("blStoreElements", actualBlStoreElementsResult.getCacheName());

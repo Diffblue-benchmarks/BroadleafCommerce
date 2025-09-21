@@ -23,7 +23,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.MultipartConfigElement;
 import org.junit.Test;
@@ -40,27 +41,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AdminMultipartUploadConfig.class, MultipartProperties.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdminMultipartUploadConfigDiffblueTest {
-  @Autowired
-  private AdminMultipartUploadConfig adminMultipartUploadConfig;
+  @Autowired private AdminMultipartUploadConfig adminMultipartUploadConfig;
 
-  @Autowired
-  private MultipartProperties multipartProperties;
+  @Autowired private MultipartProperties multipartProperties;
 
   /**
    * Test {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}.
+   *
    * <ul>
-   *   <li>Given {@link AdminMultipartUploadConfig}.</li>
+   *   <li>Given {@link AdminMultipartUploadConfig}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
+   *
+   * <p>Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"
+  })
   public void testMultipartConfigElement_givenAdminMultipartUploadConfig() {
     // Arrange and Act
-    MultipartConfigElement actualMultipartConfigElementResult = adminMultipartUploadConfig
-        .multipartConfigElement(new StandardReactiveWebEnvironment());
+    MultipartConfigElement actualMultipartConfigElementResult =
+        adminMultipartUploadConfig.multipartConfigElement(new StandardReactiveWebEnvironment());
 
     // Assert
     assertEquals("", actualMultipartConfigElementResult.getLocation());
@@ -71,24 +74,31 @@ public class AdminMultipartUploadConfigDiffblueTest {
 
   /**
    * Test {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}.
+   *
    * <ul>
-   *   <li>Given one.</li>
-   *   <li>Then return MaxFileSize is {@code 10485760}.</li>
+   *   <li>Given one.
+   *   <li>Then return MaxFileSize is {@code 10485760}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
+   *
+   * <p>Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"
+  })
   public void testMultipartConfigElement_givenOne_thenReturnMaxFileSizeIs10485760() {
     // Arrange
-    AdminMultipartUploadConfig adminMultipartUploadConfig = new AdminMultipartUploadConfig(new MultipartProperties());
+    AdminMultipartUploadConfig adminMultipartUploadConfig =
+        new AdminMultipartUploadConfig(new MultipartProperties());
+
     Environment env = mock(Environment.class);
     when(env.getProperty(Mockito.<String>any(), Mockito.<Class<Long>>any())).thenReturn(1L);
 
     // Act
-    MultipartConfigElement actualMultipartConfigElementResult = adminMultipartUploadConfig.multipartConfigElement(env);
+    MultipartConfigElement actualMultipartConfigElementResult =
+        adminMultipartUploadConfig.multipartConfigElement(env);
 
     // Assert
     verify(env).getProperty(eq("asset.server.max.uploadable.file.size"), isA(Class.class));
@@ -100,22 +110,27 @@ public class AdminMultipartUploadConfigDiffblueTest {
 
   /**
    * Test {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}.
+   *
    * <ul>
-   *   <li>Then return MaxRequestSize is {@code 10485760}.</li>
+   *   <li>Then return MaxRequestSize is {@code 10485760}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
+   *
+   * <p>Method under test: {@link AdminMultipartUploadConfig#multipartConfigElement(Environment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "MultipartConfigElement AdminMultipartUploadConfig.multipartConfigElement(Environment)"
+  })
   public void testMultipartConfigElement_thenReturnMaxRequestSizeIs10485760() {
     // Arrange
-    AdminMultipartUploadConfig adminMultipartUploadConfig = new AdminMultipartUploadConfig(new MultipartProperties());
+    AdminMultipartUploadConfig adminMultipartUploadConfig =
+        new AdminMultipartUploadConfig(new MultipartProperties());
 
     // Act
-    MultipartConfigElement actualMultipartConfigElementResult = adminMultipartUploadConfig
-        .multipartConfigElement(new StandardReactiveWebEnvironment());
+    MultipartConfigElement actualMultipartConfigElementResult =
+        adminMultipartUploadConfig.multipartConfigElement(new StandardReactiveWebEnvironment());
 
     // Assert
     assertEquals("", actualMultipartConfigElementResult.getLocation());

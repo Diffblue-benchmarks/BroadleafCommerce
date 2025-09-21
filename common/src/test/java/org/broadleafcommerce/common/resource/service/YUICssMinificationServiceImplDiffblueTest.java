@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.resource.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.FileDescriptor;
 import java.io.FileReader;
@@ -38,21 +39,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {YUICssMinificationServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class YUICssMinificationServiceImplDiffblueTest {
-  @Autowired
-  private YUICssMinificationServiceImpl yUICssMinificationServiceImpl;
+  @Autowired private YUICssMinificationServiceImpl yUICssMinificationServiceImpl;
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code * /}.</li>
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code * /}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
-  public void testMinifyCss_thenStringWriterToStringIsAsteriskSlash() throws ResourceMinificationException {
+  public void testMinifyCss_thenStringWriterToStringIsAsteriskSlash()
+      throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("*/ ");
     StringWriter writer = new StringWriter();
@@ -66,14 +69,44 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code :}.</li>
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code @charset U;}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
+  public void testMinifyCss_thenStringWriterToStringIsCharsetU()
+      throws ResourceMinificationException {
+    // Arrange
+    YUICssMinificationServiceImpl yuiCssMinificationServiceImpl =
+        new YUICssMinificationServiceImpl();
+    StringReader reader = new StringReader(" @charset U;  @charset U;  @charset U; ");
+    StringWriter writer = new StringWriter();
+
+    // Act
+    yuiCssMinificationServiceImpl.minifyCss("foo.txt", reader, writer);
+
+    // Assert
+    assertEquals("@charset U;", writer.toString());
+  }
+
+  /**
+   * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
+   * <ul>
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code :}.
+   * </ul>
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_thenStringWriterToStringIsColon() throws ResourceMinificationException {
     // Arrange
@@ -96,9 +129,11 @@ public class YUICssMinificationServiceImplDiffblueTest {
    * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
-  public void testMinifyCss_thenStringWriterToStringIsUuuUuuUuuU() throws ResourceMinificationException {
+  public void testMinifyCss_thenStringWriterToStringIsUuuUuuUuuU()
+      throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("UUU:UUU:UUU:U{");
     StringWriter writer = new StringWriter();
@@ -112,35 +147,42 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link FileReader#FileReader(FileDescriptor)} with {@link FileDescriptor#FileDescriptor()}.</li>
+   *   <li>When {@link FileReader#FileReader(FileDescriptor)} with {@link
+   *       FileDescriptor#FileDescriptor()}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
-  public void testMinifyCss_whenFileReaderWithFileDescriptor() throws ResourceMinificationException {
+  public void testMinifyCss_whenFileReaderWithFileDescriptor()
+      throws ResourceMinificationException {
     // Arrange
     FileReader reader = new FileReader(new FileDescriptor());
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
+    assertThrows(
+        ResourceMinificationException.class,
         () -> yUICssMinificationServiceImpl.minifyCss("foo.txt", reader, new StringWriter()));
   }
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link PipedWriter#PipedWriter()}.</li>
-   *   <li>Then throw {@link ResourceMinificationException}.</li>
+   *   <li>When {@link PipedWriter#PipedWriter()}.
+   *   <li>Then throw {@link ResourceMinificationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenPipedWriter_thenThrowResourceMinificationException()
       throws ResourceMinificationException {
@@ -148,7 +190,8 @@ public class YUICssMinificationServiceImplDiffblueTest {
     StringReader reader = new StringReader("foo");
 
     // Act and Assert
-    assertThrows(ResourceMinificationException.class,
+    assertThrows(
+        ResourceMinificationException.class,
         () -> yUICssMinificationServiceImpl.minifyCss("foo.txt", reader, new PipedWriter()));
   }
 
@@ -162,7 +205,8 @@ public class YUICssMinificationServiceImplDiffblueTest {
    * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithFirstLine_thenStringWriterToStringIsFirstLine()
       throws ResourceMinificationException {
@@ -179,15 +223,17 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithFoo_thenStringWriterToStringIsFoo()
       throws ResourceMinificationException {
@@ -204,15 +250,17 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code !important}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code !important}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code !important}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code !important}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithImportant_thenStringWriterToStringIsImportant()
       throws ResourceMinificationException {
@@ -229,15 +277,17 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code ;}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code ;}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code ;}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code ;}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithSemicolon_thenStringWriterToStringIsSemicolon()
       throws ResourceMinificationException {
@@ -254,24 +304,28 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code U@charset "U";}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code @charset "U";U}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code U@charset "U";}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code @charset "U";U}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithUCharsetU_thenStringWriterToStringIsCharsetUU()
       throws ResourceMinificationException {
     // Arrange
+    YUICssMinificationServiceImpl yuiCssMinificationServiceImpl =
+        new YUICssMinificationServiceImpl();
     StringReader reader = new StringReader("U@charset \"U\";");
     StringWriter writer = new StringWriter();
 
     // Act
-    yUICssMinificationServiceImpl.minifyCss("foo.txt", reader, writer);
+    yuiCssMinificationServiceImpl.minifyCss("foo.txt", reader, writer);
 
     // Assert
     assertEquals("@charset \"U\";U", writer.toString());
@@ -279,15 +333,17 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code url( data:}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code url(data:}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code url( data:}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code url(data:}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
   public void testMinifyCss_whenStringReaderWithUrlData_thenStringWriterToStringIsUrlData()
       throws ResourceMinificationException {
@@ -304,17 +360,20 @@ public class YUICssMinificationServiceImplDiffblueTest {
 
   /**
    * Test {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}.
+   *
    * <ul>
-   *   <li>When {@link StringReader#StringReader(String)} with {@code "UU"}.</li>
-   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code "UU"}.</li>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code "UU"}.
+   *   <li>Then {@link StringWriter#StringWriter()} toString is {@code "UU"}.
    * </ul>
-   * <p>
-   * Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
+   *
+   * <p>Method under test: {@link YUICssMinificationServiceImpl#minifyCss(String, Reader, Writer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void YUICssMinificationServiceImpl.minifyCss(String, Reader, Writer)"})
-  public void testMinifyCss_whenStringReaderWithUu_thenStringWriterToStringIsUu() throws ResourceMinificationException {
+  public void testMinifyCss_whenStringReaderWithUu_thenStringWriterToStringIsUu()
+      throws ResourceMinificationException {
     // Arrange
     StringReader reader = new StringReader("\"UU\"");
     StringWriter writer = new StringWriter();

@@ -25,17 +25,21 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentTransactionType;
+import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.payment.domain.OrderPayment;
 import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
 import org.broadleafcommerce.core.payment.service.type.OrderPaymentStatus;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -47,419 +51,787 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {OrderPaymentStatusServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPaymentStatusServiceImplDiffblueTest {
-  @Autowired
-  private OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+  @Autowired private OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_givenMoney() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus() {
     // Arrange
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
     when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money());
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
 
     // Assert
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(orderPayment).getTransactions();
     verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus2() {
     // Arrange
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
-    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
 
-    // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
-
-    // Assert
-    verify(money).add(isA(Money.class));
-    verify(money).greaterThan(isA(Money.class));
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney2() {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     Money money2 = mock(Money.class);
-    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType())
+        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
 
     // Assert
-    verify(money2).add(isA(Money.class));
-    verify(money2).greaterThan(isA(Money.class));
-    verify(money).greaterThan(isA(Money.class));
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
     verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_givenMoneyGreaterThanReturnFalse() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus3() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType()).thenReturn(new PaymentTransactionType());
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus4() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType()).thenReturn(mock(PaymentTransactionType.class));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.
+   *   <li>Then return {@link OrderPaymentStatus#UNDETERMINED}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney_thenReturnUndetermined() {
     // Arrange
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
     when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
 
     // Assert
     verify(money, atLeast(1)).add(isA(Money.class));
     verify(money, atLeast(1)).greaterThan(isA(Money.class));
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(orderPayment).getTransactions();
     verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.
+   *   <li>Then return {@link OrderPaymentStatus#UNDETERMINED}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_givenMoneyAddReturnMoney_thenReturnUndetermined2() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_givenMoneyGreaterThanReturnTrue() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(new ArrayList<>());
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
   public void testDetermineOrderPaymentStatus_givenMoneyWithAmountIsTen() {
     // Arrange
     OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money(10.0d));
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
 
     // Assert
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
+    assertSame(OrderPaymentStatus.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
   public void testDetermineOrderPaymentStatus_givenNullOrderImpl() {
     // Arrange
     OrderPaymentImpl orderPayment = new OrderPaymentImpl();
     orderPayment.setOrder(new NullOrderImpl());
 
-    // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
-
-    // Assert
-    assertSame(actualDetermineOrderPaymentStatusResult.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+    // Act and Assert
+    assertSame(
+        OrderPaymentStatus.UNDETERMINED,
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment));
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Given {@link OrderPaymentStatusServiceImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_thenCallsGetSuccess() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_givenOrderPaymentStatusServiceImpl() {
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl =
+        new OrderPaymentStatusServiceImpl();
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl2 = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl2.getType())
+        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    when(paymentTransactionImpl2.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> paymentTransactionList2 = new ArrayList<>();
+    paymentTransactionList2.add(paymentTransactionImpl2);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList2);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl2).getSuccess();
+    verify(paymentTransactionImpl, atLeast(1)).getSuccess();
+    verify(paymentTransactionImpl2).getType();
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return
+   *       {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_givenPaymentTransactionImplGetSuccessReturnFalse() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl).getSuccess();
+    assertSame(OrderPaymentStatus.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Then return {@link OrderPaymentStatus#COMPLETE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_thenReturnComplete() {
+    // Arrange
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(new PaymentTransactionImpl());
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertSame(OrderPaymentStatus.COMPLETE, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Then return {@link OrderPaymentStatus#FULLY_CAPTURED}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_thenReturnFully_captured() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money).add(isA(Money.class));
+    verify(money).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertSame(OrderPaymentStatus.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Then return {@link OrderPaymentStatus#UNCONFIRMED}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"
+  })
+  public void testDetermineOrderPaymentStatus_thenReturnUnconfirmed() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType())
+        .thenReturn(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(paymentTransactionImpl);
+
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult =
+        orderPaymentStatusServiceImpl.determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(money2, atLeast(1)).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(orderPayment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
+    assertSame(OrderPaymentStatus.UNCONFIRMED, actualDetermineOrderPaymentStatusResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"
+  })
+  public void testContainsSuccessfulType_thenCallsGetSuccess() {
     // Arrange
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
     when(paymentTransactionImpl.getSuccess()).thenReturn(false);
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    Money money2 = mock(Money.class);
-    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    when(money2.add(Mockito.<Money>any())).thenReturn(money);
-    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+
+    OrderPayment payment = mock(OrderPayment.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    boolean actualContainsSuccessfulTypeResult =
+        orderPaymentStatusServiceImpl.containsSuccessfulType(
+            payment, new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(money2).add(isA(Money.class));
-    verify(money2).greaterThan(isA(Money.class));
-    verify(money).greaterThan(isA(Money.class));
-    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    verify(paymentTransactionImpl, atLeast(1)).getSuccess();
-    assertSame(actualDetermineOrderPaymentStatusResult.FULLY_CAPTURED, actualDetermineOrderPaymentStatusResult);
+    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    verify(paymentTransactionImpl).getSuccess();
+    assertFalse(actualContainsSuccessfulTypeResult);
   }
 
   /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}.
+   *
    * <ul>
-   *   <li>Then return {@link OrderPaymentStatus#COMPLETE}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderPaymentStatus OrderPaymentStatusServiceImpl.determineOrderPaymentStatus(OrderPayment)"})
-  public void testDetermineOrderPaymentStatus_thenReturnComplete() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"
+  })
+  public void testContainsSuccessfulType_thenReturnTrue() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
-    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
-    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
+
+    OrderPayment payment = mock(OrderPayment.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
 
     // Act
-    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
-        .determineOrderPaymentStatus(orderPayment);
+    boolean actualContainsSuccessfulTypeResult =
+        orderPaymentStatusServiceImpl.containsSuccessfulType(
+            payment, new PaymentTransactionType("Type", "Friendly Type"));
 
     // Assert
-    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertSame(actualDetermineOrderPaymentStatusResult.COMPLETE, actualDetermineOrderPaymentStatusResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
-  public void testContainsSuccessfulType() {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("42", "Friendly Type"));
-
-    OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
-
-    // Act
-    boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
-        new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(transaction).getType();
-    assertFalse(actualContainsSuccessfulTypeResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
-  public void testContainsSuccessfulType_givenPaymentTransactionImplGetSuccessReturnFalse() {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getSuccess()).thenReturn(false);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
-
-    // Act
-    boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
-        new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
-    assertFalse(actualContainsSuccessfulTypeResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
-  public void testContainsSuccessfulType_thenReturnTrue() {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getSuccess()).thenReturn(true);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
-
-    // Act
-    boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
-        new PaymentTransactionType("Type", "Friendly Type"));
-
-    // Assert
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
+    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertTrue(actualContainsSuccessfulTypeResult);
   }
 
   /**
-   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@link OrderPaymentImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment,
+   * PaymentTransactionType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
-  public void testContainsSuccessfulType_whenNull() {
-    // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-
-    OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
-
-    // Act
-    boolean actualContainsSuccessfulTypeResult = orderPaymentStatusServiceImpl.containsSuccessfulType(payment, null);
-
-    // Assert
-    verify(transaction).getType();
-    assertFalse(actualContainsSuccessfulTypeResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
-   * <ul>
-   *   <li>When {@link OrderPaymentImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"})
+    "boolean OrderPaymentStatusServiceImpl.containsSuccessfulType(OrderPayment, PaymentTransactionType)"
+  })
   public void testContainsSuccessfulType_whenOrderPaymentImpl_thenReturnFalse() {
     // Arrange
     OrderPaymentImpl payment = new OrderPaymentImpl();
 
-    // Act and Assert
-    assertFalse(orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
-        new PaymentTransactionType("Type", "Friendly Type")));
+    // Act
+    boolean actualContainsSuccessfulTypeResult =
+        orderPaymentStatusServiceImpl.containsSuccessfulType(
+            payment, new PaymentTransactionType("Type", "Friendly Type"));
+
+    // Assert
+    assertFalse(actualContainsSuccessfulTypeResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
+   *       constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenArrayListAddPaymentTransactionImpl_thenReturnTrue() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
@@ -468,130 +840,199 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Given {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoney() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDetermineCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#add(Money)}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.
+   *   <li>Then calls {@link Money#add(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyAddReturnMoney_thenCallsAdd() {
     // Arrange
     Money money = mock(Money.class);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
     verify(money).add(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDetermineCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
-   *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
+  public void testDetermineComplete_givenMoneyGreaterThanReturnFalse_thenCallsGreaterThan() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
+
+    // Assert
+    verify(money2).add(isA(Money.class));
+    verify(money).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertFalse(actualDetermineCompleteResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
     // Arrange
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
     Money money2 = mock(Money.class);
     when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
     verify(money2).add(isA(Money.class));
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDetermineCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenMoneyWithAmountIsTen() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money(10.0d));
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDetermineCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_givenNullOrderImpl() {
     // Arrange
@@ -604,14 +1045,16 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineComplete(OrderPayment)"})
   public void testDetermineComplete_thenCallsGetSuccess() {
     // Arrange
@@ -620,21 +1063,28 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
+
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
     Money money2 = mock(Money.class);
     when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
 
     // Act
-    boolean actualDetermineCompleteResult = orderPaymentStatusServiceImpl.determineComplete(payment);
+    boolean actualDetermineCompleteResult =
+        orderPaymentStatusServiceImpl.determineComplete(payment);
 
     // Assert
     verify(money2).add(isA(Money.class));
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     verify(paymentTransactionImpl, atLeast(1)).getSuccess();
     assertFalse(actualDetermineCompleteResult);
@@ -642,195 +1092,305 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
   public void testDeterminePartiallyComplete_givenArrayListAddPaymentTransactionImpl() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePartiallyCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Given {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
   public void testDeterminePartiallyComplete_givenMoney() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePartiallyCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money#Money()}.
+   *   <li>Then calls {@link Money#add(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
-  public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenReturnTrue() {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
-
-    // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
-
-    // Assert
-    verify(money).add(isA(Money.class));
-    verify(money, atLeast(1)).greaterThan(Mockito.<Money>any());
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertTrue(actualDeterminePartiallyCompleteResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
-  public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenReturnTrue2() {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    Money money2 = mock(Money.class);
-    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    when(money2.add(Mockito.<Money>any())).thenReturn(money);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
-
-    // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
-
-    // Assert
-    verify(money2).add(isA(Money.class));
-    verify(money).greaterThan(isA(Money.class));
-    verify(money2, atLeast(1)).greaterThan(Mockito.<Money>any());
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    assertTrue(actualDeterminePartiallyCompleteResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.</li>
-   *   <li>Then calls {@link Money#add(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
-  public void testDeterminePartiallyComplete_givenMoneyGreaterThanReturnFalse_thenCallsAdd() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
+  public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenCallsAdd() {
     // Arrange
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
 
     // Assert
     verify(money).add(isA(Money.class));
     verify(money, atLeast(1)).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePartiallyCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Money} {@link Money#add(Money)} return {@link Money}.
+   *   <li>Then calls {@link Money#add(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
+  public void testDeterminePartiallyComplete_givenMoneyAddReturnMoney_thenCallsAdd2() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+
+    // Assert
+    verify(money2).add(isA(Money.class));
+    verify(money).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertFalse(actualDeterminePartiallyCompleteResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then calls {@link Money#add(Money)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
+  public void testDeterminePartiallyComplete_givenMoneyGreaterThanReturnTrue_thenCallsAdd() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
+    Money money2 = mock(Money.class);
+    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
+    when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
+
+    // Act
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+
+    // Assert
+    verify(money2).add(isA(Money.class));
+    verify(money).greaterThan(isA(Money.class));
+    verify(money2, atLeast(1)).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertFalse(actualDeterminePartiallyCompleteResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
+  public void testDeterminePartiallyComplete_givenMoneyGreaterThanReturnTrue_thenReturnTrue() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.add(Mockito.<Money>any())).thenReturn(new Money());
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+
+    // Assert
+    verify(money).add(isA(Money.class));
+    verify(money, atLeast(1)).greaterThan(Mockito.<Money>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertTrue(actualDeterminePartiallyCompleteResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
   public void testDeterminePartiallyComplete_givenMoneyWithAmountIsTen() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money(10.0d));
 
     // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePartiallyCompleteResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
   public void testDeterminePartiallyComplete_givenNullOrderImpl() {
     // Arrange
     OrderPaymentImpl payment = new OrderPaymentImpl();
@@ -842,15 +1402,20 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"
+  })
   public void testDeterminePartiallyComplete_thenCallsGetSuccess() {
     // Arrange
     PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
@@ -858,63 +1423,30 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
+
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    Money money2 = mock(Money.class);
-    when(money2.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    when(money2.add(Mockito.<Money>any())).thenReturn(money);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
 
-    // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
-
-    // Assert
-    verify(money2).add(isA(Money.class));
-    verify(money).greaterThan(isA(Money.class));
-    verify(money2, atLeast(1)).greaterThan(Mockito.<Money>any());
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
-    verify(paymentTransactionImpl, atLeast(1)).getSuccess();
-    assertTrue(actualDeterminePartiallyCompleteResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
-   * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePartiallyComplete(OrderPayment)"})
-  public void testDeterminePartiallyComplete_thenCallsGetSuccess2() {
-    // Arrange
-    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
-    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
-
-    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
-    paymentTransactionList.add(paymentTransactionImpl);
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
     Money money2 = mock(Money.class);
     when(money2.greaterThan(Mockito.<Money>any())).thenReturn(false);
     when(money2.add(Mockito.<Money>any())).thenReturn(money);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money2);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money2);
 
     // Act
-    boolean actualDeterminePartiallyCompleteResult = orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
+    boolean actualDeterminePartiallyCompleteResult =
+        orderPaymentStatusServiceImpl.determinePartiallyComplete(payment);
 
     // Assert
     verify(money2).add(isA(Money.class));
     verify(money).greaterThan(isA(Money.class));
     verify(money2, atLeast(1)).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     verify(paymentTransactionImpl, atLeast(1)).getSuccess();
     assertFalse(actualDeterminePartiallyCompleteResult);
@@ -922,126 +1454,196 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenArrayListAddPaymentTransactionImpl() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
-
-    // Act
-    boolean actualDetermineFullyCapturedResult = orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
-
-    // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
-    assertTrue(actualDetermineFullyCapturedResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
-   *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
-  public void testDetermineFullyCaptured_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
-    // Arrange
-    Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
-
-    // Act
-    boolean actualDetermineFullyCapturedResult = orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
-
-    // Assert
-    verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
-    assertTrue(actualDetermineFullyCapturedResult);
-  }
-
-  /**
-   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
-  public void testDetermineFullyCaptured_givenMoneyWithAmountIsTen() {
-    // Arrange
-    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
-        .thenReturn(new Money(10.0d));
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDetermineFullyCapturedResult = orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertTrue(actualDetermineFullyCapturedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
-  public void testDetermineFullyCaptured_givenMoney_thenReturnFalse() {
+  public void testDetermineFullyCaptured_givenMoney() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDetermineFullyCapturedResult = orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertFalse(actualDetermineFullyCapturedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
+  public void testDetermineFullyCaptured_givenMoneyGreaterThanReturnFalse_thenCallsGreaterThan() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+
+    // Assert
+    verify(money).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    assertFalse(actualDetermineFullyCapturedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
+  public void testDetermineFullyCaptured_givenMoneyGreaterThanReturnTrue_thenReturnTrue() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+
+    // Assert
+    verify(money).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    assertTrue(actualDetermineFullyCapturedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
+  public void testDetermineFullyCaptured_givenMoneyWithAmountIsTen() {
+    // Arrange
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money(10.0d));
+
+    // Act
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+
+    // Assert
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
+    assertTrue(actualDetermineFullyCapturedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_givenNullOrderImpl() {
     // Arrange
@@ -1054,14 +1656,17 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   *
+   * <p>Method under test: {@link
+   * OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineFullyCaptured(OrderPayment)"})
   public void testDetermineFullyCaptured_thenCallsGetSuccess() {
     // Arrange
@@ -1070,144 +1675,215 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
+
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    boolean actualDetermineFullyCapturedResult = orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
+    boolean actualDetermineFullyCapturedResult =
+        orderPaymentStatusServiceImpl.determineFullyCaptured(payment);
 
     // Assert
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     verify(paymentTransactionImpl).getSuccess();
-    assertTrue(actualDetermineFullyCapturedResult);
+    assertFalse(actualDetermineFullyCapturedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenArrayListAddPaymentTransactionImpl() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDetermineAuthorizedResult = orderPaymentStatusServiceImpl.determineAuthorized(payment);
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertFalse(actualDetermineAuthorizedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Given {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoney() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
-    boolean actualDetermineAuthorizedResult = orderPaymentStatusServiceImpl.determineAuthorized(payment);
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDetermineAuthorizedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
-   *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
+  public void testDetermineAuthorized_givenMoneyGreaterThanReturnFalse_thenCallsGreaterThan() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
+
+    // Assert
+    verify(money).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertFalse(actualDetermineAuthorizedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
     // Arrange
     Money money = mock(Money.class);
     when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    boolean actualDetermineAuthorizedResult = orderPaymentStatusServiceImpl.determineAuthorized(payment);
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
 
     // Assert
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertFalse(actualDetermineAuthorizedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenMoneyWithAmountIsTen() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money(10.0d));
 
     // Act
-    boolean actualDetermineAuthorizedResult = orderPaymentStatusServiceImpl.determineAuthorized(payment);
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     assertFalse(actualDetermineAuthorizedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_givenNullOrderImpl() {
     // Arrange
@@ -1220,14 +1896,16 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineAuthorized(OrderPayment)"})
   public void testDetermineAuthorized_thenCallsGetSuccess() {
     // Arrange
@@ -1236,122 +1914,185 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
+
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
-    boolean actualDetermineAuthorizedResult = orderPaymentStatusServiceImpl.determineAuthorized(payment);
+    boolean actualDetermineAuthorizedResult =
+        orderPaymentStatusServiceImpl.determineAuthorized(payment);
 
     // Assert
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
-    verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
-    verify(paymentTransactionImpl).getSuccess();
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    verify(paymentTransactionImpl, atLeast(1)).getSuccess();
     assertFalse(actualDetermineAuthorizedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenArrayListAddPaymentTransactionImpl() {
     // Arrange
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(new PaymentTransactionImpl());
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
     boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(isA(PaymentTransactionType.class));
     assertFalse(actualDeterminePendingResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
+   *   <li>Given {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenMoney() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(new Money());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
 
     // Act
     boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePendingResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.</li>
-   *   <li>Then calls {@link Money#greaterThan(Money)}.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code false}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
-  public void testDeterminePending_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
+  public void testDeterminePending_givenMoneyGreaterThanReturnFalse_thenCallsGreaterThan() {
     // Arrange
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
     boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
 
     // Assert
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePendingResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link Money} {@link Money#greaterThan(Money)} return {@code true}.
+   *   <li>Then calls {@link Money#greaterThan(Money)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
+  public void testDeterminePending_givenMoneyGreaterThanReturnTrue_thenCallsGreaterThan() {
+    // Arrange
+    Money money = mock(Money.class);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
+
+    // Act
+    boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
+
+    // Assert
+    verify(money).greaterThan(isA(Money.class));
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertFalse(actualDeterminePendingResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link Money#Money(double)} with amount is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenMoneyWithAmountIsTen() {
     // Arrange
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new ArrayList<>());
     when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
         .thenReturn(new Money(10.0d));
 
@@ -1359,22 +2100,26 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
     boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
 
     // Assert
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     assertFalse(actualDeterminePendingResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link NullOrderImpl} (default constructor).</li>
-   *   <li>When {@link OrderPaymentImpl} (default constructor) Order is {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link NullOrderImpl} (default constructor).
+   *   <li>When {@link OrderPaymentImpl} (default constructor) Order is {@link NullOrderImpl}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_givenNullOrderImpl_whenOrderPaymentImplOrderIsNullOrderImpl() {
     // Arrange
@@ -1387,14 +2132,16 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.</li>
+   *   <li>Then calls {@link PaymentTransactionImpl#getSuccess()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determinePending(OrderPayment)"})
   public void testDeterminePending_thenCallsGetSuccess() {
     // Arrange
@@ -1403,18 +2150,23 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
     ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
     paymentTransactionList.add(paymentTransactionImpl);
+
     Money money = mock(Money.class);
-    when(money.greaterThan(Mockito.<Money>any())).thenReturn(true);
+    when(money.greaterThan(Mockito.<Money>any())).thenReturn(false);
+
     OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
-    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(paymentTransactionList);
-    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any())).thenReturn(money);
+    when(payment.getTransactionsForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(paymentTransactionList);
+    when(payment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(money);
 
     // Act
     boolean actualDeterminePendingResult = orderPaymentStatusServiceImpl.determinePending(payment);
 
     // Assert
     verify(money).greaterThan(isA(Money.class));
-    verify(payment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(payment, atLeast(1))
+        .getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     verify(paymentTransactionImpl, atLeast(1)).getSuccess();
     assertFalse(actualDeterminePendingResult);
@@ -1422,123 +2174,240 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed() {
     // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
-    when(transaction.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType())
+        .thenReturn(new PaymentTransactionType("Type", "Friendly Type"));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
+    transactions.add(paymentTransactionImpl);
 
     OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setTransactions(transactions);
 
     // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+    boolean actualDetermineUnconfirmedResult =
+        orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed2() {
     // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(mock(PaymentTransactionType.class));
-    when(transaction.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType()).thenReturn(new PaymentTransactionType());
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
+    transactions.add(paymentTransactionImpl);
 
     OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setTransactions(transactions);
 
     // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+    boolean actualDetermineUnconfirmedResult =
+        orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <ul>
-   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
-  public void testDetermineUnconfirmed_givenPaymentTransactionImplGetSuccessReturnFalse() {
+  public void testDetermineUnconfirmed3() {
     // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getSuccess()).thenReturn(false);
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType()).thenReturn(mock(PaymentTransactionType.class));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
+    transactions.add(paymentTransactionImpl);
 
     OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setTransactions(transactions);
 
     // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+    boolean actualDetermineUnconfirmedResult =
+        orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(transaction).getSuccess();
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
-  public void testDetermineUnconfirmed_thenReturnTrue() {
+  public void testDetermineUnconfirmed4() {
     // Arrange
-    PaymentTransactionImpl transaction = mock(PaymentTransactionImpl.class);
-    when(transaction.getType()).thenReturn(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
-    when(transaction.getSuccess()).thenReturn(true);
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getType())
+        .thenReturn(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
+    when(paymentTransactionImpl.getSuccess()).thenReturn(true);
+
+    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
+    transactions.add(paymentTransactionImpl);
 
     OrderPaymentImpl payment = new OrderPaymentImpl();
-    payment.addTransaction(transaction);
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setTransactions(transactions);
 
     // Act
-    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+    boolean actualDetermineUnconfirmedResult =
+        orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
 
     // Assert
-    verify(transaction).getSuccess();
-    verify(transaction).getType();
+    verify(paymentTransactionImpl).getSuccess();
+    verify(paymentTransactionImpl).getType();
     assertTrue(actualDetermineUnconfirmedResult);
   }
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   *
    * <ul>
-   *   <li>When {@link OrderPaymentImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OrderPaymentStatusServiceImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
+  public void testDetermineUnconfirmed_givenOrderPaymentStatusServiceImpl() {
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl =
+        new OrderPaymentStatusServiceImpl();
+
+    PaymentTransactionImpl transaction = new PaymentTransactionImpl();
+    transaction.setType(new PaymentTransactionType("UNCONFIRMED", "Friendly Type"));
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.addTransaction(transaction);
+
+    // Act and Assert
+    assertTrue(orderPaymentStatusServiceImpl.determineUnconfirmed(payment));
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>Given {@link PaymentTransactionImpl} {@link PaymentTransactionImpl#getSuccess()} return
+   *       {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
+  public void testDetermineUnconfirmed_givenPaymentTransactionImplGetSuccessReturnFalse() {
+    // Arrange
+    PaymentTransactionImpl paymentTransactionImpl = mock(PaymentTransactionImpl.class);
+    when(paymentTransactionImpl.getSuccess()).thenReturn(false);
+
+    ArrayList<PaymentTransaction> transactions = new ArrayList<>();
+    transactions.add(paymentTransactionImpl);
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+    payment.setAmount(new Money());
+    payment.setBillingAddress(new AddressImpl());
+    payment.setId(1L);
+    payment.setOrder(new NullOrderImpl());
+    payment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    payment.setReferenceNumber("42");
+    payment.setType(new PaymentType("Type", "Friendly Type"));
+    payment.setTransactions(transactions);
+
+    // Act
+    boolean actualDetermineUnconfirmedResult =
+        orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+
+    // Assert
+    verify(paymentTransactionImpl).getSuccess();
+    assertFalse(actualDetermineUnconfirmedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   *
+   * <ul>
+   *   <li>When {@link OrderPaymentImpl} (default constructor).
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderPaymentStatusServiceImpl.determineUnconfirmed(OrderPayment)"})
   public void testDetermineUnconfirmed_whenOrderPaymentImpl_thenReturnFalse() {
     // Arrange, Act and Assert

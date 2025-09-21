@@ -18,21 +18,24 @@
 package org.broadleafcommerce.common.money;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.Currency;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.mvel2.util.InternalNumber;
 
 public class BankersRoundingDiffblueTest {
   /**
    * Test {@link BankersRounding#getScaleForCurrency(Currency)}.
-   * <p>
-   * Method under test: {@link BankersRounding#getScaleForCurrency(Currency)}
+   *
+   * <p>Method under test: {@link BankersRounding#getScaleForCurrency(Currency)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int BankersRounding.getScaleForCurrency(Currency)"})
   public void testGetScaleForCurrency() {
     // Arrange, Act and Assert
@@ -41,15 +44,38 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(BigDecimal, int)} with {@code BigDecimal}, {@code int}.
+   *
    * <ul>
-   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.300}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.setScale(BigDecimal, int)"})
+  public void testSetScaleWithBigDecimalInt_thenReturnBigDecimalWith10000() {
+    // Arrange and Act
+    BigDecimal actualSetScaleResult = BankersRounding.setScale(new InternalNumber(10.0d), 3);
+
+    // Assert
+    assertEquals(new BigDecimal("10.000"), actualSetScaleResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#setScale(BigDecimal, int)} with {@code BigDecimal}, {@code int}.
+   *
+   * <ul>
+   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 2.300}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(BigDecimal, int)"})
   public void testSetScaleWithBigDecimalInt_whenBigDecimalWith23_thenReturnBigDecimalWith2300() {
     // Arrange and Act
@@ -61,15 +87,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(BigDecimal, int)} with {@code BigDecimal}, {@code int}.
+   *
    * <ul>
-   *   <li>When valueOf six.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 6.000}.</li>
+   *   <li>When valueOf six.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 6.000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(BigDecimal, int)"})
   public void testSetScaleWithBigDecimalInt_whenValueOfSix_thenReturnBigDecimalWith6000() {
     // Arrange and Act
@@ -81,15 +109,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(BigDecimal, int)} with {@code BigDecimal}, {@code int}.
+   *
    * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000}.</li>
+   *   <li>When {@link BankersRounding#ZERO}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(BigDecimal, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(BigDecimal, int)"})
   public void testSetScaleWithBigDecimalInt_whenZero_thenReturnBigDecimalWith0000() {
     // Arrange and Act
@@ -101,15 +131,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(BigDecimal)} with {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When {@link BankersRounding#ZERO}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link BankersRounding#ZERO}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(BigDecimal)"})
   public void testSetScaleWithBigDecimal_whenZero_thenReturnBigDecimalWith000() {
     // Arrange and Act
@@ -121,15 +153,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(double)} with {@code double}.
+   *
    * <ul>
-   *   <li>When ten.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.00}.</li>
+   *   <li>When ten.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(double)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(double)"})
   public void testSetScaleWithDouble_whenTen_thenReturnBigDecimalWith1000() {
     // Arrange and Act
@@ -141,15 +175,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, BigDecimal)} with {@code int}, {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.0}.</li>
+   *   <li>When one.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.0}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, BigDecimal)"})
   public void testSetScaleWithIntBigDecimal_whenOne_thenReturnBigDecimalWith00() {
     // Arrange and Act
@@ -161,15 +197,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, BigDecimal)} with {@code int}, {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When six.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000000}.</li>
+   *   <li>When six.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, BigDecimal)"})
   public void testSetScaleWithIntBigDecimal_whenSix_thenReturnBigDecimalWith0000000() {
     // Arrange and Act
@@ -181,15 +219,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, BigDecimal)} with {@code int}, {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When three.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000}.</li>
+   *   <li>When three.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, BigDecimal)"})
   public void testSetScaleWithIntBigDecimal_whenThree_thenReturnBigDecimalWith0000() {
     // Arrange and Act
@@ -201,15 +241,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, BigDecimal)} with {@code int}, {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When zero.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0}.</li>
+   *   <li>When zero.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, BigDecimal)"})
   public void testSetScaleWithIntBigDecimal_whenZero_thenReturnBigDecimalWith0() {
     // Arrange and Act
@@ -221,15 +263,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, double)} with {@code int}, {@code double}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.0}.</li>
+   *   <li>When one.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.0}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, double)"})
   public void testSetScaleWithIntDouble_whenOne_thenReturnBigDecimalWith100() {
     // Arrange and Act
@@ -241,15 +285,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, double)} with {@code int}, {@code double}.
+   *
    * <ul>
-   *   <li>When six.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.000000}.</li>
+   *   <li>When six.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.000000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, double)"})
   public void testSetScaleWithIntDouble_whenSix_thenReturnBigDecimalWith10000000() {
     // Arrange and Act
@@ -261,15 +307,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, double)} with {@code int}, {@code double}.
+   *
    * <ul>
-   *   <li>When three.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.000}.</li>
+   *   <li>When three.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10.000}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, double)"})
   public void testSetScaleWithIntDouble_whenThree_thenReturnBigDecimalWith10000() {
     // Arrange and Act
@@ -281,15 +329,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#setScale(int, double)} with {@code int}, {@code double}.
+   *
    * <ul>
-   *   <li>When zero.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10}.</li>
+   *   <li>When zero.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 10}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#setScale(int, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#setScale(int, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.setScale(int, double)"})
   public void testSetScaleWithIntDouble_whenZero_thenReturnBigDecimalWith10() {
     // Arrange and Act
@@ -301,15 +351,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#multiply(int, double, double)}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return one hundred.</li>
+   *   <li>When one.
+   *   <li>Then return one hundred.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#multiply(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#multiply(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.multiply(int, double, double)"})
   public void testMultiply_whenOne_thenReturnOneHundred() {
     // Arrange, Act and Assert
@@ -318,15 +370,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#multiply(int, double, double)}.
+   *
    * <ul>
-   *   <li>When six.</li>
-   *   <li>Then return one hundred.</li>
+   *   <li>When six.
+   *   <li>Then return one hundred.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#multiply(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#multiply(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.multiply(int, double, double)"})
   public void testMultiply_whenSix_thenReturnOneHundred() {
     // Arrange, Act and Assert
@@ -335,15 +389,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#multiply(int, double, double)}.
+   *
    * <ul>
-   *   <li>When three.</li>
-   *   <li>Then return one hundred.</li>
+   *   <li>When three.
+   *   <li>Then return one hundred.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#multiply(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#multiply(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.multiply(int, double, double)"})
   public void testMultiply_whenThree_thenReturnOneHundred() {
     // Arrange, Act and Assert
@@ -352,15 +408,17 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#multiply(int, double, double)}.
+   *
    * <ul>
-   *   <li>When zero.</li>
-   *   <li>Then return one hundred.</li>
+   *   <li>When zero.
+   *   <li>Then return one hundred.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#multiply(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#multiply(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.multiply(int, double, double)"})
   public void testMultiply_whenZero_thenReturnOneHundred() {
     // Arrange, Act and Assert
@@ -368,54 +426,207 @@ public class BankersRoundingDiffblueTest {
   }
 
   /**
-   * Test {@link BankersRounding#divide(BigDecimal, BigDecimal)} with {@code BigDecimal}, {@code BigDecimal}.
+   * Test {@link BankersRounding#divide(BigDecimal, BigDecimal)} with {@code BigDecimal}, {@code
+   * BigDecimal}.
+   *
    * <ul>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(BigDecimal, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(BigDecimal, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.divide(BigDecimal, BigDecimal)"})
   public void testDivideWithBigDecimalBigDecimal_thenReturnBigDecimalWith000() {
     // Arrange and Act
-    BigDecimal actualDivideResult = BankersRounding.divide(BankersRounding.ZERO, new BigDecimal("2.3"));
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(BankersRounding.ZERO, new BigDecimal("2.3"));
 
     // Assert
     assertEquals(new BigDecimal("0.00"), actualDivideResult);
   }
 
   /**
-   * Test {@link BankersRounding#divide(int, BigDecimal, BigDecimal)} with {@code int}, {@code BigDecimal}, {@code BigDecimal}.
+   * Test {@link BankersRounding#divide(BigDecimal, BigDecimal)} with {@code BigDecimal}, {@code
+   * BigDecimal}.
+   *
    * <ul>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000}.</li>
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 1.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(int, BigDecimal, BigDecimal)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(BigDecimal, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"BigDecimal BankersRounding.divide(int, BigDecimal, BigDecimal)"})
-  public void testDivideWithIntBigDecimalBigDecimal_thenReturnBigDecimalWith0000() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(BigDecimal, BigDecimal)"})
+  public void testDivideWithBigDecimalBigDecimal_thenReturnBigDecimalWith100() {
+    // Arrange
+    BigDecimal dividend = new BigDecimal("2.3");
+
+    // Act
+    BigDecimal actualDivideResult = BankersRounding.divide(dividend, new BigDecimal("2.3"));
+
+    // Assert
+    assertEquals(new BigDecimal("1.00"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(BigDecimal, BigDecimal)} with {@code BigDecimal}, {@code
+   * BigDecimal}.
+   *
+   * <ul>
+   *   <li>When {@link InternalNumber#InternalNumber(double)} with v is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(BigDecimal, BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(BigDecimal, BigDecimal)"})
+  public void testDivideWithBigDecimalBigDecimal_whenInternalNumberWithVIsTen() {
     // Arrange and Act
-    BigDecimal actualDivideResult = BankersRounding.divide(3, BankersRounding.ZERO, new BigDecimal("2.3"));
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(BankersRounding.ZERO, new InternalNumber(10.0d));
+
+    // Assert
+    assertEquals(new BigDecimal("0.00"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(BigDecimal, BigDecimal)} with {@code BigDecimal}, {@code
+   * BigDecimal}.
+   *
+   * <ul>
+   *   <li>When valueOf two.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(BigDecimal, BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(BigDecimal, BigDecimal)"})
+  public void testDivideWithBigDecimalBigDecimal_whenValueOfTwo_thenReturnBigDecimalWith000() {
+    // Arrange and Act
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(BankersRounding.ZERO, BigDecimal.valueOf(2L));
+
+    // Assert
+    assertEquals(new BigDecimal("0.00"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(int, BigDecimal, BigDecimal)} with {@code int}, {@code
+   * BigDecimal}, {@code BigDecimal}.
+   *
+   * <ul>
+   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, BigDecimal, BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(int, BigDecimal, BigDecimal)"})
+  public void testDivideWithIntBigDecimalBigDecimal_whenBigDecimalWith23() {
+    // Arrange and Act
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(3, BankersRounding.ZERO, new BigDecimal("2.3"));
 
     // Assert
     assertEquals(new BigDecimal("0.000"), actualDivideResult);
   }
 
   /**
-   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double}, {@code double}.
+   * Test {@link BankersRounding#divide(int, BigDecimal, BigDecimal)} with {@code int}, {@code
+   * BigDecimal}, {@code BigDecimal}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return one.</li>
+   *   <li>When {@link InternalNumber#InternalNumber(double)} with v is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, BigDecimal, BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(int, BigDecimal, BigDecimal)"})
+  public void testDivideWithIntBigDecimalBigDecimal_whenInternalNumberWithVIsTen() {
+    // Arrange and Act
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(3, BankersRounding.ZERO, new InternalNumber(10.0d));
+
+    // Assert
+    assertEquals(new BigDecimal("0.000"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(int, BigDecimal, BigDecimal)} with {@code int}, {@code
+   * BigDecimal}, {@code BigDecimal}.
+   *
+   * <ul>
+   *   <li>When six.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.000000}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, BigDecimal, BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(int, BigDecimal, BigDecimal)"})
+  public void testDivideWithIntBigDecimalBigDecimal_whenSix_thenReturnBigDecimalWith0000000() {
+    // Arrange and Act
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(6, BankersRounding.ZERO, new BigDecimal("2.3"));
+
+    // Assert
+    assertEquals(new BigDecimal("0.000000"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(int, BigDecimal, BigDecimal)} with {@code int}, {@code
+   * BigDecimal}, {@code BigDecimal}.
+   *
+   * <ul>
+   *   <li>When valueOf six.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, BigDecimal, BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal BankersRounding.divide(int, BigDecimal, BigDecimal)"})
+  public void testDivideWithIntBigDecimalBigDecimal_whenValueOfSix() {
+    // Arrange and Act
+    BigDecimal actualDivideResult =
+        BankersRounding.divide(3, BankersRounding.ZERO, BigDecimal.valueOf(6L));
+
+    // Assert
+    assertEquals(new BigDecimal("0.000"), actualDivideResult);
+  }
+
+  /**
+   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double},
+   * {@code double}.
+   *
+   * <ul>
+   *   <li>When one.
+   *   <li>Then return one.
+   * </ul>
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, double, double)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.divide(int, double, double)"})
   public void testDivideWithIntDoubleDouble_whenOne_thenReturnOne() {
     // Arrange, Act and Assert
@@ -423,16 +634,19 @@ public class BankersRoundingDiffblueTest {
   }
 
   /**
-   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double}, {@code double}.
+   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double},
+   * {@code double}.
+   *
    * <ul>
-   *   <li>When six.</li>
-   *   <li>Then return one.</li>
+   *   <li>When six.
+   *   <li>Then return one.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.divide(int, double, double)"})
   public void testDivideWithIntDoubleDouble_whenSix_thenReturnOne() {
     // Arrange, Act and Assert
@@ -440,16 +654,19 @@ public class BankersRoundingDiffblueTest {
   }
 
   /**
-   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double}, {@code double}.
+   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double},
+   * {@code double}.
+   *
    * <ul>
-   *   <li>When three.</li>
-   *   <li>Then return one.</li>
+   *   <li>When three.
+   *   <li>Then return one.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.divide(int, double, double)"})
   public void testDivideWithIntDoubleDouble_whenThree_thenReturnOne() {
     // Arrange, Act and Assert
@@ -457,16 +674,19 @@ public class BankersRoundingDiffblueTest {
   }
 
   /**
-   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double}, {@code double}.
+   * Test {@link BankersRounding#divide(int, double, double)} with {@code int}, {@code double},
+   * {@code double}.
+   *
    * <ul>
-   *   <li>When two.</li>
-   *   <li>Then return one.</li>
+   *   <li>When two.
+   *   <li>Then return one.
    * </ul>
-   * <p>
-   * Method under test: {@link BankersRounding#divide(int, double, double)}
+   *
+   * <p>Method under test: {@link BankersRounding#divide(int, double, double)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"double BankersRounding.divide(int, double, double)"})
   public void testDivideWithIntDoubleDouble_whenTwo_thenReturnOne() {
     // Arrange, Act and Assert
@@ -475,11 +695,12 @@ public class BankersRoundingDiffblueTest {
 
   /**
    * Test {@link BankersRounding#zeroAmount()}.
-   * <p>
-   * Method under test: {@link BankersRounding#zeroAmount()}
+   *
+   * <p>Method under test: {@link BankersRounding#zeroAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal BankersRounding.zeroAmount()"})
   public void testZeroAmount() {
     // Arrange and Act

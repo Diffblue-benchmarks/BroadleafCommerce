@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.email.service.message;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,39 +38,40 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NullMessageCreator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullMessageCreatorDiffblueTest {
-  @MockBean
-  private JavaMailSender javaMailSender;
+  @MockBean private JavaMailSender javaMailSender;
 
-  @Autowired
-  private NullMessageCreator nullMessageCreator;
+  @Autowired private NullMessageCreator nullMessageCreator;
 
   /**
    * Test {@link NullMessageCreator#NullMessageCreator(JavaMailSender)}.
-   * <p>
-   * Method under test: {@link NullMessageCreator#NullMessageCreator(JavaMailSender)}
+   *
+   * <p>Method under test: {@link NullMessageCreator#NullMessageCreator(JavaMailSender)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void NullMessageCreator.<init>(JavaMailSender)"})
   public void testNewNullMessageCreator() {
     // Arrange
     LoggingMailSender mailSender = new LoggingMailSender();
 
     // Act and Assert
-    assertSame(mailSender, (new NullMessageCreator(mailSender)).getMailSender());
+    assertSame(mailSender, new NullMessageCreator(mailSender).getMailSender());
   }
 
   /**
    * Test {@link NullMessageCreator#buildMessageBody(EmailInfo, Map)}.
+   *
    * <ul>
-   *   <li>When {@link EmailInfo} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link EmailInfo} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullMessageCreator#buildMessageBody(EmailInfo, Map)}
+   *
+   * <p>Method under test: {@link NullMessageCreator#buildMessageBody(EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String NullMessageCreator.buildMessageBody(EmailInfo, Map)"})
   public void testBuildMessageBody_whenEmailInfo_thenReturnNull() {
     // Arrange

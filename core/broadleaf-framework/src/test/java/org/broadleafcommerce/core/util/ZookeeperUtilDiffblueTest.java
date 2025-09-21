@@ -21,176 +21,117 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.List;
-import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.KeeperException.NoNodeException;
 import org.apache.zookeeper.Op;
-import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 
 public class ZookeeperUtilDiffblueTest {
   /**
-   * Test {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper, CreateMode, List)} with {@code path}, {@code data}, {@code zk}, {@code createMode}, {@code acls}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link ZooKeeper#exists(String, boolean)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper, CreateMode, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, byte[], ZooKeeper, CreateMode, List)"})
-  public void testMakePathWithPathDataZkCreateModeAcls_givenArrayList_thenCallsExists()
-      throws UnsupportedEncodingException, InterruptedException, KeeperException {
-    // Arrange
-    byte[] data = "AXAXAXAX".getBytes("UTF-8");
-    ZooKeeper zk = mock(ZooKeeper.class);
-    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
-    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(new Stat(1L, 1L, 10L, 10L, 1, 1, 1, 1L, 3, 10, 1L));
-
-    // Act
-    ZookeeperUtil.makePath("Path", data, zk, CreateMode.PERSISTENT, new ArrayList<>());
-
-    // Assert
-    verify(zk).exists(eq("/Path"), eq(false));
-    verify(zk).multi(isA(Iterable.class));
-  }
-
-  /**
-   * Test {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper, CreateMode)} with {@code path}, {@code data}, {@code zk}, {@code createMode}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link ZooKeeper#exists(String, boolean)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper, CreateMode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, byte[], ZooKeeper, CreateMode)"})
-  public void testMakePathWithPathDataZkCreateMode_givenArrayList_thenCallsExists()
-      throws UnsupportedEncodingException, InterruptedException, KeeperException {
-    // Arrange
-    byte[] data = "AXAXAXAX".getBytes("UTF-8");
-    ZooKeeper zk = mock(ZooKeeper.class);
-    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
-    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(new Stat(1L, 1L, 10L, 10L, 1, 1, 1, 1L, 3, 10, 1L));
-
-    // Act
-    ZookeeperUtil.makePath("Path", data, zk, CreateMode.PERSISTENT);
-
-    // Assert
-    verify(zk).exists(eq("/Path"), eq(false));
-    verify(zk).multi(isA(Iterable.class));
-  }
-
-  /**
-   * Test {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper)} with {@code path}, {@code data}, {@code zk}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls {@link ZooKeeper#exists(String, boolean)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ZookeeperUtil#makePath(String, byte[], ZooKeeper)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, byte[], ZooKeeper)"})
-  public void testMakePathWithPathDataZk_givenArrayList_thenCallsExists()
-      throws UnsupportedEncodingException, InterruptedException, KeeperException {
-    // Arrange
-    byte[] data = "AXAXAXAX".getBytes("UTF-8");
-    ZooKeeper zk = mock(ZooKeeper.class);
-    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
-    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(new Stat(1L, 1L, 10L, 10L, 1, 1, 1, 1L, 3, 10, 1L));
-
-    // Act
-    ZookeeperUtil.makePath("Path", data, zk);
-
-    // Assert
-    verify(zk).exists(eq("/Path"), eq(false));
-    verify(zk).multi(isA(Iterable.class));
-  }
-
-  /**
    * Test {@link ZookeeperUtil#makePath(String, ZooKeeper)} with {@code path}, {@code zk}.
-   * <p>
-   * Method under test: {@link ZookeeperUtil#makePath(String, ZooKeeper)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, ZooKeeper)"})
-  public void testMakePathWithPathZk() throws InterruptedException, KeeperException {
-    // Arrange
-    ZooKeeper zk = mock(ZooKeeper.class);
-    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
-    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(new Stat(1L, 1L, 10L, 10L, 1, 1, 1, 1L, 3, 10, 1L));
-
-    // Act
-    ZookeeperUtil.makePath("Path", zk);
-
-    // Assert
-    verify(zk).exists(eq("/Path"), eq(false));
-    verify(zk).multi(isA(Iterable.class));
-  }
-
-  /**
-   * Test {@link ZookeeperUtil#makePath(String, ZooKeeper)} with {@code path}, {@code zk}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link ZooKeeper} {@link ZooKeeper#exists(String, boolean)} return {@code null}.</li>
-   *   <li>Then calls {@link ZooKeeper#exists(String, boolean)}.</li>
+   *   <li>Given {@link NoNodeException#NoNodeException()}.
+   *   <li>Then throw {@link NoNodeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ZookeeperUtil#makePath(String, ZooKeeper)}
+   *
+   * <p>Method under test: {@link ZookeeperUtil#makePath(String, ZooKeeper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ZookeeperUtil.makePath(String, ZooKeeper)"})
-  public void testMakePathWithPathZk_givenNull_whenZooKeeperExistsReturnNull_thenCallsExists()
+  public void testMakePathWithPathZk_givenNoNodeException_thenThrowNoNodeException()
       throws InterruptedException, KeeperException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
     // Arrange
     ZooKeeper zk = mock(ZooKeeper.class);
-    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
+    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenThrow(new NoNodeException());
+
+    // Act and Assert
+    assertThrows(NoNodeException.class, () -> ZookeeperUtil.makePath("/", zk));
+    verify(zk).exists("/", false);
+  }
+
+  /**
+   * Test {@link ZookeeperUtil#makePath(String, ZooKeeper)} with {@code path}, {@code zk}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   *   <li>When {@code foo/bar}.
+   *   <li>Then calls {@link ZooKeeper#multi(Iterable)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ZookeeperUtil#makePath(String, ZooKeeper)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, ZooKeeper)"})
+  public void testMakePathWithPathZk_givenNull_whenFooBar_thenCallsMulti()
+      throws InterruptedException, KeeperException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ZooKeeper zk = mock(ZooKeeper.class);
     when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(null);
+    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
 
     // Act
-    ZookeeperUtil.makePath("Path", zk);
+    ZookeeperUtil.makePath("foo/bar", zk);
 
     // Assert
-    verify(zk).exists(eq("/Path"), eq(false));
+    verify(zk, atLeast(1)).exists(Mockito.<String>any(), eq(false));
     verify(zk).multi(isA(Iterable.class));
   }
 
   /**
-   * Test {@link ZookeeperUtil#exists(String, ZooKeeper)}.
+   * Test {@link ZookeeperUtil#makePath(String, ZooKeeper)} with {@code path}, {@code zk}.
+   *
    * <ul>
-   *   <li>When {@code Path}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@code null}.
+   *   <li>When {@link ZooKeeper} {@link ZooKeeper#exists(String, boolean)} return {@code null}.
+   *   <li>Then calls {@link ZooKeeper#multi(Iterable)}.
    * </ul>
-   * <p>
-   * Method under test: {@link ZookeeperUtil#exists(String, ZooKeeper)}
+   *
+   * <p>Method under test: {@link ZookeeperUtil#makePath(String, ZooKeeper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ZookeeperUtil.exists(String, ZooKeeper)"})
-  public void testExists_whenPath_thenThrowRuntimeException()
-      throws IOException, InterruptedException, KeeperException {
-    // Arrange, Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> ZookeeperUtil.exists("Path", new ZooKeeper("Connect String", 10, mock(Watcher.class))));
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ZookeeperUtil.makePath(String, ZooKeeper)"})
+  public void testMakePathWithPathZk_givenNull_whenZooKeeperExistsReturnNull_thenCallsMulti()
+      throws InterruptedException, KeeperException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+    //   Run dcover create --keep-partial-tests to gain insights into why
+    //   a non-Spring test was created.
+
+    // Arrange
+    ZooKeeper zk = mock(ZooKeeper.class);
+    when(zk.exists(Mockito.<String>any(), anyBoolean())).thenReturn(null);
+    when(zk.multi(Mockito.<Iterable<Op>>any())).thenReturn(new ArrayList<>());
+
+    // Act
+    ZookeeperUtil.makePath("/", zk);
+
+    // Assert
+    verify(zk).exists("/", false);
+    verify(zk).multi(isA(Iterable.class));
   }
 }

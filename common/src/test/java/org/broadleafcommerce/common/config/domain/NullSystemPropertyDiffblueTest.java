@@ -20,9 +20,11 @@ package org.broadleafcommerce.common.config.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.config.service.type.SystemPropertyFieldType;
+import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
@@ -34,13 +36,16 @@ import org.junit.experimental.categories.Category;
 public class NullSystemPropertyDiffblueTest {
   /**
    * Test {@link NullSystemProperty#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link NullSystemProperty#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * NullSystemProperty#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.common.copy.CreateResponse NullSystemProperty.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse NullSystemProperty.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     NullSystemProperty nullSystemProperty = new NullSystemProperty();
@@ -50,27 +55,45 @@ public class NullSystemPropertyDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
-    // Act and Assert
-    assertNull(nullSystemProperty.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog,
-        fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager())));
+    MultiTenantCopyContext context =
+        new MultiTenantCopyContext(
+            fromCatalog,
+            toCatalog,
+            fromSite,
+            toSite,
+            genericEntityService,
+            new MultiTenantCopierExtensionManager());
+
+    // Act
+    CreateResponse<SystemProperty> actualCreateOrRetrieveCopyInstanceResult =
+        nullSystemProperty.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    assertNull(actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test {@link NullSystemProperty#equals(Object)}, and {@link NullSystemProperty#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link NullSystemProperty#equals(Object)}
    *   <li>{@link NullSystemProperty#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean NullSystemProperty.equals(Object)", "int NullSystemProperty.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean NullSystemProperty.equals(Object)",
+    "int NullSystemProperty.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     NullSystemProperty nullSystemProperty = new NullSystemProperty();
@@ -78,26 +101,31 @@ public class NullSystemPropertyDiffblueTest {
 
     // Act and Assert
     assertEquals(nullSystemProperty, nullSystemProperty2);
-    int expectedHashCodeResult = nullSystemProperty.hashCode();
-    assertEquals(expectedHashCodeResult, nullSystemProperty2.hashCode());
+    assertEquals(nullSystemProperty.hashCode(), nullSystemProperty2.hashCode());
   }
 
   /**
    * Test {@link NullSystemProperty#equals(Object)}, and {@link NullSystemProperty#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link NullSystemProperty#equals(Object)}
    *   <li>{@link NullSystemProperty#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean NullSystemProperty.equals(Object)", "int NullSystemProperty.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean NullSystemProperty.equals(Object)",
+    "int NullSystemProperty.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     NullSystemProperty nullSystemProperty = new NullSystemProperty();
@@ -110,16 +138,21 @@ public class NullSystemPropertyDiffblueTest {
 
   /**
    * Test {@link NullSystemProperty#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link NullSystemProperty#equals(Object)}
+   *
+   * <p>Method under test: {@link NullSystemProperty#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean NullSystemProperty.equals(Object)", "int NullSystemProperty.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean NullSystemProperty.equals(Object)",
+    "int NullSystemProperty.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new NullSystemProperty(), 3);
@@ -127,16 +160,21 @@ public class NullSystemPropertyDiffblueTest {
 
   /**
    * Test {@link NullSystemProperty#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link NullSystemProperty#equals(Object)}
+   *
+   * <p>Method under test: {@link NullSystemProperty#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean NullSystemProperty.equals(Object)", "int NullSystemProperty.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean NullSystemProperty.equals(Object)",
+    "int NullSystemProperty.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new NullSystemProperty(), null);
@@ -144,16 +182,21 @@ public class NullSystemPropertyDiffblueTest {
 
   /**
    * Test {@link NullSystemProperty#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link NullSystemProperty#equals(Object)}
+   *
+   * <p>Method under test: {@link NullSystemProperty#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean NullSystemProperty.equals(Object)", "int NullSystemProperty.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean NullSystemProperty.equals(Object)",
+    "int NullSystemProperty.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new NullSystemProperty(), "Different type to NullSystemProperty");
@@ -161,8 +204,9 @@ public class NullSystemPropertyDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link NullSystemProperty}
    *   <li>{@link NullSystemProperty#setFriendlyGroup(String)}
@@ -184,16 +228,27 @@ public class NullSystemPropertyDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NullSystemProperty.<init>()", "String NullSystemProperty.getFriendlyGroup()",
-      "String NullSystemProperty.getFriendlyName()", "String NullSystemProperty.getFriendlyTab()",
-      "Long NullSystemProperty.getId()", "String NullSystemProperty.getName()",
-      "Boolean NullSystemProperty.getOverrideGeneratedPropertyName()",
-      "SystemPropertyFieldType NullSystemProperty.getPropertyType()", "String NullSystemProperty.getValue()",
-      "void NullSystemProperty.setFriendlyGroup(String)", "void NullSystemProperty.setFriendlyName(String)",
-      "void NullSystemProperty.setFriendlyTab(String)", "void NullSystemProperty.setId(Long)",
-      "void NullSystemProperty.setName(String)", "void NullSystemProperty.setOverrideGeneratedPropertyName(Boolean)",
-      "void NullSystemProperty.setPropertyType(SystemPropertyFieldType)", "void NullSystemProperty.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NullSystemProperty.<init>()",
+    "String NullSystemProperty.getFriendlyGroup()",
+    "String NullSystemProperty.getFriendlyName()",
+    "String NullSystemProperty.getFriendlyTab()",
+    "Long NullSystemProperty.getId()",
+    "String NullSystemProperty.getName()",
+    "Boolean NullSystemProperty.getOverrideGeneratedPropertyName()",
+    "SystemPropertyFieldType NullSystemProperty.getPropertyType()",
+    "String NullSystemProperty.getValue()",
+    "void NullSystemProperty.setFriendlyGroup(String)",
+    "void NullSystemProperty.setFriendlyName(String)",
+    "void NullSystemProperty.setFriendlyTab(String)",
+    "void NullSystemProperty.setId(Long)",
+    "void NullSystemProperty.setName(String)",
+    "void NullSystemProperty.setOverrideGeneratedPropertyName(Boolean)",
+    "void NullSystemProperty.setPropertyType(SystemPropertyFieldType)",
+    "void NullSystemProperty.setValue(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     NullSystemProperty actualNullSystemProperty = new NullSystemProperty();
@@ -210,7 +265,8 @@ public class NullSystemPropertyDiffblueTest {
     String actualFriendlyTab = actualNullSystemProperty.getFriendlyTab();
     Long actualId = actualNullSystemProperty.getId();
     String actualName = actualNullSystemProperty.getName();
-    Boolean actualOverrideGeneratedPropertyName = actualNullSystemProperty.getOverrideGeneratedPropertyName();
+    Boolean actualOverrideGeneratedPropertyName =
+        actualNullSystemProperty.getOverrideGeneratedPropertyName();
     SystemPropertyFieldType actualPropertyType = actualNullSystemProperty.getPropertyType();
 
     // Assert

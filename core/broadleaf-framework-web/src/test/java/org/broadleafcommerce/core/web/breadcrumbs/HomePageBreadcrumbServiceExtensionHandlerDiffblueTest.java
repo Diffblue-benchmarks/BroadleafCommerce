@@ -19,6 +19,7 @@ package org.broadleafcommerce.core.web.breadcrumbs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,15 +48,20 @@ class HomePageBreadcrumbServiceExtensionHandlerDiffblueTest {
   private HomePageBreadcrumbServiceExtensionHandler homePageBreadcrumbServiceExtensionHandler;
 
   /**
-   * Test {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
-   * <p>
-   * Method under test: {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}
+   * Test {@link HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
+   * ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * HomePageBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map,
+   * ExtensionResultHolder)}
    */
   @Test
   @DisplayName("Test modifyBreadcrumbList(String, Map, ExtensionResultHolder)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType HomePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"})
+    "ExtensionResultStatusType HomePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(String, Map, ExtensionResultHolder)"
+  })
   void testModifyBreadcrumbList() {
     // Arrange
     HashMap<String, String[]> params = new HashMap<>();
@@ -66,19 +72,22 @@ class HomePageBreadcrumbServiceExtensionHandlerDiffblueTest {
     holder.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
-        homePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
+    assertEquals(
+        ExtensionResultStatusType.HANDLED_CONTINUE,
+        homePageBreadcrumbServiceExtensionHandler.modifyBreadcrumbList(
+            "https://example.org/example", params, holder));
     assertSame(breadcrumbDTOList, holder.getResult());
   }
 
   /**
    * Test {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}.
-   * <p>
-   * Method under test: {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}
+   *
+   * <p>Method under test: {@link HomePageBreadcrumbServiceExtensionHandler#getDefaultPriority()}
    */
   @Test
   @DisplayName("Test getDefaultPriority()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"int HomePageBreadcrumbServiceExtensionHandler.getDefaultPriority()"})
   void testGetDefaultPriority() {
     // Arrange, Act and Assert

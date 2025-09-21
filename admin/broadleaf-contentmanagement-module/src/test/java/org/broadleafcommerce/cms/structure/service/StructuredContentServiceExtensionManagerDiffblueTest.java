@@ -18,7 +18,8 @@
 package org.broadleafcommerce.cms.structure.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,11 +36,12 @@ public class StructuredContentServiceExtensionManagerDiffblueTest {
 
   /**
    * Test {@link StructuredContentServiceExtensionManager#continueOnHandled()}.
-   * <p>
-   * Method under test: {@link StructuredContentServiceExtensionManager#continueOnHandled()}
+   *
+   * <p>Method under test: {@link StructuredContentServiceExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StructuredContentServiceExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert

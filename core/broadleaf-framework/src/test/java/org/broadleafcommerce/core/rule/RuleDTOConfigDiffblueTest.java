@@ -19,7 +19,8 @@ package org.broadleafcommerce.core.rule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.junit.Test;
@@ -32,16 +33,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {RuleDTOConfig.class, String.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RuleDTOConfigDiffblueTest {
-  @Autowired
-  private RuleDTOConfig ruleDTOConfig;
+  @Autowired private RuleDTOConfig ruleDTOConfig;
 
   /**
    * Test {@link RuleDTOConfig#RuleDTOConfig(String, String)}.
-   * <p>
-   * Method under test: {@link RuleDTOConfig#RuleDTOConfig(String, String)}
+   *
+   * <p>Method under test: {@link RuleDTOConfig#RuleDTOConfig(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RuleDTOConfig.<init>(String, String)"})
   public void testNewRuleDTOConfig() {
     // Arrange and Act
@@ -58,8 +59,9 @@ public class RuleDTOConfigDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link RuleDTOConfig#setAlternateName(String)}
    *   <li>{@link RuleDTOConfig#setFieldName(String)}
@@ -76,13 +78,22 @@ public class RuleDTOConfigDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String RuleDTOConfig.getAlternateName()", "String RuleDTOConfig.getFieldName()",
-      "String RuleDTOConfig.getLabel()", "String RuleDTOConfig.getOperators()", "String RuleDTOConfig.getOptions()",
-      "SupportedFieldType RuleDTOConfig.getType()", "void RuleDTOConfig.setAlternateName(String)",
-      "void RuleDTOConfig.setFieldName(String)", "void RuleDTOConfig.setLabel(String)",
-      "void RuleDTOConfig.setOperators(String)", "void RuleDTOConfig.setOptions(String)",
-      "void RuleDTOConfig.setType(SupportedFieldType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String RuleDTOConfig.getAlternateName()",
+    "String RuleDTOConfig.getFieldName()",
+    "String RuleDTOConfig.getLabel()",
+    "String RuleDTOConfig.getOperators()",
+    "String RuleDTOConfig.getOptions()",
+    "SupportedFieldType RuleDTOConfig.getType()",
+    "void RuleDTOConfig.setAlternateName(String)",
+    "void RuleDTOConfig.setFieldName(String)",
+    "void RuleDTOConfig.setLabel(String)",
+    "void RuleDTOConfig.setOperators(String)",
+    "void RuleDTOConfig.setOptions(String)",
+    "void RuleDTOConfig.setType(SupportedFieldType)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     RuleDTOConfig ruleDTOConfig = new RuleDTOConfig("Field Name", "Label");

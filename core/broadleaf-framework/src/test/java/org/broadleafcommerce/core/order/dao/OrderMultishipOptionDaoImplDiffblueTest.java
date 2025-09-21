@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.order.dao;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
@@ -40,19 +40,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderMultishipOptionDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private OrderMultishipOptionDaoImpl orderMultishipOptionDaoImpl;
+  @InjectMocks private OrderMultishipOptionDaoImpl orderMultishipOptionDaoImpl;
 
   /**
    * Test {@link OrderMultishipOptionDaoImpl#create()}.
-   * <p>
-   * Method under test: {@link OrderMultishipOptionDaoImpl#create()}
+   *
+   * <p>Method under test: {@link OrderMultishipOptionDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OrderMultishipOption OrderMultishipOptionDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -62,14 +61,15 @@ public class OrderMultishipOptionDaoImplDiffblueTest {
     orderMultishipOptionImpl.setId(1L);
     orderMultishipOptionImpl.setOrder(new NullOrderImpl());
     orderMultishipOptionImpl.setOrderItem(new BundleOrderItemImpl());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderMultishipOptionImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(orderMultishipOptionImpl);
 
     // Act
     OrderMultishipOption actualCreateResult = orderMultishipOptionDaoImpl.create();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance(eq("org.broadleafcommerce.core.order.domain.OrderMultishipOption"));
+        .createEntityInstance("org.broadleafcommerce.core.order.domain.OrderMultishipOption");
     assertSame(orderMultishipOptionImpl, actualCreateResult);
   }
 }

@@ -19,13 +19,18 @@ package org.broadleafcommerce.common.web.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
-import java.nio.file.Paths;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
+import javax.servlet.http.HttpServletResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -34,40 +39,88 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 public class IgnorableOpenEntityManagerInViewFilterDiffblueTest {
   /**
-   * Test {@link IgnorableOpenEntityManagerInViewFilter#isIgnored(HttpServletRequest, HttpServletResponse)}.
+   * Test {@link IgnorableOpenEntityManagerInViewFilter#doFilterInternal(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link IgnorableOpenEntityManagerInViewFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   *
+   * <p>Method under test: {@link
+   * IgnorableOpenEntityManagerInViewFilter#doFilterInternal(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean IgnorableOpenEntityManagerInViewFilter.isIgnored(HttpServletRequest, HttpServletResponse)"})
-  public void testIsIgnored_thenReturnFalse() throws IOException {
+    "void IgnorableOpenEntityManagerInViewFilter.doFilterInternal(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  public void testDoFilterInternal_thenThrowIllegalStateException()
+      throws IOException, ServletException {
     // Arrange
-    IgnorableOpenEntityManagerInViewFilter ignorableOpenEntityManagerInViewFilter = new IgnorableOpenEntityManagerInViewFilter();
-    SessionlessHttpServletRequestWrapper httpServletRequest = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
-    MockHttpServletResponse response = new MockHttpServletResponse();
+    IgnorableOpenEntityManagerInViewFilter ignorableOpenEntityManagerInViewFilter =
+        new IgnorableOpenEntityManagerInViewFilter();
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     // Act and Assert
-    assertFalse(ignorableOpenEntityManagerInViewFilter.isIgnored(httpServletRequest,
-        new StatusExposingServletResponse(new FileSystemResponseWrapper(response,
-            Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile()))));
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            ignorableOpenEntityManagerInViewFilter.doFilterInternal(
+                request,
+                new HttpServletResponseWrapper(
+                    new StatusExposingServletResponse(new MockHttpServletResponse())),
+                mock(FilterChain.class)));
+  }
+
+  /**
+   * Test {@link IgnorableOpenEntityManagerInViewFilter#isIgnored(HttpServletRequest,
+   * HttpServletResponse)}.
+   *
+   * <ul>
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * IgnorableOpenEntityManagerInViewFilter#isIgnored(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean IgnorableOpenEntityManagerInViewFilter.isIgnored(HttpServletRequest, HttpServletResponse)"
+  })
+  public void testIsIgnored_thenReturnFalse() {
+    // Arrange
+    IgnorableOpenEntityManagerInViewFilter ignorableOpenEntityManagerInViewFilter =
+        new IgnorableOpenEntityManagerInViewFilter();
+    HttpServletRequestWrapper httpServletRequest =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act and Assert
+    assertFalse(
+        ignorableOpenEntityManagerInViewFilter.isIgnored(
+            httpServletRequest,
+            new HttpServletResponseWrapper(
+                new StatusExposingServletResponse(new MockHttpServletResponse()))));
   }
 
   /**
    * Test {@link IgnorableOpenEntityManagerInViewFilter#getOrder()}.
-   * <p>
-   * Method under test: {@link IgnorableOpenEntityManagerInViewFilter#getOrder()}
+   *
+   * <p>Method under test: {@link IgnorableOpenEntityManagerInViewFilter#getOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int IgnorableOpenEntityManagerInViewFilter.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(FilterOrdered.PRE_SECURITY_HIGH, (new IgnorableOpenEntityManagerInViewFilter()).getOrder());
+    assertEquals(
+        FilterOrdered.PRE_SECURITY_HIGH, new IgnorableOpenEntityManagerInViewFilter().getOrder());
   }
 }

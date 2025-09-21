@@ -23,7 +23,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -40,28 +41,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OrderMultishipOptionImplDiffblueTest {
-  @Autowired
-  private OrderMultishipOptionImpl orderMultishipOptionImpl;
+  @Autowired private OrderMultishipOptionImpl orderMultishipOptionImpl;
 
   /**
    * Test {@link OrderMultishipOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OrderMultishipOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OrderMultishipOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OrderMultishipOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OrderMultishipOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OrderMultishipOptionImpl orderMultishipOptionImpl2 = new OrderMultishipOptionImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new OrderMultishipOptionImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderMultishipOption> actualCreateOrRetrieveCopyInstanceResult = orderMultishipOptionImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OrderMultishipOption> actualCreateOrRetrieveCopyInstanceResult =
+        orderMultishipOptionImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -70,8 +73,9 @@ public class OrderMultishipOptionImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderMultishipOptionImpl}
    *   <li>{@link OrderMultishipOptionImpl#setAddress(Address)}
@@ -87,14 +91,21 @@ public class OrderMultishipOptionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderMultishipOptionImpl.<init>()", "Address OrderMultishipOptionImpl.getAddress()",
-      "FulfillmentOption OrderMultishipOptionImpl.getFulfillmentOption()", "Long OrderMultishipOptionImpl.getId()",
-      "Order OrderMultishipOptionImpl.getOrder()", "OrderItem OrderMultishipOptionImpl.getOrderItem()",
-      "void OrderMultishipOptionImpl.setAddress(Address)",
-      "void OrderMultishipOptionImpl.setFulfillmentOption(FulfillmentOption)",
-      "void OrderMultishipOptionImpl.setId(Long)", "void OrderMultishipOptionImpl.setOrder(Order)",
-      "void OrderMultishipOptionImpl.setOrderItem(OrderItem)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderMultishipOptionImpl.<init>()",
+    "Address OrderMultishipOptionImpl.getAddress()",
+    "FulfillmentOption OrderMultishipOptionImpl.getFulfillmentOption()",
+    "Long OrderMultishipOptionImpl.getId()",
+    "Order OrderMultishipOptionImpl.getOrder()",
+    "OrderItem OrderMultishipOptionImpl.getOrderItem()",
+    "void OrderMultishipOptionImpl.setAddress(Address)",
+    "void OrderMultishipOptionImpl.setFulfillmentOption(FulfillmentOption)",
+    "void OrderMultishipOptionImpl.setId(Long)",
+    "void OrderMultishipOptionImpl.setOrder(Order)",
+    "void OrderMultishipOptionImpl.setOrderItem(OrderItem)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderMultishipOptionImpl actualOrderMultishipOptionImpl = new OrderMultishipOptionImpl();
@@ -108,7 +119,8 @@ public class OrderMultishipOptionImplDiffblueTest {
     BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
     actualOrderMultishipOptionImpl.setOrderItem(orderItem);
     Address actualAddress = actualOrderMultishipOptionImpl.getAddress();
-    FulfillmentOption actualFulfillmentOption = actualOrderMultishipOptionImpl.getFulfillmentOption();
+    FulfillmentOption actualFulfillmentOption =
+        actualOrderMultishipOptionImpl.getFulfillmentOption();
     Long actualId = actualOrderMultishipOptionImpl.getId();
     Order actualOrder = actualOrderMultishipOptionImpl.getOrder();
     OrderItem actualOrderItem = actualOrderMultishipOptionImpl.getOrderItem();

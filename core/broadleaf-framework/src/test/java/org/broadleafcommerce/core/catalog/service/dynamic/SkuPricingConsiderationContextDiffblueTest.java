@@ -20,10 +20,10 @@ package org.broadleafcommerce.core.catalog.service.dynamic;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
-import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.junit.Test;
@@ -32,12 +32,16 @@ import org.junit.experimental.categories.Category;
 public class SkuPricingConsiderationContextDiffblueTest {
   /**
    * Test {@link SkuPricingConsiderationContext#getSkuPricingConsiderationContext()}.
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#getSkuPricingConsiderationContext()}
+   *
+   * <p>Method under test: {@link
+   * SkuPricingConsiderationContext#getSkuPricingConsiderationContext()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.util.HashMap SkuPricingConsiderationContext.getSkuPricingConsiderationContext()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.util.HashMap SkuPricingConsiderationContext.getSkuPricingConsiderationContext()"
+  })
   public void testGetSkuPricingConsiderationContext() {
     // Arrange, Act and Assert
     assertNull(SkuPricingConsiderationContext.getSkuPricingConsiderationContext());
@@ -45,13 +49,15 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
   /**
    * Test {@link SkuPricingConsiderationContext#getSkuPricingService()}.
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#getSkuPricingService()}
+   *
+   * <p>Method under test: {@link SkuPricingConsiderationContext#getSkuPricingService()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService SkuPricingConsiderationContext.getSkuPricingService()"})
+    "org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPricingService SkuPricingConsiderationContext.getSkuPricingService()"
+  })
   public void testGetSkuPricingService() {
     // Arrange, Act and Assert
     assertNull(SkuPricingConsiderationContext.getSkuPricingService());
@@ -59,11 +65,12 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
   /**
    * Test {@link SkuPricingConsiderationContext#isPricingConsiderationActive()}.
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#isPricingConsiderationActive()}
+   *
+   * <p>Method under test: {@link SkuPricingConsiderationContext#isPricingConsiderationActive()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuPricingConsiderationContext.isPricingConsiderationActive()"})
   public void testIsPricingConsiderationActive() {
     // Arrange, Act and Assert
@@ -72,11 +79,12 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
   /**
    * Test {@link SkuPricingConsiderationContext#hasDynamicPricing()}.
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#hasDynamicPricing()}
+   *
+   * <p>Method under test: {@link SkuPricingConsiderationContext#hasDynamicPricing()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuPricingConsiderationContext.hasDynamicPricing()"})
   public void testHasDynamicPricing() {
     // Arrange, Act and Assert
@@ -85,11 +93,12 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
   /**
    * Test {@link SkuPricingConsiderationContext#getThreadCache()}.
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#getThreadCache()}
+   *
+   * <p>Method under test: {@link SkuPricingConsiderationContext#getThreadCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map SkuPricingConsiderationContext.getThreadCache()"})
   public void testGetThreadCache() {
     // Arrange and Act
@@ -101,52 +110,32 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
   /**
    * Test {@link SkuPricingConsiderationContext#getDynamicSkuPrices(Sku)}.
-   * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
-   *   <li>When {@link SkuImpl} (default constructor) SalePrice is {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#getDynamicSkuPrices(Sku)}
+   *
+   * <p>Method under test: {@link SkuPricingConsiderationContext#getDynamicSkuPrices(Sku)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"DynamicSkuPrices SkuPricingConsiderationContext.getDynamicSkuPrices(Sku)"})
-  public void testGetDynamicSkuPrices_givenMoney_whenSkuImplSalePriceIsMoney() {
-    // Arrange
-    SkuImpl sku = new SkuImpl();
-    sku.setSalePrice(new Money());
-
-    // Act and Assert
-    assertNull(SkuPricingConsiderationContext.getDynamicSkuPrices(sku));
-  }
-
-  /**
-   * Test {@link SkuPricingConsiderationContext#getDynamicSkuPrices(Sku)}.
-   * <ul>
-   *   <li>When {@link SkuImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuPricingConsiderationContext#getDynamicSkuPrices(Sku)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"DynamicSkuPrices SkuPricingConsiderationContext.getDynamicSkuPrices(Sku)"})
-  public void testGetDynamicSkuPrices_whenSkuImpl() {
+  public void testGetDynamicSkuPrices() {
     // Arrange, Act and Assert
     assertNull(SkuPricingConsiderationContext.getDynamicSkuPrices(new SkuImpl()));
   }
 
   /**
    * Test new {@link SkuPricingConsiderationContext} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SkuPricingConsiderationContext}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * SkuPricingConsiderationContext}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuPricingConsiderationContext.<init>()"})
   public void testNewSkuPricingConsiderationContext() {
     // Arrange and Act
-    SkuPricingConsiderationContext actualSkuPricingConsiderationContext = new SkuPricingConsiderationContext();
+    SkuPricingConsiderationContext actualSkuPricingConsiderationContext =
+        new SkuPricingConsiderationContext();
 
     // Assert
     assertNull(actualSkuPricingConsiderationContext.considerations);

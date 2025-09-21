@@ -18,54 +18,54 @@
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferInfoImplDiffblueTest {
-  @Autowired
-  private OfferInfoImpl offerInfoImpl;
+  @Autowired private OfferInfoImpl offerInfoImpl;
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}, and {@link OfferInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferInfoImpl#equals(Object)}
    *   <li>{@link OfferInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -79,25 +79,27 @@ public class OfferInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerInfoImpl, offerInfoImpl2);
-    int expectedHashCodeResult = offerInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerInfoImpl2.hashCode());
+    assertEquals(offerInfoImpl.hashCode(), offerInfoImpl2.hashCode());
   }
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}, and {@link OfferInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferInfoImpl#equals(Object)}
    *   <li>{@link OfferInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -111,25 +113,27 @@ public class OfferInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerInfoImpl, offerInfoImpl2);
-    int expectedHashCodeResult = offerInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerInfoImpl2.hashCode());
+    assertEquals(offerInfoImpl.hashCode(), offerInfoImpl2.hashCode());
   }
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}, and {@link OfferInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferInfoImpl#equals(Object)}
    *   <li>{@link OfferInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -143,25 +147,27 @@ public class OfferInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerInfoImpl, offerInfoImpl2);
-    int expectedHashCodeResult = offerInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerInfoImpl2.hashCode());
+    assertEquals(offerInfoImpl.hashCode(), offerInfoImpl2.hashCode());
   }
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}, and {@link OfferInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferInfoImpl#equals(Object)}
    *   <li>{@link OfferInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -177,15 +183,17 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -203,20 +211,22 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     HashMap<String, String> fieldValues = new HashMap<>();
-    fieldValues.put("", "");
+    fieldValues.put("foo", "foo");
 
     OfferInfoImpl offerInfoImpl = new OfferInfoImpl();
     offerInfoImpl.setFieldValues(fieldValues);
@@ -232,15 +242,17 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -254,15 +266,17 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferInfoImpl.equals(Object)", "int OfferInfoImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -276,23 +290,25 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OfferInfoImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OfferInfoImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OfferInfoImpl offerInfoImpl2 = new OfferInfoImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new OfferInfoImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferInfo> actualCreateOrRetrieveCopyInstanceResult = offerInfoImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferInfo> actualCreateOrRetrieveCopyInstanceResult =
+        offerInfoImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -301,45 +317,84 @@ public class OfferInfoImplDiffblueTest {
 
   /**
    * Test {@link OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link OfferInfoImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OfferInfoImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnOfferInfoImpl() throws CloneNotSupportedException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OfferInfoImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    OfferInfoImpl offerInfoImpl2 = new OfferInfoImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(offerInfoImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferInfo> actualCreateOrRetrieveCopyInstanceResult = offerInfoImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<OfferInfo> actualCreateOrRetrieveCopyInstanceResult =
+        offerInfoImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.offer.domain.OfferInfoImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <ul>
+   *   <li>Then Clone return {@link OfferInfoImpl}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OfferInfoImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OfferInfoImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnOfferInfoImpl()
+      throws CloneNotSupportedException {
+    // Arrange
+    HashMap<String, String> fieldValues = new HashMap<>();
+    fieldValues.put("foo", "foo");
+
+    OfferInfoImpl offerInfoImpl = new OfferInfoImpl();
+    offerInfoImpl.setFieldValues(fieldValues);
+
+    OfferInfoImpl offerInfoImpl2 = new OfferInfoImpl();
+    HashMap<String, String> fieldValues2 = new HashMap<>();
+    offerInfoImpl2.setFieldValues(fieldValues2);
+    offerInfoImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any()))
+        .thenReturn(new CreateResponse<>(offerInfoImpl2, false));
+
+    // Act
+    CreateResponse<OfferInfo> actualCreateOrRetrieveCopyInstanceResult =
+        offerInfoImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     OfferInfo clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
     assertTrue(clone instanceof OfferInfoImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(offerInfoImpl2, clone);
+    Map<String, String> fieldValues3 = clone.getFieldValues();
+    assertEquals(1, fieldValues3.size());
+    assertEquals("foo", fieldValues3.get("foo"));
+    assertSame(fieldValues2, fieldValues3);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OfferInfoImpl}
    *   <li>{@link OfferInfoImpl#setFieldValues(Map)}
@@ -349,9 +404,15 @@ public class OfferInfoImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferInfoImpl.<init>()", "Map OfferInfoImpl.getFieldValues()", "Long OfferInfoImpl.getId()",
-      "void OfferInfoImpl.setFieldValues(Map)", "void OfferInfoImpl.setId(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferInfoImpl.<init>()",
+    "Map OfferInfoImpl.getFieldValues()",
+    "Long OfferInfoImpl.getId()",
+    "void OfferInfoImpl.setFieldValues(Map)",
+    "void OfferInfoImpl.setId(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferInfoImpl actualOfferInfoImpl = new OfferInfoImpl();

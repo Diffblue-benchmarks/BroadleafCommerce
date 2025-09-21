@@ -21,15 +21,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.resource.GeneratedResource;
-import org.broadleafcommerce.common.resource.service.ResourceBundlingService;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.resource.BroadleafDefaultResourceResolverChain;
 import org.junit.Test;
@@ -45,124 +46,165 @@ import org.springframework.web.servlet.resource.VersionStrategy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BroadleafVersionResourceResolverDiffblueTest {
-  @InjectMocks
-  private BroadleafVersionResourceResolver broadleafVersionResourceResolver;
+  @InjectMocks private BroadleafVersionResourceResolver broadleafVersionResourceResolver;
 
-  @Mock
-  private Map<String, VersionStrategy> map;
-
-  @Mock
-  private ResourceBundlingService resourceBundlingService;
+  @Mock private Map<String, VersionStrategy> map;
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest,
+   * String, List, ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link
+   * BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List,
+   * ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"})
+    "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"
+  })
   public void testResolveResourceInternal_givenGeneratedResource() {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveResourceInternal(request, "Request Path", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveResourceInternal(
+            request,
+            "Request Path",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest,
+   * String, List, ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link
+   * BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List,
+   * ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"})
+    "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"
+  })
   public void testResolveResourceInternal_givenGeneratedResource2() {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveResourceInternal(request, "Request Path", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveResourceInternal(
+            request,
+            "Request Path",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest,
+   * String, List, ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link
+   * BroadleafVersionResourceResolver#resolveResourceInternal(HttpServletRequest, String, List,
+   * ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"})
+    "Resource BroadleafVersionResourceResolver.resolveResourceInternal(HttpServletRequest, String, List, ResourceResolverChain)"
+  })
   public void testResolveResourceInternal_whenArrayList_thenReturnNull() {
     // Arrange
-    SessionlessHttpServletRequestWrapper request = new SessionlessHttpServletRequestWrapper(
-        new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
     ArrayList<Resource> locations = new ArrayList<>();
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveResourceInternal(request, "Request Path", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveResourceInternal(
+            request,
+            "Request Path",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List,
+   * ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String,
+   * List, ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"})
+    "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"
+  })
   public void testResolveUrlPathInternal_givenGeneratedResource() {
     // Arrange
     ArrayList<Resource> locations = new ArrayList<>();
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveUrlPathInternal("https://example.org/example", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveUrlPathInternal(
+            "https://example.org/example",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List,
+   * ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>Given {@link GeneratedResource#GeneratedResource()}.</li>
+   *   <li>Given {@link GeneratedResource#GeneratedResource()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String,
+   * List, ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"})
+    "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"
+  })
   public void testResolveUrlPathInternal_givenGeneratedResource2() {
     // Arrange
     ArrayList<Resource> locations = new ArrayList<>();
@@ -170,48 +212,64 @@ public class BroadleafVersionResourceResolverDiffblueTest {
     locations.add(new GeneratedResource());
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveUrlPathInternal("https://example.org/example", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveUrlPathInternal(
+            "https://example.org/example",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
-   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}.
+   * Test {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List,
+   * ResourceResolverChain)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String, List, ResourceResolverChain)}
+   *
+   * <p>Method under test: {@link BroadleafVersionResourceResolver#resolveUrlPathInternal(String,
+   * List, ResourceResolverChain)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"})
+    "String BroadleafVersionResourceResolver.resolveUrlPathInternal(String, List, ResourceResolverChain)"
+  })
   public void testResolveUrlPathInternal_whenArrayList_thenReturnNull() {
     // Arrange
     ArrayList<Resource> locations = new ArrayList<>();
 
     // Act and Assert
-    assertNull(broadleafVersionResourceResolver.resolveUrlPathInternal("https://example.org/example", locations,
-        new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+    assertNull(
+        broadleafVersionResourceResolver.resolveUrlPathInternal(
+            "https://example.org/example",
+            locations,
+            new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafVersionResourceResolver#setOrder(int)}
    *   <li>{@link BroadleafVersionResourceResolver#getOrder()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int BroadleafVersionResourceResolver.getOrder()",
-      "void BroadleafVersionResourceResolver.setOrder(int)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "int BroadleafVersionResourceResolver.getOrder()",
+    "void BroadleafVersionResourceResolver.setOrder(int)"
+  })
   public void testGettersAndSetters() {
     // Arrange
-    BroadleafVersionResourceResolver broadleafVersionResourceResolver = new BroadleafVersionResourceResolver();
+    BroadleafVersionResourceResolver broadleafVersionResourceResolver =
+        new BroadleafVersionResourceResolver();
 
     // Act
     broadleafVersionResourceResolver.setOrder(1);
@@ -222,14 +280,16 @@ public class BroadleafVersionResourceResolverDiffblueTest {
 
   /**
    * Test {@link BroadleafVersionResourceResolver#initIt()}.
+   *
    * <ul>
-   *   <li>Then calls {@link Map#entrySet()}.</li>
+   *   <li>Then calls {@link Map#entrySet()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafVersionResourceResolver#initIt()}
+   *
+   * <p>Method under test: {@link BroadleafVersionResourceResolver#initIt()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BroadleafVersionResourceResolver.initIt()"})
   public void testInitIt_thenCallsEntrySet() throws Exception {
     // Arrange

@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,13 @@ import org.junit.experimental.categories.Category;
 public class FilterAndSortCriteriaDiffblueTest {
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
+   *   <li>When {@code 42}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FilterAndSortCriteria#FilterAndSortCriteria(String)}
    *   <li>{@link FilterAndSortCriteria#setFilterValues(List)}
@@ -54,15 +57,23 @@ public class FilterAndSortCriteriaDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String)", "void FilterAndSortCriteria.<init>(String, int)",
-      "Integer FilterAndSortCriteria.getOrder()", "String FilterAndSortCriteria.getPropertyId()",
-      "RestrictionType FilterAndSortCriteria.getRestrictionType()",
-      "SortDirection FilterAndSortCriteria.getSortDirection()", "boolean FilterAndSortCriteria.isNullsLast()",
-      "void FilterAndSortCriteria.setFilterValues(List)", "void FilterAndSortCriteria.setNullsLast(boolean)",
-      "void FilterAndSortCriteria.setOrder(Integer)", "void FilterAndSortCriteria.setPropertyId(String)",
-      "void FilterAndSortCriteria.setRestrictionType(RestrictionType)",
-      "void FilterAndSortCriteria.setSortDirection(SortDirection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FilterAndSortCriteria.<init>(String)",
+    "void FilterAndSortCriteria.<init>(String, int)",
+    "Integer FilterAndSortCriteria.getOrder()",
+    "String FilterAndSortCriteria.getPropertyId()",
+    "RestrictionType FilterAndSortCriteria.getRestrictionType()",
+    "SortDirection FilterAndSortCriteria.getSortDirection()",
+    "boolean FilterAndSortCriteria.isNullsLast()",
+    "void FilterAndSortCriteria.setFilterValues(List)",
+    "void FilterAndSortCriteria.setNullsLast(boolean)",
+    "void FilterAndSortCriteria.setOrder(Integer)",
+    "void FilterAndSortCriteria.setPropertyId(String)",
+    "void FilterAndSortCriteria.setRestrictionType(RestrictionType)",
+    "void FilterAndSortCriteria.setSortDirection(SortDirection)"
+  })
   public void testGettersAndSetters_when42() {
     // Arrange and Act
     FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42");
@@ -84,16 +95,18 @@ public class FilterAndSortCriteriaDiffblueTest {
     assertEquals(SortDirection.ASCENDING, actualSortDirection);
     assertTrue(actualFilterAndSortCriteria.filterValues.isEmpty());
     assertTrue(actualIsNullsLastResult);
-    assertSame(actualRestrictionType.BOOLEAN, actualRestrictionType);
+    assertSame(RestrictionType.BOOLEAN, actualRestrictionType);
   }
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When one.</li>
+   *   <li>When one.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FilterAndSortCriteria#FilterAndSortCriteria(String, int)}
    *   <li>{@link FilterAndSortCriteria#setFilterValues(List)}
@@ -110,15 +123,23 @@ public class FilterAndSortCriteriaDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String)", "void FilterAndSortCriteria.<init>(String, int)",
-      "Integer FilterAndSortCriteria.getOrder()", "String FilterAndSortCriteria.getPropertyId()",
-      "RestrictionType FilterAndSortCriteria.getRestrictionType()",
-      "SortDirection FilterAndSortCriteria.getSortDirection()", "boolean FilterAndSortCriteria.isNullsLast()",
-      "void FilterAndSortCriteria.setFilterValues(List)", "void FilterAndSortCriteria.setNullsLast(boolean)",
-      "void FilterAndSortCriteria.setOrder(Integer)", "void FilterAndSortCriteria.setPropertyId(String)",
-      "void FilterAndSortCriteria.setRestrictionType(RestrictionType)",
-      "void FilterAndSortCriteria.setSortDirection(SortDirection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FilterAndSortCriteria.<init>(String)",
+    "void FilterAndSortCriteria.<init>(String, int)",
+    "Integer FilterAndSortCriteria.getOrder()",
+    "String FilterAndSortCriteria.getPropertyId()",
+    "RestrictionType FilterAndSortCriteria.getRestrictionType()",
+    "SortDirection FilterAndSortCriteria.getSortDirection()",
+    "boolean FilterAndSortCriteria.isNullsLast()",
+    "void FilterAndSortCriteria.setFilterValues(List)",
+    "void FilterAndSortCriteria.setNullsLast(boolean)",
+    "void FilterAndSortCriteria.setOrder(Integer)",
+    "void FilterAndSortCriteria.setPropertyId(String)",
+    "void FilterAndSortCriteria.setRestrictionType(RestrictionType)",
+    "void FilterAndSortCriteria.setSortDirection(SortDirection)"
+  })
   public void testGettersAndSetters_whenOne() {
     // Arrange and Act
     FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", 1);
@@ -140,20 +161,22 @@ public class FilterAndSortCriteriaDiffblueTest {
     assertEquals(SortDirection.ASCENDING, actualSortDirection);
     assertTrue(actualFilterAndSortCriteria.filterValues.isEmpty());
     assertTrue(actualIsNullsLastResult);
-    assertSame(actualRestrictionType.BOOLEAN, actualRestrictionType);
+    assertSame(RestrictionType.BOOLEAN, actualRestrictionType);
   }
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.</li>
+   *   <li>Given {@code 42}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List)"})
   public void testNewFilterAndSortCriteria_given42_thenReturnFilterValuesSizeIsTwo() {
     // Arrange
@@ -161,8 +184,12 @@ public class FilterAndSortCriteriaDiffblueTest {
     filterValues.add("42");
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(2, stringList.size());
     assertEquals("42", stringList.get(0));
     assertEquals("foo", stringList.get(1));
@@ -170,15 +197,17 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.</li>
+   *   <li>Given {@code 42}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, int)"})
   public void testNewFilterAndSortCriteria_given42_thenReturnFilterValuesSizeIsTwo2() {
     // Arrange
@@ -186,8 +215,12 @@ public class FilterAndSortCriteriaDiffblueTest {
     filterValues.add("42");
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, 1)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, 1);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(2, stringList.size());
     assertEquals("42", stringList.get(0));
     assertEquals("foo", stringList.get(1));
@@ -195,15 +228,18 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.</li>
+   *   <li>Given {@code 42}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection)"})
   public void testNewFilterAndSortCriteria_given42_thenReturnFilterValuesSizeIsTwo3() {
     // Arrange
@@ -211,8 +247,12 @@ public class FilterAndSortCriteriaDiffblueTest {
     filterValues.add("42");
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(2, stringList.size());
     assertEquals("42", stringList.get(0));
     assertEquals("foo", stringList.get(1));
@@ -220,15 +260,18 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.</li>
+   *   <li>Given {@code 42}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection, int)"})
   public void testNewFilterAndSortCriteria_given42_thenReturnFilterValuesSizeIsTwo4() {
     // Arrange
@@ -236,8 +279,12 @@ public class FilterAndSortCriteriaDiffblueTest {
     filterValues.add("42");
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING, 1)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING, 1);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(2, stringList.size());
     assertEquals("42", stringList.get(0));
     assertEquals("foo", stringList.get(1));
@@ -245,106 +292,134 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List)"})
   public void testNewFilterAndSortCriteria_givenFoo_thenReturnFilterValuesSizeIsOne() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("foo", stringList.get(0));
   }
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, int)"})
   public void testNewFilterAndSortCriteria_givenFoo_thenReturnFilterValuesSizeIsOne2() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, 1)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, 1);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("foo", stringList.get(0));
   }
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection)"})
   public void testNewFilterAndSortCriteria_givenFoo_thenReturnFilterValuesSizeIsOne3() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("foo", stringList.get(0));
   }
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.</li>
+   *   <li>Given {@code foo}.
+   *   <li>Then return {@link FilterAndSortCriteria#filterValues} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection, int)"})
   public void testNewFilterAndSortCriteria_givenFoo_thenReturnFilterValuesSizeIsOne4() {
     // Arrange
     ArrayList<String> filterValues = new ArrayList<>();
     filterValues.add("foo");
 
-    // Act and Assert
-    List<String> stringList = (new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING, 1)).filterValues;
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, SortDirection.ASCENDING, 1);
+
+    // Assert
+    List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("foo", stringList.get(0));
   }
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)}.
+   *
    * <ul>
-   *   <li>Then return FilterValues size is one.</li>
+   *   <li>Then return FilterValues size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, String)"})
   public void testNewFilterAndSortCriteria_thenReturnFilterValuesSizeIsOne() {
     // Arrange and Act
@@ -368,14 +443,16 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String, int)}.
+   *
    * <ul>
-   *   <li>Then return FilterValues size is one.</li>
+   *   <li>Then return FilterValues size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, String, int)"})
   public void testNewFilterAndSortCriteria_thenReturnFilterValuesSizeIsOne2() {
     // Arrange and Act
@@ -399,23 +476,29 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[])}.
+   *
    * <ul>
-   *   <li>Then return FilterValues size is one.</li>
+   *   <li>Then return FilterValues size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[])}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, String[])"})
   public void testNewFilterAndSortCriteria_thenReturnFilterValuesSizeIsOne3() {
-    // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new String[]{"42"});
+    // Arrange
+    String[] filterValues = new String[] {"42"};
+
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues);
 
     // Assert
-    List<String> filterValues = actualFilterAndSortCriteria.getFilterValues();
-    assertEquals(1, filterValues.size());
-    assertEquals("42", filterValues.get(0));
+    List<String> filterValues2 = actualFilterAndSortCriteria.getFilterValues();
+    assertEquals(1, filterValues2.size());
+    assertEquals("42", filterValues2.get(0));
     List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("42", stringList.get(0));
@@ -430,23 +513,30 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[], int)}.
+   *
    * <ul>
-   *   <li>Then return FilterValues size is one.</li>
+   *   <li>Then return FilterValues size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[], int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, String[],
+   * int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, String[], int)"})
   public void testNewFilterAndSortCriteria_thenReturnFilterValuesSizeIsOne4() {
-    // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new String[]{"42"}, 1);
+    // Arrange
+    String[] filterValues = new String[] {"42"};
+
+    // Act
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", filterValues, 1);
 
     // Assert
-    List<String> filterValues = actualFilterAndSortCriteria.getFilterValues();
-    assertEquals(1, filterValues.size());
-    assertEquals("42", filterValues.get(0));
+    List<String> filterValues2 = actualFilterAndSortCriteria.getFilterValues();
+    assertEquals(1, filterValues2.size());
+    assertEquals("42", filterValues2.get(0));
     List<String> stringList = actualFilterAndSortCriteria.filterValues;
     assertEquals(1, stringList.size());
     assertEquals("42", stringList.get(0));
@@ -461,19 +551,22 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return PropertyId is {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return PropertyId is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List)"})
   public void testNewFilterAndSortCriteria_whenArrayList_thenReturnPropertyIdIs42() {
     // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new ArrayList<>());
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", new ArrayList<>());
 
     // Assert
     assertEquals("42", actualFilterAndSortCriteria.getPropertyId());
@@ -489,19 +582,22 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return PropertyId is {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return PropertyId is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, int)"})
   public void testNewFilterAndSortCriteria_whenArrayList_thenReturnPropertyIdIs422() {
     // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new ArrayList<>(), 1);
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", new ArrayList<>(), 1);
 
     // Assert
     assertEquals("42", actualFilterAndSortCriteria.getPropertyId());
@@ -517,20 +613,23 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return PropertyId is {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return PropertyId is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection)"})
   public void testNewFilterAndSortCriteria_whenArrayList_thenReturnPropertyIdIs423() {
     // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new ArrayList<>(),
-        SortDirection.ASCENDING);
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", new ArrayList<>(), SortDirection.ASCENDING);
 
     // Assert
     assertEquals("42", actualFilterAndSortCriteria.getPropertyId());
@@ -546,20 +645,23 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return PropertyId is {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return PropertyId is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List, SortDirection, int)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#FilterAndSortCriteria(String, List,
+   * SortDirection, int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.<init>(String, List, SortDirection, int)"})
   public void testNewFilterAndSortCriteria_whenArrayList_thenReturnPropertyIdIs424() {
     // Arrange and Act
-    FilterAndSortCriteria actualFilterAndSortCriteria = new FilterAndSortCriteria("42", new ArrayList<>(),
-        SortDirection.ASCENDING, 1);
+    FilterAndSortCriteria actualFilterAndSortCriteria =
+        new FilterAndSortCriteria("42", new ArrayList<>(), SortDirection.ASCENDING, 1);
 
     // Assert
     assertEquals("42", actualFilterAndSortCriteria.getPropertyId());
@@ -575,11 +677,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#setFilterValue(String)}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#setFilterValue(String)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#setFilterValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.setFilterValue(String)"})
   public void testSetFilterValue() {
     // Arrange
@@ -599,11 +702,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#addFilterValue(String)}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#addFilterValue(String)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#addFilterValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.addFilterValue(String)"})
   public void testAddFilterValue() {
     // Arrange
@@ -623,11 +727,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getFilterValues()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getFilterValues()"})
   public void testGetFilterValues() {
     // Arrange
@@ -640,11 +745,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getFilterValues()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getFilterValues()"})
   public void testGetFilterValues2() {
     // Arrange
@@ -657,35 +763,40 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getFilterValues()}.
+   *
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is
+   *       {@code 42}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getFilterValues()"})
   public void testGetFilterValues_givenFilterAndSortCriteriaWithPropertyIdIs42_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue((new FilterAndSortCriteria("42")).getFilterValues().isEmpty());
+    assertTrue(new FilterAndSortCriteria("42").getFilterValues().isEmpty());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#getFilterValues()}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getFilterValues()"})
   public void testGetFilterValues_thenReturnSizeIsOne() {
     // Arrange and Act
-    List<String> actualFilterValues = (new FilterAndSortCriteria("42", "42")).getFilterValues();
+    List<String> actualFilterValues = new FilterAndSortCriteria("42", "42").getFilterValues();
 
     // Assert
     assertEquals(1, actualFilterValues.size());
@@ -694,43 +805,49 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getSpecialFilterValues()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getSpecialFilterValues()"})
   public void testGetSpecialFilterValues() {
     // Arrange, Act and Assert
-    assertTrue((new FilterAndSortCriteria("42", "42")).getSpecialFilterValues().isEmpty());
+    assertTrue(new FilterAndSortCriteria("42", "42").getSpecialFilterValues().isEmpty());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#getSpecialFilterValues()}.
+   *
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is
+   *       {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getSpecialFilterValues()"})
   public void testGetSpecialFilterValues_givenFilterAndSortCriteriaWithPropertyIdIs42() {
     // Arrange, Act and Assert
-    assertTrue((new FilterAndSortCriteria("42")).getSpecialFilterValues().isEmpty());
+    assertTrue(new FilterAndSortCriteria("42").getSpecialFilterValues().isEmpty());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#getSpecialFilterValues()}.
+   *
    * <ul>
-   *   <li>Then return first is {@link FilterAndSortCriteria#IS_NOT_NULL_FILTER_VALUE}.</li>
+   *   <li>Then return first is {@link FilterAndSortCriteria#IS_NOT_NULL_FILTER_VALUE}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getSpecialFilterValues()"})
   public void testGetSpecialFilterValues_thenReturnFirstIsIs_not_null_filter_value() {
     // Arrange
@@ -747,14 +864,16 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getSpecialFilterValues()}.
+   *
    * <ul>
-   *   <li>Then return first is {@link FilterAndSortCriteria#IS_NULL_FILTER_VALUE}.</li>
+   *   <li>Then return first is {@link FilterAndSortCriteria#IS_NULL_FILTER_VALUE}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSpecialFilterValues()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List FilterAndSortCriteria.getSpecialFilterValues()"})
   public void testGetSpecialFilterValues_thenReturnFirstIsIs_null_filter_value() {
     // Arrange
@@ -771,31 +890,36 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getSortAscending()}.
+   *
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is
+   *       {@code 42}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSortAscending()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSortAscending()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean FilterAndSortCriteria.getSortAscending()"})
   public void testGetSortAscending_givenFilterAndSortCriteriaWithPropertyIdIs42_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new FilterAndSortCriteria("42")).getSortAscending());
+    assertNull(new FilterAndSortCriteria("42").getSortAscending());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#getSortAscending()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSortAscending()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSortAscending()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean FilterAndSortCriteria.getSortAscending()"})
   public void testGetSortAscending_thenReturnFalse() {
     // Arrange
@@ -808,19 +932,21 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#getSortAscending()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getSortAscending()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getSortAscending()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean FilterAndSortCriteria.getSortAscending()"})
   public void testGetSortAscending_thenReturnTrue() {
     // Arrange
     FilterAndSortCriteria filterAndSortCriteria = new FilterAndSortCriteria("42");
-    filterAndSortCriteria.setSortAscending(true);
+    filterAndSortCriteria.setSortAscending(null);
 
     // Act and Assert
     assertTrue(filterAndSortCriteria.getSortAscending());
@@ -828,11 +954,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#setSortAscending(Boolean)}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.setSortAscending(Boolean)"})
   public void testSetSortAscending() {
     // Arrange
@@ -848,14 +975,16 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#setSortAscending(Boolean)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.setSortAscending(Boolean)"})
   public void testSetSortAscending_whenNull() {
     // Arrange
@@ -871,14 +1000,16 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#setSortAscending(Boolean)}.
+   *
    * <ul>
-   *   <li>When {@code true}.</li>
+   *   <li>When {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#setSortAscending(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FilterAndSortCriteria.setSortAscending(Boolean)"})
   public void testSetSortAscending_whenTrue() {
     // Arrange
@@ -894,11 +1025,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#hasSpecialFilterValue()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean FilterAndSortCriteria.hasSpecialFilterValue()"})
   public void testHasSpecialFilterValue() {
     // Arrange
@@ -911,24 +1043,26 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#hasSpecialFilterValue()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean FilterAndSortCriteria.hasSpecialFilterValue()"})
   public void testHasSpecialFilterValue2() {
     // Arrange, Act and Assert
-    assertFalse((new FilterAndSortCriteria("42", "42")).hasSpecialFilterValue());
+    assertFalse(new FilterAndSortCriteria("42", "42").hasSpecialFilterValue());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#hasSpecialFilterValue()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean FilterAndSortCriteria.hasSpecialFilterValue()"})
   public void testHasSpecialFilterValue3() {
     // Arrange
@@ -941,11 +1075,12 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#hasSpecialFilterValue()}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean FilterAndSortCriteria.hasSpecialFilterValue()"})
   public void testHasSpecialFilterValue4() {
     // Arrange
@@ -958,31 +1093,37 @@ public class FilterAndSortCriteriaDiffblueTest {
 
   /**
    * Test {@link FilterAndSortCriteria#hasSpecialFilterValue()}.
+   *
    * <ul>
-   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is {@code 42}.</li>
+   *   <li>Given {@link FilterAndSortCriteria#FilterAndSortCriteria(String)} with propertyId is
+   *       {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#hasSpecialFilterValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean FilterAndSortCriteria.hasSpecialFilterValue()"})
   public void testHasSpecialFilterValue_givenFilterAndSortCriteriaWithPropertyIdIs42() {
     // Arrange, Act and Assert
-    assertFalse((new FilterAndSortCriteria("42")).hasSpecialFilterValue());
+    assertFalse(new FilterAndSortCriteria("42").hasSpecialFilterValue());
   }
 
   /**
    * Test {@link FilterAndSortCriteria#getPredicateForSpecialValues(boolean)}.
-   * <p>
-   * Method under test: {@link FilterAndSortCriteria#getPredicateForSpecialValues(boolean)}
+   *
+   * <p>Method under test: {@link FilterAndSortCriteria#getPredicateForSpecialValues(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.common.util.TypedPredicate FilterAndSortCriteria.getPredicateForSpecialValues(boolean)"})
+    "org.broadleafcommerce.common.util.TypedPredicate FilterAndSortCriteria.getPredicateForSpecialValues(boolean)"
+  })
   public void testGetPredicateForSpecialValues() {
     // Arrange, Act and Assert
-    assertFalse((new FilterAndSortCriteria("42")).getPredicateForSpecialValues(true).evaluate("Value"));
+    assertFalse(
+        new FilterAndSortCriteria("42").getPredicateForSpecialValues(true).evaluate("Value"));
   }
 }

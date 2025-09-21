@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.entity.dto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,15 +29,17 @@ import org.junit.experimental.categories.Category;
 public class EntityInformationDtoDiffblueTest {
   /**
    * Test {@link EntityInformationDto#isProfileEntity()}.
+   *
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogId is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogId is one.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityInformationDto#isProfileEntity()}
+   *
+   * <p>Method under test: {@link EntityInformationDto#isProfileEntity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityInformationDto.isProfileEntity()"})
   public void testIsProfileEntity_givenEntityInformationDtoCatalogIdIsOne_thenReturnTrue() {
     // Arrange
@@ -53,32 +56,36 @@ public class EntityInformationDtoDiffblueTest {
 
   /**
    * Test {@link EntityInformationDto#isProfileEntity()}.
+   *
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityInformationDto#isProfileEntity()}
+   *
+   * <p>Method under test: {@link EntityInformationDto#isProfileEntity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityInformationDto.isProfileEntity()"})
   public void testIsProfileEntity_givenEntityInformationDto_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new EntityInformationDto()).isProfileEntity());
+    assertFalse(new EntityInformationDto().isProfileEntity());
   }
 
   /**
    * Test {@link EntityInformationDto#isCatalogEntity()}.
+   *
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogOwner is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor) CatalogOwner is one.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityInformationDto#isCatalogEntity()}
+   *
+   * <p>Method under test: {@link EntityInformationDto#isCatalogEntity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityInformationDto.isCatalogEntity()"})
   public void testIsCatalogEntity_givenEntityInformationDtoCatalogOwnerIsOne_thenReturnTrue() {
     // Arrange
@@ -95,25 +102,28 @@ public class EntityInformationDtoDiffblueTest {
 
   /**
    * Test {@link EntityInformationDto#isCatalogEntity()}.
+   *
    * <ul>
-   *   <li>Given {@link EntityInformationDto} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link EntityInformationDto} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityInformationDto#isCatalogEntity()}
+   *
+   * <p>Method under test: {@link EntityInformationDto#isCatalogEntity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EntityInformationDto.isCatalogEntity()"})
   public void testIsCatalogEntity_givenEntityInformationDto_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new EntityInformationDto()).isCatalogEntity());
+    assertFalse(new EntityInformationDto().isCatalogEntity());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link EntityInformationDto}
    *   <li>{@link EntityInformationDto#setCatalogId(Long)}
@@ -129,14 +139,21 @@ public class EntityInformationDtoDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void EntityInformationDto.<init>()", "Long EntityInformationDto.getCatalogId()",
-      "Long EntityInformationDto.getCatalogOwner()",
-      "Boolean EntityInformationDto.getOwnerToCatalogRelationshipActive()",
-      "Long EntityInformationDto.getOwningSiteId()", "Long EntityInformationDto.getProfileId()",
-      "void EntityInformationDto.setCatalogId(Long)", "void EntityInformationDto.setCatalogOwner(Long)",
-      "void EntityInformationDto.setOwnerToCatalogRelationshipActive(Boolean)",
-      "void EntityInformationDto.setOwningSiteId(Long)", "void EntityInformationDto.setProfileId(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EntityInformationDto.<init>()",
+    "Long EntityInformationDto.getCatalogId()",
+    "Long EntityInformationDto.getCatalogOwner()",
+    "Boolean EntityInformationDto.getOwnerToCatalogRelationshipActive()",
+    "Long EntityInformationDto.getOwningSiteId()",
+    "Long EntityInformationDto.getProfileId()",
+    "void EntityInformationDto.setCatalogId(Long)",
+    "void EntityInformationDto.setCatalogOwner(Long)",
+    "void EntityInformationDto.setOwnerToCatalogRelationshipActive(Boolean)",
+    "void EntityInformationDto.setOwningSiteId(Long)",
+    "void EntityInformationDto.setProfileId(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     EntityInformationDto actualEntityInformationDto = new EntityInformationDto();
@@ -147,7 +164,8 @@ public class EntityInformationDtoDiffblueTest {
     actualEntityInformationDto.setProfileId(1L);
     Long actualCatalogId = actualEntityInformationDto.getCatalogId();
     Long actualCatalogOwner = actualEntityInformationDto.getCatalogOwner();
-    Boolean actualOwnerToCatalogRelationshipActive = actualEntityInformationDto.getOwnerToCatalogRelationshipActive();
+    Boolean actualOwnerToCatalogRelationshipActive =
+        actualEntityInformationDto.getOwnerToCatalogRelationshipActive();
     Long actualOwningSiteId = actualEntityInformationDto.getOwningSiteId();
     Long actualProfileId = actualEntityInformationDto.getProfileId();
 

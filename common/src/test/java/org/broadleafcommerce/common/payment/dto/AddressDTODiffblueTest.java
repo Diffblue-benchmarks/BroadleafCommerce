@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
@@ -36,16 +37,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {AddressDTO.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressDTODiffblueTest {
-  @Autowired
-  private AddressDTO<Object> addressDTO;
+  @Autowired private AddressDTO<Object> addressDTO;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressDTO#AddressDTO()}
    *   <li>{@link AddressDTO#addressCityLocality(String)}
@@ -78,38 +79,61 @@ public class AddressDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AddressDTO.<init>()", "void AddressDTO.<init>(Object)",
-      "AddressDTO AddressDTO.addressCityLocality(String)", "AddressDTO AddressDTO.addressCompanyName(String)",
-      "AddressDTO AddressDTO.addressCountryCode(String)", "AddressDTO AddressDTO.addressCounty(String)",
-      "AddressDTO AddressDTO.addressEmail(String)", "AddressDTO AddressDTO.addressFirstName(String)",
-      "AddressDTO AddressDTO.addressFullName(String)", "AddressDTO AddressDTO.addressLastName(String)",
-      "AddressDTO AddressDTO.addressLine1(String)", "AddressDTO AddressDTO.addressLine2(String)",
-      "AddressDTO AddressDTO.addressPhone(String)", "AddressDTO AddressDTO.addressPostalCode(String)",
-      "AddressDTO AddressDTO.addressStateRegion(String)", "Map AddressDTO.getAdditionalFields()",
-      "String AddressDTO.getAddressCityLocality()", "String AddressDTO.getAddressCompanyName()",
-      "String AddressDTO.getAddressCountryCode()", "String AddressDTO.getAddressEmail()",
-      "String AddressDTO.getAddressFirstName()", "String AddressDTO.getAddressFullName()",
-      "String AddressDTO.getAddressLastName()", "String AddressDTO.getAddressLine1()",
-      "String AddressDTO.getAddressLine2()", "String AddressDTO.getAddressPhone()",
-      "String AddressDTO.getAddressPostalCode()", "String AddressDTO.getAddressStateRegion()",
-      "String AddressDTO.getCounty()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AddressDTO.<init>()",
+    "void AddressDTO.<init>(Object)",
+    "AddressDTO AddressDTO.addressCityLocality(String)",
+    "AddressDTO AddressDTO.addressCompanyName(String)",
+    "AddressDTO AddressDTO.addressCountryCode(String)",
+    "AddressDTO AddressDTO.addressCounty(String)",
+    "AddressDTO AddressDTO.addressEmail(String)",
+    "AddressDTO AddressDTO.addressFirstName(String)",
+    "AddressDTO AddressDTO.addressFullName(String)",
+    "AddressDTO AddressDTO.addressLastName(String)",
+    "AddressDTO AddressDTO.addressLine1(String)",
+    "AddressDTO AddressDTO.addressLine2(String)",
+    "AddressDTO AddressDTO.addressPhone(String)",
+    "AddressDTO AddressDTO.addressPostalCode(String)",
+    "AddressDTO AddressDTO.addressStateRegion(String)",
+    "Map AddressDTO.getAdditionalFields()",
+    "String AddressDTO.getAddressCityLocality()",
+    "String AddressDTO.getAddressCompanyName()",
+    "String AddressDTO.getAddressCountryCode()",
+    "String AddressDTO.getAddressEmail()",
+    "String AddressDTO.getAddressFirstName()",
+    "String AddressDTO.getAddressFullName()",
+    "String AddressDTO.getAddressLastName()",
+    "String AddressDTO.getAddressLine1()",
+    "String AddressDTO.getAddressLine2()",
+    "String AddressDTO.getAddressPhone()",
+    "String AddressDTO.getAddressPostalCode()",
+    "String AddressDTO.getAddressStateRegion()",
+    "String AddressDTO.getCounty()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AddressDTO<Object> actualAddressDTO = new AddressDTO<>();
-    AddressDTO<Object> actualAddressCityLocalityResult = actualAddressDTO.addressCityLocality("42 Main St");
-    AddressDTO<Object> actualAddressCompanyNameResult = actualAddressDTO.addressCompanyName("42 Main St");
-    AddressDTO<Object> actualAddressCountryCodeResult = actualAddressDTO.addressCountryCode("42 Main St");
+    AddressDTO<Object> actualAddressCityLocalityResult =
+        actualAddressDTO.addressCityLocality("42 Main St");
+    AddressDTO<Object> actualAddressCompanyNameResult =
+        actualAddressDTO.addressCompanyName("42 Main St");
+    AddressDTO<Object> actualAddressCountryCodeResult =
+        actualAddressDTO.addressCountryCode("42 Main St");
     AddressDTO<Object> actualAddressCountyResult = actualAddressDTO.addressCounty("3");
     AddressDTO<Object> actualAddressEmailResult = actualAddressDTO.addressEmail("42 Main St");
     AddressDTO<Object> actualAddressFirstNameResult = actualAddressDTO.addressFirstName("Jane");
-    AddressDTO<Object> actualAddressFullNameResult = actualAddressDTO.addressFullName("Dr Jane Doe");
+    AddressDTO<Object> actualAddressFullNameResult =
+        actualAddressDTO.addressFullName("Dr Jane Doe");
     AddressDTO<Object> actualAddressLastNameResult = actualAddressDTO.addressLastName("Doe");
     AddressDTO<Object> actualAddressLine1Result = actualAddressDTO.addressLine1("42 Main St");
     AddressDTO<Object> actualAddressLine2Result = actualAddressDTO.addressLine2("42 Main St");
     AddressDTO<Object> actualAddressPhoneResult = actualAddressDTO.addressPhone("6625550144");
-    AddressDTO<Object> actualAddressPostalCodeResult = actualAddressDTO.addressPostalCode("42 Main St");
-    AddressDTO<Object> actualAddressStateRegionResult = actualAddressDTO.addressStateRegion("us-east-2");
+    AddressDTO<Object> actualAddressPostalCodeResult =
+        actualAddressDTO.addressPostalCode("42 Main St");
+    AddressDTO<Object> actualAddressStateRegionResult =
+        actualAddressDTO.addressStateRegion("us-east-2");
     Map<String, Object> actualAdditionalFields = actualAddressDTO.getAdditionalFields();
     String actualAddressCityLocality = actualAddressDTO.getAddressCityLocality();
     String actualAddressCompanyName = actualAddressDTO.getAddressCompanyName();
@@ -156,11 +180,13 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressDTO#AddressDTO(Object)}
    *   <li>{@link AddressDTO#addressCityLocality(String)}
@@ -193,38 +219,61 @@ public class AddressDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AddressDTO.<init>()", "void AddressDTO.<init>(Object)",
-      "AddressDTO AddressDTO.addressCityLocality(String)", "AddressDTO AddressDTO.addressCompanyName(String)",
-      "AddressDTO AddressDTO.addressCountryCode(String)", "AddressDTO AddressDTO.addressCounty(String)",
-      "AddressDTO AddressDTO.addressEmail(String)", "AddressDTO AddressDTO.addressFirstName(String)",
-      "AddressDTO AddressDTO.addressFullName(String)", "AddressDTO AddressDTO.addressLastName(String)",
-      "AddressDTO AddressDTO.addressLine1(String)", "AddressDTO AddressDTO.addressLine2(String)",
-      "AddressDTO AddressDTO.addressPhone(String)", "AddressDTO AddressDTO.addressPostalCode(String)",
-      "AddressDTO AddressDTO.addressStateRegion(String)", "Map AddressDTO.getAdditionalFields()",
-      "String AddressDTO.getAddressCityLocality()", "String AddressDTO.getAddressCompanyName()",
-      "String AddressDTO.getAddressCountryCode()", "String AddressDTO.getAddressEmail()",
-      "String AddressDTO.getAddressFirstName()", "String AddressDTO.getAddressFullName()",
-      "String AddressDTO.getAddressLastName()", "String AddressDTO.getAddressLine1()",
-      "String AddressDTO.getAddressLine2()", "String AddressDTO.getAddressPhone()",
-      "String AddressDTO.getAddressPostalCode()", "String AddressDTO.getAddressStateRegion()",
-      "String AddressDTO.getCounty()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AddressDTO.<init>()",
+    "void AddressDTO.<init>(Object)",
+    "AddressDTO AddressDTO.addressCityLocality(String)",
+    "AddressDTO AddressDTO.addressCompanyName(String)",
+    "AddressDTO AddressDTO.addressCountryCode(String)",
+    "AddressDTO AddressDTO.addressCounty(String)",
+    "AddressDTO AddressDTO.addressEmail(String)",
+    "AddressDTO AddressDTO.addressFirstName(String)",
+    "AddressDTO AddressDTO.addressFullName(String)",
+    "AddressDTO AddressDTO.addressLastName(String)",
+    "AddressDTO AddressDTO.addressLine1(String)",
+    "AddressDTO AddressDTO.addressLine2(String)",
+    "AddressDTO AddressDTO.addressPhone(String)",
+    "AddressDTO AddressDTO.addressPostalCode(String)",
+    "AddressDTO AddressDTO.addressStateRegion(String)",
+    "Map AddressDTO.getAdditionalFields()",
+    "String AddressDTO.getAddressCityLocality()",
+    "String AddressDTO.getAddressCompanyName()",
+    "String AddressDTO.getAddressCountryCode()",
+    "String AddressDTO.getAddressEmail()",
+    "String AddressDTO.getAddressFirstName()",
+    "String AddressDTO.getAddressFullName()",
+    "String AddressDTO.getAddressLastName()",
+    "String AddressDTO.getAddressLine1()",
+    "String AddressDTO.getAddressLine2()",
+    "String AddressDTO.getAddressPhone()",
+    "String AddressDTO.getAddressPostalCode()",
+    "String AddressDTO.getAddressStateRegion()",
+    "String AddressDTO.getCounty()"
+  })
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     AddressDTO<Object> actualAddressDTO = new AddressDTO<>(BLCFieldUtils.NULL_FIELD);
-    AddressDTO<Object> actualAddressCityLocalityResult = actualAddressDTO.addressCityLocality("42 Main St");
-    AddressDTO<Object> actualAddressCompanyNameResult = actualAddressDTO.addressCompanyName("42 Main St");
-    AddressDTO<Object> actualAddressCountryCodeResult = actualAddressDTO.addressCountryCode("42 Main St");
+    AddressDTO<Object> actualAddressCityLocalityResult =
+        actualAddressDTO.addressCityLocality("42 Main St");
+    AddressDTO<Object> actualAddressCompanyNameResult =
+        actualAddressDTO.addressCompanyName("42 Main St");
+    AddressDTO<Object> actualAddressCountryCodeResult =
+        actualAddressDTO.addressCountryCode("42 Main St");
     AddressDTO<Object> actualAddressCountyResult = actualAddressDTO.addressCounty("3");
     AddressDTO<Object> actualAddressEmailResult = actualAddressDTO.addressEmail("42 Main St");
     AddressDTO<Object> actualAddressFirstNameResult = actualAddressDTO.addressFirstName("Jane");
-    AddressDTO<Object> actualAddressFullNameResult = actualAddressDTO.addressFullName("Dr Jane Doe");
+    AddressDTO<Object> actualAddressFullNameResult =
+        actualAddressDTO.addressFullName("Dr Jane Doe");
     AddressDTO<Object> actualAddressLastNameResult = actualAddressDTO.addressLastName("Doe");
     AddressDTO<Object> actualAddressLine1Result = actualAddressDTO.addressLine1("42 Main St");
     AddressDTO<Object> actualAddressLine2Result = actualAddressDTO.addressLine2("42 Main St");
     AddressDTO<Object> actualAddressPhoneResult = actualAddressDTO.addressPhone("6625550144");
-    AddressDTO<Object> actualAddressPostalCodeResult = actualAddressDTO.addressPostalCode("42 Main St");
-    AddressDTO<Object> actualAddressStateRegionResult = actualAddressDTO.addressStateRegion("us-east-2");
+    AddressDTO<Object> actualAddressPostalCodeResult =
+        actualAddressDTO.addressPostalCode("42 Main St");
+    AddressDTO<Object> actualAddressStateRegionResult =
+        actualAddressDTO.addressStateRegion("us-east-2");
     Map<String, Object> actualAdditionalFields = actualAddressDTO.getAdditionalFields();
     String actualAddressCityLocality = actualAddressDTO.getAddressCityLocality();
     String actualAddressCompanyName = actualAddressDTO.getAddressCompanyName();
@@ -271,11 +320,12 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#done()}.
-   * <p>
-   * Method under test: {@link AddressDTO#done()}
+   *
+   * <p>Method under test: {@link AddressDTO#done()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object AddressDTO.done()"})
   public void testDone() {
     // Arrange
@@ -287,27 +337,35 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#additionalFields(String, Object)}.
-   * <p>
-   * Method under test: {@link AddressDTO#additionalFields(String, Object)}
+   *
+   * <p>Method under test: {@link AddressDTO#additionalFields(String, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AddressDTO AddressDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
-    // Arrange, Act and Assert
-    assertSame(addressDTO, addressDTO.additionalFields("Key", BLCFieldUtils.NULL_FIELD));
+    // Arrange and Act
+    AddressDTO<Object> actualAdditionalFieldsResult =
+        addressDTO.additionalFields("Key", BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    assertSame(addressDTO, actualAdditionalFieldsResult);
   }
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} additionalFields {@code Key} and {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} additionalFields {@code Key} and {@link
+   *       BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAdditionalFieldsKeyAndNull_field() {
     // Arrange
@@ -320,15 +378,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressCityLocality {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressCityLocality {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressCityLocality42MainSt_thenReturnTrue() {
     // Arrange
@@ -341,15 +401,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressCompanyName {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressCompanyName {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressCompanyName42MainSt_thenReturnTrue() {
     // Arrange
@@ -362,15 +424,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressCountryCode {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressCountryCode {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressCountryCode42MainSt_thenReturnTrue() {
     // Arrange
@@ -383,15 +447,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressEmail {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressEmail {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressEmail42MainSt_thenReturnTrue() {
     // Arrange
@@ -404,15 +470,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressFirstName {@code Jane}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressFirstName {@code Jane}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressFirstNameJane_thenReturnTrue() {
     // Arrange
@@ -425,15 +493,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressLastName {@code Doe}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressLastName {@code Doe}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressLastNameDoe_thenReturnTrue() {
     // Arrange
@@ -446,15 +516,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressLine1 {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressLine1 {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressLine142MainSt_thenReturnTrue() {
     // Arrange
@@ -467,15 +539,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressLine2 {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressLine2 {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressLine242MainSt_thenReturnTrue() {
     // Arrange
@@ -488,15 +562,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressPhone {@code 6625550144}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressPhone {@code 6625550144}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressPhone6625550144_thenReturnTrue() {
     // Arrange
@@ -509,15 +585,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressPostalCode {@code 42 Main St}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressPostalCode {@code 42 Main St}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressPostalCode42MainSt_thenReturnTrue() {
     // Arrange
@@ -530,15 +608,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()} addressStateRegion {@code us-east-2}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()} addressStateRegion {@code us-east-2}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTOAddressStateRegionUsEast2_thenReturnTrue() {
     // Arrange
@@ -551,15 +631,17 @@ public class AddressDTODiffblueTest {
 
   /**
    * Test {@link AddressDTO#addressPopulated()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressDTO#AddressDTO()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link AddressDTO#AddressDTO()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressDTO#addressPopulated()}
+   *
+   * <p>Method under test: {@link AddressDTO#addressPopulated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressDTO.addressPopulated()"})
   public void testAddressPopulated_givenAddressDTO_thenReturnFalse() {
     // Arrange

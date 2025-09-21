@@ -21,20 +21,23 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import java.util.Map;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.commons.EmptyVisitor;
 
 public class HydrationScannerDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link HydrationScanner#HydrationScanner(Class, Class)}
    *   <li>{@link HydrationScanner#visitAttribute(Attribute)}
@@ -49,14 +52,20 @@ public class HydrationScannerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void HydrationScanner.<init>(Class, Class)", "Map HydrationScanner.getCacheMutators()",
-      "String HydrationScanner.getCacheRegion()", "Map HydrationScanner.getIdMutators()",
-      "void HydrationScanner.visitAttribute(Attribute)", "void HydrationScanner.visitEnd()",
-      "void HydrationScanner.visitEnum(String, String, String)",
-      "void HydrationScanner.visitInnerClass(String, String, String, int)",
-      "void HydrationScanner.visitOuterClass(String, String, String)",
-      "void HydrationScanner.visitSource(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void HydrationScanner.<init>(Class, Class)",
+    "Map HydrationScanner.getCacheMutators()",
+    "String HydrationScanner.getCacheRegion()",
+    "Map HydrationScanner.getIdMutators()",
+    "void HydrationScanner.visitAttribute(Attribute)",
+    "void HydrationScanner.visitEnd()",
+    "void HydrationScanner.visitEnum(String, String, String)",
+    "void HydrationScanner.visitInnerClass(String, String, String, int)",
+    "void HydrationScanner.visitOuterClass(String, String, String)",
+    "void HydrationScanner.visitSource(String, String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     Class<Object> topEntityClass = Object.class;
@@ -70,7 +79,8 @@ public class HydrationScannerDiffblueTest {
     actualHydrationScanner.visitInnerClass("Arg0", "Arg1", "Arg2", 1);
     actualHydrationScanner.visitOuterClass("Arg0", "Arg1", "Arg2");
     actualHydrationScanner.visitSource("Arg0", "Arg1");
-    Map<String, HydrationItemDescriptor> actualCacheMutators = actualHydrationScanner.getCacheMutators();
+    Map<String, HydrationItemDescriptor> actualCacheMutators =
+        actualHydrationScanner.getCacheMutators();
     String actualCacheRegion = actualHydrationScanner.getCacheRegion();
     Map<String, Method[]> actualIdMutators = actualHydrationScanner.getIdMutators();
 
@@ -81,52 +91,68 @@ public class HydrationScannerDiffblueTest {
   }
 
   /**
-   * Test {@link HydrationScanner#visitAnnotation(String, String)} with {@code String}, {@code String}.
-   * <p>
-   * Method under test: {@link HydrationScanner#visitAnnotation(String, String)}
+   * Test {@link HydrationScanner#visitAnnotation(String, String)} with {@code String}, {@code
+   * String}.
+   *
+   * <p>Method under test: {@link HydrationScanner#visitAnnotation(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"org.objectweb.asm.AnnotationVisitor HydrationScanner.visitAnnotation(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AnnotationVisitor HydrationScanner.visitAnnotation(String, String)"})
   public void testVisitAnnotationWithStringString() {
     // Arrange
     Class<Object> topEntityClass = Object.class;
     Class<Object> entityClass = Object.class;
+
     HydrationScanner hydrationScanner = new HydrationScanner(topEntityClass, entityClass);
 
-    // Act and Assert
-    assertSame(hydrationScanner, hydrationScanner.visitAnnotation("Arg0", "Arg1"));
+    // Act
+    AnnotationVisitor actualVisitAnnotationResult =
+        hydrationScanner.visitAnnotation("Arg0", "Arg1");
+
+    // Assert
+    assertSame(hydrationScanner, actualVisitAnnotationResult);
   }
 
   /**
    * Test {@link HydrationScanner#visitArray(String)}.
-   * <p>
-   * Method under test: {@link HydrationScanner#visitArray(String)}
+   *
+   * <p>Method under test: {@link HydrationScanner#visitArray(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"org.objectweb.asm.AnnotationVisitor HydrationScanner.visitArray(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AnnotationVisitor HydrationScanner.visitArray(String)"})
   public void testVisitArray() {
     // Arrange
     Class<Object> topEntityClass = Object.class;
     Class<Object> entityClass = Object.class;
+
     HydrationScanner hydrationScanner = new HydrationScanner(topEntityClass, entityClass);
 
-    // Act and Assert
-    assertSame(hydrationScanner, hydrationScanner.visitArray("Arg0"));
+    // Act
+    AnnotationVisitor actualVisitArrayResult = hydrationScanner.visitArray("Arg0");
+
+    // Assert
+    assertSame(hydrationScanner, actualVisitArrayResult);
   }
 
   /**
-   * Test {@link HydrationScanner#visit(int, int, String, String, String, String[])} with {@code arg0}, {@code arg1}, {@code arg2}, {@code arg3}, {@code arg4}, {@code arg5}.
+   * Test {@link HydrationScanner#visit(int, int, String, String, String, String[])} with {@code
+   * arg0}, {@code arg1}, {@code arg2}, {@code arg3}, {@code arg4}, {@code arg5}.
+   *
    * <ul>
-   *   <li>When {@code Arg2}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@code Arg2}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link HydrationScanner#visit(int, int, String, String, String, String[])}
+   *
+   * <p>Method under test: {@link HydrationScanner#visit(int, int, String, String, String,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void HydrationScanner.visit(int, int, String, String, String, String[])"})
   public void testVisitWithArg0Arg1Arg2Arg3Arg4Arg5_whenArg2_thenThrowRuntimeException() {
     // Arrange
@@ -134,21 +160,28 @@ public class HydrationScannerDiffblueTest {
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> (new HydrationScanner(topEntityClass, entityClass)).visit(1, 1, "Arg2",
-        "Arg3", "Arg4", new String[]{"Arg5"}));
+    assertThrows(
+        RuntimeException.class,
+        () ->
+            new HydrationScanner(topEntityClass, entityClass)
+                .visit(1, 1, "Arg2", "Arg3", "Arg4", new String[] {"Arg5"}));
   }
 
   /**
-   * Test {@link HydrationScanner#visit(int, int, String, String, String, String[])} with {@code arg0}, {@code arg1}, {@code arg2}, {@code arg3}, {@code arg4}, {@code arg5}.
+   * Test {@link HydrationScanner#visit(int, int, String, String, String, String[])} with {@code
+   * arg0}, {@code arg1}, {@code arg2}, {@code arg3}, {@code arg4}, {@code arg5}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@code /}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link HydrationScanner#visit(int, int, String, String, String, String[])}
+   *
+   * <p>Method under test: {@link HydrationScanner#visit(int, int, String, String, String,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void HydrationScanner.visit(int, int, String, String, String, String[])"})
   public void testVisitWithArg0Arg1Arg2Arg3Arg4Arg5_whenSlash_thenThrowRuntimeException() {
     // Arrange
@@ -156,26 +189,34 @@ public class HydrationScannerDiffblueTest {
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> (new HydrationScanner(topEntityClass, entityClass)).visit(1, 1, "/",
-        "Arg3", "Arg4", new String[]{"Arg5"}));
+    assertThrows(
+        RuntimeException.class,
+        () ->
+            new HydrationScanner(topEntityClass, entityClass)
+                .visit(1, 1, "/", "Arg3", "Arg4", new String[] {"Arg5"}));
   }
 
   /**
    * Test {@link HydrationScanner#visitMethod(int, String, String, String, String[])}.
-   * <p>
-   * Method under test: {@link HydrationScanner#visitMethod(int, String, String, String, String[])}
+   *
+   * <p>Method under test: {@link HydrationScanner#visitMethod(int, String, String, String,
+   * String[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.objectweb.asm.MethodVisitor HydrationScanner.visitMethod(int, String, String, String, String[])"})
+    "org.objectweb.asm.MethodVisitor HydrationScanner.visitMethod(int, String, String, String, String[])"
+  })
   public void testVisitMethod() {
     // Arrange
     Class<Object> topEntityClass = Object.class;
     Class<Object> entityClass = Object.class;
 
     // Act and Assert
-    assertTrue((new HydrationScanner(topEntityClass, entityClass)).visitMethod(1, "Arg1", "Arg2", "Arg3",
-        new String[]{"Arg4"}) instanceof EmptyVisitor);
+    assertTrue(
+        new HydrationScanner(topEntityClass, entityClass)
+                .visitMethod(1, "Arg1", "Arg2", "Arg3", new String[] {"Arg4"})
+            instanceof EmptyVisitor);
   }
 }

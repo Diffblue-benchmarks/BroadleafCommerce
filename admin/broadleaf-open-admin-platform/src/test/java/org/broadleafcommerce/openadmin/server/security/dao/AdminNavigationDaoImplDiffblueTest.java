@@ -17,49 +17,53 @@
  */
 package org.broadleafcommerce.openadmin.server.security.dao;
 
-import org.junit.Ignore;
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
-    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
-    "/bl-open-admin-contentCreator-applicationContext.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
-    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
-    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@RunWith(MockitoJUnitRunner.class)
 public class AdminNavigationDaoImplDiffblueTest {
+  @InjectMocks private AdminNavigationDaoImpl adminNavigationDaoImpl;
+
   /**
    * Test {@link AdminNavigationDaoImpl#getSectionKey(boolean)}.
-   * <p>
-   * Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
+   *
+   * <ul>
+   *   <li>When {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetSectionKey() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: Missing beans when creating Spring context.
-    //   Failed to create Spring context due to missing beans
-    //   in the current Spring profile:
-    //   when running class:
-    //   package org.broadleafcommerce.openadmin.server.security.dao;
-    //   @org.springframework.transaction.annotation.Transactional
-    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
-    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
-    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
-    //   public class DiffblueFakeClass80 {
-    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.dao.AdminNavigationDaoImpl adminNavigationDaoImpl;
-    //     @org.junit.Test // if JUnit 4
-    //     @org.junit.jupiter.api.Test // if JUnit 5
-    //     public void testSpringContextLoads() {}
-    //   }
-    //   See https://diff.blue/R027 to resolve this issue.
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String AdminNavigationDaoImpl.getSectionKey(boolean)"})
+  public void testGetSectionKey_whenFalse() {
+    // Arrange, Act and Assert
+    assertNull(adminNavigationDaoImpl.getSectionKey(false));
+  }
 
-    // Arrange and Act
-    (new AdminNavigationDaoImpl()).getSectionKey(true);
+  /**
+   * Test {@link AdminNavigationDaoImpl#getSectionKey(boolean)}.
+   *
+   * <ul>
+   *   <li>When {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminNavigationDaoImpl#getSectionKey(boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String AdminNavigationDaoImpl.getSectionKey(boolean)"})
+  public void testGetSectionKey_whenTrue() {
+    // Arrange, Act and Assert
+    assertNull(adminNavigationDaoImpl.getSectionKey(true));
   }
 }

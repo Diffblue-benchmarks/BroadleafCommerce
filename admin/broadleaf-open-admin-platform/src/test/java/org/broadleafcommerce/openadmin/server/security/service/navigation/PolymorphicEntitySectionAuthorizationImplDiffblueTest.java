@@ -18,7 +18,8 @@
 package org.broadleafcommerce.openadmin.server.security.service.navigation;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminModuleDTO;
@@ -40,17 +41,23 @@ public class PolymorphicEntitySectionAuthorizationImplDiffblueTest {
   private PolymorphicEntitySectionAuthorizationImpl polymorphicEntitySectionAuthorizationImpl;
 
   /**
-   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}.
+   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}.
+   *
    * <ul>
-   *   <li>Given empty string.</li>
+   *   <li>Given empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}
+   *
+   * <p>Method under test: {@link
+   * PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"})
+    "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"
+  })
   public void testIsUserAuthorizedToViewSection_givenEmptyString() {
     // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
@@ -70,21 +77,29 @@ public class PolymorphicEntitySectionAuthorizationImplDiffblueTest {
     section.setCeilingEntity("");
 
     // Act and Assert
-    assertTrue(polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(adminUser, section));
+    assertTrue(
+        polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(
+            adminUser, section));
   }
 
   /**
-   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}.
+   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}.
+   *
    * <ul>
-   *   <li>Given space.</li>
+   *   <li>Given space.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}
+   *
+   * <p>Method under test: {@link
+   * PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"})
+    "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"
+  })
   public void testIsUserAuthorizedToViewSection_givenSpace() {
     // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
@@ -104,28 +119,37 @@ public class PolymorphicEntitySectionAuthorizationImplDiffblueTest {
     section.setCeilingEntity(" ");
 
     // Act and Assert
-    assertTrue(polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(adminUser, section));
+    assertTrue(
+        polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(
+            adminUser, section));
   }
 
   /**
-   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}.
+   * Test {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}.
+   *
    * <ul>
-   *   <li>When {@link AdminSectionImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link AdminSectionImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser, AdminSection)}
+   *
+   * <p>Method under test: {@link
+   * PolymorphicEntitySectionAuthorizationImpl#isUserAuthorizedToViewSection(AdminUser,
+   * AdminSection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"})
+    "boolean PolymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(AdminUser, AdminSection)"
+  })
   public void testIsUserAuthorizedToViewSection_whenAdminSectionImpl_thenReturnTrue() {
     // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
 
     // Act and Assert
     assertTrue(
-        polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(adminUser, new AdminSectionImpl()));
+        polymorphicEntitySectionAuthorizationImpl.isUserAuthorizedToViewSection(
+            adminUser, new AdminSectionImpl()));
   }
 }

@@ -26,9 +26,11 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
+import java.util.Map;
 import org.broadleafcommerce.common.presentation.client.AddMethodType;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.openadmin.dto.visitor.MetadataVisitor;
@@ -40,19 +42,23 @@ import org.mockito.Mockito;
 public class BasicCollectionMetadataDiffblueTest {
   /**
    * Test {@link BasicCollectionMetadata#accept(MetadataVisitor)}.
+   *
    * <ul>
-   *   <li>When {@link MetadataVisitorAdapter} {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)} does nothing.</li>
-   *   <li>Then calls {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)}.</li>
+   *   <li>When {@link MetadataVisitorAdapter} {@link
+   *       MetadataVisitorAdapter#visit(BasicCollectionMetadata)} does nothing.
+   *   <li>Then calls {@link MetadataVisitorAdapter#visit(BasicCollectionMetadata)}.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#accept(MetadataVisitor)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#accept(MetadataVisitor)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BasicCollectionMetadata.accept(MetadataVisitor)"})
   public void testAccept_whenMetadataVisitorAdapterVisitDoesNothing_thenCallsVisit() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
+
     MetadataVisitorAdapter visitor = mock(MetadataVisitorAdapter.class);
     doNothing().when(visitor).visit(Mockito.<BasicCollectionMetadata>any());
 
@@ -64,230 +70,29 @@ public class BasicCollectionMetadataDiffblueTest {
   }
 
   /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualPopulateResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <ul>
-   *   <li>Given {@link PersistencePerspective#PersistencePerspective()} PersistencePerspectiveItems is {@link HashMap#HashMap()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_givenPersistencePerspectivePersistencePerspectiveItemsIsHashMap() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualPopulateResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <ul>
-   *   <li>Then return array length is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnArrayLengthIsOne() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    ForeignKey foreignKey = new ForeignKey();
-    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    ForeignKey[] additionalForeignKeys = ((BasicCollectionMetadata) actualPopulateResult).getPersistencePerspective()
-        .getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys.length);
-    assertEquals(foreignKey, additionalForeignKeys[0]);
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <ul>
-   *   <li>Then return array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnArrayLengthIsZero() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualPopulateResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <ul>
-   *   <li>Then return PersistencePerspective ExcludeFields is array of {@link String} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnPersistencePerspectiveExcludeFieldsIsArrayOfStringWithFoo() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(new String[]{"foo"});
-    persistencePerspective.setIncludeFields(null);
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualPopulateResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#populate(FieldMetadata)}.
-   * <ul>
-   *   <li>Then return PersistencePerspective IncludeFields is array of {@link String} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#populate(FieldMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.populate(FieldMetadata)"})
-  public void testPopulate_thenReturnPersistencePerspectiveIncludeFieldsIsArrayOfStringWithFoo() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(new String[]{"foo"});
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualPopulateResult = basicCollectionMetadata.populate(new BasicCollectionMetadata());
-
-    // Assert
-    assertTrue(actualPopulateResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualPopulateResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
-  }
-
-  /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata() {
     // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(null);
+    persistencePerspective.setIncludeFields(new String[] {"foo"});
 
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
     basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
@@ -297,62 +102,37 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
+    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
+    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getIncludeFields());
   }
 
   /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata2() {
     // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(null);
-    persistencePerspective.setIncludeFields(new String[]{"foo"});
-
-    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
-    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
-
-    // Act
-    FieldMetadata actualCloneFieldMetadataResult = basicCollectionMetadata.cloneFieldMetadata();
-
-    // Assert
-    assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
-    assertEquals(0, persistencePerspective2.getExcludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getIncludeFields());
-  }
-
-  /**
-   * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata3() {
-    // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
-    persistencePerspective.setAdditionalForeignKeys(null);
-    persistencePerspective.setPersistencePerspectiveItems(null);
-    persistencePerspective.setExcludeFields(new String[]{"foo"});
+    persistencePerspective.setExcludeFields(new String[] {"foo"});
     persistencePerspective.setIncludeFields(null);
 
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -363,24 +143,33 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective();
+    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getExcludeFields());
+    assertArrayEquals(new String[] {"foo"}, persistencePerspective2.getExcludeFields());
   }
 
   /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata4() {
+  public void testCloneFieldMetadata3() {
     // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(new HashMap<>());
@@ -395,27 +184,34 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective();
-    assertEquals(0, persistencePerspective2.getAdditionalForeignKeys().length);
+    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertTrue(persistencePerspective2.getPersistencePerspectiveItems().isEmpty());
   }
 
   /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
-  public void testCloneFieldMetadata5() {
+  public void testCloneFieldMetadata4() {
     // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(new String[]{"foo"});
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    persistencePerspective.setAdditionalNonPersistentProperties(new String[] {"foo"});
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
@@ -429,27 +225,81 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    PersistencePerspective persistencePerspective2 = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective();
+    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
     assertEquals(0, persistencePerspective2.getExcludeFields().length);
     assertEquals(0, persistencePerspective2.getIncludeFields().length);
-    assertArrayEquals(new String[]{"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
+    assertArrayEquals(
+        new String[] {"foo"}, persistencePerspective2.getAdditionalNonPersistentProperties());
   }
 
   /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata5() {
+    // Arrange
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
+    basicCollectionMetadata.setAvailableToTypes(new String[] {"Available To Types"});
+    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+    assertArrayEquals(
+        new String[] {"Available To Types"}, actualCloneFieldMetadataResult.getAvailableToTypes());
+  }
+
+  /**
+   * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata6() {
     // Arrange
-    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem> persistencePerspectiveItems = new HashMap<>();
-    persistencePerspectiveItems.put(PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
+    HashMap<PersistencePerspectiveItemType, PersistencePerspectiveItem>
+        persistencePerspectiveItems = new HashMap<>();
+    persistencePerspectiveItems.put(
+        PersistencePerspectiveItemType.FOREIGNKEY, new AdornedTargetList());
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
 
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
     persistencePerspective.setAdditionalNonPersistentProperties(null);
     persistencePerspective.setAdditionalForeignKeys(null);
     persistencePerspective.setPersistencePerspectiveItems(persistencePerspectiveItems);
@@ -464,28 +314,76 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    assertEquals(persistencePerspectiveItems,
-        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective()
+    assertEquals(
+        persistencePerspectiveItems,
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
+            .getPersistencePerspective()
             .getPersistencePerspectiveItems());
   }
 
   /**
    * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
+   *
    * <ul>
-   *   <li>Then return array length is one.</li>
+   *   <li>Then return AdditionalMetadata size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata_thenReturnAdditionalMetadataSizeIsOne() {
+    // Arrange
+    HashMap<String, Object> additionalMetadata = new HashMap<>();
+    additionalMetadata.put("foo", "42");
+
+    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
+    basicCollectionMetadata.setAdditionalMetadata(additionalMetadata);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
+    Map<String, Object> additionalMetadata2 =
+        actualCloneFieldMetadataResult.getAdditionalMetadata();
+    assertEquals(1, additionalMetadata2.size());
+    assertEquals("42", additionalMetadata2.get("foo"));
+    assertEquals(
+        persistencePerspective,
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective());
+  }
+
+  /**
+   * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
+   *
+   * <ul>
+   *   <li>Then return array length is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
   public void testCloneFieldMetadata_thenReturnArrayLengthIsOne() {
     // Arrange
-    PersistencePerspective persistencePerspective = new PersistencePerspective();
-    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
     ForeignKey foreignKey = new ForeignKey();
-    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[]{foreignKey});
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {foreignKey};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(new ForeignKey[] {new ForeignKey()});
     persistencePerspective.setPersistencePerspectiveItems(null);
     persistencePerspective.setExcludeFields(null);
     persistencePerspective.setIncludeFields(null);
@@ -498,29 +396,82 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Assert
     assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
-    ForeignKey[] additionalForeignKeys = ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
-        .getPersistencePerspective()
-        .getAdditionalForeignKeys();
-    assertEquals(1, additionalForeignKeys.length);
-    assertEquals(foreignKey, additionalForeignKeys[0]);
+    ForeignKey[] additionalForeignKeys2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult)
+            .getPersistencePerspective()
+            .getAdditionalForeignKeys();
+    assertEquals(1, additionalForeignKeys2.length);
+    assertEquals(foreignKey, additionalForeignKeys2[0]);
   }
 
   /**
-   * Test {@link BasicCollectionMetadata#equals(Object)}, and {@link BasicCollectionMetadata#hashCode()}.
+   * Test {@link BasicCollectionMetadata#cloneFieldMetadata()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>Then return AvailableToTypes is {@code null}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#cloneFieldMetadata()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"FieldMetadata BasicCollectionMetadata.cloneFieldMetadata()"})
+  public void testCloneFieldMetadata_thenReturnAvailableToTypesIsNull() {
+    // Arrange
+    OperationTypes operationTypes = new OperationTypes();
+    String[] additionalNonPersistentProperties =
+        new String[] {"Additional Non Persistent Properties"};
+    ForeignKey[] additionalForeignKeys = new ForeignKey[] {new ForeignKey()};
+
+    PersistencePerspective persistencePerspective =
+        new PersistencePerspective(
+            operationTypes, additionalNonPersistentProperties, additionalForeignKeys);
+    persistencePerspective.setAdditionalNonPersistentProperties(null);
+    persistencePerspective.setAdditionalForeignKeys(null);
+    persistencePerspective.setPersistencePerspectiveItems(null);
+    persistencePerspective.setExcludeFields(null);
+    persistencePerspective.setIncludeFields(null);
+
+    BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
+    basicCollectionMetadata.setPersistencePerspective(persistencePerspective);
+
+    // Act
+    FieldMetadata actualCloneFieldMetadataResult = basicCollectionMetadata.cloneFieldMetadata();
+
+    // Assert
+    assertTrue(actualCloneFieldMetadataResult instanceof BasicCollectionMetadata);
+    assertNull(actualCloneFieldMetadataResult.getAvailableToTypes());
+    PersistencePerspective persistencePerspective2 =
+        ((BasicCollectionMetadata) actualCloneFieldMetadataResult).getPersistencePerspective();
+    assertEquals(0, persistencePerspective2.getAdditionalNonPersistentProperties().length);
+    assertEquals(0, persistencePerspective2.getExcludeFields().length);
+    assertEquals(0, persistencePerspective2.getIncludeFields().length);
+  }
+
+  /**
+   * Test {@link BasicCollectionMetadata#equals(Object)}, and {@link
+   * BasicCollectionMetadata#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BasicCollectionMetadata#equals(Object)}
    *   <li>{@link BasicCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -533,26 +484,32 @@ public class BasicCollectionMetadataDiffblueTest {
 
     // Act and Assert
     assertEquals(basicCollectionMetadata, basicCollectionMetadata2);
-    int expectedHashCodeResult = basicCollectionMetadata.hashCode();
-    assertEquals(expectedHashCodeResult, basicCollectionMetadata2.hashCode());
+    assertEquals(basicCollectionMetadata.hashCode(), basicCollectionMetadata2.hashCode());
   }
 
   /**
-   * Test {@link BasicCollectionMetadata#equals(Object)}, and {@link BasicCollectionMetadata#hashCode()}.
+   * Test {@link BasicCollectionMetadata#equals(Object)}, and {@link
+   * BasicCollectionMetadata#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BasicCollectionMetadata#equals(Object)}
    *   <li>{@link BasicCollectionMetadata#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -565,16 +522,21 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link BasicCollectionMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -586,16 +548,21 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link BasicCollectionMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -607,16 +574,21 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link BasicCollectionMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     BasicCollectionMetadata basicCollectionMetadata = new BasicCollectionMetadata();
@@ -632,16 +604,21 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link BasicCollectionMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new BasicCollectionMetadata(), null);
@@ -649,16 +626,21 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test {@link BasicCollectionMetadata#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link BasicCollectionMetadata#equals(Object)}
+   *
+   * <p>Method under test: {@link BasicCollectionMetadata#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean BasicCollectionMetadata.equals(Object)", "int BasicCollectionMetadata.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean BasicCollectionMetadata.equals(Object)",
+    "int BasicCollectionMetadata.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new BasicCollectionMetadata(), "Different type to BasicCollectionMetadata");
@@ -666,8 +648,9 @@ public class BasicCollectionMetadataDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link BasicCollectionMetadata}
    *   <li>{@link BasicCollectionMetadata#setAddMethodType(AddMethodType)}
@@ -679,13 +662,17 @@ public class BasicCollectionMetadataDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void BasicCollectionMetadata.<init>()",
-      "AddMethodType BasicCollectionMetadata.getAddMethodType()",
-      "String BasicCollectionMetadata.getSelectizeVisibleField()", "String BasicCollectionMetadata.getSortProperty()",
-      "void BasicCollectionMetadata.setAddMethodType(AddMethodType)",
-      "void BasicCollectionMetadata.setSelectizeVisibleField(String)",
-      "void BasicCollectionMetadata.setSortProperty(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BasicCollectionMetadata.<init>()",
+    "AddMethodType BasicCollectionMetadata.getAddMethodType()",
+    "String BasicCollectionMetadata.getSelectizeVisibleField()",
+    "String BasicCollectionMetadata.getSortProperty()",
+    "void BasicCollectionMetadata.setAddMethodType(AddMethodType)",
+    "void BasicCollectionMetadata.setSelectizeVisibleField(String)",
+    "void BasicCollectionMetadata.setSortProperty(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     BasicCollectionMetadata actualBasicCollectionMetadata = new BasicCollectionMetadata();

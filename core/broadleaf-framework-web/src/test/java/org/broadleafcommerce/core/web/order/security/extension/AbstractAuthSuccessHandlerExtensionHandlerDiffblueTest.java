@@ -19,16 +19,16 @@ package org.broadleafcommerce.core.web.order.security.extension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.TestingAuthenticationToken;
@@ -36,40 +36,52 @@ import org.springframework.security.core.Authentication;
 
 class AbstractAuthSuccessHandlerExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractAuthSuccessHandlerExtensionHandler#preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)}.
-   * <p>
-   * Method under test: {@link AbstractAuthSuccessHandlerExtensionHandler#preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)}
+   * Test {@link
+   * AbstractAuthSuccessHandlerExtensionHandler#preMergeCartExecution(HttpServletRequest,
+   * HttpServletResponse, Authentication)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAuthSuccessHandlerExtensionHandler#preMergeCartExecution(HttpServletRequest,
+   * HttpServletResponse, Authentication)}
    */
   @Test
-  @DisplayName("Test preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAuthSuccessHandlerExtensionHandler.preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)"})
+    "ExtensionResultStatusType AbstractAuthSuccessHandlerExtensionHandler.preMergeCartExecution(HttpServletRequest, HttpServletResponse, Authentication)"
+  })
   void testPreMergeCartExecution() {
     // Arrange
-    AbstractAuthSuccessHandlerExtensionHandler abstractAuthSuccessHandlerExtensionHandler = new AbstractAuthSuccessHandlerExtensionHandler();
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    AbstractAuthSuccessHandlerExtensionHandler abstractAuthSuccessHandlerExtensionHandler =
+        new AbstractAuthSuccessHandlerExtensionHandler();
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAuthSuccessHandlerExtensionHandler
-        .preMergeCartExecution(request, response, new TestingAuthenticationToken("Principal", "Credentials")));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAuthSuccessHandlerExtensionHandler.preMergeCartExecution(
+            request, response, new TestingAuthenticationToken("Principal", "Credentials")));
   }
 
   /**
    * Test new {@link AbstractAuthSuccessHandlerExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractAuthSuccessHandlerExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractAuthSuccessHandlerExtensionHandler}
    */
   @Test
   @DisplayName("Test new AbstractAuthSuccessHandlerExtensionHandler (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractAuthSuccessHandlerExtensionHandler.<init>()"})
   void testNewAbstractAuthSuccessHandlerExtensionHandler() {
     // Arrange and Act
-    AbstractAuthSuccessHandlerExtensionHandler actualAbstractAuthSuccessHandlerExtensionHandler = new AbstractAuthSuccessHandlerExtensionHandler();
+    AbstractAuthSuccessHandlerExtensionHandler actualAbstractAuthSuccessHandlerExtensionHandler =
+        new AbstractAuthSuccessHandlerExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractAuthSuccessHandlerExtensionHandler.getPriority());

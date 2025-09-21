@@ -19,11 +19,11 @@ package org.broadleafcommerce.core.pricing.service.workflow;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
@@ -41,28 +41,29 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class TaxActivityDiffblueTest {
-  @InjectMocks
-  private TaxActivity taxActivity;
+  @InjectMocks private TaxActivity taxActivity;
 
-  @Mock
-  private TaxService taxService;
+  @Mock private TaxService taxService;
 
   /**
    * Test {@link TaxActivity#execute(ProcessContext)}.
+   *
    * <ul>
-   *   <li>Given {@link TaxActivity} TaxModule is {@code null}.</li>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
+   *   <li>Given {@link TaxActivity} TaxModule is {@code null}.
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link TaxActivity#execute(ProcessContext)}
+   *
+   * <p>Method under test: {@link TaxActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
-  public void testExecute_givenTaxActivityTaxModuleIsNull_thenReturnDefaultProcessContextImpl() throws Exception {
+  public void testExecute_givenTaxActivityTaxModuleIsNull_thenReturnDefaultProcessContextImpl()
+      throws Exception {
     // Arrange
     taxActivity.setTaxService(null);
     taxActivity.setTaxModule(null);
@@ -70,20 +71,57 @@ public class TaxActivityDiffblueTest {
     DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
     context.setSeedData(new NullOrderImpl());
 
-    // Act and Assert
-    assertSame(context, taxActivity.execute(context));
+    // Act
+    ProcessContext<Order> actualExecuteResult = taxActivity.execute(context);
+
+    // Assert
+    assertSame(context, actualExecuteResult);
   }
 
   /**
    * Test {@link TaxActivity#execute(ProcessContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link TaxModule#calculateTaxForOrder(Order)}.</li>
+   *   <li>Given {@link TaxActivity} TaxService is {@link TaxService}.
+   *   <li>Then calls {@link TaxService#calculateTaxForOrder(Order)}.
    * </ul>
-   * <p>
-   * Method under test: {@link TaxActivity#execute(ProcessContext)}
+   *
+   * <p>Method under test: {@link TaxActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
+  public void testExecute_givenTaxActivityTaxServiceIsTaxService_thenCallsCalculateTaxForOrder()
+      throws Exception {
+    // Arrange
+    when(taxService.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
+    taxActivity.setTaxService(taxService);
+    taxActivity.setTaxModule(mock(TaxModule.class));
+
+    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
+    context.setSeedData(new NullOrderImpl());
+
+    // Act
+    ProcessContext<Order> actualExecuteResult = taxActivity.execute(context);
+
+    // Assert
+    verify(taxService).calculateTaxForOrder(isA(Order.class));
+    assertSame(context, actualExecuteResult);
+  }
+
+  /**
+   * Test {@link TaxActivity#execute(ProcessContext)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link TaxModule#calculateTaxForOrder(Order)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link TaxActivity#execute(ProcessContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
   public void testExecute_thenCallsCalculateTaxForOrder() throws Exception {
     // Arrange
@@ -100,31 +138,6 @@ public class TaxActivityDiffblueTest {
 
     // Assert
     verify(taxModule).calculateTaxForOrder(isA(Order.class));
-    assertSame(context, actualExecuteResult);
-  }
-
-  /**
-   * Test {@link TaxActivity#execute(ProcessContext)}.
-   * <ul>
-   *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
-   *   <li>Then calls {@link TaxService#calculateTaxForOrder(Order)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link TaxActivity#execute(ProcessContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProcessContext TaxActivity.execute(ProcessContext)"})
-  public void testExecute_whenDefaultProcessContextImpl_thenCallsCalculateTaxForOrder() throws Exception {
-    // Arrange
-    when(taxService.calculateTaxForOrder(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
-    DefaultProcessContextImpl<Order> context = new DefaultProcessContextImpl<>();
-
-    // Act
-    ProcessContext<Order> actualExecuteResult = taxActivity.execute(context);
-
-    // Assert
-    verify(taxService).calculateTaxForOrder(isNull());
     assertSame(context, actualExecuteResult);
   }
 }

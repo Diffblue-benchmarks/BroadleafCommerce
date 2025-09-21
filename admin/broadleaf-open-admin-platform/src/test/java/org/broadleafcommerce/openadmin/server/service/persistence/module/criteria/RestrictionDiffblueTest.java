@@ -21,7 +21,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.util.dao.DynamicDaoHelperImpl;
@@ -39,56 +40,68 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {Restriction.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RestrictionDiffblueTest {
-  @Autowired
-  private Restriction restriction;
+  @Autowired private Restriction restriction;
 
   /**
    * Test {@link Restriction#withPredicateProvider(PredicateProvider)}.
-   * <p>
-   * Method under test: {@link Restriction#withPredicateProvider(PredicateProvider)}
+   *
+   * <p>Method under test: {@link Restriction#withPredicateProvider(PredicateProvider)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Restriction Restriction.withPredicateProvider(PredicateProvider)"})
   public void testWithPredicateProvider() {
     // Arrange
-    PredicateProvider<Object, Object> predicateProvider = mock(PredicateProvider.class);
+    PredicateProvider predicateProvider = mock(PredicateProvider.class);
 
-    // Act and Assert
-    assertSame(restriction, restriction.withPredicateProvider(predicateProvider));
+    // Act
+    Restriction actualWithPredicateProviderResult =
+        restriction.withPredicateProvider(predicateProvider);
+
+    // Assert
+    assertSame(restriction, actualWithPredicateProviderResult);
     assertSame(predicateProvider, restriction.getPredicateProvider());
   }
 
   /**
    * Test {@link Restriction#withFilterValueConverter(FilterValueConverter)}.
-   * <p>
-   * Method under test: {@link Restriction#withFilterValueConverter(FilterValueConverter)}
+   *
+   * <p>Method under test: {@link Restriction#withFilterValueConverter(FilterValueConverter)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Restriction Restriction.withFilterValueConverter(FilterValueConverter)"})
   public void testWithFilterValueConverter() {
     // Arrange
-    FilterValueConverter<Object> filterValueConverter = mock(FilterValueConverter.class);
+    FilterValueConverter filterValueConverter = mock(FilterValueConverter.class);
 
-    // Act and Assert
-    assertSame(restriction, restriction.withFilterValueConverter(filterValueConverter));
+    // Act
+    Restriction actualWithFilterValueConverterResult =
+        restriction.withFilterValueConverter(filterValueConverter);
+
+    // Assert
+    assertSame(restriction, actualWithFilterValueConverterResult);
     assertSame(filterValueConverter, restriction.getFilterValueConverter());
   }
 
   /**
    * Test {@link Restriction#withFieldPathBuilder(FieldPathBuilder)}.
+   *
    * <ul>
-   *   <li>Then {@link Restriction} FieldPathBuilder is {@link FieldPathBuilder} (default constructor).</li>
+   *   <li>Then {@link Restriction} FieldPathBuilder is {@link FieldPathBuilder} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link Restriction#withFieldPathBuilder(FieldPathBuilder)}
+   *
+   * <p>Method under test: {@link Restriction#withFieldPathBuilder(FieldPathBuilder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Restriction Restriction.withFieldPathBuilder(FieldPathBuilder)"})
   public void testWithFieldPathBuilder_thenRestrictionFieldPathBuilderIsFieldPathBuilder() {
     // Arrange
@@ -99,7 +112,8 @@ public class RestrictionDiffblueTest {
     fieldPathBuilder.setRestrictions(new ArrayList<>());
 
     // Act
-    Restriction actualWithFieldPathBuilderResult = restriction.withFieldPathBuilder(fieldPathBuilder);
+    Restriction actualWithFieldPathBuilderResult =
+        restriction.withFieldPathBuilder(fieldPathBuilder);
 
     // Assert
     assertSame(fieldPathBuilder, restriction.getFieldPathBuilder());
@@ -108,8 +122,9 @@ public class RestrictionDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link Restriction#setFilterValueConverter(FilterValueConverter)}
    *   <li>{@link Restriction#setPredicateProvider(PredicateProvider)}
@@ -119,40 +134,44 @@ public class RestrictionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FieldPathBuilder Restriction.getFieldPathBuilder()",
-      "FilterValueConverter Restriction.getFilterValueConverter()",
-      "PredicateProvider Restriction.getPredicateProvider()", "void Restriction.setFieldPathBuilder(FieldPathBuilder)",
-      "void Restriction.setFilterValueConverter(FilterValueConverter)",
-      "void Restriction.setPredicateProvider(PredicateProvider)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "FieldPathBuilder Restriction.getFieldPathBuilder()",
+    "FilterValueConverter Restriction.getFilterValueConverter()",
+    "PredicateProvider Restriction.getPredicateProvider()",
+    "void Restriction.setFieldPathBuilder(FieldPathBuilder)",
+    "void Restriction.setFilterValueConverter(FilterValueConverter)",
+    "void Restriction.setPredicateProvider(PredicateProvider)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     Restriction restriction = new Restriction();
-    FilterValueConverter<Object> filterValueConverter = mock(FilterValueConverter.class);
+    FilterValueConverter filterValueConverter = mock(FilterValueConverter.class);
 
     // Act
     restriction.setFilterValueConverter(filterValueConverter);
-    PredicateProvider<Object, Object> predicateProvider = mock(PredicateProvider.class);
+    PredicateProvider predicateProvider = mock(PredicateProvider.class);
     restriction.setPredicateProvider(predicateProvider);
     FieldPathBuilder actualFieldPathBuilder = restriction.getFieldPathBuilder();
     FilterValueConverter actualFilterValueConverter = restriction.getFilterValueConverter();
-    PredicateProvider actualPredicateProvider = restriction.getPredicateProvider();
 
     // Assert
     assertTrue(actualFieldPathBuilder.dynamicDaoHelper instanceof DynamicDaoHelperImpl);
     assertNull(actualFieldPathBuilder.getRestrictions());
     assertNull(actualFieldPathBuilder.getCriteria());
     assertSame(filterValueConverter, actualFilterValueConverter);
-    assertSame(predicateProvider, actualPredicateProvider);
+    assertSame(predicateProvider, restriction.getPredicateProvider());
   }
 
   /**
    * Test {@link Restriction#clone()}.
-   * <p>
-   * Method under test: {@link Restriction#clone()}
+   *
+   * <p>Method under test: {@link Restriction#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Restriction Restriction.clone()"})
   public void testClone() {
     // Arrange and Act
@@ -169,11 +188,12 @@ public class RestrictionDiffblueTest {
 
   /**
    * Test new {@link Restriction} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link Restriction}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link Restriction}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Restriction.<init>()"})
   public void testNewRestriction() {
     // Arrange and Act

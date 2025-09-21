@@ -18,7 +18,8 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service.options;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.BroadleafEnumerationType;
@@ -34,20 +35,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class WebRequestDeviceTypeEnumOptionsExtensionListenerDiffblueTest {
   @Autowired
-  private WebRequestDeviceTypeEnumOptionsExtensionListener webRequestDeviceTypeEnumOptionsExtensionListener;
+  private WebRequestDeviceTypeEnumOptionsExtensionListener
+      webRequestDeviceTypeEnumOptionsExtensionListener;
 
   /**
    * Test {@link WebRequestDeviceTypeEnumOptionsExtensionListener#getValuesToGenerate()}.
-   * <p>
-   * Method under test: {@link WebRequestDeviceTypeEnumOptionsExtensionListener#getValuesToGenerate()}
+   *
+   * <p>Method under test: {@link
+   * WebRequestDeviceTypeEnumOptionsExtensionListener#getValuesToGenerate()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map WebRequestDeviceTypeEnumOptionsExtensionListener.getValuesToGenerate()"})
   public void testGetValuesToGenerate() {
     // Arrange and Act
-    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate = webRequestDeviceTypeEnumOptionsExtensionListener
-        .getValuesToGenerate();
+    Map<String, Class<? extends BroadleafEnumerationType>> actualValuesToGenerate =
+        webRequestDeviceTypeEnumOptionsExtensionListener.getValuesToGenerate();
 
     // Assert
     assertEquals(1, actualValuesToGenerate.size());

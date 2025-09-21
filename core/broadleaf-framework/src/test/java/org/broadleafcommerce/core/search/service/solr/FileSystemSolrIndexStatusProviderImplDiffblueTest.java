@@ -22,14 +22,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.File;
 import java.text.DecimalFormat;
@@ -37,6 +35,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -44,15 +43,8 @@ import javax.imageio.metadata.IIOMetadataNode;
 import javax.xml.xpath.XPathExpressionException;
 import org.apache.html.dom.HTMLAnchorElementImpl;
 import org.apache.html.dom.HTMLDocumentImpl;
-import org.apache.xerces.dom.ChildNode;
-import org.apache.xerces.dom.ParentNode;
-import org.apache.xerces.impl.xs.opti.DefaultElement;
-import org.apache.xerces.impl.xs.opti.DefaultNode;
-import org.broadleafcommerce.core.search.service.SearchService;
 import org.broadleafcommerce.core.search.service.solr.index.IndexStatusInfo;
 import org.broadleafcommerce.core.search.service.solr.index.IndexStatusInfoImpl;
-import org.dom4j.dom.DOMAttributeNodeMap;
-import org.dom4j.dom.DOMElement;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -67,29 +59,27 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
-  @InjectMocks
-  private FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+  @InjectMocks private FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
 
-  @Mock
-  private SearchService searchService;
-
-  @Mock
-  private SolrConfiguration solrConfiguration;
+  @Mock private SolrConfiguration solrConfiguration;
 
   /**
    * Test new {@link FileSystemSolrIndexStatusProviderImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link FileSystemSolrIndexStatusProviderImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * FileSystemSolrIndexStatusProviderImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FileSystemSolrIndexStatusProviderImpl.<init>()"})
   public void testNewFileSystemSolrIndexStatusProviderImpl() {
     // Arrange and Act
-    FileSystemSolrIndexStatusProviderImpl actualFileSystemSolrIndexStatusProviderImpl = new FileSystemSolrIndexStatusProviderImpl();
+    FileSystemSolrIndexStatusProviderImpl actualFileSystemSolrIndexStatusProviderImpl =
+        new FileSystemSolrIndexStatusProviderImpl();
 
     // Assert
     SimpleDateFormat simpleDateFormat = actualFileSystemSolrIndexStatusProviderImpl.format;
@@ -105,334 +95,139 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
   }
 
   /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element, IndexStatusInfo)}.
-   * <ul>
-   *   <li>Then {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo} FirstChild {@link IIOMetadataNode}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element, IndexStatusInfo)}
+   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element,
+   * IndexStatusInfo)}.
+   *
+   * <p>Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document,
+   * Element, IndexStatusInfo)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void FileSystemSolrIndexStatusProviderImpl.updateIndexSegment(Document, Element, IndexStatusInfo)"})
-  public void testUpdateIndexSegment_thenIIOMetadataNodeWithFooFirstChildIIOMetadataNode()
+    "void FileSystemSolrIndexStatusProviderImpl.updateIndexSegment(Document, Element, IndexStatusInfo)"
+  })
+  public void testUpdateIndexSegment()
       throws ParseException, XPathExpressionException, DOMException {
     // Arrange
-    Document document = mock(Document.class);
-    when(document.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(document.getLocalName()).thenReturn("Local Name");
-    when(document.getNamespaceURI()).thenReturn("Namespace URI");
-    IIOMetadataNode iioMetadataNode = new IIOMetadataNode("foo");
-    when(document.createElement(Mockito.<String>any())).thenReturn(iioMetadataNode);
-    when(document.getParentNode()).thenReturn(null);
-    when(document.getNodeType()).thenReturn((short) 1);
-    IIOMetadataNode rootElement = new IIOMetadataNode("foo");
+    HTMLDocumentImpl document = new HTMLDocumentImpl();
+
+    HTMLAnchorElementImpl rootElement = mock(HTMLAnchorElementImpl.class);
+    when(rootElement.appendChild(Mockito.<Node>any())).thenReturn(new IIOMetadataNode());
+
     IndexStatusInfo status = mock(IndexStatusInfo.class);
     when(status.getAdditionalInfo()).thenReturn(new HashMap<>());
     when(status.getLastIndexDate())
-        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        .thenReturn(
+            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act
     fileSystemSolrIndexStatusProviderImpl.updateIndexSegment(document, rootElement, status);
 
     // Assert
+    verify(rootElement).appendChild(isA(Node.class));
     verify(status).getAdditionalInfo();
     verify(status).getLastIndexDate();
-    verify(document).createElement(eq("index"));
-    verify(document).getAttributes();
-    verify(document, atLeast(1)).getLocalName();
-    verify(document).getNamespaceURI();
-    verify(document, atLeast(1)).getNodeType();
-    verify(document).getParentNode();
-    Node firstChild = rootElement.getFirstChild();
-    assertTrue(firstChild instanceof IIOMetadataNode);
-    assertEquals(1, rootElement.getLength());
-    assertTrue(rootElement.hasChildNodes());
-    assertSame(iioMetadataNode, firstChild);
-    assertSame(iioMetadataNode, rootElement.getLastChild());
+    Calendar calendar = fileSystemSolrIndexStatusProviderImpl.format.getCalendar();
+    assertTrue(calendar instanceof GregorianCalendar);
+    assertEquals(0L, calendar.getTimeInMillis());
+    assertEquals(1970, calendar.getWeekYear());
   }
 
   /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}.
+   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element,
+   * IndexStatusInfo)}.
+   *
    * <ul>
-   *   <li>Given {@link DOMElement#DOMElement(String)} with {@code Name}.</li>
-   *   <li>Then calls {@link ChildNode#getParentNode()}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code /status/index} is {@code /status/index}.
    * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}
+   *
+   * <p>Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document,
+   * Element, IndexStatusInfo)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void FileSystemSolrIndexStatusProviderImpl.updateErrorSegment(Document, Element, IndexStatusInfo)"})
-  public void testUpdateErrorSegment_givenDOMElementWithName_thenCallsGetParentNode() throws XPathExpressionException {
+    "void FileSystemSolrIndexStatusProviderImpl.updateIndexSegment(Document, Element, IndexStatusInfo)"
+  })
+  public void testUpdateIndexSegment_givenHashMapStatusIndexIsStatusIndex()
+      throws ParseException, XPathExpressionException, DOMException {
     // Arrange
     HTMLDocumentImpl document = new HTMLDocumentImpl();
+
     HTMLAnchorElementImpl rootElement = mock(HTMLAnchorElementImpl.class);
-    when(rootElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(rootElement.getLocalName()).thenReturn("Local Name");
-    when(rootElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(rootElement.getParentNode()).thenReturn(null);
-    when(rootElement.getFirstChild()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getNodeType()).thenReturn((short) 1);
-    when(rootElement.hasChildNodes()).thenReturn(true);
+    when(rootElement.appendChild(Mockito.<Node>any())).thenReturn(new IIOMetadataNode());
+
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("/status/index", "/status/index");
+
+    IndexStatusInfo status = mock(IndexStatusInfo.class);
+    when(status.getAdditionalInfo()).thenReturn(stringStringMap);
+    when(status.getLastIndexDate())
+        .thenReturn(
+            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act
-    fileSystemSolrIndexStatusProviderImpl.updateErrorSegment(document, rootElement, new IndexStatusInfoImpl());
+    fileSystemSolrIndexStatusProviderImpl.updateIndexSegment(document, rootElement, status);
 
     // Assert
-    verify(rootElement).getParentNode();
-    verify(rootElement).getAttributes();
-    verify(rootElement, atLeast(1)).getNodeType();
-    verify(rootElement, atLeast(1)).getLocalName();
-    verify(rootElement).getNamespaceURI();
-    verify(rootElement).getChildNodes();
-    verify(rootElement).getFirstChild();
-    verify(rootElement, atLeast(1)).hasChildNodes();
-  }
-
-  /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}.
-   * <ul>
-   *   <li>Given {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code errors}.</li>
-   *   <li>Then calls {@link ParentNode#removeChild(Node)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void FileSystemSolrIndexStatusProviderImpl.updateErrorSegment(Document, Element, IndexStatusInfo)"})
-  public void testUpdateErrorSegment_givenIIOMetadataNodeWithErrors_thenCallsRemoveChild()
-      throws XPathExpressionException, DOMException {
-    // Arrange
-    HTMLDocumentImpl document = new HTMLDocumentImpl();
-    HTMLAnchorElementImpl rootElement = mock(HTMLAnchorElementImpl.class);
-    when(rootElement.removeChild(Mockito.<Node>any())).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(rootElement.getLocalName()).thenReturn("Local Name");
-    when(rootElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(rootElement.getParentNode()).thenReturn(null);
-    when(rootElement.getFirstChild()).thenReturn(new IIOMetadataNode("errors"));
-    when(rootElement.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getNodeType()).thenReturn((short) 1);
-    when(rootElement.hasChildNodes()).thenReturn(true);
-
-    // Act
-    fileSystemSolrIndexStatusProviderImpl.updateErrorSegment(document, rootElement, new IndexStatusInfoImpl());
-
-    // Assert
-    verify(rootElement).getParentNode();
-    verify(rootElement).getAttributes();
-    verify(rootElement, atLeast(1)).getNodeType();
-    verify(rootElement, atLeast(1)).getLocalName();
-    verify(rootElement).getNamespaceURI();
-    verify(rootElement).getChildNodes();
-    verify(rootElement).getFirstChild();
-    verify(rootElement, atLeast(1)).hasChildNodes();
-    verify(rootElement).removeChild(isA(Node.class));
-  }
-
-  /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}.
-   * <ul>
-   *   <li>Given {@link DOMElement#DOMElement(String)} with {@code Name}.</li>
-   *   <li>Then calls {@link ChildNode#getParentNode()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void FileSystemSolrIndexStatusProviderImpl.updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)"})
-  public void testUpdateDeadEventSegment_givenDOMElementWithName_thenCallsGetParentNode()
-      throws XPathExpressionException {
-    // Arrange
-    HTMLDocumentImpl document = new HTMLDocumentImpl();
-    HTMLAnchorElementImpl rootElement = mock(HTMLAnchorElementImpl.class);
-    when(rootElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(rootElement.getLocalName()).thenReturn("Local Name");
-    when(rootElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(rootElement.getParentNode()).thenReturn(null);
-    when(rootElement.getFirstChild()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getNodeType()).thenReturn((short) 1);
-    when(rootElement.hasChildNodes()).thenReturn(true);
-
-    // Act
-    fileSystemSolrIndexStatusProviderImpl.updateDeadEventSegment(document, rootElement, new IndexStatusInfoImpl(),
-        true);
-
-    // Assert
-    verify(rootElement).getParentNode();
-    verify(rootElement).getAttributes();
-    verify(rootElement, atLeast(1)).getNodeType();
-    verify(rootElement, atLeast(1)).getLocalName();
-    verify(rootElement).getNamespaceURI();
-    verify(rootElement).getChildNodes();
-    verify(rootElement).getFirstChild();
-    verify(rootElement, atLeast(1)).hasChildNodes();
-  }
-
-  /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}.
-   * <ul>
-   *   <li>Then calls {@link ParentNode#removeChild(Node)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "void FileSystemSolrIndexStatusProviderImpl.updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)"})
-  public void testUpdateDeadEventSegment_thenCallsRemoveChild() throws XPathExpressionException, DOMException {
-    // Arrange
-    HTMLDocumentImpl document = new HTMLDocumentImpl();
-    HTMLAnchorElementImpl rootElement = mock(HTMLAnchorElementImpl.class);
-    when(rootElement.removeChild(Mockito.<Node>any())).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(rootElement.getLocalName()).thenReturn("Local Name");
-    when(rootElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(rootElement.getParentNode()).thenReturn(null);
-    when(rootElement.getFirstChild()).thenReturn(new IIOMetadataNode("dead-events"));
-    when(rootElement.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
-    when(rootElement.getNodeType()).thenReturn((short) 1);
-    when(rootElement.hasChildNodes()).thenReturn(true);
-
-    // Act
-    fileSystemSolrIndexStatusProviderImpl.updateDeadEventSegment(document, rootElement, new IndexStatusInfoImpl(),
-        true);
-
-    // Assert
-    verify(rootElement).getParentNode();
-    verify(rootElement).getAttributes();
-    verify(rootElement, atLeast(1)).getNodeType();
-    verify(rootElement, atLeast(1)).getLocalName();
-    verify(rootElement).getNamespaceURI();
-    verify(rootElement).getChildNodes();
-    verify(rootElement).getFirstChild();
-    verify(rootElement, atLeast(1)).hasChildNodes();
-    verify(rootElement).removeChild(isA(Node.class));
-  }
-
-  /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}.
-   * <ul>
-   *   <li>Then calls {@link ParentNode#getLength()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FileSystemSolrIndexStatusProviderImpl.clearNode(Element, String)"})
-  public void testClearNode_thenCallsGetLength() throws XPathExpressionException {
-    // Arrange
-    HTMLAnchorElementImpl htmlAnchorElementImpl = mock(HTMLAnchorElementImpl.class);
-    when(htmlAnchorElementImpl.item(anyInt())).thenReturn(new IIOMetadataNode("foo"));
-    when(htmlAnchorElementImpl.getLength()).thenReturn(3);
-    DefaultElement parentElement = mock(DefaultElement.class);
-    when(parentElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(parentElement.getLocalName()).thenReturn("Local Name");
-    when(parentElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(parentElement.getFirstChild()).thenReturn(new IIOMetadataNode("foo"));
-    when(parentElement.getParentNode()).thenReturn(null);
-    when(parentElement.getChildNodes()).thenReturn(htmlAnchorElementImpl);
-    when(parentElement.getNodeType()).thenReturn((short) 1);
-    when(parentElement.hasChildNodes()).thenReturn(true);
-
-    // Act
-    fileSystemSolrIndexStatusProviderImpl.clearNode(parentElement, "UTF-8");
-
-    // Assert
-    verify(htmlAnchorElementImpl, atLeast(1)).getLength();
-    verify(htmlAnchorElementImpl, atLeast(1)).item(anyInt());
-    verify(parentElement).getAttributes();
-    verify(parentElement).getChildNodes();
-    verify(parentElement).getFirstChild();
-    verify(parentElement).getParentNode();
-    verify(parentElement, atLeast(1)).hasChildNodes();
-    verify(parentElement, atLeast(1)).getLocalName();
-    verify(parentElement).getNamespaceURI();
-    verify(parentElement, atLeast(1)).getNodeType();
-  }
-
-  /**
-   * Test {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}.
-   * <ul>
-   *   <li>When {@link DefaultElement} {@link DefaultNode#getChildNodes()} return {@link IIOMetadataNode#IIOMetadataNode(String)} with {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FileSystemSolrIndexStatusProviderImpl.clearNode(Element, String)"})
-  public void testClearNode_whenDefaultElementGetChildNodesReturnIIOMetadataNodeWithFoo()
-      throws XPathExpressionException {
-    // Arrange
-    DefaultElement parentElement = mock(DefaultElement.class);
-    when(parentElement.getAttributes()).thenReturn(new DOMAttributeNodeMap(new DOMElement("Name")));
-    when(parentElement.getLocalName()).thenReturn("Local Name");
-    when(parentElement.getNamespaceURI()).thenReturn("Namespace URI");
-    when(parentElement.getFirstChild()).thenReturn(new IIOMetadataNode("foo"));
-    when(parentElement.getParentNode()).thenReturn(null);
-    when(parentElement.getChildNodes()).thenReturn(new IIOMetadataNode("foo"));
-    when(parentElement.getNodeType()).thenReturn((short) 1);
-    when(parentElement.hasChildNodes()).thenReturn(true);
-
-    // Act
-    fileSystemSolrIndexStatusProviderImpl.clearNode(parentElement, "UTF-8");
-
-    // Assert
-    verify(parentElement).getAttributes();
-    verify(parentElement).getChildNodes();
-    verify(parentElement).getFirstChild();
-    verify(parentElement).getParentNode();
-    verify(parentElement, atLeast(1)).hasChildNodes();
-    verify(parentElement, atLeast(1)).getLocalName();
-    verify(parentElement).getNamespaceURI();
-    verify(parentElement, atLeast(1)).getNodeType();
+    verify(rootElement).appendChild(isA(Node.class));
+    verify(status).getAdditionalInfo();
+    verify(status).getLastIndexDate();
+    Calendar calendar = fileSystemSolrIndexStatusProviderImpl.format.getCalendar();
+    assertTrue(calendar instanceof GregorianCalendar);
+    assertEquals(0L, calendar.getTimeInMillis());
+    assertEquals(1970, calendar.getWeekYear());
   }
 
   /**
    * Test {@link FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}.
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}
+   *
+   * <p>Method under test: {@link
+   * FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"IndexStatusInfo FileSystemSolrIndexStatusProviderImpl.readIndexStatus(IndexStatusInfo)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "IndexStatusInfo FileSystemSolrIndexStatusProviderImpl.readIndexStatus(IndexStatusInfo)"
+  })
   public void testReadIndexStatus() {
     // Arrange
     IndexStatusInfoImpl status = new IndexStatusInfoImpl();
 
-    // Act and Assert
-    assertSame(status, fileSystemSolrIndexStatusProviderImpl.readIndexStatus(status));
+    // Act
+    IndexStatusInfo actualReadIndexStatusResult =
+        fileSystemSolrIndexStatusProviderImpl.readIndexStatus(status);
+
+    // Assert
+    assertSame(status, actualReadIndexStatusResult);
   }
 
   /**
    * Test {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}.
+   *
    * <ul>
-   *   <li>Then return Absolute.</li>
+   *   <li>Then return Absolute.
    * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}
+   *
+   * <p>Method under test: {@link
+   * FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"File FileSystemSolrIndexStatusProviderImpl.getStatusFile(SolrSearchServiceImpl)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "File FileSystemSolrIndexStatusProviderImpl.getStatusFile(SolrSearchServiceImpl)"
+  })
   public void testGetStatusFile_thenReturnAbsolute() {
     // Arrange
     when(solrConfiguration.getSolrHomePath()).thenReturn(null);
 
     // Act
-    File actualStatusFile = fileSystemSolrIndexStatusProviderImpl.getStatusFile(new SolrSearchServiceImpl());
+    File actualStatusFile =
+        fileSystemSolrIndexStatusProviderImpl.getStatusFile(new SolrSearchServiceImpl());
 
     // Assert
     verify(solrConfiguration).getSolrHomePath();
@@ -442,21 +237,27 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
 
   /**
    * Test {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}.
+   *
    * <ul>
-   *   <li>Then return not Absolute.</li>
+   *   <li>Then return not Absolute.
    * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}
+   *
+   * <p>Method under test: {@link
+   * FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"File FileSystemSolrIndexStatusProviderImpl.getStatusFile(SolrSearchServiceImpl)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "File FileSystemSolrIndexStatusProviderImpl.getStatusFile(SolrSearchServiceImpl)"
+  })
   public void testGetStatusFile_thenReturnNotAbsolute() {
     // Arrange
     when(solrConfiguration.getSolrHomePath()).thenReturn("Solr Home Path");
 
     // Act
-    File actualStatusFile = fileSystemSolrIndexStatusProviderImpl.getStatusFile(new SolrSearchServiceImpl());
+    File actualStatusFile =
+        fileSystemSolrIndexStatusProviderImpl.getStatusFile(new SolrSearchServiceImpl());
 
     // Assert
     verify(solrConfiguration).getSolrHomePath();
@@ -466,22 +267,27 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
 
   /**
    * Test {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}.
+   *
    * <ul>
-   *   <li>Then return Property is {@code java.io.tmpdir}.</li>
+   *   <li>Then return Property is {@code java.io.tmpdir}.
    * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}
+   *
+   * <p>Method under test: {@link
+   * FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String FileSystemSolrIndexStatusProviderImpl.getStatusDirectory(SolrSearchServiceImpl)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String FileSystemSolrIndexStatusProviderImpl.getStatusDirectory(SolrSearchServiceImpl)"
+  })
   public void testGetStatusDirectory_thenReturnPropertyIsJavaIoTmpdir() {
     // Arrange
     when(solrConfiguration.getSolrHomePath()).thenReturn(null);
 
     // Act
-    String actualStatusDirectory = fileSystemSolrIndexStatusProviderImpl
-        .getStatusDirectory(new SolrSearchServiceImpl());
+    String actualStatusDirectory =
+        fileSystemSolrIndexStatusProviderImpl.getStatusDirectory(new SolrSearchServiceImpl());
 
     // Assert
     verify(solrConfiguration).getSolrHomePath();
@@ -490,22 +296,27 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
 
   /**
    * Test {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}.
+   *
    * <ul>
-   *   <li>Then return {@code Solr Home Path}.</li>
+   *   <li>Then return {@code Solr Home Path}.
    * </ul>
-   * <p>
-   * Method under test: {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}
+   *
+   * <p>Method under test: {@link
+   * FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String FileSystemSolrIndexStatusProviderImpl.getStatusDirectory(SolrSearchServiceImpl)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String FileSystemSolrIndexStatusProviderImpl.getStatusDirectory(SolrSearchServiceImpl)"
+  })
   public void testGetStatusDirectory_thenReturnSolrHomePath() {
     // Arrange
     when(solrConfiguration.getSolrHomePath()).thenReturn("Solr Home Path");
 
     // Act
-    String actualStatusDirectory = fileSystemSolrIndexStatusProviderImpl
-        .getStatusDirectory(new SolrSearchServiceImpl());
+    String actualStatusDirectory =
+        fileSystemSolrIndexStatusProviderImpl.getStatusDirectory(new SolrSearchServiceImpl());
 
     // Assert
     verify(solrConfiguration).getSolrHomePath();

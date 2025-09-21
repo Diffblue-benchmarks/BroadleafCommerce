@@ -19,7 +19,8 @@ package org.broadleafcommerce.core.pricing.service.fulfillment;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
@@ -35,26 +36,33 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SimpleFulfillmentLocationResolver.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SimpleFulfillmentLocationResolverDiffblueTest {
-  @Autowired
-  private SimpleFulfillmentLocationResolver simpleFulfillmentLocationResolver;
+  @Autowired private SimpleFulfillmentLocationResolver simpleFulfillmentLocationResolver;
 
   /**
-   * Test {@link SimpleFulfillmentLocationResolver#resolveLocationForFulfillmentGroup(FulfillmentGroup)}.
-   * <p>
-   * Method under test: {@link SimpleFulfillmentLocationResolver#resolveLocationForFulfillmentGroup(FulfillmentGroup)}
+   * Test {@link
+   * SimpleFulfillmentLocationResolver#resolveLocationForFulfillmentGroup(FulfillmentGroup)}.
+   *
+   * <p>Method under test: {@link
+   * SimpleFulfillmentLocationResolver#resolveLocationForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Address SimpleFulfillmentLocationResolver.resolveLocationForFulfillmentGroup(FulfillmentGroup)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address SimpleFulfillmentLocationResolver.resolveLocationForFulfillmentGroup(FulfillmentGroup)"
+  })
   public void testResolveLocationForFulfillmentGroup() {
     // Arrange, Act and Assert
-    assertNull(simpleFulfillmentLocationResolver.resolveLocationForFulfillmentGroup(new FulfillmentGroupImpl()));
+    assertNull(
+        simpleFulfillmentLocationResolver.resolveLocationForFulfillmentGroup(
+            new FulfillmentGroupImpl()));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SimpleFulfillmentLocationResolver}
    *   <li>{@link SimpleFulfillmentLocationResolver#setAddress(Address)}
@@ -62,13 +70,17 @@ public class SimpleFulfillmentLocationResolverDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SimpleFulfillmentLocationResolver.<init>()",
-      "Address SimpleFulfillmentLocationResolver.getAddress()",
-      "void SimpleFulfillmentLocationResolver.setAddress(Address)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SimpleFulfillmentLocationResolver.<init>()",
+    "Address SimpleFulfillmentLocationResolver.getAddress()",
+    "void SimpleFulfillmentLocationResolver.setAddress(Address)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    SimpleFulfillmentLocationResolver actualSimpleFulfillmentLocationResolver = new SimpleFulfillmentLocationResolver();
+    SimpleFulfillmentLocationResolver actualSimpleFulfillmentLocationResolver =
+        new SimpleFulfillmentLocationResolver();
     AddressImpl address = new AddressImpl();
     actualSimpleFulfillmentLocationResolver.setAddress(address);
 

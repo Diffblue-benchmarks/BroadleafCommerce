@@ -22,41 +22,33 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.anyBoolean;
-import static org.mockito.Mockito.anyInt;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.core.offer.domain.CandidateItemOffer;
-import org.broadleafcommerce.core.offer.domain.OrderItemAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
-import org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustment;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -71,82 +63,83 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderItemPriceDetailImplDiffblueTest {
-  @Autowired
-  private OrderItemPriceDetailImpl orderItemPriceDetailImpl;
+  @Autowired private OrderItemPriceDetailImpl orderItemPriceDetailImpl;
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"
+  })
   public void testGetFutureCreditOrderItemPriceDetailAdjustments() {
     // Arrange
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
     orderItemPriceDetailAdjustments.add(new OrderItemPriceDetailAdjustmentImpl());
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemPriceDetailImpl2.setOrderItem(new BundleOrderItemImpl());
-    orderItemPriceDetailImpl2.setQuantity(1);
-    orderItemPriceDetailImpl2.setUseSalePrice(true);
-    orderItemPriceDetailImpl2.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
 
     // Act and Assert
-    assertTrue(orderItemPriceDetailImpl2.getFutureCreditOrderItemPriceDetailAdjustments().isEmpty());
+    assertTrue(orderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments().isEmpty());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor).</li>
+   *   <li>Given {@link OrderItemPriceDetailImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"
+  })
   public void testGetFutureCreditOrderItemPriceDetailAdjustments_givenOrderItemPriceDetailImpl() {
     // Arrange, Act and Assert
-    assertTrue((new OrderItemPriceDetailImpl()).getFutureCreditOrderItemPriceDetailAdjustments().isEmpty());
+    assertTrue(orderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments().isEmpty());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailImpl#getFutureCreditOrderItemPriceDetailAdjustments()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List OrderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments()"
+  })
   public void testGetFutureCreditOrderItemPriceDetailAdjustments_thenReturnSizeIsOne() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = mock(
-        OrderItemPriceDetailAdjustmentImpl.class);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        mock(OrderItemPriceDetailAdjustmentImpl.class);
     when(orderItemPriceDetailAdjustmentImpl.isFutureCredit()).thenReturn(true);
 
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
     orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentImpl);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemPriceDetailImpl2.setOrderItem(new BundleOrderItemImpl());
-    orderItemPriceDetailImpl2.setQuantity(1);
-    orderItemPriceDetailImpl2.setUseSalePrice(true);
-    orderItemPriceDetailImpl2.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
 
     // Act
-    List<OrderItemPriceDetailAdjustment> actualFutureCreditOrderItemPriceDetailAdjustments = orderItemPriceDetailImpl2
-        .getFutureCreditOrderItemPriceDetailAdjustments();
+    List<OrderItemPriceDetailAdjustment> actualFutureCreditOrderItemPriceDetailAdjustments =
+        orderItemPriceDetailImpl.getFutureCreditOrderItemPriceDetailAdjustments();
 
     // Assert
     verify(orderItemPriceDetailAdjustmentImpl).isFutureCredit();
@@ -155,22 +148,27 @@ public class OrderItemPriceDetailImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getCurrency()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link OrderItemQualifierImpl#serialVersionUID}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is {@link
+   *       OrderItemQualifierImpl#serialVersionUID}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getCurrency()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getCurrency()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BroadleafCurrency OrderItemPriceDetailImpl.getCurrency()"})
   public void testGetCurrency_givenAuditableCreatedByIsSerialVersionUID_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -201,114 +199,40 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-    orderItemPriceDetailImpl2.setOrderItemAdjustments(new ArrayList<>());
-    orderItemPriceDetailImpl2.setQuantity(1);
-    orderItemPriceDetailImpl2.setUseSalePrice(true);
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+    orderItemPriceDetailImpl.setOrderItemAdjustments(new ArrayList<>());
+    orderItemPriceDetailImpl.setQuantity(1);
+    orderItemPriceDetailImpl.setUseSalePrice(true);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailImpl2.getCurrency());
+    assertNull(orderItemPriceDetailImpl.getCurrency());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getAdjustmentValue()}.
+   *
    * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderImpl} (default constructor) {@link OrderImpl#totalTax}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
+   *       NullOrderFactoryImpl#NULL_ORDER}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getAdjustmentValue()"})
-  public void testGetAdjustmentValue_thenReturnAbsAbsAbsAmountIsOrderImplTotalTax() {
+  public void testGetAdjustmentValue_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(currency);
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("ThreadLocalManager.notify.orphans");
-    orderImpl.setOrderAdjustments(new ArrayList<>());
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(orderImpl);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualAdjustmentValue = orderItemPriceDetailImpl2.getAdjustmentValue();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    verify(orderItem).getOrder();
-    BigDecimal bigDecimal = orderImpl.totalTax;
-    Money absResult = actualAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getAdjustmentValue()}.
-   * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderItemImpl} (default constructor) {@link OrderItemImpl#salePrice}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getAdjustmentValue()"})
-  public void testGetAdjustmentValue_thenReturnAbsAbsAbsAmountIsOrderItemImplSalePrice() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -329,6 +253,71 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getAdjustmentValue());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getAdjustmentValue()}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getAdjustmentValue()"})
+  public void testGetAdjustmentValue_thenCallsIsFutureCredit() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
     orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
@@ -339,77 +328,298 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(orderItemPriceDetailAdjustmentImpl.isFutureCredit()).thenReturn(true);
+    doNothing()
+        .when(orderItemPriceDetailAdjustmentImpl)
+        .setOrderItemPriceDetail(Mockito.<OrderItemPriceDetail>any());
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentImpl);
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualAdjustmentValue = orderItemPriceDetailImpl2.getAdjustmentValue();
+    Money actualAdjustmentValue = orderItemPriceDetailImpl.getAdjustmentValue();
 
     // Assert
-    BigDecimal bigDecimal = orderItem.salePrice;
-    Money absResult = actualAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(orderItemPriceDetailAdjustmentImpl).isFutureCredit();
+    verify(orderItemPriceDetailAdjustmentImpl).setOrderItemPriceDetail(isNull());
+    verify(order).getCurrency();
+    Currency currency = actualAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualAdjustmentValue.abs();
+    assertEquals(actualAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualAdjustmentValue.zero();
+    assertEquals(actualAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getAdjustmentValue()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getAdjustmentValue()"})
-  public void testGetAdjustmentValue_thenReturnZero() {
+  public void testGetAdjustmentValue_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualAdjustmentValue = orderItemPriceDetailImpl2.getAdjustmentValue();
+    Money actualAdjustmentValue = orderItemPriceDetailImpl.getAdjustmentValue();
 
     // Assert
-    verify(orderItem).getOrder();
-    assertEquals(actualAdjustmentValue.ZERO, actualAdjustmentValue);
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualAdjustmentValue.abs();
+    assertEquals(actualAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualAdjustmentValue.zero();
+    assertEquals(actualAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditAdjustmentValue()"})
   public void testGetFutureCreditAdjustmentValue() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(new OrderItemPriceDetailAdjustmentImpl());
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualFutureCreditAdjustmentValue =
+        orderItemPriceDetailImpl.getFutureCreditAdjustmentValue();
+
+    // Assert
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualFutureCreditAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualFutureCreditAdjustmentValue.abs();
+    assertEquals(actualFutureCreditAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualFutureCreditAdjustmentValue.zero();
+    assertEquals(actualFutureCreditAdjustmentValue, actualZeroResult);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}.
+   *
+   * <ul>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditAdjustmentValue()"})
+  public void testGetFutureCreditAdjustmentValue_thenReturnCurrencyDisplayNameIsBritishPound() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualFutureCreditAdjustmentValue =
+        orderItemPriceDetailImpl.getFutureCreditAdjustmentValue();
+
+    // Assert
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualFutureCreditAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualFutureCreditAdjustmentValue.abs();
+    assertEquals(actualFutureCreditAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualFutureCreditAdjustmentValue.zero();
+    assertEquals(actualFutureCreditAdjustmentValue, actualZeroResult);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}.
+   *
+   * <ul>
+   *   <li>Then return {@link Money#Money()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditAdjustmentValue()"})
+  public void testGetFutureCreditAdjustmentValue_thenReturnMoney() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -430,7 +640,8 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -440,253 +651,50 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
-    // Act
-    Money actualFutureCreditAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditAdjustmentValue();
-
-    // Assert
-    BigDecimal bigDecimal = orderItem.salePrice;
-    Money absResult = actualFutureCreditAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualFutureCreditAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}.
-   * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderImpl} (default constructor) {@link OrderImpl#totalTax}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditAdjustmentValue()"})
-  public void testGetFutureCreditAdjustmentValue_thenReturnAbsAbsAbsAmountIsOrderImplTotalTax() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(currency);
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("ThreadLocalManager.notify.orphans");
-    orderImpl.setOrderAdjustments(new ArrayList<>());
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(orderImpl);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualFutureCreditAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditAdjustmentValue();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    verify(orderItem).getOrder();
-    BigDecimal bigDecimal = orderImpl.totalTax;
-    Money absResult = actualFutureCreditAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualFutureCreditAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}.
-   * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditAdjustmentValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditAdjustmentValue()"})
-  public void testGetFutureCreditAdjustmentValue_thenReturnZero() {
-    // Arrange
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualFutureCreditAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditAdjustmentValue();
-
-    // Assert
-    verify(orderItem).getOrder();
-    assertEquals(actualFutureCreditAdjustmentValue.ZERO, actualFutureCreditAdjustmentValue);
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getFutureCreditAdjustmentValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getRoundingModeForAdj()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getRoundingModeForAdj()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getRoundingModeForAdj()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"RoundingMode OrderItemPriceDetailImpl.getRoundingModeForAdj()"})
   public void testGetRoundingModeForAdj() {
     // Arrange, Act and Assert
-    assertEquals(RoundingMode.HALF_EVEN, (new OrderItemPriceDetailImpl()).getRoundingModeForAdj());
+    assertEquals(RoundingMode.HALF_EVEN, orderItemPriceDetailImpl.getRoundingModeForAdj());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}.
+   *
    * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderImpl} (default constructor) {@link OrderImpl#totalTax}.</li>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
+   *       NullOrderFactoryImpl#NULL_ORDER}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustmentValue()"})
-  public void testGetTotalAdjustmentValue_thenReturnAbsAbsAbsAmountIsOrderImplTotalTax() {
+  public void testGetTotalAdjustmentValue_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(currency);
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("ThreadLocalManager.notify.orphans");
-    orderImpl.setOrderAdjustments(new ArrayList<>());
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(orderImpl);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualTotalAdjustmentValue = orderItemPriceDetailImpl2.getTotalAdjustmentValue();
-
-    // Assert
-    verify(currency).getCurrencyCode();
-    verify(orderItem).getOrder();
-    BigDecimal bigDecimal = orderImpl.totalTax;
-    Money absResult = actualTotalAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualTotalAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}.
-   * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderItemImpl} (default constructor) {@link OrderItemImpl#salePrice}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustmentValue()"})
-  public void testGetTotalAdjustmentValue_thenReturnAbsAbsAbsAmountIsOrderItemImplSalePrice() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -707,6 +715,71 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getTotalAdjustmentValue());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustmentValue()"})
+  public void testGetTotalAdjustmentValue_thenCallsIsFutureCredit() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
     orderItem.setPrice(new Money());
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
@@ -717,78 +790,143 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(orderItemPriceDetailAdjustmentImpl.isFutureCredit()).thenReturn(true);
+    doNothing()
+        .when(orderItemPriceDetailAdjustmentImpl)
+        .setOrderItemPriceDetail(Mockito.<OrderItemPriceDetail>any());
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentImpl);
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualTotalAdjustmentValue = orderItemPriceDetailImpl2.getTotalAdjustmentValue();
+    Money actualTotalAdjustmentValue = orderItemPriceDetailImpl.getTotalAdjustmentValue();
 
     // Assert
-    BigDecimal bigDecimal = orderItem.salePrice;
-    Money absResult = actualTotalAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualTotalAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(orderItemPriceDetailAdjustmentImpl).isFutureCredit();
+    verify(orderItemPriceDetailAdjustmentImpl).setOrderItemPriceDetail(isNull());
+    verify(order).getCurrency();
+    Currency currency = actualTotalAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualTotalAdjustmentValue.abs();
+    assertEquals(actualTotalAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualTotalAdjustmentValue.zero();
+    assertEquals(actualTotalAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustmentValue()"})
-  public void testGetTotalAdjustmentValue_thenReturnZero() {
+  public void testGetTotalAdjustmentValue_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualTotalAdjustmentValue = orderItemPriceDetailImpl2.getTotalAdjustmentValue();
+    Money actualTotalAdjustmentValue = orderItemPriceDetailImpl.getTotalAdjustmentValue();
 
     // Assert
-    verify(orderItem).getOrder();
-    assertEquals(actualTotalAdjustmentValue.ZERO, actualTotalAdjustmentValue);
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualTotalAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualTotalAdjustmentValue.abs();
+    assertEquals(actualTotalAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualTotalAdjustmentValue.zero();
+    assertEquals(actualTotalAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue()"})
   public void testGetFutureCreditTotalAdjustmentValue() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
 
     OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
@@ -800,7 +938,7 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setHasValidationError(true);
     orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
     orderItem.setName("Name");
-    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrder(order);
     orderItem.setOrderItemAdjustments(new ArrayList<>());
     orderItem.setOrderItemAttributes(new HashMap<>());
     orderItem.setOrderItemPriceDetails(new ArrayList<>());
@@ -818,394 +956,128 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualFutureCreditTotalAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditTotalAdjustmentValue();
+    Money actualFutureCreditTotalAdjustmentValue =
+        orderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue();
 
     // Assert
-    BigDecimal bigDecimal = orderItem.salePrice;
-    Money absResult = actualFutureCreditTotalAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualFutureCreditTotalAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualFutureCreditTotalAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualFutureCreditTotalAdjustmentValue.abs();
+    assertEquals(actualFutureCreditTotalAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualFutureCreditTotalAdjustmentValue.zero();
+    assertEquals(actualFutureCreditTotalAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue()"})
   public void testGetFutureCreditTotalAdjustmentValue2() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    BroadleafCurrency currency = mock(BroadleafCurrency.class);
-    when(currency.getCurrencyCode()).thenReturn("GBP");
 
-    OrderImpl orderImpl = new OrderImpl();
-    orderImpl.setAdditionalOfferInformation(new HashMap<>());
-    orderImpl.setAuditable(auditable);
-    orderImpl.setCandidateOrderOffers(new ArrayList<>());
-    orderImpl.setCurrency(currency);
-    orderImpl.setCustomer(new CustomerImpl());
-    orderImpl.setEmailAddress("42 Main St");
-    orderImpl.setFulfillmentGroups(new ArrayList<>());
-    orderImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderImpl.setLocale(new LocaleImpl());
-    orderImpl.setName("ThreadLocalManager.notify.orphans");
-    orderImpl.setOrderAdjustments(new ArrayList<>());
-    orderImpl.setOrderAttributes(new HashMap<>());
-    orderImpl.setOrderItems(new ArrayList<>());
-    orderImpl.setOrderMessages(new ArrayList<>());
-    orderImpl.setOrderNumber("42");
-    orderImpl.setPayments(new ArrayList<>());
-    orderImpl.setStatus(OrderStatus.ARCHIVED);
-    orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    orderImpl.setTaxOverride(true);
-    orderImpl.setTotal(new Money());
-    orderImpl.setTotalFulfillmentCharges(new Money());
-    orderImpl.setTotalTax(new Money());
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(orderImpl);
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(new OrderItemPriceDetailAdjustmentImpl());
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualFutureCreditTotalAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditTotalAdjustmentValue();
+    Money actualFutureCreditTotalAdjustmentValue =
+        orderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue();
 
     // Assert
-    verify(currency).getCurrencyCode();
-    verify(orderItem).getOrder();
-    BigDecimal bigDecimal = orderImpl.totalTax;
-    Money absResult = actualFutureCreditTotalAdjustmentValue.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualFutureCreditTotalAdjustmentValue.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    verify(broadleafCurrency).getCurrencyCode();
+    verify(order).getCurrency();
+    Currency currency = actualFutureCreditTotalAdjustmentValue.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualFutureCreditTotalAdjustmentValue.abs();
+    assertEquals(actualFutureCreditTotalAdjustmentValue, actualAbsResult);
+    Money actualZeroResult = actualFutureCreditTotalAdjustmentValue.zero();
+    assertEquals(actualFutureCreditTotalAdjustmentValue, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#ZERO}.</li>
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getFutureCreditTotalAdjustmentValue()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue()"})
-  public void testGetFutureCreditTotalAdjustmentValue_thenReturnZero() {
-    // Arrange
-    BundleOrderItemImpl orderItem = mock(BundleOrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualFutureCreditTotalAdjustmentValue = orderItemPriceDetailImpl2.getFutureCreditTotalAdjustmentValue();
-
-    // Assert
-    verify(orderItem).getOrder();
-    assertEquals(actualFutureCreditTotalAdjustmentValue.ZERO, actualFutureCreditTotalAdjustmentValue);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#multiply(int)} return {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#multiply(int)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
-  public void testGetTotalAdjustedPrice_givenMoneyMultiplyReturnMoney_thenCallsMultiply() {
+  public void testGetFutureCreditTotalAdjustmentValue_thenReturnMoney() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    Money money = mock(Money.class);
-    Money money2 = new Money();
-    when(money.multiply(anyInt())).thenReturn(money2);
-    OrderItemImpl orderItem = mock(OrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-    when(orderItem.updateSaleAndRetailPrices()).thenReturn(true);
-    when(orderItem.getPriceBeforeAdjustments(anyBoolean())).thenReturn(money);
-    doNothing().when(orderItem).setAuditable(Mockito.<Auditable>any());
-    doNothing().when(orderItem).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
-    doNothing().when(orderItem).setCartMessages(Mockito.<List<String>>any());
-    doNothing().when(orderItem).setChildOrderItems(Mockito.<List<OrderItem>>any());
-    doNothing().when(orderItem).setDiscountingAllowed(anyBoolean());
-    doNothing().when(orderItem).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
-    doNothing().when(orderItem).setHasValidationError(Mockito.<Boolean>any());
-    doNothing().when(orderItem).setId(Mockito.<Long>any());
-    doNothing().when(orderItem).setName(Mockito.<String>any());
-    doNothing().when(orderItem).setOrder(Mockito.<Order>any());
-    doNothing().when(orderItem).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
-    doNothing().when(orderItem).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    doNothing().when(orderItem).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
-    doNothing().when(orderItem).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
-    doNothing().when(orderItem).setOrderItemType(Mockito.<OrderItemType>any());
-    doNothing().when(orderItem).setParentOrderItem(Mockito.<OrderItem>any());
-    doNothing().when(orderItem).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(orderItem).setPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
-    doNothing().when(orderItem).setQuantity(anyInt());
-    doNothing().when(orderItem).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setRetailPriceOverride(anyBoolean());
-    doNothing().when(orderItem).setSalePrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setSalePriceOverride(anyBoolean());
-    doNothing().when(orderItem).setTaxable(Mockito.<Boolean>any());
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrder(mock(Order.class));
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl2.getTotalAdjustedPrice();
-
-    // Assert
-    verify(money).multiply(eq(0));
-    verify(orderItem).getOrder();
-    verify(orderItem).getPriceBeforeAdjustments(eq(true));
-    verify(orderItem).setAuditable(isA(Auditable.class));
-    verify(orderItem).setCandidateItemOffers(isA(List.class));
-    verify(orderItem).setCartMessages(isA(List.class));
-    verify(orderItem).setChildOrderItems(isA(List.class));
-    verify(orderItem).setDiscountingAllowed(eq(true));
-    verify(orderItem).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
-    verify(orderItem).setHasValidationError(eq(true));
-    verify(orderItem).setId(eq(1L));
-    verify(orderItem).setName(eq("Name"));
-    verify(orderItem).setOrder(isA(Order.class));
-    verify(orderItem).setOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setOrderItemAttributes(isA(Map.class));
-    verify(orderItem).setOrderItemPriceDetails(isA(List.class));
-    verify(orderItem).setOrderItemQualifiers(isA(List.class));
-    verify(orderItem).setOrderItemType(isA(OrderItemType.class));
-    verify(orderItem).setParentOrderItem(isA(OrderItem.class));
-    verify(orderItem).setPersonalMessage(isA(PersonalMessage.class));
-    verify(orderItem).setPrice(isA(Money.class));
-    verify(orderItem).setProratedOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setQuantity(eq(1));
-    verify(orderItem).setRetailPrice(isA(Money.class));
-    verify(orderItem).setRetailPriceOverride(eq(true));
-    verify(orderItem).setSalePrice(isA(Money.class));
-    verify(orderItem).setSalePriceOverride(eq(true));
-    verify(orderItem).setTaxable(eq(true));
-    verify(orderItem).updateSaleAndRetailPrices();
-    assertEquals(money2, actualTotalAdjustedPrice);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
-   * <ul>
-   *   <li>Given {@link Money} {@link Money#subtract(Money)} return {@link Money#Money()}.</li>
-   *   <li>Then calls {@link Money#subtract(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
-  public void testGetTotalAdjustedPrice_givenMoneySubtractReturnMoney_thenCallsSubtract() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    Money money = mock(Money.class);
-    Money money2 = new Money();
-    when(money.subtract(Mockito.<Money>any())).thenReturn(money2);
-    Money money3 = mock(Money.class);
-    when(money3.multiply(anyInt())).thenReturn(money);
-    OrderItemImpl orderItem = mock(OrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-    when(orderItem.updateSaleAndRetailPrices()).thenReturn(true);
-    when(orderItem.getPriceBeforeAdjustments(anyBoolean())).thenReturn(money3);
-    doNothing().when(orderItem).setAuditable(Mockito.<Auditable>any());
-    doNothing().when(orderItem).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
-    doNothing().when(orderItem).setCartMessages(Mockito.<List<String>>any());
-    doNothing().when(orderItem).setChildOrderItems(Mockito.<List<OrderItem>>any());
-    doNothing().when(orderItem).setDiscountingAllowed(anyBoolean());
-    doNothing().when(orderItem).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
-    doNothing().when(orderItem).setHasValidationError(Mockito.<Boolean>any());
-    doNothing().when(orderItem).setId(Mockito.<Long>any());
-    doNothing().when(orderItem).setName(Mockito.<String>any());
-    doNothing().when(orderItem).setOrder(Mockito.<Order>any());
-    doNothing().when(orderItem).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
-    doNothing().when(orderItem).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    doNothing().when(orderItem).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
-    doNothing().when(orderItem).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
-    doNothing().when(orderItem).setOrderItemType(Mockito.<OrderItemType>any());
-    doNothing().when(orderItem).setParentOrderItem(Mockito.<OrderItem>any());
-    doNothing().when(orderItem).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(orderItem).setPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
-    doNothing().when(orderItem).setQuantity(anyInt());
-    doNothing().when(orderItem).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setRetailPriceOverride(anyBoolean());
-    doNothing().when(orderItem).setSalePrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setSalePriceOverride(anyBoolean());
-    doNothing().when(orderItem).setTaxable(Mockito.<Boolean>any());
-    orderItem.setAuditable(auditable);
-    orderItem.setCandidateItemOffers(new ArrayList<>());
-    orderItem.setCartMessages(new ArrayList<>());
-    orderItem.setChildOrderItems(new ArrayList<>());
-    orderItem.setDiscountingAllowed(true);
-    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem.setHasValidationError(true);
-    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItem.setName("Name");
-    orderItem.setOrder(mock(Order.class));
-    orderItem.setOrderItemAdjustments(new ArrayList<>());
-    orderItem.setOrderItemAttributes(new HashMap<>());
-    orderItem.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem.setOrderItemQualifiers(new ArrayList<>());
-    orderItem.setOrderItemType(OrderItemType.BASIC);
-    orderItem.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
-    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem.setQuantity(1);
-    orderItem.setRetailPrice(new Money());
-    orderItem.setRetailPriceOverride(true);
-    orderItem.setSalePrice(new Money());
-    orderItem.setSalePriceOverride(true);
-    orderItem.setTaxable(true);
-    orderItem.updateSaleAndRetailPrices();
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
-
-    // Act
-    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl2.getTotalAdjustedPrice();
-
-    // Assert
-    verify(money3).multiply(eq(0));
-    verify(money).subtract(isA(Money.class));
-    verify(orderItem).getOrder();
-    verify(orderItem).getPriceBeforeAdjustments(eq(true));
-    verify(orderItem).setAuditable(isA(Auditable.class));
-    verify(orderItem).setCandidateItemOffers(isA(List.class));
-    verify(orderItem).setCartMessages(isA(List.class));
-    verify(orderItem).setChildOrderItems(isA(List.class));
-    verify(orderItem).setDiscountingAllowed(eq(true));
-    verify(orderItem).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
-    verify(orderItem).setHasValidationError(eq(true));
-    verify(orderItem).setId(eq(1L));
-    verify(orderItem).setName(eq("Name"));
-    verify(orderItem).setOrder(isA(Order.class));
-    verify(orderItem).setOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setOrderItemAttributes(isA(Map.class));
-    verify(orderItem).setOrderItemPriceDetails(isA(List.class));
-    verify(orderItem).setOrderItemQualifiers(isA(List.class));
-    verify(orderItem).setOrderItemType(isA(OrderItemType.class));
-    verify(orderItem).setParentOrderItem(isA(OrderItem.class));
-    verify(orderItem).setPersonalMessage(isA(PersonalMessage.class));
-    verify(orderItem).setPrice(isA(Money.class));
-    verify(orderItem).setProratedOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setQuantity(eq(1));
-    verify(orderItem).setRetailPrice(isA(Money.class));
-    verify(orderItem).setRetailPriceOverride(eq(true));
-    verify(orderItem).setSalePrice(isA(Money.class));
-    verify(orderItem).setSalePriceOverride(eq(true));
-    verify(orderItem).setTaxable(eq(true));
-    verify(orderItem).updateSaleAndRetailPrices();
-    assertSame(money2, actualTotalAdjustedPrice);
-  }
-
-  /**
-   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
-   * <ul>
-   *   <li>Then return abs abs abs Amount is {@link OrderItemImpl} (default constructor) {@link OrderItemImpl#salePrice}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
-  public void testGetTotalAdjustedPrice_thenReturnAbsAbsAbsAmountIsOrderItemImplSalePrice() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderItemImpl orderItem = new OrderItemImpl();
@@ -1226,7 +1098,8 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setOrderItemType(OrderItemType.BASIC);
     orderItem.setParentOrderItem(new BundleOrderItemImpl());
     orderItem.setPersonalMessage(new PersonalMessageImpl());
-    orderItem.setPrice(new Money());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
     orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
     orderItem.setQuantity(1);
     orderItem.setRetailPrice(new Money());
@@ -1236,84 +1109,41 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
-    // Act
-    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl2.getTotalAdjustedPrice();
-
-    // Assert
-    BigDecimal bigDecimal = orderItem.salePrice;
-    Money absResult = actualTotalAdjustedPrice.abs();
-    Money absResult2 = absResult.abs();
-    assertSame(bigDecimal, absResult2.abs().getAmount());
-    Money zeroResult = actualTotalAdjustedPrice.zero();
-    Money absResult3 = zeroResult.abs();
-    assertSame(bigDecimal, absResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult2.getAmount());
-    Money zeroResult2 = absResult.zero();
-    assertSame(bigDecimal, zeroResult2.abs().getAmount());
-    Money zeroResult3 = zeroResult.zero();
-    assertSame(bigDecimal, zeroResult3.abs().getAmount());
-    assertSame(bigDecimal, absResult3.getAmount());
-    assertSame(bigDecimal, absResult.getAmount());
-    assertSame(bigDecimal, absResult2.zero().getAmount());
-    assertSame(bigDecimal, absResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult2.getAmount());
-    assertSame(bigDecimal, zeroResult2.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.zero().getAmount());
-    assertSame(bigDecimal, zeroResult3.getAmount());
-    assertSame(bigDecimal, zeroResult.getAmount());
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getFutureCreditTotalAdjustmentValue());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
-  public void testGetTotalAdjustedPrice_thenReturnMoney() {
+  public void testGetTotalAdjustedPrice_givenArrayListAddOrderItemPriceDetailImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
-    OrderItemImpl orderItem = mock(OrderItemImpl.class);
-    when(orderItem.getOrder()).thenReturn(NullOrderFactoryImpl.NULL_ORDER);
-    when(orderItem.updateSaleAndRetailPrices()).thenReturn(true);
-    Money money = new Money();
-    when(orderItem.getPriceBeforeAdjustments(anyBoolean())).thenReturn(money);
-    doNothing().when(orderItem).setAuditable(Mockito.<Auditable>any());
-    doNothing().when(orderItem).setCandidateItemOffers(Mockito.<List<CandidateItemOffer>>any());
-    doNothing().when(orderItem).setCartMessages(Mockito.<List<String>>any());
-    doNothing().when(orderItem).setChildOrderItems(Mockito.<List<OrderItem>>any());
-    doNothing().when(orderItem).setDiscountingAllowed(anyBoolean());
-    doNothing().when(orderItem).setGiftWrapOrderItem(Mockito.<GiftWrapOrderItem>any());
-    doNothing().when(orderItem).setHasValidationError(Mockito.<Boolean>any());
-    doNothing().when(orderItem).setId(Mockito.<Long>any());
-    doNothing().when(orderItem).setName(Mockito.<String>any());
-    doNothing().when(orderItem).setOrder(Mockito.<Order>any());
-    doNothing().when(orderItem).setOrderItemAdjustments(Mockito.<List<OrderItemAdjustment>>any());
-    doNothing().when(orderItem).setOrderItemAttributes(Mockito.<Map<String, OrderItemAttribute>>any());
-    doNothing().when(orderItem).setOrderItemPriceDetails(Mockito.<List<OrderItemPriceDetail>>any());
-    doNothing().when(orderItem).setOrderItemQualifiers(Mockito.<List<OrderItemQualifier>>any());
-    doNothing().when(orderItem).setOrderItemType(Mockito.<OrderItemType>any());
-    doNothing().when(orderItem).setParentOrderItem(Mockito.<OrderItem>any());
-    doNothing().when(orderItem).setPersonalMessage(Mockito.<PersonalMessage>any());
-    doNothing().when(orderItem).setPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setProratedOrderItemAdjustments(Mockito.<List<ProratedOrderItemAdjustment>>any());
-    doNothing().when(orderItem).setQuantity(anyInt());
-    doNothing().when(orderItem).setRetailPrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setRetailPriceOverride(anyBoolean());
-    doNothing().when(orderItem).setSalePrice(Mockito.<Money>any());
-    doNothing().when(orderItem).setSalePriceOverride(anyBoolean());
-    doNothing().when(orderItem).setTaxable(Mockito.<Boolean>any());
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItem = new OrderItemImpl();
     orderItem.setAuditable(auditable);
     orderItem.setCandidateItemOffers(new ArrayList<>());
     orderItem.setCartMessages(new ArrayList<>());
@@ -1323,7 +1153,257 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setHasValidationError(true);
     orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
     orderItem.setName("Name");
-    orderItem.setOrder(mock(Order.class));
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getTotalAdjustedPrice());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default
+   *       constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
+  public void testGetTotalAdjustedPrice_givenArrayListAddOrderItemPriceDetailImpl2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(orderItemPriceDetails);
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getTotalAdjustedPrice());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) Order is {@link
+   *       NullOrderFactoryImpl#NULL_ORDER}.
+   *   <li>Then return {@link Money#Money()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
+  public void testGetTotalAdjustedPrice_givenOrderItemImplOrderIsNull_order_thenReturnMoney() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getTotalAdjustedPrice());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
+   * <ul>
+   *   <li>Given {@link OrderItemImpl} (default constructor) SalePrice is {@link
+   *       Money#Money(double)} with amount is ten.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
+  public void testGetTotalAdjustedPrice_givenOrderItemImplSalePriceIsMoneyWithAmountIsTen() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(NullOrderFactoryImpl.NULL_ORDER);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    Money finalPrice = new Money();
+    orderItem.setPrice(finalPrice);
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money(10.0d));
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act and Assert
+    assertEquals(finalPrice, orderItemPriceDetailImpl.getTotalAdjustedPrice());
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OrderItemPriceDetailAdjustmentImpl#isFutureCredit()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
+  public void testGetTotalAdjustedPrice_thenCallsIsFutureCredit() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
     orderItem.setOrderItemAdjustments(new ArrayList<>());
     orderItem.setOrderItemAttributes(new HashMap<>());
     orderItem.setOrderItemPriceDetails(new ArrayList<>());
@@ -1341,105 +1421,190 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
 
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(orderItemPriceDetailAdjustmentImpl.isFutureCredit()).thenReturn(true);
+    doNothing()
+        .when(orderItemPriceDetailAdjustmentImpl)
+        .setOrderItemPriceDetail(Mockito.<OrderItemPriceDetail>any());
+    orderItemPriceDetailAdjustmentImpl.setOrderItemPriceDetail(null);
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentImpl);
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act
-    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl2.getTotalAdjustedPrice();
+    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl.getTotalAdjustedPrice();
 
     // Assert
-    verify(orderItem).getOrder();
-    verify(orderItem).getPriceBeforeAdjustments(eq(true));
-    verify(orderItem).setAuditable(isA(Auditable.class));
-    verify(orderItem).setCandidateItemOffers(isA(List.class));
-    verify(orderItem).setCartMessages(isA(List.class));
-    verify(orderItem).setChildOrderItems(isA(List.class));
-    verify(orderItem).setDiscountingAllowed(eq(true));
-    verify(orderItem).setGiftWrapOrderItem(isA(GiftWrapOrderItem.class));
-    verify(orderItem).setHasValidationError(eq(true));
-    verify(orderItem).setId(eq(1L));
-    verify(orderItem).setName(eq("Name"));
-    verify(orderItem).setOrder(isA(Order.class));
-    verify(orderItem).setOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setOrderItemAttributes(isA(Map.class));
-    verify(orderItem).setOrderItemPriceDetails(isA(List.class));
-    verify(orderItem).setOrderItemQualifiers(isA(List.class));
-    verify(orderItem).setOrderItemType(isA(OrderItemType.class));
-    verify(orderItem).setParentOrderItem(isA(OrderItem.class));
-    verify(orderItem).setPersonalMessage(isA(PersonalMessage.class));
-    verify(orderItem).setPrice(isA(Money.class));
-    verify(orderItem).setProratedOrderItemAdjustments(isA(List.class));
-    verify(orderItem).setQuantity(eq(1));
-    verify(orderItem).setRetailPrice(isA(Money.class));
-    verify(orderItem).setRetailPriceOverride(eq(true));
-    verify(orderItem).setSalePrice(isA(Money.class));
-    verify(orderItem).setSalePriceOverride(eq(true));
-    verify(orderItem).setTaxable(eq(true));
-    verify(orderItem).updateSaleAndRetailPrices();
-    assertEquals(money, actualTotalAdjustedPrice);
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(orderItemPriceDetailAdjustmentImpl).isFutureCredit();
+    verify(orderItemPriceDetailAdjustmentImpl).setOrderItemPriceDetail(isNull());
+    verify(order, atLeast(1)).getCurrency();
+    Currency currency = actualTotalAdjustedPrice.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualTotalAdjustedPrice.abs();
+    assertEquals(actualTotalAdjustedPrice, actualAbsResult);
+    Money actualZeroResult = actualTotalAdjustedPrice.zero();
+    assertEquals(actualTotalAdjustedPrice, actualZeroResult);
+  }
+
+  /**
+   * Test {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}.
+   *
+   * <ul>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getTotalAdjustedPrice()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OrderItemPriceDetailImpl.getTotalAdjustedPrice()"})
+  public void testGetTotalAdjustedPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
+
+    BroadleafCurrency broadleafCurrency = mock(BroadleafCurrency.class);
+    when(broadleafCurrency.getCurrencyCode()).thenReturn("GBP");
+
+    Order order = mock(Order.class);
+    when(order.getCurrency()).thenReturn(broadleafCurrency);
+
+    OrderItemImpl orderItem = new OrderItemImpl();
+    orderItem.setAuditable(auditable);
+    orderItem.setCandidateItemOffers(new ArrayList<>());
+    orderItem.setCartMessages(new ArrayList<>());
+    orderItem.setChildOrderItems(new ArrayList<>());
+    orderItem.setDiscountingAllowed(true);
+    orderItem.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    orderItem.setHasValidationError(true);
+    orderItem.setId(OrderItemQualifierImpl.serialVersionUID);
+    orderItem.setName("Name");
+    orderItem.setOrder(order);
+    orderItem.setOrderItemAdjustments(new ArrayList<>());
+    orderItem.setOrderItemAttributes(new HashMap<>());
+    orderItem.setOrderItemPriceDetails(new ArrayList<>());
+    orderItem.setOrderItemQualifiers(new ArrayList<>());
+    orderItem.setOrderItemType(OrderItemType.BASIC);
+    orderItem.setParentOrderItem(new BundleOrderItemImpl());
+    orderItem.setPersonalMessage(new PersonalMessageImpl());
+    orderItem.setPrice(new Money());
+    orderItem.setProratedOrderItemAdjustments(new ArrayList<>());
+    orderItem.setQuantity(1);
+    orderItem.setRetailPrice(new Money());
+    orderItem.setRetailPriceOverride(true);
+    orderItem.setSalePrice(new Money());
+    orderItem.setSalePriceOverride(true);
+    orderItem.setTaxable(true);
+    orderItem.updateSaleAndRetailPrices();
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
+
+    // Act
+    Money actualTotalAdjustedPrice = orderItemPriceDetailImpl.getTotalAdjustedPrice();
+
+    // Assert
+    verify(broadleafCurrency, atLeast(1)).getCurrencyCode();
+    verify(order, atLeast(1)).getCurrency();
+    Currency currency = actualTotalAdjustedPrice.getCurrency();
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("£", currency.getSymbol());
+    assertEquals(826, currency.getNumericCode());
+    Money actualAbsResult = actualTotalAdjustedPrice.abs();
+    assertEquals(actualTotalAdjustedPrice, actualAbsResult);
+    Money actualZeroResult = actualTotalAdjustedPrice.zero();
+    assertEquals(actualTotalAdjustedPrice, actualZeroResult);
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getUseSalePrice()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OrderItemPriceDetailImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getUseSalePrice()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getUseSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderItemPriceDetailImpl.getUseSalePrice()"})
   public void testGetUseSalePrice_givenOrderItemPriceDetailImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OrderItemPriceDetailImpl()).getUseSalePrice());
+    assertTrue(orderItemPriceDetailImpl.getUseSalePrice());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getUseSalePrice()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getUseSalePrice()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getUseSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderItemPriceDetailImpl.getUseSalePrice()"})
   public void testGetUseSalePrice_thenReturnFalse() {
     // Arrange
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setUseSalePrice(false);
+    orderItemPriceDetailImpl.setUseSalePrice(false);
 
     // Act and Assert
-    assertFalse(orderItemPriceDetailImpl2.getUseSalePrice());
+    assertFalse(orderItemPriceDetailImpl.getUseSalePrice());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@link BroadleafCurrencyImpl}
+   *       (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String OrderItemPriceDetailImpl.getCurrencyCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String OrderItemPriceDetailImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsBroadleafCurrencyImpl_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1460,7 +1625,8 @@ public class OrderItemPriceDetailImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1498,42 +1664,42 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemPriceDetailImpl2.setOrderItemAdjustments(new ArrayList<>());
-    orderItemPriceDetailImpl2.setQuantity(1);
-    orderItemPriceDetailImpl2.setUseSalePrice(true);
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailImpl2.getCurrencyCode());
+    assertNull(orderItemPriceDetailImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#getCurrencyCode()}.
+   *
    * <ul>
-   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OrderImpl} (default constructor) Currency is {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#getCurrencyCode()}
+   *
+   * <p>Method under test: {@link OrderItemPriceDetailImpl#getCurrencyCode()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String OrderItemPriceDetailImpl.getCurrencyCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String OrderItemPriceDetailImpl.getCurrencyCode()"})
   public void testGetCurrencyCode_givenOrderImplCurrencyIsNull_thenReturnNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(OrderItemQualifierImpl.serialVersionUID);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(OrderItemQualifierImpl.serialVersionUID);
 
     OrderImpl order = new OrderImpl();
@@ -1554,7 +1720,8 @@ public class OrderItemPriceDetailImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1592,37 +1759,34 @@ public class OrderItemPriceDetailImplDiffblueTest {
     orderItem.setTaxable(true);
     orderItem.updateSaleAndRetailPrices();
     orderItem.setOrder(order);
-
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    orderItemPriceDetailImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    orderItemPriceDetailImpl2.setOrderItemAdjustments(new ArrayList<>());
-    orderItemPriceDetailImpl2.setQuantity(1);
-    orderItemPriceDetailImpl2.setUseSalePrice(true);
-    orderItemPriceDetailImpl2.setOrderItem(orderItem);
+    orderItemPriceDetailImpl.setOrderItem(orderItem);
 
     // Act and Assert
-    assertNull(orderItemPriceDetailImpl2.getCurrencyCode());
+    assertNull(orderItemPriceDetailImpl.getCurrencyCode());
   }
 
   /**
    * Test {@link OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OrderItemPriceDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OrderItemPriceDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new OrderItemPriceDetailImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderItemPriceDetail> actualCreateOrRetrieveCopyInstanceResult = orderItemPriceDetailImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OrderItemPriceDetail> actualCreateOrRetrieveCopyInstanceResult =
+        orderItemPriceDetailImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -1631,54 +1795,36 @@ public class OrderItemPriceDetailImplDiffblueTest {
 
   /**
    * Test {@link OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link OrderItemPriceDetailImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OrderItemPriceDetailImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OrderItemPriceDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnOrderItemPriceDetailImpl()
-      throws CloneNotSupportedException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OrderItemPriceDetailImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    OrderItemPriceDetailImpl orderItemPriceDetailImpl2 = new OrderItemPriceDetailImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(orderItemPriceDetailImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OrderItemPriceDetail> actualCreateOrRetrieveCopyInstanceResult = orderItemPriceDetailImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<OrderItemPriceDetail> actualCreateOrRetrieveCopyInstanceResult =
+        orderItemPriceDetailImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService)
-        .getCeilingImplClass(eq("org.broadleafcommerce.core.order.domain.OrderItemPriceDetailImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    OrderItemPriceDetail clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof OrderItemPriceDetailImpl);
-    assertNull(clone.getId());
-    assertNull(clone.getOrderItem());
-    assertEquals(0, clone.getQuantity());
-    assertEquals(RoundingMode.HALF_EVEN, ((OrderItemPriceDetailImpl) clone).getRoundingModeForAdj());
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertTrue(clone.getFutureCreditOrderItemPriceDetailAdjustments().isEmpty());
-    assertTrue(clone.getOrderItemPriceDetailAdjustments().isEmpty());
-    assertTrue(clone.getUseSalePrice());
-    assertTrue(((OrderItemPriceDetailImpl) clone).useSalePrice);
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderItemPriceDetailImpl}
    *   <li>{@link OrderItemPriceDetailImpl#setId(Long)}
@@ -1692,13 +1838,19 @@ public class OrderItemPriceDetailImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OrderItemPriceDetailImpl.<init>()", "Long OrderItemPriceDetailImpl.getId()",
-      "OrderItem OrderItemPriceDetailImpl.getOrderItem()",
-      "List OrderItemPriceDetailImpl.getOrderItemPriceDetailAdjustments()",
-      "int OrderItemPriceDetailImpl.getQuantity()", "void OrderItemPriceDetailImpl.setId(Long)",
-      "void OrderItemPriceDetailImpl.setOrderItem(OrderItem)",
-      "void OrderItemPriceDetailImpl.setOrderItemAdjustments(List)", "void OrderItemPriceDetailImpl.setQuantity(int)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderItemPriceDetailImpl.<init>()",
+    "Long OrderItemPriceDetailImpl.getId()",
+    "OrderItem OrderItemPriceDetailImpl.getOrderItem()",
+    "List OrderItemPriceDetailImpl.getOrderItemPriceDetailAdjustments()",
+    "int OrderItemPriceDetailImpl.getQuantity()",
+    "void OrderItemPriceDetailImpl.setId(Long)",
+    "void OrderItemPriceDetailImpl.setOrderItem(OrderItem)",
+    "void OrderItemPriceDetailImpl.setOrderItemAdjustments(List)",
+    "void OrderItemPriceDetailImpl.setQuantity(int)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OrderItemPriceDetailImpl actualOrderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
@@ -1710,8 +1862,8 @@ public class OrderItemPriceDetailImplDiffblueTest {
     actualOrderItemPriceDetailImpl.setQuantity(1);
     Long actualId = actualOrderItemPriceDetailImpl.getId();
     OrderItem actualOrderItem = actualOrderItemPriceDetailImpl.getOrderItem();
-    List<OrderItemPriceDetailAdjustment> actualOrderItemPriceDetailAdjustments = actualOrderItemPriceDetailImpl
-        .getOrderItemPriceDetailAdjustments();
+    List<OrderItemPriceDetailAdjustment> actualOrderItemPriceDetailAdjustments =
+        actualOrderItemPriceDetailImpl.getOrderItemPriceDetailAdjustments();
 
     // Assert
     assertEquals(1, actualOrderItemPriceDetailImpl.getQuantity());

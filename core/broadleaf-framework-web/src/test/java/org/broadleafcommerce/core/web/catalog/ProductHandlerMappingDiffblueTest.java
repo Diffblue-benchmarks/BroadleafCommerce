@@ -25,11 +25,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertyResolver;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -47,90 +46,108 @@ import org.springframework.web.cors.DefaultCorsProcessor;
 
 @ExtendWith(MockitoExtension.class)
 class ProductHandlerMappingDiffblueTest {
-  @Mock
-  private CatalogService catalogService;
+  @Mock private Environment environment;
 
-  @Mock
-  private Environment environment;
-
-  @InjectMocks
-  private ProductHandlerMapping productHandlerMapping;
+  @InjectMocks private ProductHandlerMapping productHandlerMapping;
 
   /**
    * Test {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code false}.</li>
+   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
+   *       {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ProductHandlerMapping.shouldSkipExecution(HttpServletRequest)"})
-  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnFalse() throws ServletRequestBindingException {
+  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnFalse()
+      throws ServletRequestBindingException {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(
+            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(false);
 
     // Act
-    boolean actualShouldSkipExecutionResult = productHandlerMapping.shouldSkipExecution(new SearchRequestWrapper(
-        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+    boolean actualShouldSkipExecutionResult =
+        productHandlerMapping.shouldSkipExecution(
+            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest())));
 
     // Assert
-    verify(environment).getProperty(eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
+    verify(environment)
+        .getProperty(
+            eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
     assertFalse(actualShouldSkipExecutionResult);
   }
 
   /**
    * Test {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Given {@link Environment} {@link PropertyResolver#getProperty(String, Class, Object)} return {@code true}.</li>
+   *   <li>Given {@link Environment} {@link Environment#getProperty(String, Class, Object)} return
+   *       {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link ProductHandlerMapping#shouldSkipExecution(HttpServletRequest)}
    */
   @Test
-  @DisplayName("Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test shouldSkipExecution(HttpServletRequest); given Environment getProperty(String, Class, Object) return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ProductHandlerMapping.shouldSkipExecution(HttpServletRequest)"})
-  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnTrue() throws ServletRequestBindingException {
+  void testShouldSkipExecution_givenEnvironmentGetPropertyReturnTrue()
+      throws ServletRequestBindingException {
     // Arrange
-    when(environment.getProperty(Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
+    when(environment.getProperty(
+            Mockito.<String>any(), Mockito.<Class<Object>>any(), Mockito.<Object>any()))
         .thenReturn(true);
 
     // Act
-    boolean actualShouldSkipExecutionResult = productHandlerMapping.shouldSkipExecution(new SearchRequestWrapper(
-        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"})));
+    boolean actualShouldSkipExecutionResult =
+        productHandlerMapping.shouldSkipExecution(
+            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest())));
 
     // Assert
-    verify(environment).getProperty(eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
+    verify(environment)
+        .getProperty(
+            eq("allowCategoryResolutionUsingIdParam"), isA(Class.class), isA(Object.class));
     assertFalse(actualShouldSkipExecutionResult);
   }
 
   /**
    * Test {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link ProductHandlerMapping#findProductUsingIdParam(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test findProductUsingIdParam(HttpServletRequest); then return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.catalog.domain.Product ProductHandlerMapping.findProductUsingIdParam(HttpServletRequest)"})
+    "org.broadleafcommerce.core.catalog.domain.Product ProductHandlerMapping.findProductUsingIdParam(HttpServletRequest)"
+  })
   void testFindProductUsingIdParam_thenReturnNull() throws ServletRequestBindingException {
     // Arrange, Act and Assert
-    assertNull(productHandlerMapping.findProductUsingIdParam(new SearchRequestWrapper(
-        new XssRequestWrapper(new MockHttpServletRequest(), environment, new String[]{"White List Param Names"}))));
+    assertNull(
+        productHandlerMapping.findProductUsingIdParam(
+            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProductHandlerMapping#setDefaultTemplateName(String)}
    *   <li>{@link ProductHandlerMapping#getDefaultTemplateName()}
@@ -138,9 +155,12 @@ class ProductHandlerMappingDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"String ProductHandlerMapping.getDefaultTemplateName()",
-      "void ProductHandlerMapping.setDefaultTemplateName(String)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String ProductHandlerMapping.getDefaultTemplateName()",
+    "void ProductHandlerMapping.setDefaultTemplateName(String)"
+  })
   void testGettersAndSetters() {
     // Arrange
     ProductHandlerMapping productHandlerMapping = new ProductHandlerMapping();
@@ -154,12 +174,13 @@ class ProductHandlerMappingDiffblueTest {
 
   /**
    * Test new {@link ProductHandlerMapping} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link ProductHandlerMapping}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link ProductHandlerMapping}
    */
   @Test
   @DisplayName("Test new ProductHandlerMapping (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProductHandlerMapping.<init>()"})
   void testNewProductHandlerMapping() {
     // Arrange and Act

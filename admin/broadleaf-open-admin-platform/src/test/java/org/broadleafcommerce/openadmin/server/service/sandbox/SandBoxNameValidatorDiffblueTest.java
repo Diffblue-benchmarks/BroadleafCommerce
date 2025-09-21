@@ -20,13 +20,13 @@ package org.broadleafcommerce.openadmin.server.service.sandbox;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.sandbox.service.SandBoxService;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
@@ -35,30 +35,30 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SandBoxNameValidatorDiffblueTest {
-  @InjectMocks
-  private SandBoxNameValidator sandBoxNameValidator;
-
-  @Mock
-  private SandBoxService sandBoxService;
+  @InjectMocks private SandBoxNameValidator sandBoxNameValidator;
 
   /**
-   * Test {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata,
+   * String, String)}.
+   *
    * <ul>
-   *   <li>When {@link Entity} (default constructor).</li>
-   *   <li>Then return not NotValid.</li>
+   *   <li>When {@link Entity} (default constructor).
+   *   <li>Then return not NotValid.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult SandBoxNameValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult SandBoxNameValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_whenEntity_thenReturnNotNotValid() {
     // Arrange
     Entity entity = new Entity();
@@ -67,8 +67,15 @@ public class SandBoxNameValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = sandBoxNameValidator.validate(entity, instance, entityFieldMetadata,
-        validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        sandBoxNameValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     assertNull(actualValidateResult.getErrorMessage());
@@ -78,18 +85,23 @@ public class SandBoxNameValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata,
+   * String, String)}.
+   *
    * <ul>
-   *   <li>When {@link Entity} (default constructor).</li>
-   *   <li>Then return not Valid.</li>
+   *   <li>When {@link Entity} (default constructor).
+   *   <li>Then return not Valid.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link SandBoxNameValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult SandBoxNameValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult SandBoxNameValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_whenEntity_thenReturnNotValid() {
     // Arrange
     Entity entity = new Entity();
@@ -98,8 +110,15 @@ public class SandBoxNameValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = sandBoxNameValidator.validate(entity, instance, entityFieldMetadata,
-        validationConfiguration, new BasicFieldMetadata(), "Property Name", null);
+    PropertyValidationResult actualValidateResult =
+        sandBoxNameValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            null);
 
     // Assert
     assertNull(actualValidateResult.getErrorMessage());
@@ -110,17 +129,21 @@ public class SandBoxNameValidatorDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SandBoxNameValidator#setSucceedForNullValues(boolean)}
    *   <li>{@link SandBoxNameValidator#isSucceedForNullValues()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean SandBoxNameValidator.isSucceedForNullValues()",
-      "void SandBoxNameValidator.setSucceedForNullValues(boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean SandBoxNameValidator.isSucceedForNullValues()",
+    "void SandBoxNameValidator.setSucceedForNullValues(boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     SandBoxNameValidator sandBoxNameValidator = new SandBoxNameValidator();

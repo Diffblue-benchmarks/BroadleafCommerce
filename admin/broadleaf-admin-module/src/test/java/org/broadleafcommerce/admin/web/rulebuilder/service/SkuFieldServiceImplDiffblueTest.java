@@ -18,28 +18,39 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class SkuFieldServiceImplDiffblueTest {
-  @InjectMocks
-  private SkuFieldServiceImpl skuFieldServiceImpl;
+  @InjectMocks private SkuFieldServiceImpl skuFieldServiceImpl;
 
   /**
    * Test {@link SkuFieldServiceImpl#init()}.
-   * <p>
-   * Method under test: {@link SkuFieldServiceImpl#init()}
+   *
+   * <ul>
+   *   <li>Given {@link SkuFieldServiceImpl}.
+   *   <li>Then {@link SkuFieldServiceImpl} Fields size is five.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuFieldServiceImpl#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuFieldServiceImpl.init()"})
-  public void testInit() {
+  public void testInit_givenSkuFieldServiceImpl_thenSkuFieldServiceImplFieldsSizeIsFive() {
     // Arrange and Act
     skuFieldServiceImpl.init();
 
@@ -48,17 +59,49 @@ public class SkuFieldServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link SkuFieldServiceImpl#init()}.
+   *
+   * <ul>
+   *   <li>Then {@link SkuFieldServiceImpl} (default constructor) Fields is {@link
+   *       ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuFieldServiceImpl#init()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SkuFieldServiceImpl.init()"})
+  public void testInit_thenSkuFieldServiceImplFieldsIsArrayList() {
+    // Arrange
+    SkuFieldServiceImpl skuFieldServiceImpl = new SkuFieldServiceImpl();
+    ArrayList<FieldData> fields = new ArrayList<>();
+    skuFieldServiceImpl.setFields(fields);
+
+    // Act
+    skuFieldServiceImpl.init();
+
+    // Assert
+    assertEquals(fields, skuFieldServiceImpl.getFields());
+  }
+
+  /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuFieldServiceImpl#getDtoClassName()}
    *   <li>{@link SkuFieldServiceImpl#getName()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String SkuFieldServiceImpl.getDtoClassName()", "String SkuFieldServiceImpl.getName()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String SkuFieldServiceImpl.getDtoClassName()",
+    "String SkuFieldServiceImpl.getName()"
+  })
   public void testGettersAndSetters() {
     // Arrange
     SkuFieldServiceImpl skuFieldServiceImpl = new SkuFieldServiceImpl();

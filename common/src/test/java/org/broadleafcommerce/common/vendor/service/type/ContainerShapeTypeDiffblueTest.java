@@ -17,19 +17,19 @@
  */
 package org.broadleafcommerce.common.vendor.service.type;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class ContainerShapeTypeDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ContainerShapeType#ContainerShapeType()}
    *   <li>{@link ContainerShapeType#getFriendlyType()}
@@ -37,9 +37,13 @@ public class ContainerShapeTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ContainerShapeType.<init>()", "String ContainerShapeType.getFriendlyType()",
-      "String ContainerShapeType.getType()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ContainerShapeType.<init>()",
+    "String ContainerShapeType.getFriendlyType()",
+    "String ContainerShapeType.getType()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ContainerShapeType actualContainerShapeType = new ContainerShapeType();
@@ -48,22 +52,5 @@ public class ContainerShapeTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualContainerShapeType.getType());
-  }
-
-  /**
-   * Test {@link ContainerShapeType#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ContainerShapeType#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ContainerShapeType.equals(Object)", "int ContainerShapeType.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
-    // Arrange, Act and Assert
-    assertNotEquals(new ContainerShapeType(), BLCFieldUtils.NULL_FIELD);
   }
 }

@@ -18,28 +18,39 @@
 package org.broadleafcommerce.admin.web.rulebuilder.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.ArrayList;
+import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldData;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class TimeFieldServiceImplDiffblueTest {
-  @InjectMocks
-  private TimeFieldServiceImpl timeFieldServiceImpl;
+  @InjectMocks private TimeFieldServiceImpl timeFieldServiceImpl;
 
   /**
    * Test {@link TimeFieldServiceImpl#init()}.
-   * <p>
-   * Method under test: {@link TimeFieldServiceImpl#init()}
+   *
+   * <ul>
+   *   <li>Given {@link TimeFieldServiceImpl}.
+   *   <li>Then {@link TimeFieldServiceImpl} Fields size is six.
+   * </ul>
+   *
+   * <p>Method under test: {@link TimeFieldServiceImpl#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeFieldServiceImpl.init()"})
-  public void testInit() {
+  public void testInit_givenTimeFieldServiceImpl_thenTimeFieldServiceImplFieldsSizeIsSix() {
     // Arrange and Act
     timeFieldServiceImpl.init();
 
@@ -48,17 +59,49 @@ public class TimeFieldServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link TimeFieldServiceImpl#init()}.
+   *
+   * <ul>
+   *   <li>Then {@link TimeFieldServiceImpl} (default constructor) Fields is {@link
+   *       ArrayList#ArrayList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link TimeFieldServiceImpl#init()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void TimeFieldServiceImpl.init()"})
+  public void testInit_thenTimeFieldServiceImplFieldsIsArrayList() {
+    // Arrange
+    TimeFieldServiceImpl timeFieldServiceImpl = new TimeFieldServiceImpl();
+    ArrayList<FieldData> fields = new ArrayList<>();
+    timeFieldServiceImpl.setFields(fields);
+
+    // Act
+    timeFieldServiceImpl.init();
+
+    // Assert
+    assertEquals(fields, timeFieldServiceImpl.getFields());
+  }
+
+  /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TimeFieldServiceImpl#getDtoClassName()}
    *   <li>{@link TimeFieldServiceImpl#getName()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String TimeFieldServiceImpl.getDtoClassName()", "String TimeFieldServiceImpl.getName()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String TimeFieldServiceImpl.getDtoClassName()",
+    "String TimeFieldServiceImpl.getName()"
+  })
   public void testGettersAndSetters() {
     // Arrange
     TimeFieldServiceImpl timeFieldServiceImpl = new TimeFieldServiceImpl();

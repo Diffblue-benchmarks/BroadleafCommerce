@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.sitemap.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ import org.junit.experimental.categories.Category;
 public class SiteMapGenerationResponseDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SiteMapGenerationResponse}
    *   <li>{@link SiteMapGenerationResponse#setErrorCode(String)}
@@ -45,13 +47,19 @@ public class SiteMapGenerationResponseDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SiteMapGenerationResponse.<init>()", "String SiteMapGenerationResponse.getErrorCode()",
-      "List SiteMapGenerationResponse.getSiteMapFilePaths()",
-      "String SiteMapGenerationResponse.getSitemapIndexFileName()", "boolean SiteMapGenerationResponse.isHasError()",
-      "void SiteMapGenerationResponse.setErrorCode(String)", "void SiteMapGenerationResponse.setHasError(boolean)",
-      "void SiteMapGenerationResponse.setSiteMapFilePaths(List)",
-      "void SiteMapGenerationResponse.setSitemapIndexFileName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SiteMapGenerationResponse.<init>()",
+    "String SiteMapGenerationResponse.getErrorCode()",
+    "List SiteMapGenerationResponse.getSiteMapFilePaths()",
+    "String SiteMapGenerationResponse.getSitemapIndexFileName()",
+    "boolean SiteMapGenerationResponse.isHasError()",
+    "void SiteMapGenerationResponse.setErrorCode(String)",
+    "void SiteMapGenerationResponse.setHasError(boolean)",
+    "void SiteMapGenerationResponse.setSiteMapFilePaths(List)",
+    "void SiteMapGenerationResponse.setSitemapIndexFileName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SiteMapGenerationResponse actualSiteMapGenerationResponse = new SiteMapGenerationResponse();

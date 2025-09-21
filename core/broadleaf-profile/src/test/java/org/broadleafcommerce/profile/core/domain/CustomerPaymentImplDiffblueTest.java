@@ -21,22 +21,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -44,171 +41,141 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerPaymentImplDiffblueTest {
-  @Autowired
-  private CustomerPaymentImpl customerPaymentImpl;
+  @Autowired private CustomerPaymentImpl customerPaymentImpl;
 
   /**
    * Test {@link CustomerPaymentImpl#getPaymentType()}.
-   * <ul>
-   *   <li>Then return {@link PaymentType#PaymentType(String, String)} with {@code Type} and {@code Friendly Type}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#getPaymentType()}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#getPaymentType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PaymentType CustomerPaymentImpl.getPaymentType()"})
-  public void testGetPaymentType_thenReturnPaymentTypeWithTypeAndFriendlyType() {
-    // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
-    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
-
-    customerPaymentImpl2.setPaymentType(paymentType);
-
-    // Act and Assert
-    assertEquals(paymentType, customerPaymentImpl2.getPaymentType());
+  public void testGetPaymentType() {
+    // Arrange, Act and Assert
+    assertNull(customerPaymentImpl.getPaymentType());
   }
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentType(PaymentType)}.
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerPaymentImpl.setPaymentType(PaymentType)"})
   public void testSetPaymentType() {
     // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
     PaymentType paymentType = new PaymentType("Type", "Friendly Type");
 
     // Act
-    customerPaymentImpl2.setPaymentType(paymentType);
+    customerPaymentImpl.setPaymentType(paymentType);
 
     // Assert
-    assertEquals("Type", customerPaymentImpl2.paymentType);
-    assertEquals(paymentType, customerPaymentImpl2.getPaymentType());
+    assertEquals("Type", customerPaymentImpl.paymentType);
+    assertEquals(paymentType, customerPaymentImpl.getPaymentType());
   }
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentType(PaymentType)}.
+   *
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentType Type is {@code Type}.</li>
+   *   <li>Given {@code Type}.
+   *   <li>Then {@link CustomerPaymentImpl} PaymentType Type is {@code Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerPaymentImpl.setPaymentType(PaymentType)"})
   public void testSetPaymentType_givenType_thenCustomerPaymentImplPaymentTypeTypeIsType() {
     // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
     PaymentType paymentType = mock(PaymentType.class);
     when(paymentType.getType()).thenReturn("Type");
 
     // Act
-    customerPaymentImpl2.setPaymentType(paymentType);
+    customerPaymentImpl.setPaymentType(paymentType);
 
     // Assert
     verify(paymentType).getType();
-    assertEquals("Type", customerPaymentImpl2.getPaymentType().getType());
-    assertEquals("Type", customerPaymentImpl2.paymentType);
+    assertEquals("Type", customerPaymentImpl.getPaymentType().getType());
+    assertEquals("Type", customerPaymentImpl.paymentType);
   }
 
   /**
    * Test {@link CustomerPaymentImpl#getPaymentGatewayType()}.
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#getPaymentGatewayType()}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#getPaymentGatewayType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PaymentGatewayType CustomerPaymentImpl.getPaymentGatewayType()"})
   public void testGetPaymentGatewayType() {
     // Arrange, Act and Assert
-    assertNull((new CustomerPaymentImpl()).getPaymentGatewayType());
+    assertNull(customerPaymentImpl.getPaymentGatewayType());
   }
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerPaymentImpl.setPaymentGatewayType(PaymentGatewayType)"})
   public void testSetPaymentGatewayType() {
     // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
     PaymentGatewayType paymentGatewayType = new PaymentGatewayType("Type", "Friendly Type");
 
     // Act
-    customerPaymentImpl2.setPaymentGatewayType(paymentGatewayType);
+    customerPaymentImpl.setPaymentGatewayType(paymentGatewayType);
 
     // Assert
-    assertEquals("Type", customerPaymentImpl2.paymentGatewayType);
-    assertEquals(paymentGatewayType, customerPaymentImpl2.getPaymentGatewayType());
+    assertEquals("Type", customerPaymentImpl.paymentGatewayType);
+    assertEquals(paymentGatewayType, customerPaymentImpl.getPaymentGatewayType());
   }
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
+   *
    * <ul>
-   *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentGatewayType Type is {@code Type}.</li>
+   *   <li>Then {@link CustomerPaymentImpl} PaymentGatewayType Type is {@code Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   *
+   * <p>Method under test: {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerPaymentImpl.setPaymentGatewayType(PaymentGatewayType)"})
   public void testSetPaymentGatewayType_thenCustomerPaymentImplPaymentGatewayTypeTypeIsType() {
     // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
     PaymentGatewayType paymentGatewayType = mock(PaymentGatewayType.class);
     when(paymentGatewayType.getType()).thenReturn("Type");
 
     // Act
-    customerPaymentImpl2.setPaymentGatewayType(paymentGatewayType);
+    customerPaymentImpl.setPaymentGatewayType(paymentGatewayType);
 
     // Assert
     verify(paymentGatewayType).getType();
-    assertEquals("Type", customerPaymentImpl2.getPaymentGatewayType().getType());
-    assertEquals("Type", customerPaymentImpl2.paymentGatewayType);
-  }
-
-  /**
-   * Test {@link CustomerPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link CustomerPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CustomerPaymentImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<CustomerPayment> actualCreateOrRetrieveCopyInstanceResult = customerPaymentImpl2
-        .createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+    assertEquals("Type", customerPaymentImpl.getPaymentGatewayType().getType());
+    assertEquals("Type", customerPaymentImpl.paymentGatewayType);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CustomerPaymentImpl}
    *   <li>{@link CustomerPaymentImpl#setAdditionalFields(Map)}
@@ -226,14 +193,23 @@ public class CustomerPaymentImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CustomerPaymentImpl.<init>()", "Map CustomerPaymentImpl.getAdditionalFields()",
-      "Address CustomerPaymentImpl.getBillingAddress()", "Customer CustomerPaymentImpl.getCustomer()",
-      "Long CustomerPaymentImpl.getId()", "String CustomerPaymentImpl.getPaymentToken()",
-      "boolean CustomerPaymentImpl.isDefault()", "void CustomerPaymentImpl.setAdditionalFields(Map)",
-      "void CustomerPaymentImpl.setBillingAddress(Address)", "void CustomerPaymentImpl.setCustomer(Customer)",
-      "void CustomerPaymentImpl.setId(Long)", "void CustomerPaymentImpl.setIsDefault(boolean)",
-      "void CustomerPaymentImpl.setPaymentToken(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CustomerPaymentImpl.<init>()",
+    "Map CustomerPaymentImpl.getAdditionalFields()",
+    "Address CustomerPaymentImpl.getBillingAddress()",
+    "Customer CustomerPaymentImpl.getCustomer()",
+    "Long CustomerPaymentImpl.getId()",
+    "String CustomerPaymentImpl.getPaymentToken()",
+    "boolean CustomerPaymentImpl.isDefault()",
+    "void CustomerPaymentImpl.setAdditionalFields(Map)",
+    "void CustomerPaymentImpl.setBillingAddress(Address)",
+    "void CustomerPaymentImpl.setCustomer(Customer)",
+    "void CustomerPaymentImpl.setId(Long)",
+    "void CustomerPaymentImpl.setIsDefault(boolean)",
+    "void CustomerPaymentImpl.setPaymentToken(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CustomerPaymentImpl actualCustomerPaymentImpl = new CustomerPaymentImpl();

@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.promotionMessage.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,15 +37,17 @@ import org.junit.experimental.categories.Category;
 public class BLCPromotionMessageUtilsDiffblueTest {
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessages(List)}.
+   *
    * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor).</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link PromotionMessageImpl} (default constructor).
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessages(List)"})
   public void testGatherMessages_givenPromotionMessageImpl_thenReturnSizeIsOne() {
     // Arrange
@@ -52,7 +55,8 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     promotionMessages.add(new PromotionMessageImpl());
 
     // Act
-    List<String> actualGatherMessagesResult = BLCPromotionMessageUtils.gatherMessages(promotionMessages);
+    List<String> actualGatherMessagesResult =
+        BLCPromotionMessageUtils.gatherMessages(promotionMessages);
 
     // Assert
     assertEquals(1, actualGatherMessagesResult.size());
@@ -61,15 +65,17 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessages(List)}.
+   *
    * <ul>
-   *   <li>Given {@link PromotionMessageImpl} (default constructor).</li>
-   *   <li>Then return size is two.</li>
+   *   <li>Given {@link PromotionMessageImpl} (default constructor).
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessages(List)"})
   public void testGatherMessages_givenPromotionMessageImpl_thenReturnSizeIsTwo() {
     // Arrange
@@ -78,7 +84,8 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     promotionMessages.add(new PromotionMessageImpl());
 
     // Act
-    List<String> actualGatherMessagesResult = BLCPromotionMessageUtils.gatherMessages(promotionMessages);
+    List<String> actualGatherMessagesResult =
+        BLCPromotionMessageUtils.gatherMessages(promotionMessages);
 
     // Assert
     assertEquals(2, actualGatherMessagesResult.size());
@@ -88,19 +95,22 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessages(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessages(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessages(List)"})
   public void testGatherMessages_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<String> actualGatherMessagesResult = BLCPromotionMessageUtils.gatherMessages(new ArrayList<>());
+    List<String> actualGatherMessagesResult =
+        BLCPromotionMessageUtils.gatherMessages(new ArrayList<>());
 
     // Assert
     assertTrue(actualGatherMessagesResult.isEmpty());
@@ -108,14 +118,16 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessagesFromDTOs(List)"})
   public void testGatherMessagesFromDTOs_thenReturnSizeIsOne() {
     // Arrange
@@ -123,8 +135,8 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     promotionMessages.add(new PromotionMessageDTO(new PromotionMessageImpl()));
 
     // Act
-    List<String> actualGatherMessagesFromDTOsResult = BLCPromotionMessageUtils
-        .gatherMessagesFromDTOs(promotionMessages);
+    List<String> actualGatherMessagesFromDTOsResult =
+        BLCPromotionMessageUtils.gatherMessagesFromDTOs(promotionMessages);
 
     // Assert
     assertEquals(1, actualGatherMessagesFromDTOsResult.size());
@@ -133,14 +145,16 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}.
+   *
    * <ul>
-   *   <li>Then return size is two.</li>
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessagesFromDTOs(List)"})
   public void testGatherMessagesFromDTOs_thenReturnSizeIsTwo() {
     // Arrange
@@ -149,8 +163,8 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     promotionMessages.add(new PromotionMessageDTO(new PromotionMessageImpl()));
 
     // Act
-    List<String> actualGatherMessagesFromDTOsResult = BLCPromotionMessageUtils
-        .gatherMessagesFromDTOs(promotionMessages);
+    List<String> actualGatherMessagesFromDTOsResult =
+        BLCPromotionMessageUtils.gatherMessagesFromDTOs(promotionMessages);
 
     // Assert
     assertEquals(2, actualGatherMessagesFromDTOsResult.size());
@@ -160,41 +174,50 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessagesFromDTOs(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessagesFromDTOs(List)"})
   public void testGatherMessagesFromDTOs_whenArrayList_thenReturnEmpty() {
     // Arrange and Act
-    List<String> actualGatherMessagesFromDTOsResult = BLCPromotionMessageUtils
-        .gatherMessagesFromDTOs(new ArrayList<>());
+    List<String> actualGatherMessagesFromDTOsResult =
+        BLCPromotionMessageUtils.gatherMessagesFromDTOs(new ArrayList<>());
 
     // Assert
     assertTrue(actualGatherMessagesFromDTOsResult.isEmpty());
   }
 
   /**
-   * Test {@link BLCPromotionMessageUtils#gatherMessagesByPlacementType(Map, PromotionMessagePlacementType)}.
+   * Test {@link BLCPromotionMessageUtils#gatherMessagesByPlacementType(Map,
+   * PromotionMessagePlacementType)}.
+   *
    * <ul>
-   *   <li>When {@link PromotionMessagePlacementType#BROWSE}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link PromotionMessagePlacementType#BROWSE}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#gatherMessagesByPlacementType(Map, PromotionMessagePlacementType)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#gatherMessagesByPlacementType(Map,
+   * PromotionMessagePlacementType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List BLCPromotionMessageUtils.gatherMessagesByPlacementType(Map, PromotionMessagePlacementType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List BLCPromotionMessageUtils.gatherMessagesByPlacementType(Map, PromotionMessagePlacementType)"
+  })
   public void testGatherMessagesByPlacementType_whenBrowse_thenReturnEmpty() {
     // Arrange and Act
-    List<String> actualGatherMessagesByPlacementTypeResult = BLCPromotionMessageUtils
-        .gatherMessagesByPlacementType(new HashMap<>(), PromotionMessagePlacementType.BROWSE);
+    List<String> actualGatherMessagesByPlacementTypeResult =
+        BLCPromotionMessageUtils.gatherMessagesByPlacementType(
+            new HashMap<>(), PromotionMessagePlacementType.BROWSE);
 
     // Assert
     assertTrue(actualGatherMessagesByPlacementTypeResult.isEmpty());
@@ -202,27 +225,32 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(Map, List)"})
   public void testFilterPromotionMessageDTOsByTypes_given42_whenArrayListAdd42() {
     // Arrange
     HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
+    promotionMessages.put("foo", new ArrayList<>());
 
     ArrayList<String> placementTypes = new ArrayList<>();
     placementTypes.add("42");
     placementTypes.add("foo");
 
     // Act
-    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult = BLCPromotionMessageUtils
-        .filterPromotionMessageDTOsByTypes(promotionMessages, placementTypes);
+    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult =
+        BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(
+            promotionMessages, placementTypes);
 
     // Assert
     assertTrue(actualFilterPromotionMessageDTOsByTypesResult.isEmpty());
@@ -230,24 +258,28 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(Map, List)"})
-  public void testFilterPromotionMessageDTOsByTypes_givenArrayList_whenHashMapFooIsArrayList() {
+  public void testFilterPromotionMessageDTOsByTypes_givenFoo_whenArrayList() {
     // Arrange
     HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
     promotionMessages.put("foo", new ArrayList<>());
 
     // Act
-    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult = BLCPromotionMessageUtils
-        .filterPromotionMessageDTOsByTypes(promotionMessages, new ArrayList<>());
+    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult =
+        BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(
+            promotionMessages, new ArrayList<>());
 
     // Assert
     assertTrue(actualFilterPromotionMessageDTOsByTypesResult.isEmpty());
@@ -255,17 +287,20 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(Map, List)"})
-  public void testFilterPromotionMessageDTOsByTypes_givenArrayList_whenHashMapFooIsArrayList2() {
+  public void testFilterPromotionMessageDTOsByTypes_givenFoo_whenArrayListAddFoo() {
     // Arrange
     HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
     promotionMessages.put("foo", new ArrayList<>());
@@ -274,8 +309,9 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     placementTypes.add("foo");
 
     // Act
-    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult = BLCPromotionMessageUtils
-        .filterPromotionMessageDTOsByTypes(promotionMessages, placementTypes);
+    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult =
+        BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(
+            promotionMessages, placementTypes);
 
     // Assert
     assertTrue(actualFilterPromotionMessageDTOsByTypesResult.isEmpty());
@@ -283,49 +319,26 @@ public class BLCPromotionMessageUtilsDiffblueTest {
 
   /**
    * Test {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link HashMap#HashMap()}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}
+   *
+   * <p>Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(Map, List)"})
-  public void testFilterPromotionMessageDTOsByTypes_givenFoo_whenHashMap() {
-    // Arrange
-    HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
-
-    ArrayList<String> placementTypes = new ArrayList<>();
-    placementTypes.add("foo");
-
-    // Act
-    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult = BLCPromotionMessageUtils
-        .filterPromotionMessageDTOsByTypes(promotionMessages, placementTypes);
-
-    // Assert
-    assertTrue(actualFilterPromotionMessageDTOsByTypesResult.isEmpty());
-  }
-
-  /**
-   * Test {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCPromotionMessageUtils#filterPromotionMessageDTOsByTypes(Map, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(Map, List)"})
-  public void testFilterPromotionMessageDTOsByTypes_whenArrayList() {
+  public void testFilterPromotionMessageDTOsByTypes_whenHashMap() {
     // Arrange
     HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
 
     // Act
-    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult = BLCPromotionMessageUtils
-        .filterPromotionMessageDTOsByTypes(promotionMessages, new ArrayList<>());
+    List<PromotionMessageDTO> actualFilterPromotionMessageDTOsByTypesResult =
+        BLCPromotionMessageUtils.filterPromotionMessageDTOsByTypes(
+            promotionMessages, new ArrayList<>());
 
     // Assert
     assertTrue(actualFilterPromotionMessageDTOsByTypesResult.isEmpty());

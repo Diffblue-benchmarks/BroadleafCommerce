@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,11 +27,12 @@ import org.junit.experimental.categories.Category;
 public class EfficientLRUMapDiffblueTest {
   /**
    * Test {@link EfficientLRUMap#EfficientLRUMap(int)}.
-   * <p>
-   * Method under test: {@link EfficientLRUMap#EfficientLRUMap(int)}
+   *
+   * <p>Method under test: {@link EfficientLRUMap#EfficientLRUMap(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EfficientLRUMap.<init>(int)"})
   public void testNewEfficientLRUMap() {
     // Arrange and Act

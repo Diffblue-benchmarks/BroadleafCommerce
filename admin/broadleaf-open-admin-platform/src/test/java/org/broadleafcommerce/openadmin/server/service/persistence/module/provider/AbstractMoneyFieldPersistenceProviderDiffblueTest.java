@@ -18,7 +18,8 @@
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -42,125 +43,95 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {MoneyFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractMoneyFieldPersistenceProviderDiffblueTest {
-  @Autowired
-  private AbstractMoneyFieldPersistenceProvider abstractMoneyFieldPersistenceProvider;
+  @Autowired private AbstractMoneyFieldPersistenceProvider abstractMoneyFieldPersistenceProvider;
 
   /**
    * Test {@link AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   *
    * <ul>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
+   *   <li>Then return {@code NOT_HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   *
+   * <p>Method under test: {@link
+   * AbstractMoneyFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "MetadataProviderResponse AbstractMoneyFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"})
+    "MetadataProviderResponse AbstractMoneyFieldPersistenceProvider.extractValue(ExtractValueRequest, Property)"
+  })
   public void testExtractValue_thenReturnNotHandled() throws PersistenceException {
     // Arrange
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    ExtractValueRequest extractValueRequest =
+        new ExtractValueRequest(
+            props,
+            fieldManager,
+            metadata,
+            "Requested Value",
+            "Display Val",
+            persistenceManager,
+            recordHelper,
+            new SimpleDateFormat("yyyy/mm/dd"),
+            customCriteria);
 
     // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
+    assertEquals(
+        MetadataProviderResponse.NOT_HANDLED,
         abstractMoneyFieldPersistenceProvider.extractValue(extractValueRequest, new Property()));
   }
 
   /**
-   * Test {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal, ExtractValueRequest, Property)}.
+   * Test {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal, ExtractValueRequest,
+   * Property)}.
+   *
    * <ul>
-   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@code 2.30}.</li>
+   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@code 2.30}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal, ExtractValueRequest, Property)}
+   *
+   * <p>Method under test: {@link AbstractMoneyFieldPersistenceProvider#formatValue(BigDecimal,
+   * ExtractValueRequest, Property)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AbstractMoneyFieldPersistenceProvider.formatValue(BigDecimal, ExtractValueRequest, Property)"})
+    "String AbstractMoneyFieldPersistenceProvider.formatValue(BigDecimal, ExtractValueRequest, Property)"
+  })
   public void testFormatValue_whenBigDecimalWith23_thenReturn230() {
     // Arrange
     BigDecimal value = new BigDecimal("2.3");
     ArrayList<Property> props = new ArrayList<>();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
     BasicFieldMetadata metadata = new BasicFieldMetadata();
     PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
     AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    ExtractValueRequest extractValueRequest =
+        new ExtractValueRequest(
+            props,
+            fieldManager,
+            metadata,
+            "Requested Value",
+            "Display Val",
+            persistenceManager,
+            recordHelper,
+            new SimpleDateFormat("yyyy/mm/dd"),
+            customCriteria);
 
     // Act and Assert
-    assertEquals("2.30", abstractMoneyFieldPersistenceProvider.formatValue(value, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link AbstractMoneyFieldPersistenceProvider#formatDisplayValue(BigDecimal, ExtractValueRequest, Property)}.
-   * <ul>
-   *   <li>Then return {@code £2.30}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractMoneyFieldPersistenceProvider#formatDisplayValue(BigDecimal, ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AbstractMoneyFieldPersistenceProvider.formatDisplayValue(BigDecimal, ExtractValueRequest, Property)"})
-  public void testFormatDisplayValue_thenReturn230() {
-    // Arrange
-    BigDecimal value = new BigDecimal("2.3");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act and Assert
-    assertEquals("£2.30",
-        abstractMoneyFieldPersistenceProvider.formatDisplayValue(value, extractValueRequest, new Property()));
-  }
-
-  /**
-   * Test {@link AbstractMoneyFieldPersistenceProvider#formatDisplayValue(BigDecimal, ExtractValueRequest, Property)}.
-   * <ul>
-   *   <li>Then return {@code £2.30}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractMoneyFieldPersistenceProvider#formatDisplayValue(BigDecimal, ExtractValueRequest, Property)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AbstractMoneyFieldPersistenceProvider.formatDisplayValue(BigDecimal, ExtractValueRequest, Property)"})
-  public void testFormatDisplayValue_thenReturn2302() {
-    // Arrange
-    BigDecimal value = new BigDecimal("2.3");
-    ArrayList<Property> props = new ArrayList<>();
-    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
-
-    BasicFieldMetadata metadata = new BasicFieldMetadata();
-    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
-    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
-    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
-        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
-        new String[]{"Custom Criteria"});
-
-    // Act and Assert
-    assertEquals("£2.30",
-        abstractMoneyFieldPersistenceProvider.formatDisplayValue(value, extractValueRequest, new Property()));
+    assertEquals(
+        "2.30",
+        abstractMoneyFieldPersistenceProvider.formatValue(
+            value, extractValueRequest, new Property()));
   }
 }

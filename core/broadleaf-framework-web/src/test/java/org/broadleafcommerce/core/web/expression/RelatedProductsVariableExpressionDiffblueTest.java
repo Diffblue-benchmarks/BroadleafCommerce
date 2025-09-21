@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,50 +46,55 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(classes = {RelatedProductsVariableExpression.class})
 @ExtendWith(SpringExtension.class)
 class RelatedProductsVariableExpressionDiffblueTest {
-  @MockBean
-  private RelatedProductsService relatedProductsService;
+  @MockBean private RelatedProductsService relatedProductsService;
 
-  @Autowired
-  private RelatedProductsVariableExpression relatedProductsVariableExpression;
+  @Autowired private RelatedProductsVariableExpression relatedProductsVariableExpression;
 
   /**
    * Test {@link RelatedProductsVariableExpression#getName()}.
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#getName()}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String RelatedProductsVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("related_products",
-        (new RelatedProductsVariableExpression(mock(RelatedProductsService.class))).getName());
+    assertEquals(
+        "related_products",
+        new RelatedProductsVariableExpression(mock(RelatedProductsService.class)).getName());
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code productId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code
+   * productId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; then return size is one")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer, String)"})
   void testFindByProductWithProductIdQuantityType_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, 1, "Type");
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -97,27 +103,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code productId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code
+   * productId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer, String)"})
   void testFindByProductWithProductIdQuantityType_whenNull_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, null, "Type");
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, null, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -125,27 +136,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code productId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code
+   * productId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer, String)"})
   void testFindByProductWithProductIdQuantityType_whenNull_thenReturnEmpty2() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, 1, null);
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, 1, null);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -153,27 +169,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code productId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)} with {@code
+   * productId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code Type}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code Type}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'Type'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer, String) with 'productId', 'quantity', 'type'; when 'Type'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer, String)"})
   void testFindByProductWithProductIdQuantityType_whenType_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, 1, "Type");
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -181,28 +202,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code productId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code
+   * productId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer) with 'productId', 'quantity'; then return size is one")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer) with 'productId', 'quantity'; then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer)"})
   void testFindByProductWithProductIdQuantity_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, 1);
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, 1);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -211,27 +236,31 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code productId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code
+   * productId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer) with 'productId', 'quantity'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer) with 'productId', 'quantity'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer)"})
   void testFindByProductWithProductIdQuantity_whenNull_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, null);
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, null);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -239,27 +268,31 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code productId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)} with {@code
+   * productId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When one.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByProduct(Long, Integer) with 'productId', 'quantity'; when one; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByProduct(Long, Integer) with 'productId', 'quantity'; when one; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long, Integer)"})
   void testFindByProductWithProductIdQuantity_whenOne_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByProductResult = relatedProductsVariableExpression.findByProduct(1L, 1);
+    List<Product> actualFindByProductResult =
+        relatedProductsVariableExpression.findByProduct(1L, 1);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -268,20 +301,21 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#findByProduct(Long)} with {@code productId}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long)}
    */
   @Test
   @DisplayName("Test findByProduct(Long) with 'productId'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long)"})
   void testFindByProductWithProductId_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
@@ -295,22 +329,23 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#findByProduct(Long)} with {@code productId}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByProduct(Long)}
    */
   @Test
   @DisplayName("Test findByProduct(Long) with 'productId'; then return size is one")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByProduct(Long)"})
   void testFindByProductWithProductId_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
@@ -324,28 +359,35 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with {@code categoryId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with
+   * {@code categoryId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; then return size is one")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"})
+  @DisplayName(
+      "Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"
+  })
   void testFindByCategoryWithCategoryIdQuantityType_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, 1, "Type");
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -354,27 +396,34 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with {@code categoryId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with
+   * {@code categoryId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"})
+  @DisplayName(
+      "Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"
+  })
   void testFindByCategoryWithCategoryIdQuantityType_whenNull_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, null, "Type");
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, null, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -382,27 +431,34 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with {@code categoryId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with
+   * {@code categoryId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"})
+  @DisplayName(
+      "Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"
+  })
   void testFindByCategoryWithCategoryIdQuantityType_whenNull_thenReturnEmpty2() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, 1, null);
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, 1, null);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -410,27 +466,34 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with {@code categoryId}, {@code quantity}, {@code type}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)} with
+   * {@code categoryId}, {@code quantity}, {@code type}.
+   *
    * <ul>
-   *   <li>When {@code Type}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code Type}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer,
+   * String)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'Type'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"})
+  @DisplayName(
+      "Test findByCategory(Long, Integer, String) with 'categoryId', 'quantity', 'type'; when 'Type'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.findByCategory(Long, Integer, String)"
+  })
   void testFindByCategoryWithCategoryIdQuantityType_whenType_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, 1, "Type");
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -438,28 +501,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code categoryId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code
+   * categoryId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; then return size is one")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer)"})
   void testFindByCategoryWithCategoryIdQuantity_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, 1);
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, 1);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -468,27 +535,31 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code categoryId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code
+   * categoryId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer)"})
   void testFindByCategoryWithCategoryIdQuantity_whenNull_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, null);
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, null);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -496,27 +567,31 @@ class RelatedProductsVariableExpressionDiffblueTest {
   }
 
   /**
-   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code categoryId}, {@code quantity}.
+   * Test {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)} with {@code
+   * categoryId}, {@code quantity}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When one.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#findByCategory(Long, Integer)}
    */
   @Test
-  @DisplayName("Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; when one; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test findByCategory(Long, Integer) with 'categoryId', 'quantity'; when one; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.findByCategory(Long, Integer)"})
   void testFindByCategoryWithCategoryIdQuantity_whenOne_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualFindByCategoryResult = relatedProductsVariableExpression.findByCategory(1L, 1);
+    List<Product> actualFindByCategoryResult =
+        relatedProductsVariableExpression.findByCategory(1L, 1);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -525,28 +600,35 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CrossSaleProductImpl} (default constructor).</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CrossSaleProductImpl} (default
+   *       constructor).
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long,
+   * Integer, String)}
    */
   @Test
-  @DisplayName("Test getRelatedProducts(Long, Long, Integer, String); given ArrayList() add CrossSaleProductImpl (default constructor); then return size is one")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"})
+  @DisplayName(
+      "Test getRelatedProducts(Long, Long, Integer, String); given ArrayList() add CrossSaleProductImpl (default constructor); then return size is one")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"
+  })
   void testGetRelatedProducts_givenArrayListAddCrossSaleProductImpl_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<PromotableProduct> promotableProductList = new ArrayList<>();
     promotableProductList.add(new CrossSaleProductImpl());
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(promotableProductList);
 
     // Act
-    List<Product> actualRelatedProducts = relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, "Type");
+    List<Product> actualRelatedProducts =
+        relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -556,26 +638,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long,
+   * Integer, String)}
    */
   @Test
-  @DisplayName("Test getRelatedProducts(Long, Long, Integer, String); when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"})
+  @DisplayName(
+      "Test getRelatedProducts(Long, Long, Integer, String); when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"
+  })
   void testGetRelatedProducts_whenNull_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualRelatedProducts = relatedProductsVariableExpression.getRelatedProducts(1L, 1L, null, "Type");
+    List<Product> actualRelatedProducts =
+        relatedProductsVariableExpression.getRelatedProducts(1L, 1L, null, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -584,26 +672,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long,
+   * Integer, String)}
    */
   @Test
-  @DisplayName("Test getRelatedProducts(Long, Long, Integer, String); when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"})
+  @DisplayName(
+      "Test getRelatedProducts(Long, Long, Integer, String); when 'null'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"
+  })
   void testGetRelatedProducts_whenNull_thenReturnEmpty2() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualRelatedProducts = relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, null);
+    List<Product> actualRelatedProducts =
+        relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, null);
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -612,26 +706,32 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}.
+   *
    * <ul>
-   *   <li>When {@code Type}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code Type}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long, Integer, String)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#getRelatedProducts(Long, Long,
+   * Integer, String)}
    */
   @Test
-  @DisplayName("Test getRelatedProducts(Long, Long, Integer, String); when 'Type'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"})
+  @DisplayName(
+      "Test getRelatedProducts(Long, Long, Integer, String); when 'Type'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List RelatedProductsVariableExpression.getRelatedProducts(Long, Long, Integer, String)"
+  })
   void testGetRelatedProducts_whenType_thenReturnEmpty() {
     // Arrange
-    Mockito
-        .<List<? extends PromotableProduct>>when(
+    Mockito.<List<? extends PromotableProduct>>when(
             relatedProductsService.findRelatedProducts(Mockito.<RelatedProductDTO>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    List<Product> actualRelatedProducts = relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, "Type");
+    List<Product> actualRelatedProducts =
+        relatedProductsVariableExpression.getRelatedProducts(1L, 1L, 1, "Type");
 
     // Assert
     verify(relatedProductsService).findRelatedProducts(isA(RelatedProductDTO.class));
@@ -640,16 +740,19 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#buildProductList(List)}.
+   *
    * <ul>
-   *   <li>Given {@link CrossSaleProductImpl} (default constructor).</li>
-   *   <li>Then return size is two.</li>
+   *   <li>Given {@link CrossSaleProductImpl} (default constructor).
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
    */
   @Test
-  @DisplayName("Test buildProductList(List); given CrossSaleProductImpl (default constructor); then return size is two")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test buildProductList(List); given CrossSaleProductImpl (default constructor); then return size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.buildProductList(List)"})
   void testBuildProductList_givenCrossSaleProductImpl_thenReturnSizeIsTwo() {
     // Arrange
@@ -658,7 +761,8 @@ class RelatedProductsVariableExpressionDiffblueTest {
     relatedProducts.add(new CrossSaleProductImpl());
 
     // Act
-    List<Product> actualBuildProductListResult = relatedProductsVariableExpression.buildProductList(relatedProducts);
+    List<Product> actualBuildProductListResult =
+        relatedProductsVariableExpression.buildProductList(relatedProducts);
 
     // Assert
     assertEquals(2, actualBuildProductListResult.size());
@@ -671,16 +775,18 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#buildProductList(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
    */
   @Test
   @DisplayName("Test buildProductList(List); when ArrayList(); then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.buildProductList(List)"})
   void testBuildProductList_whenArrayList_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -689,16 +795,18 @@ class RelatedProductsVariableExpressionDiffblueTest {
 
   /**
    * Test {@link RelatedProductsVariableExpression#buildProductList(List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
+   *
+   * <p>Method under test: {@link RelatedProductsVariableExpression#buildProductList(List)}
    */
   @Test
   @DisplayName("Test buildProductList(List); when 'null'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RelatedProductsVariableExpression.buildProductList(List)"})
   void testBuildProductList_whenNull_thenReturnEmpty() {
     // Arrange, Act and Assert

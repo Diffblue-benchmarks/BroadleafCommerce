@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,8 +29,9 @@ import org.junit.experimental.categories.Category;
 public class CriteriaConversionExceptionDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CriteriaConversionException#CriteriaConversionException(String, FieldPath)}
    *   <li>{@link CriteriaConversionException#setFieldPath(FieldPath)}
@@ -37,14 +39,17 @@ public class CriteriaConversionExceptionDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CriteriaConversionException.<init>(String, FieldPath)",
-      "FieldPath CriteriaConversionException.getFieldPath()",
-      "void CriteriaConversionException.setFieldPath(FieldPath)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CriteriaConversionException.<init>(String, FieldPath)",
+    "FieldPath CriteriaConversionException.getFieldPath()",
+    "void CriteriaConversionException.setFieldPath(FieldPath)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    CriteriaConversionException actualCriteriaConversionException = new CriteriaConversionException("An error occurred",
-        new FieldPath());
+    CriteriaConversionException actualCriteriaConversionException =
+        new CriteriaConversionException("An error occurred", new FieldPath());
     FieldPath fieldPath = new FieldPath();
     actualCriteriaConversionException.setFieldPath(fieldPath);
     FieldPath actualFieldPath = actualCriteriaConversionException.getFieldPath();

@@ -34,48 +34,56 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import org.broadleafcommerce.common.exception.SecurityServiceException;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.common.extension.ExtensionManager;
-import org.broadleafcommerce.common.persistence.EntityDuplicator;
-import org.broadleafcommerce.common.sandbox.SandBoxHelper;
-import org.broadleafcommerce.common.security.service.ExploitProtectionService;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
+import org.broadleafcommerce.common.presentation.client.AddMethodType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
+import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
 import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
-import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest.Type;
 import org.broadleafcommerce.openadmin.server.security.dao.AdminUserDao;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminModuleDTO;
+import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.security.remote.EntityOperationType;
 import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
-import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityProvider;
 import org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityService;
 import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
 import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
@@ -85,13 +93,13 @@ import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestW
 import org.broadleafcommerce.openadmin.web.controller.AbstractAdminAbstractControllerExtensionHandler;
 import org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
-import org.broadleafcommerce.openadmin.web.form.component.ListGrid.Type;
 import org.broadleafcommerce.openadmin.web.form.entity.CodeField;
+import org.broadleafcommerce.openadmin.web.form.entity.DefaultAdornedEntityFormActions;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityFormAction;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
-import org.broadleafcommerce.openadmin.web.form.entity.FieldGroup;
+import org.broadleafcommerce.openadmin.web.form.entity.Tab;
 import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -103,9 +111,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.ConcurrentModel;
@@ -118,333 +126,1448 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AdminBasicEntityControllerDiffblueTest {
-  @Mock
-  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+  @Mock private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
 
-  @InjectMocks
-  private AdminBasicEntityController adminBasicEntityController;
+  @InjectMocks private AdminBasicEntityController adminBasicEntityController;
 
-  @Mock
-  private AdminEntityService adminEntityService;
+  @Mock private AdminEntityService adminEntityService;
 
-  @Mock
-  private AdminNavigationService adminNavigationService;
+  @Mock private AdminNavigationService adminNavigationService;
 
-  @Mock
-  private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+  @Mock private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
 
-  @Mock
-  private AdminUserDao adminUserDao;
+  @Mock private AdminUserDao adminUserDao;
 
-  @Mock
-  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+  @Mock private ClassNameRequestParamValidationService classNameRequestParamValidationService;
 
-  @Mock
-  private DynamicEntityDao dynamicEntityDao;
+  @Mock private EntityFormValidator entityFormValidator;
 
-  @Mock
-  private EntityDuplicator entityDuplicator;
+  @Mock private FormBuilderService formBuilderService;
 
-  @Mock
-  private EntityFormValidator entityFormValidator;
+  @Mock private RowLevelSecurityService rowLevelSecurityService;
 
-  @Mock
-  private ExploitProtectionService exploitProtectionService;
-
-  @Mock
-  private FormBuilderService formBuilderService;
-
-  @Mock
-  private GenericEntityService genericEntityService;
-
-  @Mock
-  private RowLevelSecurityService rowLevelSecurityService;
-
-  @Mock
-  private SandBoxHelper sandBoxHelper;
-
-  @Mock
-  private SecurityVerifier securityVerifier;
+  @Mock private SecurityVerifier securityVerifier;
 
   /**
-   * Test {@link AdminBasicEntityController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
-   * <ul>
-   *   <li>Then status {@link StatusResultMatchers#isOk()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   * Test {@link AdminBasicEntityController#viewEntityList(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewEntityList(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
-  public void testViewEntityList_thenStatusIsOk() throws Exception {
+    "String AdminBasicEntityController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
+  public void testViewEntityList() throws Exception {
     // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(formBuilderService.buildMainListGrid(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any(),
-        Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(new ListGrid());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
 
     ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[]{new Property()});
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
     DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{sectionKey:.+}", "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.model().size(11))
-        .andExpect(MockMvcResultMatchers.model()
-            .attributeExists("currentAdminSection", "currentUri", "currentUrl", "entityTypes", "isFilter", "listGrid",
-                "mainActions", "sectionKey", "viewType"))
-        .andExpect(MockMvcResultMatchers.view().name("modules/defaultContainer"))
-        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/defaultContainer"));
+        .andExpect(status().isForbidden());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)}.
-   * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is seven.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)}
+   * Test {@link AdminBasicEntityController#viewEntityList(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewEntityList(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"})
-  public void testSetupViewEntityListBasicModel_thenConcurrentModelSizeIsSeven() throws ServiceException {
+    "String AdminBasicEntityController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
+  public void testViewEntityList2() throws Exception {
     // Arrange
-    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(formBuilderService.buildMainListGrid(
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewEntityList(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Then status {@link StatusResultMatchers#isOk()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewEntityList(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.viewEntityList(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
+  public void testViewEntityList_thenStatusIsOk() throws Exception {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    when(formBuilderService.buildMainListGrid(
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<ClassMetadata>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(
-        new MockHttpServletRequest("https://example.org/example", "https://example.org/example"));
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isOk())
+        .andExpect(model().size(11))
+        .andExpect(
+            model()
+                .attributeExists(
+                    "currentAdminSection",
+                    "currentUri",
+                    "currentUrl",
+                    "entityTypes",
+                    "isFilter",
+                    "listGrid",
+                    "mainActions",
+                    "sectionKey",
+                    "viewType"))
+        .andExpect(view().name("modules/defaultContainer"))
+        .andExpect(forwardedUrl("modules/defaultContainer"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel() throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenThrow(new UnsupportedOperationException());
+    doThrow(new ServiceException("An error occurred"))
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.setupViewEntityListBasicModel(
+                request, cmd, "U", "Section Class Name", model, new HttpHeaders()));
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel2() throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.setupViewEntityListBasicModel(
+                request, cmd, "U", "Section Class Name", model, new HttpHeaders()));
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel3() throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.setupViewEntityListBasicModel(
+                request, cmd, "U", "Section Class Name", model, new HttpHeaders()));
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel4() throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("https://example.org/example");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    adminBasicEntityController.setupViewEntityListBasicModel(request, cmd, "Section Key", "Section Class Name", model,
-        new HttpHeaders());
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
 
     // Assert
     verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
     assertEquals(7, model.size());
-    Object getResult = model.get("entityTypes");
+    Object getResult = model.get("mainActions");
     assertTrue(getResult instanceof List);
-    Object getResult2 = model.get("mainActions");
-    assertTrue(getResult2 instanceof List);
-    Object getResult3 = model.get("currentAdminSection");
-    assertTrue(getResult3 instanceof AdminSectionImpl);
-    assertEquals("Section Key", model.get("sectionKey"));
-    assertEquals("http://localhosthttps://example.org/example", model.get("currentUrl"));
-    assertEquals("ttps://example.org/example", model.get("currentUri"));
-    assertEquals(1, ((List<ClassTree>) getResult).size());
-    assertEquals(1, ((List<EntityFormAction>) getResult2).size());
-    assertFalse((Boolean) model.get("isFilter"));
-    assertSame(adminSectionImpl, getResult3);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("isFilter"));
+    assertTrue(model.containsKey("sectionKey"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)}.
-   * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)}
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"})
-  public void testSetupViewEntityListBasicModel_thenThrowUnsupportedOperationException() throws ServiceException {
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel5() throws ServiceException {
     // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenThrow(new UnsupportedOperationException("foo"));
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    Property property = new Property();
+    property.setMetadata(new AdornedTargetCollectionMetadata());
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertFalse((Boolean) model.get("isFilter"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel6() throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("isFilter"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel7() throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException());
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     ConcurrentModel model = new ConcurrentModel();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> adminBasicEntityController
-        .setupViewEntityListBasicModel(request, cmd, "Section Key", "Section Class Name", model, new HttpHeaders()));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.setupViewEntityListBasicModel(
+                request, cmd, "U", "Section Class Name", model, new HttpHeaders()));
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
    * <ul>
-   *   <li>Then content string {@code <Map><?>42</?></Map>}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is eight.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_given42_thenConcurrentModelSizeIsEight()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    HttpHeaders requestParams = new HttpHeaders();
+    requestParams.add("headerFlash", "42");
+    requestParams.add("https://example.org/example", "https://example.org/example");
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, requestParams);
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(8, model.size());
+    assertEquals("42", model.get("headerFlash"));
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("mainActions"));
+    assertTrue(model.containsKey("sectionKey"));
+    assertTrue((Boolean) model.get("isFilter"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code
+   *       false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_givenBasicFieldMetadataGetReadOnlyReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("isFilter"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} (default constructor) ReadOnly is {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_givenBasicFieldMetadataReadOnlyIsTrue()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setReadOnly(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertFalse((Boolean) model.get("isFilter"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Given empty array of {@link Property}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_givenEmptyArrayOfProperty()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertFalse((Boolean) model.get("isFilter"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityService#canAdd(AdminUser,
+   *       String, ClassMetadata)} return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_givenRowLevelSecurityServiceCanAddReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(false);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(null);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertFalse((Boolean) model.get("isFilter"));
+    assertTrue(((List<Object>) getResult).isEmpty());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} containsKey {@code isFilter}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_thenConcurrentModelContainsKeyIsFilter()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("isFilter"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code currentUri} is {@code eaderFlash}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_thenConcurrentModelCurrentUriIsEaderFlash()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, new HttpHeaders());
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("eaderFlash", model.get("currentUri"));
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("isFilter"));
+    assertTrue(model.containsKey("sectionKey"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest,
+   * ClassMetadata, String, String, Model, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code isFilter}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata,
+   * String, String, Model, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setupViewEntityListBasicModel(HttpServletRequest, ClassMetadata, String, String, Model, MultiValueMap)"
+  })
+  public void testSetupViewEntityListBasicModel_thenConcurrentModelIsFilter()
+      throws ServiceException {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
+    request.setRequestURI("headerFlash");
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ConcurrentModel model = new ConcurrentModel();
+
+    HttpHeaders requestParams = new HttpHeaders();
+    requestParams.add("https://example.org/example", "https://example.org/example");
+
+    // Act
+    adminBasicEntityController.setupViewEntityListBasicModel(
+        request, cmd, "U", "Section Class Name", model, requestParams);
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager, atLeast(1)).getProxy();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("mainActions");
+    assertTrue(getResult instanceof List);
+    assertEquals(1, ((List<EntityFormAction>) getResult).size());
+    EntityFormAction getResult2 = ((List<EntityFormAction>) getResult).get(0);
+    assertEquals("", getResult2.getConfirmEnabledText());
+    assertEquals("/add", getResult2.getUrlPostfix());
+    assertEquals("ADD", getResult2.getId());
+    assertEquals("Add", getResult2.getDisplayText());
+    assertEquals("add-main-entity", getResult2.getButtonClass());
+    assertEquals("button", getResult2.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult2.getIconClass());
+    assertNull(getResult2.getUrlOverride());
+    assertFalse(getResult2.getIsConfirmEnabled());
+    assertTrue(model.containsKey("currentAdminSection"));
+    assertTrue(model.containsKey("currentUri"));
+    assertTrue(model.containsKey("currentUrl"));
+    assertTrue(model.containsKey("entityTypes"));
+    assertTrue(model.containsKey("sectionKey"));
+    assertTrue((Boolean) model.get("isFilter"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
+  public void testViewEntityListSelectize() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}.
+   *
+   * <ul>
+   *   <li>Then content string {@code <Map><?>42</?></Map>}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
   public void testViewEntityListSelectize_thenContentStringMap42Map() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
 
     HashMap<String, Object> stringObjectMap = new HashMap<>();
     stringObjectMap.put("?", "42");
-    when(formBuilderService.constructSelectizeOptionMap(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any()))
+    when(formBuilderService.constructSelectizeOptionMap(
+            Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(stringObjectMap);
 
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-        .andExpect(MockMvcResultMatchers.content().string("<Map><?>42</?></Map>"));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType("application/xml;charset=UTF-8"))
+        .andExpect(content().string("<Map><?>42</?></Map>"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
+   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest,
+   * HttpServletResponse, Model, Map, MultiValueMap)}.
+   *
    * <ul>
-   *   <li>When BroadleafRequestContext is {@code true}.</li>
+   *   <li>When {@code Uri Variables}.
+   *   <li>Then content string {@code <Map/>}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse,
+   * Model, Map, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
-  public void testViewEntityListSelectize_whenBroadleafRequestContextIsTrue() throws Exception {
-    // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(formBuilderService.constructSelectizeOptionMap(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(new HashMap<>());
-
-    PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize",
-        BroadleafRequestContext.getBroadleafRequestContext(true));
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-        .andExpect(MockMvcResultMatchers.content().string("<Map/>"));
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}.
-   * <ul>
-   *   <li>When {@code Uri Variables}.</li>
-   *   <li>Then content string {@code <Map/>}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"})
+    "Map AdminBasicEntityController.viewEntityListSelectize(HttpServletRequest, HttpServletResponse, Model, Map, MultiValueMap)"
+  })
   public void testViewEntityListSelectize_whenUriVariables_thenContentStringMap() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(formBuilderService.constructSelectizeOptionMap(Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any()))
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(formBuilderService.constructSelectizeOptionMap(
+            Mockito.<DynamicResultSet>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(new HashMap<>());
 
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/selectize", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType("application/xml;charset=UTF-8"))
-        .andExpect(MockMvcResultMatchers.content().string("<Map/>"));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType("application/xml;charset=UTF-8"))
+        .andExpect(content().string("<Map/>"));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCustomCriteria(Map)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return array of {@link String} with {@code null}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.
+   *   <li>Then return array of {@link String} with {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.getCustomCriteria(Map)"})
   public void testGetCustomCriteria_givenArrayList_thenReturnArrayOfStringWithNull() {
     // Arrange
@@ -452,20 +1575,24 @@ public class AdminBasicEntityControllerDiffblueTest {
     requestParams.put(AdminBasicEntityController.CUSTOM_CRITERIA, new ArrayList<>());
 
     // Act and Assert
-    assertArrayEquals(new String[]{null}, adminBasicEntityController.getCustomCriteria(requestParams));
+    assertArrayEquals(
+        new String[] {null}, adminBasicEntityController.getCustomCriteria(requestParams));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCustomCriteria(Map)}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link HashMap#HashMap()} {@link AdminBasicEntityController#CUSTOM_CRITERIA} is {@code null}.</li>
+   *   <li>Given {@code null}.
+   *   <li>When {@link HashMap#HashMap()} {@link AdminBasicEntityController#CUSTOM_CRITERIA} is
+   *       {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.getCustomCriteria(Map)"})
   public void testGetCustomCriteria_givenNull_whenHashMapCustom_criteriaIsNull() {
     // Arrange
@@ -473,19 +1600,22 @@ public class AdminBasicEntityControllerDiffblueTest {
     requestParams.put(AdminBasicEntityController.CUSTOM_CRITERIA, null);
 
     // Act and Assert
-    assertArrayEquals(new String[]{null}, adminBasicEntityController.getCustomCriteria(requestParams));
+    assertArrayEquals(
+        new String[] {null}, adminBasicEntityController.getCustomCriteria(requestParams));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCustomCriteria(Map)}.
+   *
    * <ul>
-   *   <li>Then return array of {@link String} with {@code Request Params}.</li>
+   *   <li>Then return array of {@link String} with {@code Request Params}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.getCustomCriteria(Map)"})
   public void testGetCustomCriteria_thenReturnArrayOfStringWithRequestParams() {
     // Arrange
@@ -496,20 +1626,24 @@ public class AdminBasicEntityControllerDiffblueTest {
     requestParams.put(AdminBasicEntityController.CUSTOM_CRITERIA, stringList);
 
     // Act and Assert
-    assertArrayEquals(new String[]{"Request Params"}, adminBasicEntityController.getCustomCriteria(requestParams));
+    assertArrayEquals(
+        new String[] {"Request Params"},
+        adminBasicEntityController.getCustomCriteria(requestParams));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCustomCriteria(Map)}.
+   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.getCustomCriteria(Map)"})
   public void testGetCustomCriteria_whenHashMap_thenReturnNull() {
     // Arrange, Act and Assert
@@ -518,15 +1652,17 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#getCustomCriteria(Map)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCustomCriteria(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.getCustomCriteria(Map)"})
   public void testGetCustomCriteria_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -535,343 +1671,353 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
   public void testAddAddActionIfAllowed() throws ServiceException {
     // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenThrow(new UnsupportedOperationException("foo"));
+    when(securityVerifier.getPersistentAdminUser()).thenThrow(new UnsupportedOperationException());
+    doThrow(new ServiceException("An error occurred"))
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, new ArrayList<>()));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.addAddActionIfAllowed(
+                "Section Class Name", cmd, new ArrayList<>()));
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
   public void testAddAddActionIfAllowed2() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new AdornedTargetCollectionMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenThrow(new UnsupportedOperationException());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
-    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
 
-    // Act
-    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
-
-    // Assert that nothing has changed
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property).getMetadata();
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.addAddActionIfAllowed(
+                "Section Class Name", cmd, new ArrayList<>()));
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertTrue(mainActions.isEmpty());
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
   public void testAddAddActionIfAllowed3() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
+
     BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException("foo"));
+    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException());
+
     Property property = mock(Property.class);
     when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, new ArrayList<>()));
-    verify(basicFieldMetadata).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
-  public void testAddAddActionIfAllowed_givenBasicFieldMetadataGetReadOnlyReturnFalse() throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
-
-    // Act
-    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
-
-    // Assert
-    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertEquals(1, mainActions.size());
-    EntityFormAction getResult = mainActions.get(0);
-    assertEquals("", getResult.getConfirmEnabledText());
-    assertEquals("/add", getResult.getUrlPostfix());
-    assertEquals("ADD", getResult.getId());
-    assertEquals("Add", getResult.getDisplayText());
-    assertEquals("add-main-entity", getResult.getButtonClass());
-    assertEquals("button", getResult.getButtonType());
-    assertEquals("fa fa-plus-square-o fa-lg", getResult.getIconClass());
-    assertNull(getResult.getUrlOverride());
-    assertFalse(getResult.getIsConfirmEnabled());
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
-  public void testAddAddActionIfAllowed_givenBasicFieldMetadataGetReadOnlyReturnTrue() throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
-
-    // Act
-    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
-
-    // Assert that nothing has changed
-    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertTrue(mainActions.isEmpty());
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
-  public void testAddAddActionIfAllowed_givenPropertyGetMetadataReturnBasicFieldMetadata() throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
-
-    // Act
-    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertEquals(1, mainActions.size());
-    EntityFormAction getResult = mainActions.get(0);
-    assertEquals("", getResult.getConfirmEnabledText());
-    assertEquals("/add", getResult.getUrlPostfix());
-    assertEquals("ADD", getResult.getId());
-    assertEquals("Add", getResult.getDisplayText());
-    assertEquals("add-main-entity", getResult.getButtonClass());
-    assertEquals("button", getResult.getButtonType());
-    assertEquals("fa fa-plus-square-o fa-lg", getResult.getIconClass());
-    assertNull(getResult.getUrlOverride());
-    assertFalse(getResult.getIsConfirmEnabled());
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
-   * <ul>
-   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
-  public void testAddAddActionIfAllowed_givenRowLevelSecurityServiceCanAddReturnFalse() throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(false);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.addAddActionIfAllowed(
+                "Section Class Name", cmd, new ArrayList<>()));
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link DefaultAdornedEntityFormActions#Add}.
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenAdd_whenArrayListAddAdd_thenArrayListSizeIsTwo()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(null);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+    mainActions.add(DefaultAdornedEntityFormActions.Add);
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertEquals(2, mainActions.size());
+    EntityFormAction getResult = mainActions.get(1);
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("ADD", getResult.getId());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("add-main-entity", getResult.getButtonClass());
+    assertEquals("button", getResult.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult.getIconClass());
+    assertNull(getResult.getUrlOverride());
+    assertFalse(getResult.getIsConfirmEnabled());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code
+   *       false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenBasicFieldMetadataGetReadOnlyReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert
+    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertEquals(1, mainActions.size());
+    EntityFormAction getResult = mainActions.get(0);
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("ADD", getResult.getId());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("add-main-entity", getResult.getButtonClass());
+    assertEquals("button", getResult.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult.getIconClass());
+    assertNull(getResult.getUrlOverride());
+    assertFalse(getResult.getIsConfirmEnabled());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} (default constructor) ReadOnly is {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenBasicFieldMetadataReadOnlyIsTrue()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setReadOnly(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert that nothing has changed
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertTrue(mainActions.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given empty array of {@link Property}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenEmptyArrayOfProperty() throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     ArrayList<EntityFormAction> mainActions = new ArrayList<>();
@@ -881,34 +2027,212 @@ public class AdminBasicEntityControllerDiffblueTest {
 
     // Assert that nothing has changed
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertTrue(mainActions.isEmpty());
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenPropertyGetMetadataReturnBasicFieldMetadata()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertEquals(1, mainActions.size());
+    EntityFormAction getResult = mainActions.get(0);
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("ADD", getResult.getId());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("add-main-entity", getResult.getButtonClass());
+    assertEquals("button", getResult.getButtonType());
+    assertEquals("fa fa-plus-square-o fa-lg", getResult.getIconClass());
+    assertNull(getResult.getUrlOverride());
+    assertFalse(getResult.getIsConfirmEnabled());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link Property#Property()} Metadata is {@link AdornedTargetCollectionMetadata}
+   *       (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenPropertyMetadataIsAdornedTargetCollectionMetadata()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    Property property = new Property();
+    property.setMetadata(new AdornedTargetCollectionMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert that nothing has changed
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertTrue(mainActions.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityService#canAdd(AdminUser,
+   *       String, ClassMetadata)} return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
+  public void testAddAddActionIfAllowed_givenRowLevelSecurityServiceCanAddReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(false);
+
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(null);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    ArrayList<EntityFormAction> mainActions = new ArrayList<>();
+
+    // Act
+    adminBasicEntityController.addAddActionIfAllowed("Section Class Name", cmd, mainActions);
+
+    // Assert that nothing has changed
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertTrue(mainActions.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAddActionIfAllowed(String, ClassMetadata, List)}.
+   *
+   * <ul>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAddActionIfAllowed(String,
+   * ClassMetadata, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.addAddActionIfAllowed(String, ClassMetadata, List)"
+  })
   public void testAddAddActionIfAllowed_thenArrayListSizeIsOne() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     ArrayList<EntityFormAction> mainActions = new ArrayList<>();
@@ -918,8 +2242,9 @@ public class AdminBasicEntityControllerDiffblueTest {
 
     // Assert
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertEquals(1, mainActions.size());
     EntityFormAction getResult = mainActions.get(0);
     assertEquals("", getResult.getConfirmEnabledText());
@@ -935,621 +2260,511 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
   public void testIsAddActionAllowed() throws ServiceException {
     // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenThrow(new UnsupportedOperationException("foo"));
+    when(securityVerifier.getPersistentAdminUser()).thenThrow(new UnsupportedOperationException());
+    doThrow(new ServiceException("An error occurred"))
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd));
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
   public void testIsAddActionAllowed2() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new AdornedTargetCollectionMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenThrow(new UnsupportedOperationException());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
-    // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property).getMetadata();
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd));
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertFalse(actualIsAddActionAllowedResult);
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
   public void testIsAddActionAllowed3() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
+
     BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException("foo"));
+    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException());
+
     Property property = mock(Property.class);
     when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {property});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd));
     verify(basicFieldMetadata).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code false}.</li>
+   *   <li>Given array of {@link Property} with {@link Property#Property()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
-  public void testIsAddActionAllowed_givenBasicFieldMetadataGetReadOnlyReturnFalse() throws ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenArrayOfPropertyWithProperty_thenReturnTrue()
+      throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
 
     // Assert
-    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertTrue(actualIsAddActionAllowedResult);
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code true}.</li>
+   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code
+   *       false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
-  public void testIsAddActionAllowed_givenBasicFieldMetadataGetReadOnlyReturnTrue() throws ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenBasicFieldMetadataGetReadOnlyReturnFalse()
+      throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
+
     BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(true);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
+
     Property property = mock(Property.class);
     when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {property});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
 
     // Assert
     verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertTrue(actualIsAddActionAllowedResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} (default constructor) ReadOnly is {@code true}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenBasicFieldMetadataReadOnlyIsTrue_thenReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setReadOnly(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+
+    // Assert
+    verify(property, atLeast(1)).getMetadata();
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertFalse(actualIsAddActionAllowedResult);
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata} (default constructor).</li>
+   *   <li>Given empty array of {@link Property}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
-  public void testIsAddActionAllowed_givenPropertyGetMetadataReturnBasicFieldMetadata() throws ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenEmptyArrayOfProperty() throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
 
     // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertFalse(actualIsAddActionAllowedResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata}
+   *       (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenPropertyGetMetadataReturnBasicFieldMetadata()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+
+    // Assert
     verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertTrue(actualIsAddActionAllowedResult);
   }
 
   /**
    * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityProvider#canAdd(AdminUser, String, ClassMetadata)} return {@code false}.</li>
+   *   <li>Given {@link Property#Property()} Metadata is {@link AdornedTargetCollectionMetadata}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
-  public void testIsAddActionAllowed_givenRowLevelSecurityServiceCanAddReturnFalse() throws ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenPropertyMetadataIsAdornedTargetCollectionMetadata()
+      throws ServiceException {
     // Arrange
     when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
+        .thenReturn(true);
+
+    Property property = new Property();
+    property.setMetadata(new AdornedTargetCollectionMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+
+    // Assert
+    verify(securityVerifier).getPersistentAdminUser();
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    assertFalse(actualIsAddActionAllowedResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link RowLevelSecurityService} {@link RowLevelSecurityService#canAdd(AdminUser,
+   *       String, ClassMetadata)} return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"
+  })
+  public void testIsAddActionAllowed_givenRowLevelSecurityServiceCanAddReturnFalse()
+      throws ServiceException {
+    // Arrange
+    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
+    doNothing()
+        .when(securityVerifier)
+        .securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
+    when(rowLevelSecurityService.canAdd(
+            Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
         .thenReturn(false);
 
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(null);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {property});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
+    boolean actualIsAddActionAllowedResult =
+        adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
 
     // Assert
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
     verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
+    verify(securityVerifier).securityCheck("Section Class Name", EntityOperationType.ADD);
+    verify(rowLevelSecurityService)
+        .canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
     assertFalse(actualIsAddActionAllowedResult);
   }
 
   /**
-   * Test {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}.
-   * <ul>
-   *   <li>When {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isAddActionAllowed(String, ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isAddActionAllowed(String, ClassMetadata)"})
-  public void testIsAddActionAllowed_whenClassMetadataCeilingTypeIsType_thenReturnTrue() throws ServiceException {
-    // Arrange
-    when(securityVerifier.getPersistentAdminUser()).thenReturn(new AdminUserImpl());
-    doNothing().when(securityVerifier).securityCheck(Mockito.<String>any(), Mockito.<EntityOperationType>any());
-    when(rowLevelSecurityService.canAdd(Mockito.<AdminUser>any(), Mockito.<String>any(), Mockito.<ClassMetadata>any()))
-        .thenReturn(true);
-
-    ClassMetadata cmd = new ClassMetadata();
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    boolean actualIsAddActionAllowedResult = adminBasicEntityController.isAddActionAllowed("Section Class Name", cmd);
-
-    // Assert
-    verify(securityVerifier).getPersistentAdminUser();
-    verify(securityVerifier).securityCheck(eq("Section Class Name"), eq(EntityOperationType.ADD));
-    verify(rowLevelSecurityService).canAdd(isA(AdminUser.class), eq("Section Class Name"), isA(ClassMetadata.class));
-    assertTrue(actualIsAddActionAllowedResult);
-  }
-
-  /**
    * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code false}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given array of {@link Property} with {@link Property#Property()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_givenBasicFieldMetadataGetReadOnlyReturnFalse_thenReturnTrue() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
-
-    // Assert
-    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    assertTrue(actualIsNotReadOnlyResult);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
-   * <ul>
-   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code true}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_givenBasicFieldMetadataGetReadOnlyReturnTrue_thenReturnFalse() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenReturn(true);
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
-
-    // Assert
-    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    assertFalse(actualIsNotReadOnlyResult);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link AdornedTargetCollectionMetadata} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_givenPropertyGetMetadataReturnAdornedTargetCollectionMetadata() {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new AdornedTargetCollectionMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property).getMetadata();
-    assertFalse(actualIsNotReadOnlyResult);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_givenPropertyGetMetadataReturnBasicFieldMetadata() {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-    assertTrue(actualIsNotReadOnlyResult);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
-   * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_thenThrowUnsupportedOperationException() {
-    // Arrange
-    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
-    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException("foo"));
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(basicFieldMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> adminBasicEntityController.isNotReadOnly(cmd));
-    verify(basicFieldMetadata).getReadOnly();
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(property, atLeast(1)).getMetadata();
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
-   * <ul>
-   *   <li>When {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
-  public void testIsNotReadOnly_whenClassMetadataCeilingTypeIsType_thenReturnTrue() {
+  public void testIsNotReadOnly_givenArrayOfPropertyWithProperty() {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -1558,34 +2773,238 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)}.
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Then status {@link StatusResultMatchers#isOk()}.</li>
+   *   <li>Given {@link BasicFieldMetadata} {@link BasicFieldMetadata#getReadOnly()} return {@code
+   *       false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AdminBasicEntityController.viewAddEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)"})
-  public void testViewAddEntityForm_thenStatusIsOk() throws Exception {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_givenBasicFieldMetadataGetReadOnlyReturnFalse() {
     // Arrange
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(new AdminSectionImpl());
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    doNothing().when(formBuilderService)
-        .removeNonApplicableFields(Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
-    when(formBuilderService.createEntityForm(Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
-        .thenReturn(new EntityForm());
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenReturn(false);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
+
+    // Assert
+    verify(basicFieldMetadata, atLeast(1)).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+    assertTrue(actualIsNotReadOnlyResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link BasicFieldMetadata} (default constructor) ReadOnly is {@code true}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_givenBasicFieldMetadataReadOnlyIsTrue_thenReturnFalse() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = new BasicFieldMetadata();
+    basicFieldMetadata.setReadOnly(true);
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
+
+    // Assert
+    verify(property, atLeast(1)).getMetadata();
+    assertFalse(actualIsNotReadOnlyResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given empty array of {@link Property}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_givenEmptyArrayOfProperty() {
+    // Arrange
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertFalse(adminBasicEntityController.isNotReadOnly(cmd));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getMetadata()} return {@link BasicFieldMetadata}
+   *       (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_givenPropertyGetMetadataReturnBasicFieldMetadata() {
+    // Arrange
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    boolean actualIsNotReadOnlyResult = adminBasicEntityController.isNotReadOnly(cmd);
+
+    // Assert
+    verify(property, atLeast(1)).getMetadata();
+    assertTrue(actualIsNotReadOnlyResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link Property#Property()} Metadata is {@link AdornedTargetCollectionMetadata}
+   *       (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_givenPropertyMetadataIsAdornedTargetCollectionMetadata() {
+    // Arrange
+    Property property = new Property();
+    property.setMetadata(new AdornedTargetCollectionMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertFalse(adminBasicEntityController.isNotReadOnly(cmd));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#isNotReadOnly(ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AdminBasicEntityController.isNotReadOnly(ClassMetadata)"})
+  public void testIsNotReadOnly_thenThrowUnsupportedOperationException() {
+    // Arrange
+    BasicFieldMetadata basicFieldMetadata = mock(BasicFieldMetadata.class);
+    when(basicFieldMetadata.getReadOnly()).thenThrow(new UnsupportedOperationException());
+
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(basicFieldMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {property});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class, () -> adminBasicEntityController.isNotReadOnly(cmd));
+    verify(basicFieldMetadata).getReadOnly();
+    verify(property, atLeast(1)).getMetadata();
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.viewAddEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)"
+  })
+  public void testViewAddEntityForm() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
 
     ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("?");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree("Dr Jane Doe"));
-    classMetaData.setProperties(new Property[]{new Property()});
+    classMetaData.setProperties(new Property[] {new Property()});
     classMetaData.setSecurityCeilingType("?");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
 
@@ -1594,49 +3013,130 @@ public class AdminBasicEntityControllerDiffblueTest {
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
     persistenceResponse.setDynamicResultSet(dynamicResultSet);
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/{sectionKey:.+}/add", "Uri Variables")
-        .param("entityType", "foo");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/add", "Uri Variables")
+            .param("entityType", "foo");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.model().size(8))
-        .andExpect(MockMvcResultMatchers.model()
-            .attributeExists("currentAdminSection", "currentUrl", "entityForm", "entityFriendlyName", "modalHeaderType",
-                "sectionKey", "viewType"))
-        .andExpect(MockMvcResultMatchers.view().name("modules/modalContainer"))
-        .andExpect(MockMvcResultMatchers.forwardedUrl("modules/modalContainer"));
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}.
+   *
+   * <ul>
+   *   <li>Then status {@link StatusResultMatchers#isOk()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewAddEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.viewAddEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)"
+  })
+  public void testViewAddEntityForm_thenStatusIsOk() throws Exception {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(new AdminSectionImpl());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    doNothing()
+        .when(formBuilderService)
+        .removeNonApplicableFields(
+            Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new EntityForm());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree("Dr Jane Doe"));
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/add", "Uri Variables")
+            .param("entityType", "foo");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isOk())
+        .andExpect(model().size(8))
+        .andExpect(
+            model()
+                .attributeExists(
+                    "currentAdminSection",
+                    "currentUrl",
+                    "entityForm",
+                    "entityFriendlyName",
+                    "modalHeaderType",
+                    "sectionKey",
+                    "viewType"))
+        .andExpect(view().name("modules/modalContainer"))
+        .andExpect(forwardedUrl("modules/modalContainer"));
   }
 
   /**
    * Test {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#determineEntityType(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"
+  })
   public void testDetermineEntityType() throws UnsupportedEncodingException {
     // Arrange
     ClassTree polymorphicEntities = mock(ClassTree.class);
-    when(polymorphicEntities.getChildren()).thenReturn(new ClassTree[]{new ClassTree()});
+    when(polymorphicEntities.getChildren()).thenReturn(new ClassTree[] {new ClassTree()});
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(polymorphicEntities);
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act
-    String actualDetermineEntityTypeResult = adminBasicEntityController.determineEntityType(" ", cmd);
+    String actualDetermineEntityTypeResult =
+        adminBasicEntityController.determineEntityType(" ", cmd);
 
     // Assert
     verify(polymorphicEntities).getChildren();
@@ -1645,23 +3145,29 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link ClassTree#ClassTree()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link ClassTree#ClassTree()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#determineEntityType(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"})
-  public void testDetermineEntityType_givenClassTree_thenReturnNull() throws UnsupportedEncodingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"
+  })
+  public void testDetermineEntityType_givenClassTree_thenReturnNull()
+      throws UnsupportedEncodingException {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -1671,17 +3177,22 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link ClassTree#ClassTree()}.</li>
-   *   <li>When {@code Entity Type}.</li>
-   *   <li>Then return {@code Entity Type}.</li>
+   *   <li>Given {@link ClassTree#ClassTree()}.
+   *   <li>When {@code Entity Type}.
+   *   <li>Then return {@code Entity Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#determineEntityType(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"
+  })
   public void testDetermineEntityType_givenClassTree_whenEntityType_thenReturnEntityType()
       throws UnsupportedEncodingException {
     // Arrange
@@ -1689,7 +3200,7 @@ public class AdminBasicEntityControllerDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -1699,24 +3210,30 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link ClassTree#ClassTree()}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link ClassTree#ClassTree()}.
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#determineEntityType(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"})
-  public void testDetermineEntityType_givenClassTree_whenNull_thenReturnNull() throws UnsupportedEncodingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"
+  })
+  public void testDetermineEntityType_givenClassTree_whenNull_thenReturnNull()
+      throws UnsupportedEncodingException {
     // Arrange
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -1726,84 +3243,309 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#determineEntityType(String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#determineEntityType(String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"})
-  public void testDetermineEntityType_thenThrowUnsupportedOperationException() throws UnsupportedEncodingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.determineEntityType(String, ClassMetadata)"
+  })
+  public void testDetermineEntityType_thenThrowUnsupportedOperationException()
+      throws UnsupportedEncodingException {
     // Arrange
     ClassTree polymorphicEntities = mock(ClassTree.class);
-    when(polymorphicEntities.getFullyQualifiedClassname()).thenThrow(new UnsupportedOperationException("foo"));
-    when(polymorphicEntities.getChildren()).thenReturn(new ClassTree[]{});
+    when(polymorphicEntities.getFullyQualifiedClassname())
+        .thenThrow(new UnsupportedOperationException());
+    when(polymorphicEntities.getChildren()).thenReturn(new ClassTree[] {});
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(polymorphicEntities);
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> adminBasicEntityController.determineEntityType(" ", cmd));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.determineEntityType(" ", cmd));
     verify(polymorphicEntities).getChildren();
     verify(polymorphicEntities).getFullyQualifiedClassname();
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse, String)}.
+   * Test {@link AdminBasicEntityController#addEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, EntityForm, BindingResult)}.
+   *
    * <ul>
-   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames size is one.</li>
+   *   <li>Then status {@link StatusResultMatchers#isForbidden()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse, String)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, EntityForm, BindingResult)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.getErrorDuplicatingResponse(HttpServletResponse, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.addEntity(HttpServletRequest, HttpServletResponse, Model, Map, EntityForm, BindingResult)"
+  })
+  public void testAddEntity_thenStatusIsForbidden() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.addEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/add", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse,
+   * String)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getErrorDuplicatingResponse(HttpServletResponse, String)"
+  })
+  public void testGetErrorDuplicatingResponse() throws UnsupportedEncodingException {
+    // Arrange
+    HttpServletResponseWrapper response =
+        new HttpServletResponseWrapper(new MockHttpServletResponse());
+
+    // Act
+    adminBasicEntityController.getErrorDuplicatingResponse(response, "Code");
+
+    // Assert
+    Collection<String> headerNames = response.getHeaderNames();
+    assertEquals(1, headerNames.size());
+    assertTrue(headerNames instanceof Set);
+    ServletResponse response2 = response.getResponse();
+    assertTrue(response2 instanceof MockHttpServletResponse);
+    assertEquals("application/json", response2.getContentType());
+    assertEquals("application/json", response.getContentType());
+    assertEquals(
+        "{\"errors\":[{\"code\":\"Code\",\"errorType\":\"global\",\"message\":\"Duplication_Failure\"}]}",
+        ((MockHttpServletResponse) response2).getContentAsString());
+    assertEquals(81, ((MockHttpServletResponse) response2).getContentAsByteArray().length);
+    assertTrue(headerNames.contains("Content-Type"));
+    assertTrue(response2.isCommitted());
+    assertTrue(response.isCommitted());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse,
+   * String)}.
+   *
+   * <ul>
+   *   <li>Then {@link MockHttpServletResponse} (default constructor) HeaderNames size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getErrorDuplicatingResponse(HttpServletResponse, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getErrorDuplicatingResponse(HttpServletResponse, String)"
+  })
   public void testGetErrorDuplicatingResponse_thenMockHttpServletResponseHeaderNamesSizeIsOne()
       throws UnsupportedEncodingException {
     // Arrange
     MockHttpServletResponse response = new MockHttpServletResponse();
 
     // Act
-    String actualErrorDuplicatingResponse = adminBasicEntityController.getErrorDuplicatingResponse(response, "Code");
+    adminBasicEntityController.getErrorDuplicatingResponse(response, "Code");
 
     // Assert
     Collection<String> headerNames = response.getHeaderNames();
     assertEquals(1, headerNames.size());
     assertTrue(headerNames instanceof Set);
     assertEquals("application/json", response.getContentType());
-    assertEquals("{\"errors\":[{\"code\":\"Code\",\"errorType\":\"global\",\"message\":\"Duplication_Failure\"}]}",
+    assertEquals(
+        "{\"errors\":[{\"code\":\"Code\",\"errorType\":\"global\",\"message\":\"Duplication_Failure\"}]}",
         response.getContentAsString());
-    assertNull(actualErrorDuplicatingResponse);
     assertEquals(81, response.getContentAsByteArray().length);
     assertTrue(response.isCommitted());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
-   * <ul>
-   *   <li>Given empty string.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code tabName} is empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
+   * Test {@link AdminBasicEntityController#viewEntityForm(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_givenEmptyString_whenHashMapTabNameIsEmptyString() throws Exception {
+    "String AdminBasicEntityController.viewEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)"
+  })
+  public void testViewEntityForm() throws Exception {
     // Arrange
-    when(adminEntityService.getRecordsForSelectedTab(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-        Mockito.<List<SectionCrumb>>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#viewEntityForm(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#viewEntityForm(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.viewEntityForm(HttpServletRequest, HttpServletResponse, Model, Map, String)"
+  })
+  public void testViewEntityForm2() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
+   * <ul>
+   *   <li>Given empty string.
+   *   <li>When {@link HashMap#HashMap()} {@code tabName} is empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_givenEmptyString_whenHashMapTabNameIsEmptyString()
+      throws Exception {
+    // Arrange
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
 
     HashMap<String, String> pathVars = new HashMap<>();
     pathVars.put("tabName", "");
@@ -1812,51 +3554,116 @@ public class AdminBasicEntityControllerDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
 
     // Act
-    Map<String, DynamicResultSet> actualViewSubRecords = adminBasicEntityController.getViewSubRecords(request, pathVars,
-        cmd, entity, new ArrayList<>());
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(
+            request, pathVars, cmd, entity, new ArrayList<>());
 
     // Assert
-    verify(adminEntityService).getRecordsForSelectedTab(isA(ClassMetadata.class), isA(Entity.class), isA(List.class),
-        eq("General"));
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("General"));
     assertTrue(actualViewSubRecords.isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
    * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code tabName} is {@link TabMetadata} (default
+   *       constructor).
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_givenSectionCrumbOriginalSectionIdentifierIs42() throws Exception {
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_givenHashMapTabNameIsTabMetadata_thenReturnEmpty()
+      throws Exception {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     HashMap<String, String> pathVars = new HashMap<>();
-    TabMetadata tabMetadata = mock(TabMetadata.class);
-    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException("foo"));
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(tabMetadata);
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
+    tabAndGroupMetadata.put("tabName", new TabMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(tabAndGroupMetadata);
+    Entity entity = new Entity();
+
+    // Act
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(
+            request, pathVars, cmd, entity, new ArrayList<>());
+
+    // Assert
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), isNull());
+    assertTrue(actualViewSubRecords.isEmpty());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_givenSectionCrumbOriginalSectionIdentifierIs42()
+      throws Exception {
+    // Arrange
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
@@ -1869,49 +3676,54 @@ public class AdminBasicEntityControllerDiffblueTest {
     ArrayList<SectionCrumb> crumbs = new ArrayList<>();
     crumbs.add(sectionCrumb);
 
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.getViewSubRecords(request, pathVars, cmd, entity, crumbs));
-    verify(cmd, atLeast(1)).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(tabMetadata).getTabName();
+    // Act
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(request, pathVars, cmd, entity, crumbs);
+
+    // Assert
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("General"));
+    assertTrue(actualViewSubRecords.isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
    * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code tabName}.</li>
+   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code
+   *       tabName}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_givenSectionCrumbOriginalSectionIdentifierIsTabName() throws Exception {
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_givenSectionCrumbOriginalSectionIdentifierIsTabName()
+      throws Exception {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     HashMap<String, String> pathVars = new HashMap<>();
-    TabMetadata tabMetadata = mock(TabMetadata.class);
-    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException("foo"));
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(tabMetadata);
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+
+    ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
@@ -1930,89 +3742,48 @@ public class AdminBasicEntityControllerDiffblueTest {
     crumbs.add(sectionCrumb2);
     crumbs.add(sectionCrumb);
 
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.getViewSubRecords(request, pathVars, cmd, entity, crumbs));
-    verify(cmd, atLeast(1)).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(tabMetadata).getTabName();
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
-   * <ul>
-   *   <li>Given {@link TabMetadata} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_givenTabMetadata() throws Exception {
-    // Arrange
-    when(adminEntityService.getRecordsForSelectedTab(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-        Mockito.<List<SectionCrumb>>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
-    HashMap<String, String> pathVars = new HashMap<>();
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(new TabMetadata());
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity entity = new Entity();
-
     // Act
-    Map<String, DynamicResultSet> actualViewSubRecords = adminBasicEntityController.getViewSubRecords(request, pathVars,
-        cmd, entity, new ArrayList<>());
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(request, pathVars, cmd, entity, crumbs);
 
     // Assert
-    verify(cmd, atLeast(1)).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(adminEntityService).getRecordsForSelectedTab(isA(ClassMetadata.class), isA(Entity.class), isA(List.class),
-        isNull());
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("General"));
     assertTrue(actualViewSubRecords.isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
    * <ul>
-   *   <li>Given {@code tabName}.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code tabName} is {@code tabName}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@code tabName}.
+   *   <li>When {@link HashMap#HashMap()} {@code tabName} is {@code tabName}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_givenTabName_whenHashMapTabNameIsTabName_thenReturnEmpty() throws Exception {
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_givenTabName_whenHashMapTabNameIsTabName_thenReturnEmpty()
+      throws Exception {
     // Arrange
-    when(adminEntityService.getRecordsForSelectedTab(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-        Mockito.<List<SectionCrumb>>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
 
     HashMap<String, String> pathVars = new HashMap<>();
     pathVars.put("tabName", "tabName");
@@ -2021,383 +3792,625 @@ public class AdminBasicEntityControllerDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
 
     // Act
-    Map<String, DynamicResultSet> actualViewSubRecords = adminBasicEntityController.getViewSubRecords(request, pathVars,
-        cmd, entity, new ArrayList<>());
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(
+            request, pathVars, cmd, entity, new ArrayList<>());
 
     // Assert
-    verify(adminEntityService).getRecordsForSelectedTab(isA(ClassMetadata.class), isA(Entity.class), isA(List.class),
-        eq("tabName"));
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("tabName"));
     assertTrue(actualViewSubRecords.isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_thenThrowUnsupportedOperationException() throws Exception {
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_thenReturnEmpty() throws Exception {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
-    HashMap<String, String> pathVars = new HashMap<>();
-    TabMetadata tabMetadata = mock(TabMetadata.class);
-    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException("foo"));
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(tabMetadata);
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity entity = new Entity();
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.getViewSubRecords(request, pathVars, cmd, entity, new ArrayList<>()));
-    verify(cmd, atLeast(1)).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(tabMetadata).getTabName();
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}.
-   * <ul>
-   *   <li>When {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"})
-  public void testGetViewSubRecords_whenClassMetadataCeilingTypeIsType_thenReturnEmpty() throws Exception {
-    // Arrange
-    when(adminEntityService.getRecordsForSelectedTab(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-        Mockito.<List<SectionCrumb>>any(), Mockito.<String>any())).thenReturn(new HashMap<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenReturn(new HashMap<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     HashMap<String, String> pathVars = new HashMap<>();
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
 
     // Act
-    Map<String, DynamicResultSet> actualViewSubRecords = adminBasicEntityController.getViewSubRecords(request, pathVars,
-        cmd, entity, new ArrayList<>());
+    Map<String, DynamicResultSet> actualViewSubRecords =
+        adminBasicEntityController.getViewSubRecords(
+            request, pathVars, cmd, entity, new ArrayList<>());
 
     // Assert
-    verify(adminEntityService).getRecordsForSelectedTab(isA(ClassMetadata.class), isA(Entity.class), isA(List.class),
-        eq("General"));
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("General"));
     assertTrue(actualViewSubRecords.isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link ServiceException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_thenThrowServiceException() throws Exception {
+    // Arrange
+    when(adminEntityService.getRecordsForSelectedTab(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            Mockito.<String>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.getViewSubRecords(
+                request, pathVars, cmd, entity, new ArrayList<>()));
+    verify(adminEntityService)
+        .getRecordsForSelectedTab(
+            isA(ClassMetadata.class), isA(Entity.class), isA(List.class), eq("General"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest, Map,
+   * ClassMetadata, Entity, List)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getViewSubRecords(HttpServletRequest,
+   * Map, ClassMetadata, Entity, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminBasicEntityController.getViewSubRecords(HttpServletRequest, Map, ClassMetadata, Entity, List)"
+  })
+  public void testGetViewSubRecords_thenThrowUnsupportedOperationException() throws Exception {
+    // Arrange
+    AdminBasicEntityController adminBasicEntityController = new AdminBasicEntityController();
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    TabMetadata tabMetadata = mock(TabMetadata.class);
+    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException());
+
+    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
+    tabAndGroupMetadata.put("tabName", tabMetadata);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(tabAndGroupMetadata);
+    Entity entity = new Entity();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.getViewSubRecords(
+                request, pathVars, cmd, entity, new ArrayList<>()));
+    verify(tabMetadata).getTabName();
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
   public void testSaveEntityJson() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
         .thenReturn(true);
 
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0))
-        .andExpect(MockMvcResultMatchers.view().name("redirect:/Uri Variables/Uri Variables"))
-        .andExpect(MockMvcResultMatchers.redirectedUrl("/Uri Variables/Uri Variables"));
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables/Uri Variables"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
-  public void testSaveEntityJson2() throws Exception {
-    // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
-        .thenReturn(true);
-
-    PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}",
-        BroadleafRequestContext.getBroadleafRequestContext(true), "Uri Variables");
-
-    // Act and Assert
-    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
-        .build()
-        .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0));
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
    * <ul>
-   *   <li>Then view name {@code redirect:/Uri Variables/Uri Variables}.</li>
+   *   <li>Then status {@link StatusResultMatchers#isForbidden()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
-  public void testSaveEntityJson_thenViewNameRedirectUriVariablesUriVariables() throws Exception {
+    "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testSaveEntityJson_thenStatusIsForbidden() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
-        .thenReturn(true);
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0))
-        .andExpect(MockMvcResultMatchers.view().name("redirect:/Uri Variables/Uri Variables"))
-        .andExpect(MockMvcResultMatchers.redirectedUrl("/Uri Variables/Uri Variables"));
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
+   * <ul>
+   *   <li>Then status {@link StatusResultMatchers#isFound()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntityJson(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.saveEntityJson(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testSaveEntityJson_thenStatusIsFound() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables/Uri Variables"));
   }
 
   /**
    * Test {@link AdminBasicEntityController#buildDirtyList(Map, HttpServletRequest, String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>Then throw {@link ServiceException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#buildDirtyList(Map, HttpServletRequest, String)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#buildDirtyList(Map, HttpServletRequest,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List AdminBasicEntityController.buildDirtyList(Map, HttpServletRequest, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List AdminBasicEntityController.buildDirtyList(Map, HttpServletRequest, String)"
+  })
   public void testBuildDirtyList_thenThrowServiceException() throws ServiceException {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("sectionKey");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("sectionKey");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecord(Mockito.<PersistencePackageRequest>any(), Mockito.<String>any(),
-        Mockito.<ClassMetadata>any(), anyBoolean())).thenThrow(new ServiceException("An error occurred"));
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new ServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
     HashMap<String, String> pathVars = new HashMap<>();
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> adminBasicEntityController.buildDirtyList(pathVars,
-        new JSCompatibilityRequestWrapper(new MockHttpServletRequest()), "42"));
-    verify(classNameRequestParamValidationService).getClassNameForSection(isNull());
-    verify(classNameRequestParamValidationService).getSectionCrumbs(isNull());
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildDirtyList(
+                pathVars,
+                new HttpServletRequestWrapper(
+                    new JSCompatibilityRequestWrapper(new MockHttpServletRequest())),
+                "42"));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
-    verify(adminEntityService).getRecord(isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class),
-        eq(false));
-    verify(adminSectionCustomCriteriaService).mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
+    verify(adminEntityService)
+        .getRecord(
+            isA(PersistencePackageRequest.class), eq("42"), isA(ClassMetadata.class), eq(false));
+    verify(adminSectionCustomCriteriaService)
+        .mergeSectionCustomCriteria(eq("Class Name For Section"), isNull());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   * Test {@link AdminBasicEntityController#buildDirtyList(Map, HttpServletRequest, String)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link UnsupportedOperationException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#buildDirtyList(Map, HttpServletRequest,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
+    "List AdminBasicEntityController.buildDirtyList(Map, HttpServletRequest, String)"
+  })
+  public void testBuildDirtyList_thenThrowUnsupportedOperationException() throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildDirtyList(
+                pathVars,
+                new HttpServletRequestWrapper(
+                    new JSCompatibilityRequestWrapper(new MockHttpServletRequest())),
+                "42"));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
   public void testSaveEntity() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
         .thenReturn(true);
 
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0))
-        .andExpect(MockMvcResultMatchers.view().name("redirect:/Uri Variables/Uri Variables"))
-        .andExpect(MockMvcResultMatchers.redirectedUrl("/Uri Variables/Uri Variables"));
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables/Uri Variables"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
    * <ul>
-   *   <li>Then view name {@code redirect:/Uri Variables/Uri Variables}.</li>
+   *   <li>Then status {@link StatusResultMatchers#isForbidden()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
-  public void testSaveEntity_thenViewNameRedirectUriVariablesUriVariables() throws Exception {
+    "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testSaveEntity_thenStatusIsForbidden() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
-        .thenReturn(true);
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables",
-        "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0))
-        .andExpect(MockMvcResultMatchers.view().name("redirect:/Uri Variables/Uri Variables"))
-        .andExpect(MockMvcResultMatchers.redirectedUrl("/Uri Variables/Uri Variables"));
+        .andExpect(status().isForbidden());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   * Test {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
    * <ul>
-   *   <li>When {@link MockMvcRequestBuilders#post(String, Object[])} {@code /{sectionKey:.+}/{id}} BroadleafRequestContext is {@code true} and {@code Uri Variables}.</li>
+   *   <li>Then status {@link StatusResultMatchers#isFound()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#saveEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
-  public void testSaveEntity_whenPostSectionKeyIdBroadleafRequestContextIsTrueAndUriVariables() throws Exception {
+    "String AdminBasicEntityController.saveEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testSaveEntity_thenStatusIsFound() throws Exception {
     // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(entityFormValidator.validate(Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
         .thenReturn(true);
 
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
     PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.updateEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.updateEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}",
-        BroadleafRequestContext.getBroadleafRequestContext(true), "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0));
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables/Uri Variables"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm, Map)} with {@code entity}, {@code entityForm}, {@code pathVars}.
-   * <ul>
-   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm, Map)}
+   * Test {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm, Map)} with {@code
+   * entity}, {@code entityForm}, {@code pathVars}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminBasicEntityController.modifyEntityForm(Entity, EntityForm, Map)"})
-  public void testModifyEntityFormWithEntityEntityFormPathVars_thenCallsGetProxy() throws Exception {
+  public void testModifyEntityFormWithEntityEntityFormPathVars() throws Exception {
     // Arrange
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
@@ -2412,24 +4425,56 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   * Test {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm, Map)} with {@code
+   * entity}, {@code entityForm}, {@code pathVars}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#modifyEntityForm(Entity, EntityForm,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AdminBasicEntityController.modifyEntityForm(Entity, EntityForm, Map)"})
+  public void testModifyEntityFormWithEntityEntityFormPathVars2() throws Exception {
+    // Arrange
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenThrow(new UnsupportedOperationException());
+    Entity entity = new Entity();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.modifyEntityForm(entity, entityForm, new HashMap<>()));
+    verify(adminAbstractControllerExtensionManager).getProxy();
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView() {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request,
-        model, new EntityForm());
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request, model, new EntityForm());
 
     // Assert
+    assertTrue(request.getRequest() instanceof JSCompatibilityRequestWrapper);
     assertEquals(2, model.size());
     assertEquals("entityEdit", model.get("viewType"));
     assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
@@ -2437,58 +4482,70 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView2() {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(
-        new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest())));
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request,
-        model, new EntityForm());
+    adminBasicEntityController.resolveAppropriateEntityView(request3, model, new EntityForm());
 
     // Assert
-    ServletRequest request2 = request.getRequest();
-    assertTrue(request2 instanceof HttpServletRequestWrapper);
-    assertTrue(((HttpServletRequestWrapper) request2).getRequest() instanceof JSCompatibilityRequestWrapper);
-    assertEquals(2, model.size());
-    assertEquals("entityEdit", model.get("viewType"));
-    assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
-    assertTrue((Boolean) model.get("useAjaxUpdate"));
+    ServletRequest request4 = request3.getRequest();
+    ServletRequest request5 = ((JSCompatibilityRequestWrapper) request4).getRequest();
+    assertTrue(request5 instanceof HttpServletRequestWrapper);
+    assertTrue(request4 instanceof JSCompatibilityRequestWrapper);
+    ServletRequest request6 = ((HttpServletRequestWrapper) request5).getRequest();
+    assertTrue(request6 instanceof JSCompatibilityRequestWrapper);
+    assertTrue(request6.getParameterMap().isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView3() {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.getHeader(Mockito.<String>any())).thenReturn("https://example.org/example");
     when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request2,
-        model, new EntityForm());
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request3, model, new EntityForm());
 
     // Assert
-    verify(request).getHeader(eq("X-Requested-With"));
-    verify(request).getParameter(eq("blcAjax"));
+    verify(request).getHeader("X-Requested-With");
+    verify(request).getParameter("blcAjax");
+    assertTrue(request3.getRequest() instanceof JSCompatibilityRequestWrapper);
     assertEquals(2, model.size());
     assertEquals("entityEdit", model.get("viewType"));
     assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
@@ -2496,32 +4553,68 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
-   * <ul>
-   *   <li>Given empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
+  public void testResolveAppropriateEntityView4() {
+    // Arrange
+    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request, model, new EntityForm());
+
+    // Assert
+    assertEquals(2, model.size());
+    assertEquals("entityEdit", model.get("viewType"));
+    assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
+    assertTrue((Boolean) model.get("useAjaxUpdate"));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
+   * <ul>
+   *   <li>Given empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView_givenEmptyString() {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.getHeader(Mockito.<String>any())).thenReturn("https://example.org/example");
     when(request.getParameter(Mockito.<String>any())).thenReturn("");
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request2,
-        model, new EntityForm());
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request3, model, new EntityForm());
 
     // Assert
-    verify(request).getHeader(eq("X-Requested-With"));
-    verify(request).getParameter(eq("blcAjax"));
+    verify(request).getHeader("X-Requested-With");
+    verify(request).getParameter("blcAjax");
+    assertTrue(request3.getRequest() instanceof JSCompatibilityRequestWrapper);
     assertEquals(2, model.size());
     assertEquals("entityEdit", model.get("viewType"));
     assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
@@ -2529,34 +4622,40 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
    * <ul>
-   *   <li>Given {@code XMLHttpRequest}.</li>
-   *   <li>Then {@link EntityForm} (default constructor) ReadOnly.</li>
+   *   <li>Given {@code XMLHttpRequest}.
+   *   <li>Then {@link EntityForm} (default constructor) ReadOnly.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView_givenXMLHttpRequest_thenEntityFormReadOnly() {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.getHeader(Mockito.<String>any())).thenReturn("XMLHttpRequest");
     when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
     EntityForm entityForm = new EntityForm();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request2,
-        model, entityForm);
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request3, model, entityForm);
 
     // Assert
-    verify(request).getHeader(eq("X-Requested-With"));
-    verify(request).getParameter(eq("blcAjax"));
+    verify(request).getHeader("X-Requested-With");
+    verify(request).getParameter("blcAjax");
     assertEquals(2, model.size());
     assertEquals("modal/entityView", model.get("viewType"));
     assertEquals("modules/modalContainer", actualResolveAppropriateEntityViewResult);
@@ -2565,35 +4664,42 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
+   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model,
+   * EntityForm)}.
+   *
    * <ul>
-   *   <li>Then calls {@link EntityForm#setReadOnly()}.</li>
+   *   <li>Then calls {@link EntityForm#setReadOnly()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
+    "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"
+  })
   public void testResolveAppropriateEntityView_thenCallsSetReadOnly() {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.getHeader(Mockito.<String>any())).thenReturn("XMLHttpRequest");
     when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
+
     EntityForm entityForm = mock(EntityForm.class);
     doNothing().when(entityForm).setReadOnly();
 
     // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request2,
-        model, entityForm);
+    String actualResolveAppropriateEntityViewResult =
+        adminBasicEntityController.resolveAppropriateEntityView(request3, model, entityForm);
 
     // Assert
-    verify(request).getHeader(eq("X-Requested-With"));
+    verify(request).getHeader("X-Requested-With");
     verify(entityForm).setReadOnly();
-    verify(request).getParameter(eq("blcAjax"));
+    verify(request).getParameter("blcAjax");
     assertEquals(2, model.size());
     assertEquals("modal/entityView", model.get("viewType"));
     assertEquals("modules/modalContainer", actualResolveAppropriateEntityViewResult);
@@ -2601,174 +4707,314 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}.
+   * Test {@link AdminBasicEntityController#removeEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
    * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
+   *   <li>Then view name {@code redirect:/Uri Variables}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#removeEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.resolveAppropriateEntityView(HttpServletRequest, Model, EntityForm)"})
-  public void testResolveAppropriateEntityView_whenMockHttpServletRequest() {
+    "String AdminBasicEntityController.removeEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testRemoveEntity_thenViewNameRedirectUriVariables() throws Exception {
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    ConcurrentModel model = new ConcurrentModel();
-
-    // Act
-    String actualResolveAppropriateEntityViewResult = adminBasicEntityController.resolveAppropriateEntityView(request,
-        model, new EntityForm());
-
-    // Assert
-    assertEquals(2, model.size());
-    assertEquals("entityEdit", model.get("viewType"));
-    assertEquals("modules/defaultContainer", actualResolveAppropriateEntityViewResult);
-    assertTrue((Boolean) model.get("useAjaxUpdate"));
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#removeEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
-   * <ul>
-   *   <li>Then status {@link StatusResultMatchers#isFound()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#removeEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AdminBasicEntityController.removeEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"})
-  public void testRemoveEntity_thenStatusIsFound() throws Exception {
-    // Arrange
-    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(Mockito.<String>any(), Mockito.<String[]>any()))
-        .thenReturn(new String[]{"Merge Section Custom Criteria"});
-    when(adminEntityService.removeEntity(Mockito.<EntityForm>any(), Mockito.<String[]>any(),
-        Mockito.<List<SectionCrumb>>any())).thenReturn(new PersistenceResponse());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(adminEntityService.removeEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new PersistenceResponse());
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/{sectionKey:.+}/{id}/delete",
-        "Uri Variables", "Uri Variables");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post(
+            "/{sectionKey:.+}/{id}/delete", "Uri Variables", "Uri Variables");
 
     // Act and Assert
     MockMvcBuilders.standaloneSetup(adminBasicEntityController)
         .build()
         .perform(requestBuilder)
-        .andExpect(MockMvcResultMatchers.status().isFound())
-        .andExpect(MockMvcResultMatchers.model().size(0))
-        .andExpect(MockMvcResultMatchers.view().name("redirect:/Uri Variables"))
-        .andExpect(MockMvcResultMatchers.redirectedUrl("/Uri Variables"));
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}.
+   * Test {@link AdminBasicEntityController#removeEntity(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}.
+   *
    * <ul>
-   *   <li>Given {@code https://example.org/example}.</li>
+   *   <li>Then view name {@code redirect:/Uri Variables}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#removeEntity(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"})
-  public void testGetModalForBlankEntityType_givenHttpsExampleOrgExample() {
+    "String AdminBasicEntityController.removeEntity(HttpServletRequest, HttpServletResponse, Model, Map, String, EntityForm, BindingResult, RedirectAttributes)"
+  })
+  public void testRemoveEntity_thenViewNameRedirectUriVariables2() throws Exception {
     // Arrange
-    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
+    when(entityFormValidator.validate(
+            Mockito.<EntityForm>any(), Mockito.<Entity>any(), Mockito.<Errors>any()))
+        .thenReturn(true);
 
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setContextPath("https://example.org/example");
-    request.setRequestURI("Request");
-    ConcurrentModel model = new ConcurrentModel();
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setEntity(new Entity());
+    when(adminEntityService.removeEntity(
+            Mockito.<EntityForm>any(), Mockito.<String[]>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
 
-    ClassTree polymorphicEntities = new ClassTree();
-    polymorphicEntities.setFriendlyName(null);
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.post(
+            "/{sectionKey:.+}/{id}/delete", "Uri Variables", "Uri Variables");
 
-    ClassMetadata cmd = new ClassMetadata();
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    cmd.setPolymorphicEntities(polymorphicEntities);
-
-    // Act
-    String actualModalForBlankEntityType = adminBasicEntityController.getModalForBlankEntityType(request, model,
-        "Section Key", cmd);
-
-    // Assert
-    verify(adminAbstractControllerExtensionManager).getProxy();
-    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
-    assertEquals(6, model.size());
-    Object getResult = model.get("entityTypes");
-    assertTrue(getResult instanceof List);
-    Object getResult2 = model.get("currentAdminSection");
-    assertTrue(getResult2 instanceof AdminSectionImpl);
-    assertEquals("Request", model.get("currentUri"));
-    assertEquals("Section Key", model.get("sectionKey"));
-    assertEquals("addEntity", model.get("modalHeaderType"));
-    assertEquals("modal/entityTypeSelection", model.get("viewType"));
-    assertEquals("modules/modalContainer", actualModalForBlankEntityType);
-    assertEquals(1, ((List<ClassTree>) getResult).size());
-    assertSame(polymorphicEntities, cmd.getPolymorphicEntities());
-    assertSame(adminSectionImpl, getResult2);
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isFound())
+        .andExpect(model().size(0))
+        .andExpect(view().name("redirect:/Uri Variables"))
+        .andExpect(redirectedUrl("/Uri Variables"));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}.
-   * <ul>
-   *   <li>Given {@code /}.</li>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code currentUri} is {@code Request}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}
+   * Test {@link AdminBasicEntityController#getCollectionFieldRecords(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, String, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getCollectionFieldRecords(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, String, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"})
-  public void testGetModalForBlankEntityType_givenSlash_thenConcurrentModelCurrentUriIsRequest() {
+    "String AdminBasicEntityController.getCollectionFieldRecords(HttpServletRequest, HttpServletResponse, Model, Map, String, String, MultiValueMap)"
+  })
+  public void testGetCollectionFieldRecords() throws Exception {
     // Arrange
-    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
-    when(adminAbstractControllerExtensionManager.getProxy())
-        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {"Merge Section Custom Criteria"});
 
-    MockHttpServletRequest request = new MockHttpServletRequest();
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property("?", "42")});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get(
+            "/{sectionKey:.+}/{id}/{collectionField:.*}",
+            "Uri Variables",
+            "Uri Variables",
+            "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getCollectionFieldRecords(HttpServletRequest,
+   * HttpServletResponse, Model, Map, String, String, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getCollectionFieldRecords(HttpServletRequest, HttpServletResponse,
+   * Model, Map, String, String, MultiValueMap)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getCollectionFieldRecords(HttpServletRequest, HttpServletResponse, Model, Map, String, String, MultiValueMap)"
+  })
+  public void testGetCollectionFieldRecords2() throws Exception {
+    // Arrange
+    when(adminSectionCustomCriteriaService.mergeSectionCustomCriteria(
+            Mockito.<String>any(), Mockito.<String[]>any()))
+        .thenReturn(new String[] {});
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("?");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property("?", "42")});
+    classMetaData.setSecurityCeilingType("?");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+
+    DynamicResultSet dynamicResultSet = new DynamicResultSet();
+    dynamicResultSet.setClassMetaData(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecord(
+            Mockito.<PersistencePackageRequest>any(),
+            Mockito.<String>any(),
+            Mockito.<ClassMetadata>any(),
+            anyBoolean()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    MockHttpServletRequestBuilder requestBuilder =
+        MockMvcRequestBuilders.get(
+            "/{sectionKey:.+}/{id}/{collectionField:.*}",
+            "Uri Variables",
+            "Uri Variables",
+            "Uri Variables");
+
+    // Act and Assert
+    MockMvcBuilders.standaloneSetup(adminBasicEntityController)
+        .build()
+        .perform(requestBuilder)
+        .andExpect(status().isForbidden());
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model,
+   * String, ClassMetadata)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"
+  })
+  public void testGetModalForBlankEntityType() {
+    // Arrange
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
     request.setContextPath("/");
     request.setRequestURI("Request");
     ConcurrentModel model = new ConcurrentModel();
 
-    ClassTree polymorphicEntities = new ClassTree();
+    ClassTree polymorphicEntities = new ClassTree("Dr Jane Doe");
     polymorphicEntities.setFriendlyName(null);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    cmd.setPolymorphicEntities(polymorphicEntities);
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.getModalForBlankEntityType(request, model, "U", cmd));
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model,
+   * String, ClassMetadata)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"
+  })
+  public void testGetModalForBlankEntityType2() {
+    // Arrange
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("https://example.org/example");
+    request.setRequestURI("Request");
+    ConcurrentModel model = new ConcurrentModel();
+
+    ClassTree polymorphicEntities = new ClassTree("Dr Jane Doe");
+    polymorphicEntities.setFriendlyName(null);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     cmd.setPolymorphicEntities(polymorphicEntities);
 
     // Act
-    String actualModalForBlankEntityType = adminBasicEntityController.getModalForBlankEntityType(request, model,
-        "Section Key", cmd);
+    String actualModalForBlankEntityType =
+        adminBasicEntityController.getModalForBlankEntityType(request, model, "U", cmd);
 
     // Assert
     verify(adminAbstractControllerExtensionManager).getProxy();
-    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
-    assertEquals(6, model.size());
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
     Object getResult = model.get("entityTypes");
     assertTrue(getResult instanceof List);
     Object getResult2 = model.get("currentAdminSection");
     assertTrue(getResult2 instanceof AdminSectionImpl);
+    assertEquals("Dr Jane Doe", model.get("entityFriendlyName"));
     assertEquals("Request", model.get("currentUri"));
-    assertEquals("Section Key", model.get("sectionKey"));
+    assertEquals("U", model.get("sectionKey"));
     assertEquals("addEntity", model.get("modalHeaderType"));
     assertEquals("modal/entityTypeSelection", model.get("viewType"));
     assertEquals("modules/modalContainer", actualModalForBlankEntityType);
@@ -2778,53 +5024,168 @@ public class AdminBasicEntityControllerDiffblueTest {
   }
 
   /**
-   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}.
+   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model,
+   * String, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code currentUri} is {@code equest}.</li>
+   *   <li>Given {@code /}.
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code currentUri} is {@code Request}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String,
+   * ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"})
-  public void testGetModalForBlankEntityType_thenConcurrentModelCurrentUriIsEquest() {
+    "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"
+  })
+  public void testGetModalForBlankEntityType_givenSlash_thenConcurrentModelCurrentUriIsRequest() {
     // Arrange
     AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
 
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setContextPath("");
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("/");
     request.setRequestURI("Request");
     ConcurrentModel model = new ConcurrentModel();
 
-    ClassTree polymorphicEntities = new ClassTree();
+    ClassTree polymorphicEntities = new ClassTree("Dr Jane Doe");
     polymorphicEntities.setFriendlyName(null);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     cmd.setPolymorphicEntities(polymorphicEntities);
 
     // Act
-    String actualModalForBlankEntityType = adminBasicEntityController.getModalForBlankEntityType(request, model,
-        "Section Key", cmd);
+    String actualModalForBlankEntityType =
+        adminBasicEntityController.getModalForBlankEntityType(request, model, "U", cmd);
 
     // Assert
     verify(adminAbstractControllerExtensionManager).getProxy();
-    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
-    assertEquals(6, model.size());
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
     Object getResult = model.get("entityTypes");
     assertTrue(getResult instanceof List);
     Object getResult2 = model.get("currentAdminSection");
     assertTrue(getResult2 instanceof AdminSectionImpl);
-    assertEquals("Section Key", model.get("sectionKey"));
+    assertEquals("Dr Jane Doe", model.get("entityFriendlyName"));
+    assertEquals("Request", model.get("currentUri"));
+    assertEquals("U", model.get("sectionKey"));
+    assertEquals("addEntity", model.get("modalHeaderType"));
+    assertEquals("modal/entityTypeSelection", model.get("viewType"));
+    assertEquals("modules/modalContainer", actualModalForBlankEntityType);
+    assertEquals(1, ((List<ClassTree>) getResult).size());
+    assertSame(polymorphicEntities, cmd.getPolymorphicEntities());
+    assertSame(adminSectionImpl, getResult2);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model,
+   * String, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getRequestURI()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"
+  })
+  public void testGetModalForBlankEntityType_thenCallsGetRequestURI() {
+    // Arrange
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getRequestURI()).thenThrow(new UnsupportedOperationException());
+    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
+    ConcurrentModel model = new ConcurrentModel();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.getModalForBlankEntityType(request3, model, "U", cmd));
+    verify(request).getRequestURI();
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model,
+   * String, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} {@code currentUri} is {@code equest}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#getModalForBlankEntityType(HttpServletRequest, Model, String,
+   * ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.getModalForBlankEntityType(HttpServletRequest, Model, String, ClassMetadata)"
+  })
+  public void testGetModalForBlankEntityType_thenConcurrentModelCurrentUriIsEquest() {
+    // Arrange
+    AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
+    when(adminAbstractControllerExtensionManager.getProxy())
+        .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
+
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setContextPath("");
+    request.setRequestURI("Request");
+    ConcurrentModel model = new ConcurrentModel();
+
+    ClassTree polymorphicEntities = new ClassTree("Dr Jane Doe");
+    polymorphicEntities.setFriendlyName(null);
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    cmd.setPolymorphicEntities(polymorphicEntities);
+
+    // Act
+    String actualModalForBlankEntityType =
+        adminBasicEntityController.getModalForBlankEntityType(request, model, "U", cmd);
+
+    // Assert
+    verify(adminAbstractControllerExtensionManager).getProxy();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    assertEquals(7, model.size());
+    Object getResult = model.get("entityTypes");
+    assertTrue(getResult instanceof List);
+    Object getResult2 = model.get("currentAdminSection");
+    assertTrue(getResult2 instanceof AdminSectionImpl);
+    assertEquals("Dr Jane Doe", model.get("entityFriendlyName"));
+    assertEquals("U", model.get("sectionKey"));
     assertEquals("addEntity", model.get("modalHeaderType"));
     assertEquals("equest", model.get("currentUri"));
     assertEquals("modal/entityTypeSelection", model.get("viewType"));
@@ -2836,79 +5197,1492 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#buildSelectizeCustomCriteria()}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#buildSelectizeCustomCriteria()}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#buildSelectizeCustomCriteria()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String[] AdminBasicEntityController.buildSelectizeCustomCriteria()"})
   public void testBuildSelectizeCustomCriteria() {
     // Arrange, Act and Assert
-    assertArrayEquals(new String[]{AdminBasicEntityController.IS_SELECTIZE_REQUEST},
+    assertArrayEquals(
+        new String[] {AdminBasicEntityController.IS_SELECTIZE_REQUEST},
         adminBasicEntityController.buildSelectizeCustomCriteria());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}.
-   * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is eight.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"})
-  public void testBuildAddCollectionItemModel_thenConcurrentModelSizeIsEight() throws ServiceException {
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel() throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel2() throws ServiceException {
+    // Arrange
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel3() throws ServiceException {
+    // Arrange
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel4() throws ServiceException {
+    // Arrange
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenThrow(new ServiceException("An error occurred"));
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(EntityForm.class),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel5() throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenReturn(new EntityForm());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityFormFieldValues(
+            Mockito.<ClassMetadata>any(), Mockito.<Entity>any(), Mockito.<EntityForm>any());
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request3,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(EntityForm.class),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityFormFieldValues(
+            isA(ClassMetadata.class), isA(Entity.class), isA(EntityForm.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel6() throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenReturn(new EntityForm());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityFormFieldValues(
+            Mockito.<ClassMetadata>any(), Mockito.<Entity>any(), Mockito.<EntityForm>any());
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request = new HttpServletRequestWrapper(new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(EntityForm.class),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityFormFieldValues(
+            isA(ClassMetadata.class), isA(Entity.class), isA(EntityForm.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel7() throws ServiceException {
+    // Arrange
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenThrow(new ServiceException("An error occurred"));
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel8() throws ServiceException {
+    // Arrange
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(List.class));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel9() throws ServiceException {
+    // Arrange
+    doThrow(new UnsupportedOperationException())
+        .when(formBuilderService)
+        .removeNonApplicableFields(
+            Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new EntityForm());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr, atLeast(1)).getCeilingEntityClassname();
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(List.class));
+    verify(formBuilderService)
+        .removeNonApplicableFields(
+            isA(ClassMetadata.class), isA(EntityForm.class), eq("Ceiling Entity Classname"));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel10() throws ServiceException {
+    // Arrange
+    HashSet<Tab> tabSet = new HashSet<>();
+    tabSet.add(new Tab());
+
+    EntityForm entityForm = mock(EntityForm.class);
+    doThrow(new UnsupportedOperationException())
+        .when(entityForm)
+        .setParentId(Mockito.<String>any());
+    when(entityForm.getTabs()).thenReturn(tabSet);
+    doNothing().when(entityForm).setCeilingEntityClassname(Mockito.<String>any());
+    doNothing().when(entityForm).setEntityType(Mockito.<String>any());
+    doNothing()
+        .when(formBuilderService)
+        .removeNonApplicableFields(
+            Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(entityForm);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr, atLeast(1)).getCeilingEntityClassname();
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(entityForm).getTabs();
+    verify(entityForm).setCeilingEntityClassname("Ceiling Entity Classname");
+    verify(entityForm).setEntityType("Ceiling Entity Classname");
+    verify(entityForm).setParentId("42");
+    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(List.class));
+    verify(formBuilderService)
+        .removeNonApplicableFields(
+            isA(ClassMetadata.class), isA(EntityForm.class), eq("Ceiling Entity Classname"));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Given {@link HashSet#HashSet()} add {@link Tab} (default constructor).
+   *   <li>Then calls {@link EntityForm#getTabs()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_givenHashSetAddTab_thenCallsGetTabs()
+      throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+
+    HashSet<Tab> tabSet = new HashSet<>();
+    tabSet.add(new Tab());
+
+    EntityForm entityForm = mock(EntityForm.class);
+    doNothing().when(entityForm).setParentId(Mockito.<String>any());
+    when(entityForm.getTabs()).thenReturn(tabSet);
+    doNothing().when(entityForm).setCeilingEntityClassname(Mockito.<String>any());
+    doNothing().when(entityForm).setEntityType(Mockito.<String>any());
+    doNothing()
+        .when(formBuilderService)
+        .removeNonApplicableFields(
+            Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(entityForm);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    when(request.getRequestURL()).thenReturn(new StringBuffer("foo"));
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(request).getRequestURL();
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr, atLeast(1)).getCeilingEntityClassname();
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(entityForm).getTabs();
+    verify(entityForm).setCeilingEntityClassname("Ceiling Entity Classname");
+    verify(entityForm).setEntityType("Ceiling Entity Classname");
+    verify(entityForm).setParentId("42");
+    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(List.class));
+    verify(formBuilderService)
+        .removeNonApplicableFields(
+            isA(ClassMetadata.class), isA(EntityForm.class), eq("Ceiling Entity Classname"));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Given {@link StringBuffer#StringBuffer(String)} with {@code foo}.
+   *   <li>Then calls {@link DefaultMultipartHttpServletRequest#getRequestURL()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_givenStringBufferWithFoo_thenCallsGetRequestURL()
+      throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    when(request.getRequestURL()).thenReturn(new StringBuffer("foo"));
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                null,
+                ppr,
+                null,
+                new Entity()));
+    verify(request).getRequestURL();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link Tab#getIsVisible()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_thenCallsGetIsVisible() throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+
+    Tab tab = mock(Tab.class);
+    when(tab.getIsVisible()).thenReturn(true);
+
+    HashSet<Tab> tabSet = new HashSet<>();
+    tabSet.add(tab);
+
+    EntityForm entityForm = mock(EntityForm.class);
+    doNothing().when(entityForm).setParentId(Mockito.<String>any());
+    when(entityForm.getTabs()).thenReturn(tabSet);
+    doNothing().when(entityForm).setCeilingEntityClassname(Mockito.<String>any());
+    doNothing().when(entityForm).setEntityType(Mockito.<String>any());
+    doNothing()
+        .when(formBuilderService)
+        .removeNonApplicableFields(
+            Mockito.<ClassMetadata>any(), Mockito.<EntityForm>any(), Mockito.<String>any());
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(), Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(entityForm);
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    when(request.getRequestURL()).thenReturn(new StringBuffer("foo"));
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(request).getRequestURL();
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr, atLeast(1)).getCeilingEntityClassname();
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(entityForm).getTabs();
+    verify(entityForm).setCeilingEntityClassname("Ceiling Entity Classname");
+    verify(entityForm).setEntityType("Ceiling Entity Classname");
+    verify(entityForm).setParentId("42");
+    verify(tab).getIsVisible();
+    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(List.class));
+    verify(formBuilderService)
+        .removeNonApplicableFields(
+            isA(ClassMetadata.class), isA(EntityForm.class), eq("Ceiling Entity Classname"));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link FormBuilderService#populateEntityForm(ClassMetadata, EntityForm,
+   *       List)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_thenCallsPopulateEntityForm()
+      throws ServiceException {
+    // Arrange
+    doThrow(new ServiceException("An error occurred"))
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+
+    BasicCollectionMetadata md = mock(BasicCollectionMetadata.class);
+    when(md.getAddMethodType()).thenReturn(AddMethodType.PERSIST);
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(md).getAddMethodType();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr).setAddOperationInspect(true);
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .populateEntityForm(isA(ClassMetadata.class), isA(EntityForm.class), isA(List.class));
+    verify(request).getParameter("sectionCrumbs");
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link FormBuilderService#populateEntityFormFieldValues(ClassMetadata, Entity,
+   *       EntityForm)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_thenCallsPopulateEntityFormFieldValues()
+      throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenReturn(new EntityForm());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityFormFieldValues(
+            Mockito.<ClassMetadata>any(), Mockito.<Entity>any(), Mockito.<EntityForm>any());
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(EntityForm.class),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityFormFieldValues(
+            isA(ClassMetadata.class), isA(Entity.class), isA(EntityForm.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is eight.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_thenConcurrentModelSizeIsEight()
+      throws ServiceException {
     // Arrange
     AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
-    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any())).thenReturn(adminSectionImpl);
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSectionImpl);
     when(adminAbstractControllerExtensionManager.getProxy())
         .thenReturn(new AbstractAdminAbstractControllerExtensionHandler());
-    ListGrid listGrid = mock(ListGrid.class);
-    doNothing().when(listGrid).removeAllRowActions();
-    doNothing().when(listGrid).setCanFilterAndSort(Mockito.<Boolean>any());
-    doNothing().when(listGrid).setFriendlyName(Mockito.<String>any());
-    doNothing().when(listGrid).setIsSortable(anyBoolean());
-    doNothing().when(listGrid).setListGridType(Mockito.<Type>any());
-    doNothing().when(listGrid).setPathOverride(Mockito.<String>any());
-    doNothing().when(listGrid).setSubCollectionFieldName(Mockito.<String>any());
-    when(formBuilderService.buildAdornedListForm(Mockito.<AdornedTargetCollectionMetadata>any(),
-        Mockito.<AdornedTargetList>any(), Mockito.<String>any(), anyBoolean(), Mockito.<EntityForm>any(),
-        Mockito.<List<SectionCrumb>>any(), anyBoolean())).thenReturn(new EntityForm());
-    doNothing().when(formBuilderService)
-        .populateEntityFormFieldValues(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(), Mockito.<EntityForm>any());
-    when(formBuilderService.buildCollectionListGrid(Mockito.<String>any(), Mockito.<DynamicResultSet>any(),
-        Mockito.<Property>any(), Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(listGrid);
-    ClassMetadata classMetaData = mock(ClassMetadata.class);
-    when(classMetaData.getPolymorphicEntities()).thenReturn(new ClassTree());
-    doNothing().when(classMetaData).setCeilingType(Mockito.<String>any());
-    doNothing().when(classMetaData).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(classMetaData).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(classMetaData).setProperties(Mockito.<Property[]>any());
-    doNothing().when(classMetaData).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(classMetaData).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenReturn(new EntityForm());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityFormFieldValues(
+            Mockito.<ClassMetadata>any(), Mockito.<Entity>any(), Mockito.<EntityForm>any());
+    ListGrid listGrid = new ListGrid();
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(listGrid);
+
+    ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("owningClass=");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
     Property property = new Property();
-    classMetaData.setProperties(new Property[]{property});
+    classMetaData.setProperties(new Property[] {property});
     classMetaData.setSecurityCeilingType("owningClass=");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    dynamicResultSet.setClassMetaData(classMetaData);
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
-    doNothing().when(persistenceResponse).setDynamicResultSet(Mockito.<DynamicResultSet>any());
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse response = new MockHttpServletResponse();
     ConcurrentModel model = new ConcurrentModel();
     Property collectionProperty = new Property();
@@ -2917,199 +6691,630 @@ public class AdminBasicEntityControllerDiffblueTest {
     EntityForm entityForm = new EntityForm();
 
     // Act
-    String actualBuildAddCollectionItemModelResult = adminBasicEntityController.buildAddCollectionItemModel(request,
-        response, model, "42", "Collection Field", "Section Key", collectionProperty, md, ppr, entityForm,
-        new Entity());
+    String actualBuildAddCollectionItemModelResult =
+        adminBasicEntityController.buildAddCollectionItemModel(
+            request,
+            response,
+            model,
+            "42",
+            "Collection Field",
+            "U",
+            collectionProperty,
+            md,
+            ppr,
+            entityForm,
+            new Entity());
 
     // Assert
     verify(adminAbstractControllerExtensionManager).getProxy();
-    verify(classMetaData).getPolymorphicEntities();
-    verify(classMetaData).setCeilingType(eq("owningClass="));
-    verify(classMetaData).setCurrencyCode(eq("GBP"));
-    verify(classMetaData).setPolymorphicEntities(isA(ClassTree.class));
-    verify(classMetaData).setProperties(isA(Property[].class));
-    verify(classMetaData).setSecurityCeilingType(eq("owningClass="));
-    verify(classMetaData).setTabAndGroupMetadata(isA(Map.class));
-    verify(classNameRequestParamValidationService).getClassNameForSection(eq("Section Key"));
-    verify(classNameRequestParamValidationService).getSectionCrumbs(isNull());
-    verify(adminNavigationService).findAdminSectionByURI(eq("/Section Key"));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminNavigationService).findAdminSectionByURI("/U");
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
     verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
-    verify(persistenceResponse).getDynamicResultSet();
-    verify(persistenceResponse).setDynamicResultSet(isA(DynamicResultSet.class));
-    verify(listGrid).removeAllRowActions();
-    verify(listGrid).setCanFilterAndSort(eq(true));
-    verify(listGrid).setFriendlyName(isNull());
-    verify(listGrid).setIsSortable(eq(false));
-    verify(listGrid).setListGridType(eq(Type.ADORNED));
-    verify(listGrid).setPathOverride(eq("http://localhost"));
-    verify(listGrid).setSubCollectionFieldName(eq("Collection Field"));
-    verify(formBuilderService).buildAdornedListForm(isA(AdornedTargetCollectionMetadata.class), isNull(), eq("42"),
-        eq(false), isA(EntityForm.class), isA(List.class), eq(true));
-    verify(formBuilderService).buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("Section Key"),
-        isA(List.class));
-    verify(formBuilderService).populateEntityFormFieldValues(isA(ClassMetadata.class), isA(Entity.class),
-        isA(EntityForm.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isNull(),
+            eq("42"),
+            eq(false),
+            isA(EntityForm.class),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityFormFieldValues(
+            isA(ClassMetadata.class), isA(Entity.class), isA(EntityForm.class));
     assertEquals(8, model.size());
     Object getResult = model.get("collectionProperty");
     assertTrue(getResult instanceof Property);
     Object getResult2 = model.get("currentAdminSection");
     assertTrue(getResult2 instanceof AdminSectionImpl);
-    Object getResult3 = model.get("entityForm");
-    assertTrue(getResult3 instanceof EntityForm);
+    Object getResult3 = model.get("listGrid");
+    assertTrue(getResult3 instanceof ListGrid);
+    Object getResult4 = model.get("entityForm");
+    assertTrue(getResult4 instanceof EntityForm);
     assertEquals("42", entityForm.getParentId());
     assertEquals("Collection Field", ppr.getSectionEntityField());
-    assertEquals("Section Key", model.get("sectionKey"));
+    assertEquals("U", model.get("sectionKey"));
     assertEquals("addCollectionItem", model.get("modalHeaderType"));
     assertEquals("http://localhost", model.get("currentUrl"));
     assertEquals("modal/adornedSelectEntity", model.get("viewType"));
     assertEquals("modules/modalContainer", actualBuildAddCollectionItemModelResult);
     assertEquals(1, ppr.getCustomCriteria().length);
-    assertEquals(PersistencePackageRequest.Type.STANDARD, ppr.getType());
-    assertTrue(model.containsKey("listGrid"));
+    assertEquals(Type.STANDARD, ppr.getType());
     assertTrue(ppr.isAddOperationInspect());
     assertEquals(property, getResult);
     assertSame(collectionProperty, getResult);
     assertSame(adminSectionImpl, getResult2);
-    assertSame(entityForm, getResult3);
+    assertSame(listGrid, getResult3);
+    assertSame(entityForm, getResult4);
   }
 
   /**
-   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}.
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
    * <ul>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>Then throw {@link SecurityServiceException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"})
-  public void testBuildAddCollectionItemModel_thenThrowServiceException() throws ServiceException {
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_thenThrowSecurityServiceException()
+      throws ServiceException {
     // Arrange
-    when(formBuilderService.buildCollectionListGrid(Mockito.<String>any(), Mockito.<DynamicResultSet>any(),
-        Mockito.<Property>any(), Mockito.<String>any(), Mockito.<List<SectionCrumb>>any()))
-        .thenThrow(new ServiceException("An error occurred"));
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenThrow(new SecurityServiceException("An error occurred"));
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
 
-    PersistenceResponse persistenceResponse = new PersistenceResponse();
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
-    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
-        .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    ConcurrentModel model = new ConcurrentModel();
-    Property collectionProperty = new Property();
-    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
-    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
-    EntityForm entityForm = new EntityForm();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> adminBasicEntityController.buildAddCollectionItemModel(request, response,
-        model, "42", "Collection Field", "Section Key", collectionProperty, md, ppr, entityForm, new Entity()));
-    verify(classNameRequestParamValidationService).getClassNameForSection(eq("Section Key"));
-    verify(classNameRequestParamValidationService).getSectionCrumbs(isNull());
-    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
-    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
-    verify(formBuilderService).buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("Section Key"),
-        isA(List.class));
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}.
-   * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"})
-  public void testBuildAddCollectionItemModel_thenThrowUnsupportedOperationException() throws ServiceException {
-    // Arrange
-    ListGrid listGrid = mock(ListGrid.class);
-    doThrow(new UnsupportedOperationException("owningClass=")).when(listGrid).setFriendlyName(Mockito.<String>any());
-    doNothing().when(listGrid).setPathOverride(Mockito.<String>any());
-    doNothing().when(listGrid).setSubCollectionFieldName(Mockito.<String>any());
-    when(formBuilderService.buildCollectionListGrid(Mockito.<String>any(), Mockito.<DynamicResultSet>any(),
-        Mockito.<Property>any(), Mockito.<String>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(listGrid);
-    ClassMetadata classMetaData = mock(ClassMetadata.class);
-    when(classMetaData.getPolymorphicEntities()).thenReturn(new ClassTree());
-    doNothing().when(classMetaData).setCeilingType(Mockito.<String>any());
-    doNothing().when(classMetaData).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(classMetaData).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(classMetaData).setProperties(Mockito.<Property[]>any());
-    doNothing().when(classMetaData).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(classMetaData).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    ClassMetadata classMetaData = new ClassMetadata();
     classMetaData.setCeilingType("owningClass=");
     classMetaData.setCurrencyCode("GBP");
     classMetaData.setPolymorphicEntities(new ClassTree());
-    classMetaData.setProperties(new Property[]{new Property()});
+    classMetaData.setProperties(new Property[] {new Property()});
     classMetaData.setSecurityCeilingType("owningClass=");
     classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
 
-    DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    dynamicResultSet.setClassMetaData(classMetaData);
-    PersistenceResponse persistenceResponse = mock(PersistenceResponse.class);
-    when(persistenceResponse.getDynamicResultSet()).thenReturn(dynamicResultSet);
-    doNothing().when(persistenceResponse).setDynamicResultSet(Mockito.<DynamicResultSet>any());
-    persistenceResponse.setDynamicResultSet(new DynamicResultSet(new ClassMetadata()));
-    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any())).thenReturn(new PersistenceResponse());
-    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any())).thenReturn(persistenceResponse);
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
     when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
         .thenReturn("Class Name For Section");
-    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getParameter(Mockito.<String>any())).thenReturn("https://example.org/example");
+    when(request.getRequestURL()).thenReturn(new StringBuffer("foo"));
+    HttpServletRequestWrapper request2 = new HttpServletRequestWrapper(request);
     MockHttpServletResponse response = new MockHttpServletResponse();
     ConcurrentModel model = new ConcurrentModel();
     Property collectionProperty = new Property();
     AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
-    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
-    EntityForm entityForm = new EntityForm();
+
+    PersistencePackageRequest ppr = mock(PersistencePackageRequest.class);
+    when(ppr.getAdornedList()).thenReturn(new AdornedTargetList());
+    when(ppr.addCustomCriteria(Mockito.<String>any()))
+        .thenReturn(PersistencePackageRequest.adorned());
+    doNothing().when(ppr).setAddOperationInspect(anyBoolean());
+    doNothing().when(ppr).setOperationTypesOverride(Mockito.<OperationTypes>any());
+    doNothing().when(ppr).setSectionEntityField(Mockito.<String>any());
+    doNothing().when(ppr).setType(Mockito.<Type>any());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.buildAddCollectionItemModel(request, response, model, "42", "Collection Field",
-            "Section Key", collectionProperty, md, ppr, entityForm, new Entity()));
-    verify(classMetaData).getPolymorphicEntities();
-    verify(classMetaData).setCeilingType(eq("owningClass="));
-    verify(classMetaData).setCurrencyCode(eq("GBP"));
-    verify(classMetaData).setPolymorphicEntities(isA(ClassTree.class));
-    verify(classMetaData).setProperties(isA(Property[].class));
-    verify(classMetaData).setSecurityCeilingType(eq("owningClass="));
-    verify(classMetaData).setTabAndGroupMetadata(isA(Map.class));
-    verify(classNameRequestParamValidationService).getClassNameForSection(eq("Section Key"));
-    verify(classNameRequestParamValidationService).getSectionCrumbs(isNull());
+    assertThrows(
+        SecurityServiceException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request2,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(request).getRequestURL();
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs("https://example.org/example");
+    verify(ppr).addCustomCriteria("owningClass=Class Name For Section");
+    verify(ppr).getAdornedList();
+    verify(ppr).setAddOperationInspect(true);
+    verify(ppr).setOperationTypesOverride(isNull());
+    verify(ppr).setSectionEntityField("Collection Field");
+    verify(ppr).setType(Type.STANDARD);
     verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
     verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
-    verify(persistenceResponse).getDynamicResultSet();
-    verify(persistenceResponse).setDynamicResultSet(isA(DynamicResultSet.class));
-    verify(listGrid).setFriendlyName(isNull());
-    verify(listGrid).setPathOverride(eq("http://localhost"));
-    verify(listGrid).setSubCollectionFieldName(eq("Collection Field"));
-    verify(formBuilderService).buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("Section Key"),
-        isA(List.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isA(AdornedTargetList.class),
+            eq("42"),
+            eq(false),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+    verify(request).getParameter("sectionCrumbs");
   }
 
   /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
+   * Test {@link AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest,
+   * HttpServletResponse, Model, String, String, String, Property, FieldMetadata,
+   * PersistencePackageRequest, EntityForm, Entity)}.
+   *
+   * <ul>
+   *   <li>When adorned AdornedList is {@link AdornedTargetList#AdornedTargetList()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse,
+   * Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm,
+   * Entity)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
+    "String AdminBasicEntityController.buildAddCollectionItemModel(HttpServletRequest, HttpServletResponse, Model, String, String, String, Property, FieldMetadata, PersistencePackageRequest, EntityForm, Entity)"
+  })
+  public void testBuildAddCollectionItemModel_whenAdornedAdornedListIsAdornedTargetList()
+      throws ServiceException {
+    // Arrange
+    AdminSection adminSection = mock(AdminSection.class);
+    when(adminSection.getModule()).thenThrow(new UnsupportedOperationException());
+    when(adminNavigationService.findAdminSectionByURI(Mockito.<String>any()))
+        .thenReturn(adminSection);
+    when(formBuilderService.buildAdornedListForm(
+            Mockito.<AdornedTargetCollectionMetadata>any(),
+            Mockito.<AdornedTargetList>any(),
+            Mockito.<String>any(),
+            anyBoolean(),
+            Mockito.<List<SectionCrumb>>any(),
+            anyBoolean()))
+        .thenReturn(new EntityForm());
+    when(formBuilderService.buildCollectionListGrid(
+            Mockito.<String>any(),
+            Mockito.<DynamicResultSet>any(),
+            Mockito.<Property>any(),
+            Mockito.<String>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(new ListGrid());
+
+    ClassMetadata classMetaData = new ClassMetadata();
+    classMetaData.setCeilingType("owningClass=");
+    classMetaData.setCurrencyCode("GBP");
+    classMetaData.setPolymorphicEntities(new ClassTree());
+    classMetaData.setProperties(new Property[] {new Property()});
+    classMetaData.setSecurityCeilingType("owningClass=");
+    classMetaData.setTabAndGroupMetadata(new HashMap<>());
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(classMetaData);
+
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+    persistenceResponse.setDynamicResultSet(dynamicResultSet);
+    when(adminEntityService.getRecords(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(new PersistenceResponse());
+    when(adminEntityService.getClassMetadata(Mockito.<PersistencePackageRequest>any()))
+        .thenReturn(persistenceResponse);
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenReturn("Class Name For Section");
+    when(classNameRequestParamValidationService.getSectionCrumbs(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    Property collectionProperty = new Property();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    ppr.setAdornedList(new AdornedTargetList());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.buildAddCollectionItemModel(
+                request,
+                response,
+                model,
+                "42",
+                "Collection Field",
+                "U",
+                collectionProperty,
+                md,
+                ppr,
+                null,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection("U");
+    verify(classNameRequestParamValidationService).getSectionCrumbs(null);
+    verify(adminSection).getModule();
+    verify(adminNavigationService).findAdminSectionByURI("/U");
+    verify(adminEntityService).getClassMetadata(isA(PersistencePackageRequest.class));
+    verify(adminEntityService).getRecords(isA(PersistencePackageRequest.class));
+    verify(formBuilderService)
+        .buildAdornedListForm(
+            isA(AdornedTargetCollectionMetadata.class),
+            isA(AdornedTargetList.class),
+            eq("42"),
+            eq(false),
+            isA(List.class),
+            eq(true));
+    verify(formBuilderService)
+        .buildCollectionListGrid(eq("42"), isNull(), isA(Property.class), eq("U"), isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map,
+   * String, String, String, String, String)} with {@code request}, {@code model}, {@code pathVars},
+   * {@code id}, {@code collectionField}, {@code collectionItemId}, {@code alternateId}, {@code
+   * modalHeaderType}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map, String,
+   * String, String, String, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.showViewUpdateCollection(HttpServletRequest, Model, Map, String, String, String, String, String)"
+  })
+  public void
+      testShowViewUpdateCollectionWithRequestModelPathVarsIdCollectionFieldCollectionItemIdAlternateIdModalHeaderType()
+          throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.showViewUpdateCollection(
+                request,
+                model,
+                new HashMap<>(),
+                "42",
+                "Collection Field",
+                "42",
+                "42",
+                "Modal Header Type"));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map,
+   * String, String, String, String, String, EntityForm, Entity)} with {@code request}, {@code
+   * model}, {@code pathVars}, {@code id}, {@code collectionField}, {@code collectionItemId}, {@code
+   * alternateId}, {@code modalHeaderType}, {@code entityForm}, {@code entity}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map, String,
+   * String, String, String, String, EntityForm, Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.showViewUpdateCollection(HttpServletRequest, Model, Map, String, String, String, String, String, EntityForm, Entity)"
+  })
+  public void
+      testShowViewUpdateCollectionWithRequestModelPathVarsIdCollectionFieldCollectionItemIdAlternateIdModalHeaderTypeEntityFormEntity()
+          throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    ConcurrentModel model = new ConcurrentModel();
+    HashMap<String, String> pathVars = new HashMap<>();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.showViewUpdateCollection(
+                request,
+                model,
+                pathVars,
+                "42",
+                "Collection Field",
+                "42",
+                "42",
+                "Modal Header Type",
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map,
+   * String, String, String, String)} with {@code request}, {@code model}, {@code pathVars}, {@code
+   * id}, {@code collectionField}, {@code collectionItemId}, {@code modalHeaderType}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map, String,
+   * String, String, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.showViewUpdateCollection(HttpServletRequest, Model, Map, String, String, String, String)"
+  })
+  public void
+      testShowViewUpdateCollectionWithRequestModelPathVarsIdCollectionFieldCollectionItemIdModalHeaderType()
+          throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.showViewUpdateCollection(
+                request,
+                model,
+                new HashMap<>(),
+                "42",
+                "Collection Field",
+                "42",
+                "Modal Header Type"));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map,
+   * String, String, String, String, EntityForm, Entity)} with {@code request}, {@code model},
+   * {@code pathVars}, {@code id}, {@code collectionField}, {@code collectionItemId}, {@code
+   * modalHeaderType}, {@code entityForm}, {@code entity}.
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#showViewUpdateCollection(HttpServletRequest, Model, Map, String,
+   * String, String, String, EntityForm, Entity)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminBasicEntityController.showViewUpdateCollection(HttpServletRequest, Model, Map, String, String, String, String, EntityForm, Entity)"
+  })
+  public void
+      testShowViewUpdateCollectionWithRequestModelPathVarsIdCollectionFieldCollectionItemIdModalHeaderTypeEntityFormEntity()
+          throws ServiceException {
+    // Arrange
+    when(classNameRequestParamValidationService.getClassNameForSection(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    ConcurrentModel model = new ConcurrentModel();
+    HashMap<String, String> pathVars = new HashMap<>();
+    EntityForm entityForm = new EntityForm();
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.showViewUpdateCollection(
+                request,
+                model,
+                pathVars,
+                "42",
+                "Collection Field",
+                "42",
+                "Modal Header Type",
+                entityForm,
+                new Entity()));
+    verify(classNameRequestParamValidationService).getClassNameForSection(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
   public void testReinitializeEntityForm() throws ServiceException {
     // Arrange
-    doNothing().when(formBuilderService)
-        .populateEntityForm(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-            Mockito.<Map<String, DynamicResultSet>>any(), Mockito.<EntityForm>any(), Mockito.<List<SectionCrumb>>any());
+    doThrow(new ServiceException("An error occurred"))
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata collectionMetadata = new ClassMetadata();
+    collectionMetadata.setCeilingType("Type");
+    collectionMetadata.setCurrencyCode("GBP");
+    collectionMetadata.setPolymorphicEntities(new ClassTree());
+    collectionMetadata.setProperties(new Property[] {new Property()});
+    collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
+    collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.reinitializeEntityForm(
+                entityForm, collectionMetadata, entity, subRecordsMap, new ArrayList<>()));
+    verify(formBuilderService)
+        .populateEntityForm(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isA(Map.class),
+            isA(EntityForm.class),
+            isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm2() throws ServiceException {
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenReturn(entityForm);
+
+    ClassMetadata collectionMetadata = new ClassMetadata();
+    collectionMetadata.setCeilingType("Type");
+    collectionMetadata.setCurrencyCode("GBP");
+    collectionMetadata.setPolymorphicEntities(new ClassTree());
+    collectionMetadata.setProperties(new Property[] {new Property()});
+    collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
+    collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
+
+    // Act
+    EntityForm actualReinitializeEntityFormResult =
+        adminBasicEntityController.reinitializeEntityForm(
+            null, collectionMetadata, entity, subRecordsMap, new ArrayList<>());
+
+    // Assert
+    verify(formBuilderService)
+        .createEntityForm(
+            isA(ClassMetadata.class), isA(Entity.class), isA(Map.class), isA(List.class));
+    assertSame(entityForm, actualReinitializeEntityFormResult);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm3() throws ServiceException {
+    // Arrange
+    when(formBuilderService.createEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<List<SectionCrumb>>any()))
+        .thenThrow(new ServiceException("An error occurred"));
+
+    ClassMetadata collectionMetadata = new ClassMetadata();
+    collectionMetadata.setCeilingType("Type");
+    collectionMetadata.setCurrencyCode("GBP");
+    collectionMetadata.setPolymorphicEntities(new ClassTree());
+    collectionMetadata.setProperties(new Property[] {new Property()});
+    collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
+    collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
+
+    // Act and Assert
+    assertThrows(
+        ServiceException.class,
+        () ->
+            adminBasicEntityController.reinitializeEntityForm(
+                null, collectionMetadata, entity, subRecordsMap, new ArrayList<>()));
+    verify(formBuilderService)
+        .createEntityForm(
+            isA(ClassMetadata.class), isA(Entity.class), isA(Map.class), isA(List.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm4() throws ServiceException {
+    // Arrange
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
+
     EntityForm entityForm = mock(EntityForm.class);
     doNothing().when(entityForm).clearFieldsMap();
     doNothing().when(entityForm).removeAllActions();
@@ -3118,7 +7323,7 @@ public class AdminBasicEntityControllerDiffblueTest {
     collectionMetadata.setCeilingType("Type");
     collectionMetadata.setCurrencyCode("GBP");
     collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
+    collectionMetadata.setProperties(new Property[] {new Property()});
     collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
     collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
@@ -3139,34 +7344,52 @@ public class AdminBasicEntityControllerDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act
-    EntityForm actualReinitializeEntityFormResult = adminBasicEntityController.reinitializeEntityForm(entityForm,
-        collectionMetadata, entity, subRecordsMap, sectionCrumbs);
+    EntityForm actualReinitializeEntityFormResult =
+        adminBasicEntityController.reinitializeEntityForm(
+            entityForm, collectionMetadata, entity, subRecordsMap, sectionCrumbs);
 
     // Assert
     verify(entityForm).clearFieldsMap();
     verify(entityForm).removeAllActions();
-    verify(formBuilderService).populateEntityForm(isA(ClassMetadata.class), isA(Entity.class), isA(Map.class),
-        isA(EntityForm.class), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityForm(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isA(Map.class),
+            isA(EntityForm.class),
+            isA(List.class));
     assertSame(entityForm, actualReinitializeEntityFormResult);
   }
 
   /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
    * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.</li>
+   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
-  public void testReinitializeEntityForm_givenSectionCrumbOriginalSectionIdentifierIs42() throws ServiceException {
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm_givenSectionCrumbOriginalSectionIdentifierIs42()
+      throws ServiceException {
     // Arrange
-    doNothing().when(formBuilderService)
-        .populateEntityForm(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-            Mockito.<Map<String, DynamicResultSet>>any(), Mockito.<EntityForm>any(), Mockito.<List<SectionCrumb>>any());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
+
     EntityForm entityForm = mock(EntityForm.class);
     doNothing().when(entityForm).clearFieldsMap();
     doNothing().when(entityForm).removeAllActions();
@@ -3175,7 +7398,7 @@ public class AdminBasicEntityControllerDiffblueTest {
     collectionMetadata.setCeilingType("Type");
     collectionMetadata.setCurrencyCode("GBP");
     collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
+    collectionMetadata.setProperties(new Property[] {new Property()});
     collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
     collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
@@ -3190,72 +7413,51 @@ public class AdminBasicEntityControllerDiffblueTest {
     sectionCrumbs.add(sectionCrumb);
 
     // Act
-    EntityForm actualReinitializeEntityFormResult = adminBasicEntityController.reinitializeEntityForm(entityForm,
-        collectionMetadata, entity, subRecordsMap, sectionCrumbs);
+    EntityForm actualReinitializeEntityFormResult =
+        adminBasicEntityController.reinitializeEntityForm(
+            entityForm, collectionMetadata, entity, subRecordsMap, sectionCrumbs);
 
     // Assert
     verify(entityForm).clearFieldsMap();
     verify(entityForm).removeAllActions();
-    verify(formBuilderService).populateEntityForm(isA(ClassMetadata.class), isA(Entity.class), isA(Map.class),
-        isA(EntityForm.class), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityForm(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isA(Map.class),
+            isA(EntityForm.class),
+            isA(List.class));
     assertSame(entityForm, actualReinitializeEntityFormResult);
   }
 
   /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
    * <ul>
-   *   <li>Then calls {@link FormBuilderService#createEntityForm(ClassMetadata, Entity, Map, List)}.</li>
+   *   <li>Then return {@link EntityForm}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
-  public void testReinitializeEntityForm_thenCallsCreateEntityForm() throws ServiceException {
-    // Arrange
-    EntityForm entityForm = new EntityForm();
-    when(formBuilderService.createEntityForm(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-        Mockito.<Map<String, DynamicResultSet>>any(), Mockito.<List<SectionCrumb>>any())).thenReturn(entityForm);
-
-    ClassMetadata collectionMetadata = new ClassMetadata();
-    collectionMetadata.setCeilingType("Type");
-    collectionMetadata.setCurrencyCode("GBP");
-    collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
-    collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
-    collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Entity entity = new Entity();
-    HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
-
-    // Act
-    EntityForm actualReinitializeEntityFormResult = adminBasicEntityController.reinitializeEntityForm(null,
-        collectionMetadata, entity, subRecordsMap, new ArrayList<>());
-
-    // Assert
-    verify(formBuilderService).createEntityForm(isA(ClassMetadata.class), isA(Entity.class), isA(Map.class),
-        isA(List.class));
-    assertSame(entityForm, actualReinitializeEntityFormResult);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
-   * <ul>
-   *   <li>Then return {@link EntityForm}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
   public void testReinitializeEntityForm_thenReturnEntityForm() throws ServiceException {
     // Arrange
-    doNothing().when(formBuilderService)
-        .populateEntityForm(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-            Mockito.<Map<String, DynamicResultSet>>any(), Mockito.<EntityForm>any(), Mockito.<List<SectionCrumb>>any());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
+
     EntityForm entityForm = mock(EntityForm.class);
     doNothing().when(entityForm).clearFieldsMap();
     doNothing().when(entityForm).removeAllActions();
@@ -3264,159 +7466,175 @@ public class AdminBasicEntityControllerDiffblueTest {
     collectionMetadata.setCeilingType("Type");
     collectionMetadata.setCurrencyCode("GBP");
     collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
+    collectionMetadata.setProperties(new Property[] {new Property()});
     collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
     collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
     HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
 
     // Act
-    EntityForm actualReinitializeEntityFormResult = adminBasicEntityController.reinitializeEntityForm(entityForm,
-        collectionMetadata, entity, subRecordsMap, new ArrayList<>());
+    EntityForm actualReinitializeEntityFormResult =
+        adminBasicEntityController.reinitializeEntityForm(
+            entityForm, collectionMetadata, entity, subRecordsMap, new ArrayList<>());
 
     // Assert
     verify(entityForm).clearFieldsMap();
     verify(entityForm).removeAllActions();
-    verify(formBuilderService).populateEntityForm(isA(ClassMetadata.class), isA(Entity.class), isA(Map.class),
-        isA(EntityForm.class), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityForm(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isA(Map.class),
+            isA(EntityForm.class),
+            isA(List.class));
     assertSame(entityForm, actualReinitializeEntityFormResult);
   }
 
   /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
-  public void testReinitializeEntityForm_thenThrowUnsupportedOperationException() throws ServiceException {
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm_thenThrowUnsupportedOperationException()
+      throws ServiceException {
     // Arrange
     EntityForm entityForm = mock(EntityForm.class);
-    doThrow(new UnsupportedOperationException("foo")).when(entityForm).clearFieldsMap();
+    doThrow(new UnsupportedOperationException()).when(entityForm).clearFieldsMap();
 
     ClassMetadata collectionMetadata = new ClassMetadata();
     collectionMetadata.setCeilingType("Type");
     collectionMetadata.setCurrencyCode("GBP");
     collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
+    collectionMetadata.setProperties(new Property[] {new Property()});
     collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
     collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
     HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> adminBasicEntityController
-        .reinitializeEntityForm(entityForm, collectionMetadata, entity, subRecordsMap, new ArrayList<>()));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.reinitializeEntityForm(
+                entityForm, collectionMetadata, entity, subRecordsMap, new ArrayList<>()));
     verify(entityForm).clearFieldsMap();
   }
 
   /**
-   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}.
+   * Test {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata,
+   * Entity, Map, List)}.
+   *
    * <ul>
-   *   <li>When {@link EntityForm} (default constructor).</li>
-   *   <li>Then return {@link EntityForm} (default constructor).</li>
+   *   <li>When {@link EntityForm} (default constructor).
+   *   <li>Then return {@link EntityForm} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#reinitializeEntityForm(EntityForm,
+   * ClassMetadata, Entity, Map, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"})
-  public void testReinitializeEntityForm_whenEntityForm_thenReturnEntityForm() throws ServiceException {
+    "EntityForm AdminBasicEntityController.reinitializeEntityForm(EntityForm, ClassMetadata, Entity, Map, List)"
+  })
+  public void testReinitializeEntityForm_whenEntityForm_thenReturnEntityForm()
+      throws ServiceException {
     // Arrange
-    doNothing().when(formBuilderService)
-        .populateEntityForm(Mockito.<ClassMetadata>any(), Mockito.<Entity>any(),
-            Mockito.<Map<String, DynamicResultSet>>any(), Mockito.<EntityForm>any(), Mockito.<List<SectionCrumb>>any());
+    doNothing()
+        .when(formBuilderService)
+        .populateEntityForm(
+            Mockito.<ClassMetadata>any(),
+            Mockito.<Entity>any(),
+            Mockito.<Map<String, DynamicResultSet>>any(),
+            Mockito.<EntityForm>any(),
+            Mockito.<List<SectionCrumb>>any());
     EntityForm entityForm = new EntityForm();
 
     ClassMetadata collectionMetadata = new ClassMetadata();
     collectionMetadata.setCeilingType("Type");
     collectionMetadata.setCurrencyCode("GBP");
     collectionMetadata.setPolymorphicEntities(new ClassTree());
-    collectionMetadata.setProperties(new Property[]{new Property()});
+    collectionMetadata.setProperties(new Property[] {new Property()});
     collectionMetadata.setSecurityCeilingType("Security Ceiling Type");
     collectionMetadata.setTabAndGroupMetadata(new HashMap<>());
     Entity entity = new Entity();
     HashMap<String, DynamicResultSet> subRecordsMap = new HashMap<>();
 
     // Act
-    EntityForm actualReinitializeEntityFormResult = adminBasicEntityController.reinitializeEntityForm(entityForm,
-        collectionMetadata, entity, subRecordsMap, new ArrayList<>());
+    EntityForm actualReinitializeEntityFormResult =
+        adminBasicEntityController.reinitializeEntityForm(
+            entityForm, collectionMetadata, entity, subRecordsMap, new ArrayList<>());
 
     // Assert
-    verify(formBuilderService).populateEntityForm(isA(ClassMetadata.class), isA(Entity.class), isA(Map.class),
-        isA(EntityForm.class), isA(List.class));
+    verify(formBuilderService)
+        .populateEntityForm(
+            isA(ClassMetadata.class),
+            isA(Entity.class),
+            isA(Map.class),
+            isA(EntityForm.class),
+            isA(List.class));
     assertSame(entityForm, actualReinitializeEntityFormResult);
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
   public void testAddAuditableDisplayFields() {
     // Arrange
     CodeField codeField = mock(CodeField.class);
-    when(codeField.getName()).thenThrow(new UnsupportedOperationException("auditable.createdBy"));
+    when(codeField.getName()).thenThrow(new UnsupportedOperationException());
     when(codeField.getValue()).thenReturn("42");
+    doNothing().when(codeField).setValue(Mockito.<String>any());
+    codeField.setValue(null);
+
     EntityForm entityForm = mock(EntityForm.class);
     when(entityForm.findField(Mockito.<String>any())).thenReturn(codeField);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> adminBasicEntityController.addAuditableDisplayFields(entityForm));
-    verify(entityForm).findField(eq("auditable.createdBy"));
+    verify(entityForm).findField("auditable.createdBy");
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
     verify(codeField).getName();
     verify(codeField).getValue();
+    verify(codeField).setValue(null);
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
-   * <ul>
-   *   <li>Given {@link Field} (default constructor).</li>
-   *   <li>When {@link EntityForm} {@link EntityForm#findField(String)} return {@link Field} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
-  public void testAddAuditableDisplayFields_givenField_whenEntityFormFindFieldReturnField() {
-    // Arrange
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.findField(Mockito.<String>any())).thenReturn(new Field());
-
-    // Act
-    adminBasicEntityController.addAuditableDisplayFields(entityForm);
-
-    // Assert
-    verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
-   * <ul>
-   *   <li>Then calls {@link EntityForm#findGroup(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
-  public void testAddAuditableDisplayFields_thenCallsFindGroup() {
+  public void testAddAuditableDisplayFields2() {
     // Arrange
     when(adminUserDao.readAdminUserById(Mockito.<Long>any())).thenReturn(new AdminUserImpl());
+
     CodeField codeField = mock(CodeField.class);
     when(codeField.getOrder()).thenReturn(1);
     when(codeField.getFriendlyName()).thenReturn("Friendly Name");
@@ -3424,74 +7642,306 @@ public class AdminBasicEntityControllerDiffblueTest {
     when(codeField.getOwningEntityClass()).thenReturn("Owning Entity Class");
     doNothing().when(codeField).setIsVisible(Mockito.<Boolean>any());
     when(codeField.getValue()).thenReturn("42");
+    doNothing().when(codeField).setValue(Mockito.<String>any());
+    codeField.setValue(null);
+
     EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.findGroup(Mockito.<String>any())).thenReturn(new FieldGroup());
+    when(entityForm.findGroup(Mockito.<String>any())).thenReturn(null);
     when(entityForm.findField(Mockito.<String>any())).thenReturn(codeField);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
 
     // Act
     adminBasicEntityController.addAuditableDisplayFields(entityForm);
 
     // Assert
-    verify(adminUserDao, atLeast(1)).readAdminUserById(eq(42L));
+    verify(adminUserDao, atLeast(1)).readAdminUserById(42L);
     verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
-    verify(entityForm, atLeast(1)).findGroup(eq("AdminAuditable_Audit"));
+    verify(entityForm, atLeast(1)).findGroup("AdminAuditable_Audit");
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
     verify(codeField, atLeast(1)).getFriendlyName();
     verify(codeField, atLeast(1)).getName();
     verify(codeField, atLeast(1)).getOrder();
     verify(codeField, atLeast(1)).getOwningEntityClass();
     verify(codeField, atLeast(1)).getValue();
-    verify(codeField, atLeast(1)).setIsVisible(eq(false));
+    verify(codeField, atLeast(1)).setIsVisible(false);
+    verify(codeField).setValue(null);
   }
 
   /**
    * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
+   *
    * <ul>
-   *   <li>Then calls {@link AdminUser#getName()}.</li>
+   *   <li>Given {@link AdminUserDao} {@link AdminUserDao#readAdminUserById(Long)} return {@code
+   *       null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
+  public void testAddAuditableDisplayFields_givenAdminUserDaoReadAdminUserByIdReturnNull() {
+    // Arrange
+    when(adminUserDao.readAdminUserById(Mockito.<Long>any())).thenReturn(null);
+
+    CodeField codeField = mock(CodeField.class);
+    when(codeField.getOrder()).thenReturn(1);
+    when(codeField.getFriendlyName()).thenReturn("Friendly Name");
+    when(codeField.getName()).thenReturn("Name");
+    when(codeField.getOwningEntityClass()).thenReturn("Owning Entity Class");
+    doNothing().when(codeField).setIsVisible(Mockito.<Boolean>any());
+    when(codeField.getValue()).thenReturn("42");
+    doNothing().when(codeField).setValue(Mockito.<String>any());
+    codeField.setValue(null);
+
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.findGroup(Mockito.<String>any())).thenReturn(null);
+    when(entityForm.findField(Mockito.<String>any())).thenReturn(codeField);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
+
+    // Act
+    adminBasicEntityController.addAuditableDisplayFields(entityForm);
+
+    // Assert
+    verify(adminUserDao, atLeast(1)).readAdminUserById(42L);
+    verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
+    verify(entityForm, atLeast(1)).findGroup("AdminAuditable_Audit");
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
+    verify(codeField, atLeast(1)).getFriendlyName();
+    verify(codeField, atLeast(1)).getName();
+    verify(codeField, atLeast(1)).getOrder();
+    verify(codeField, atLeast(1)).getOwningEntityClass();
+    verify(codeField, atLeast(1)).getValue();
+    verify(codeField, atLeast(1)).setIsVisible(false);
+    verify(codeField).setValue(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
+   *
+   * <ul>
+   *   <li>Given {@link CodeField} {@link CodeField#getValue()} return {@code null}.
+   *   <li>Then calls {@link CodeField#getValue()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
+  public void testAddAuditableDisplayFields_givenCodeFieldGetValueReturnNull_thenCallsGetValue() {
+    // Arrange
+    CodeField codeField = mock(CodeField.class);
+    when(codeField.getValue()).thenReturn(null);
+    doNothing().when(codeField).setValue(Mockito.<String>any());
+    codeField.setValue(null);
+
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.findField(Mockito.<String>any())).thenReturn(codeField);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
+
+    // Act
+    adminBasicEntityController.addAuditableDisplayFields(entityForm);
+
+    // Assert
+    verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
+    verify(codeField, atLeast(1)).getValue();
+    verify(codeField).setValue(null);
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
+   *
+   * <ul>
+   *   <li>Given {@link Field} (default constructor) Value is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
+  public void testAddAuditableDisplayFields_givenFieldValueIsNull() {
+    // Arrange
+    Field field = new Field();
+    field.setValue(null);
+
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.findField(Mockito.<String>any())).thenReturn(field);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
+
+    // Act
+    adminBasicEntityController.addAuditableDisplayFields(entityForm);
+
+    // Assert
+    verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   *   <li>When {@link EntityForm} {@link EntityForm#findField(String)} return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
+  public void testAddAuditableDisplayFields_givenNull_whenEntityFormFindFieldReturnNull() {
+    // Arrange
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.findField(Mockito.<String>any())).thenReturn(null);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
+
+    // Act
+    adminBasicEntityController.addAuditableDisplayFields(entityForm);
+
+    // Assert
+    verify(entityForm, atLeast(1)).findField(Mockito.<String>any());
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link AdminUser#getName()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#addAuditableDisplayFields(EntityForm)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminBasicEntityController.addAuditableDisplayFields(EntityForm)"})
   public void testAddAuditableDisplayFields_thenCallsGetName() {
     // Arrange
     AdminUser adminUser = mock(AdminUser.class);
-    when(adminUser.getName()).thenThrow(new UnsupportedOperationException("foo"));
+    when(adminUser.getName()).thenThrow(new UnsupportedOperationException());
     when(adminUserDao.readAdminUserById(Mockito.<Long>any())).thenReturn(adminUser);
+
     CodeField codeField = mock(CodeField.class);
     when(codeField.getOrder()).thenReturn(1);
     when(codeField.getFriendlyName()).thenReturn("Friendly Name");
     when(codeField.getName()).thenReturn("Name");
     when(codeField.getOwningEntityClass()).thenReturn("Owning Entity Class");
     when(codeField.getValue()).thenReturn("42");
+    doNothing().when(codeField).setValue(Mockito.<String>any());
+    codeField.setValue(null);
+
     EntityForm entityForm = mock(EntityForm.class);
     when(entityForm.findField(Mockito.<String>any())).thenReturn(codeField);
+    doNothing().when(entityForm).putDynamicForm(Mockito.<String>any(), Mockito.<EntityForm>any());
+    entityForm.putDynamicForm("auditable.createdBy", new EntityForm());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> adminBasicEntityController.addAuditableDisplayFields(entityForm));
-    verify(adminUserDao).readAdminUserById(eq(42L));
+    verify(adminUserDao).readAdminUserById(42L);
     verify(adminUser).getName();
-    verify(entityForm).findField(eq("auditable.createdBy"));
+    verify(entityForm).findField("auditable.createdBy");
+    verify(entityForm).putDynamicForm(eq("auditable.createdBy"), isA(EntityForm.class));
     verify(codeField).getFriendlyName();
     verify(codeField).getName();
     verify(codeField).getOrder();
     verify(codeField).getOwningEntityClass();
     verify(codeField, atLeast(1)).getValue();
+    verify(codeField).setValue(null);
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@code Path Vars}.</li>
-   *   <li>Then return {@code Path Vars}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code tabName} is {@link TabMetadata} (default
+   *       constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
+  public void testGetCurrentTabName_givenHashMapTabNameIsTabMetadata_thenReturnNull() {
+    // Arrange
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
+    tabAndGroupMetadata.put("tabName", new TabMetadata());
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(tabAndGroupMetadata);
+
+    // Act and Assert
+    assertNull(adminBasicEntityController.getCurrentTabName(pathVars, cmd));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return {@code General}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
+  public void testGetCurrentTabName_givenHashMap_whenHashMap_thenReturnGeneral() {
+    // Arrange
+    HashMap<String, String> pathVars = new HashMap<>();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[] {new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act and Assert
+    assertEquals("General", adminBasicEntityController.getCurrentTabName(pathVars, cmd));
+  }
+
+  /**
+   * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
+   *
+   * <ul>
+   *   <li>Given {@code Path Vars}.
+   *   <li>Then return {@code Path Vars}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
   public void testGetCurrentTabName_givenPathVars_thenReturnPathVars() {
     // Arrange
@@ -3502,7 +7952,7 @@ public class AdminBasicEntityControllerDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -3512,16 +7962,18 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given space.</li>
-   *   <li>When {@link HashMap#HashMap()} {@code tabName} is space.</li>
-   *   <li>Then return {@code General}.</li>
+   *   <li>Given space.
+   *   <li>When {@link HashMap#HashMap()} {@code tabName} is space.
+   *   <li>Then return {@code General}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
   public void testGetCurrentTabName_givenSpace_whenHashMapTabNameIsSpace_thenReturnGeneral() {
     // Arrange
@@ -3532,7 +7984,7 @@ public class AdminBasicEntityControllerDiffblueTest {
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -3542,127 +7994,50 @@ public class AdminBasicEntityControllerDiffblueTest {
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
+   *
    * <ul>
-   *   <li>Given {@link TabMetadata} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
-  public void testGetCurrentTabName_givenTabMetadata_thenReturnNull() {
-    // Arrange
-    HashMap<String, String> pathVars = new HashMap<>();
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(new TabMetadata());
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-
-    // Act
-    String actualCurrentTabName = adminBasicEntityController.getCurrentTabName(pathVars, cmd);
-
-    // Assert
-    verify(cmd).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    assertNull(actualCurrentTabName);
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
-   * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
   public void testGetCurrentTabName_thenThrowUnsupportedOperationException() {
     // Arrange
     HashMap<String, String> pathVars = new HashMap<>();
+
     TabMetadata tabMetadata = mock(TabMetadata.class);
-    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException("foo"));
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getFirstTab()).thenReturn(tabMetadata);
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
+    when(tabMetadata.getTabName()).thenThrow(new UnsupportedOperationException());
 
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.getCurrentTabName(pathVars, cmd));
-    verify(cmd).getFirstTab();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(tabMetadata).getTabName();
-  }
-
-  /**
-   * Test {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code General}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentTabName(Map, ClassMetadata)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminBasicEntityController.getCurrentTabName(Map, ClassMetadata)"})
-  public void testGetCurrentTabName_whenHashMap_thenReturnGeneral() {
-    // Arrange
-    HashMap<String, String> pathVars = new HashMap<>();
+    HashMap<String, TabMetadata> tabAndGroupMetadata = new HashMap<>();
+    tabAndGroupMetadata.put("tabName", tabMetadata);
 
     ClassMetadata cmd = new ClassMetadata();
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
+    cmd.setTabAndGroupMetadata(tabAndGroupMetadata);
 
     // Act and Assert
-    assertEquals("General", adminBasicEntityController.getCurrentTabName(pathVars, cmd));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> adminBasicEntityController.getCurrentTabName(pathVars, cmd));
+    verify(tabMetadata).getTabName();
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}.
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentFolderId(HttpServletRequest)"})
   public void testGetCurrentFolderId() {
     // Arrange
@@ -3670,21 +8045,25 @@ public class AdminBasicEntityControllerDiffblueTest {
     request.addParameter("https://example.org/example", "https://example.org/example");
 
     // Act and Assert
-    assertEquals("unassigned",
-        adminBasicEntityController.getCurrentFolderId(new JSCompatibilityRequestWrapper(request)));
+    assertEquals(
+        "unassigned",
+        adminBasicEntityController.getCurrentFolderId(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(request))));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Given {@code currentFolderId}.</li>
-   *   <li>Then return {@code https://example.org/example}.</li>
+   *   <li>Given {@code currentFolderId}.
+   *   <li>Then return {@code https://example.org/example}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentFolderId(HttpServletRequest)"})
   public void testGetCurrentFolderId_givenCurrentFolderId_thenReturnHttpsExampleOrgExample() {
     // Arrange
@@ -3692,20 +8071,24 @@ public class AdminBasicEntityControllerDiffblueTest {
     request.addParameter("currentFolderId", "https://example.org/example");
 
     // Act and Assert
-    assertEquals("https://example.org/example",
-        adminBasicEntityController.getCurrentFolderId(new JSCompatibilityRequestWrapper(request)));
+    assertEquals(
+        "https://example.org/example",
+        adminBasicEntityController.getCurrentFolderId(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(request))));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Given empty string.</li>
+   *   <li>Given empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentFolderId(HttpServletRequest)"})
   public void testGetCurrentFolderId_givenEmptyString() {
     // Arrange
@@ -3713,62 +8096,87 @@ public class AdminBasicEntityControllerDiffblueTest {
     request.addParameter("", "https://example.org/example");
 
     // Act and Assert
-    assertEquals("unassigned",
-        adminBasicEntityController.getCurrentFolderId(new JSCompatibilityRequestWrapper(request)));
+    assertEquals(
+        "unassigned",
+        adminBasicEntityController.getCurrentFolderId(
+            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(request))));
   }
 
   /**
    * Test {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Then return {@code unassigned}.</li>
+   *   <li>Then return {@code unassigned}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link AdminBasicEntityController#getCurrentFolderId(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminBasicEntityController.getCurrentFolderId(HttpServletRequest)"})
   public void testGetCurrentFolderId_thenReturnUnassigned() {
     // Arrange, Act and Assert
-    assertEquals("unassigned",
-        adminBasicEntityController.getCurrentFolderId(new JSCompatibilityRequestWrapper(new MockHttpServletRequest())));
+    assertEquals(
+        "unassigned",
+        adminBasicEntityController.getCurrentFolderId(
+            new HttpServletRequestWrapper(
+                new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))));
   }
 
   /**
-   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}.
+   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest,
+   * Model)}.
+   *
    * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} Empty.</li>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"
+  })
   public void testSetTypedEntityModelAttributes_thenConcurrentModelEmpty() {
     // Arrange
-    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
     adminBasicEntityController.setTypedEntityModelAttributes(request, model);
 
     // Assert that nothing has changed
+    ServletRequest request2 = request.getRequest();
+    assertTrue(request2 instanceof JSCompatibilityRequestWrapper);
     assertTrue(model.isEmpty());
+    assertEquals(model, request2.getParameterMap());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}.
+   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest,
+   * Model)}.
+   *
    * <ul>
-   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.</li>
+   *   <li>Then {@link ConcurrentModel#ConcurrentModel()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"})
-  public void testSetTypedEntityModelAttributes_thenConcurrentModelSizeIsOne() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"
+  })
+  public void testSetTypedEntityModelAttributes_thenConcurrentModelSizeIsOne()
+      throws UnsupportedEncodingException {
     // Arrange
     AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
     adminSectionImpl.setCeilingEntity("typedEntitySection");
@@ -3783,57 +8191,80 @@ public class AdminBasicEntityControllerDiffblueTest {
     adminSectionImpl.setSectionKey("typedEntitySection");
     adminSectionImpl.setUrl("https://example.org/example");
     adminSectionImpl.setUseDefaultHandler(true);
+
     MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    doNothing().when(request).setCharacterEncoding(Mockito.<String>any());
     when(request.getAttribute(Mockito.<String>any())).thenReturn(adminSectionImpl);
     doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
     doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
     request.addParameter("typedEntitySection", "42");
 
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    request2.setCharacterEncoding("typedEntitySection");
     request2.setAttribute("typedEntitySection", "42");
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
     ConcurrentModel model = new ConcurrentModel();
 
     // Act
-    adminBasicEntityController.setTypedEntityModelAttributes(request2, model);
+    adminBasicEntityController.setTypedEntityModelAttributes(request3, model);
 
     // Assert
-    verify(request).addParameter(eq("typedEntitySection"), eq("42"));
-    verify(request).getAttribute(eq("typedEntitySection"));
+    verify(request).addParameter("typedEntitySection", "42");
+    verify(request).getAttribute("typedEntitySection");
     verify(request).setAttribute(eq("typedEntitySection"), isA(Object.class));
+    verify(request).setCharacterEncoding("typedEntitySection");
+    ServletRequest request4 = request3.getRequest();
+    assertTrue(request4 instanceof JSCompatibilityRequestWrapper);
     assertEquals(1, model.size());
     assertEquals("typedEntitySection", model.get("entityFriendlyName"));
+    assertTrue(request4.getParameterMap().isEmpty());
   }
 
   /**
-   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}.
+   * Test {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest,
+   * Model)}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
+   *
+   * <p>Method under test: {@link
+   * AdminBasicEntityController#setTypedEntityModelAttributes(HttpServletRequest, Model)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"})
-  public void testSetTypedEntityModelAttributes_thenThrowUnsupportedOperationException() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminBasicEntityController.setTypedEntityModelAttributes(HttpServletRequest, Model)"
+  })
+  public void testSetTypedEntityModelAttributes_thenThrowUnsupportedOperationException()
+      throws UnsupportedEncodingException {
     // Arrange
     AdminSectionImpl adminSectionImpl = mock(AdminSectionImpl.class);
-    when(adminSectionImpl.getName()).thenThrow(new UnsupportedOperationException("foo"));
+    when(adminSectionImpl.getName()).thenThrow(new UnsupportedOperationException());
+
     MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    doNothing().when(request).setCharacterEncoding(Mockito.<String>any());
     when(request.getAttribute(Mockito.<String>any())).thenReturn(adminSectionImpl);
     doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
     doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any());
     request.addParameter("typedEntitySection", "42");
 
     JSCompatibilityRequestWrapper request2 = new JSCompatibilityRequestWrapper(request);
+    request2.setCharacterEncoding("typedEntitySection");
     request2.setAttribute("typedEntitySection", "42");
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> adminBasicEntityController.setTypedEntityModelAttributes(request2, new ConcurrentModel()));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            adminBasicEntityController.setTypedEntityModelAttributes(
+                request3, new ConcurrentModel()));
     verify(adminSectionImpl).getName();
-    verify(request).addParameter(eq("typedEntitySection"), eq("42"));
-    verify(request).getAttribute(eq("typedEntitySection"));
+    verify(request).addParameter("typedEntitySection", "42");
+    verify(request).getAttribute("typedEntitySection");
     verify(request).setAttribute(eq("typedEntitySection"), isA(Object.class));
+    verify(request).setCharacterEncoding("typedEntitySection");
   }
 }

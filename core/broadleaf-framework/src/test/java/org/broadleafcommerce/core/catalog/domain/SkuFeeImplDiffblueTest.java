@@ -26,10 +26,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
@@ -45,118 +47,116 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuFeeImplDiffblueTest {
-  @Autowired
-  private SkuFeeImpl skuFeeImpl;
+  @Autowired private SkuFeeImpl skuFeeImpl;
 
   /**
    * Test {@link SkuFeeImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Given {@link SkuFeeImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link SkuFeeImpl} Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#getAmount()}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuFeeImpl.getAmount()"})
   public void testGetAmount_givenSkuFeeImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
-    skuFeeImpl2.setDescription("The characteristics of someone or something");
-    skuFeeImpl2.setExpression("Expression");
-    skuFeeImpl2.setFeeType(SkuFeeType.FULFILLMENT);
-    skuFeeImpl2.setId(1L);
-    skuFeeImpl2.setName("Name");
-    skuFeeImpl2.setSkus(new ArrayList<>());
-    skuFeeImpl2.setTaxable(true);
     Money amount = new Money();
-    skuFeeImpl2.setAmount(amount);
-    skuFeeImpl2.setCurrency(null);
+    skuFeeImpl.setAmount(amount);
+    skuFeeImpl.setCurrency(null);
 
     // Act and Assert
-    assertEquals(amount, skuFeeImpl2.getAmount());
+    assertEquals(amount, skuFeeImpl.getAmount());
   }
 
   /**
    * Test {@link SkuFeeImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Given {@link SkuFeeImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link SkuFeeImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#getAmount()}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuFeeImpl.getAmount()"})
   public void testGetAmount_givenSkuFeeImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new SkuFeeImpl()).getAmount());
+    assertNull(skuFeeImpl.getAmount());
   }
 
   /**
    * Test {@link SkuFeeImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#getAmount()}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money SkuFeeImpl.getAmount()"})
-  public void testGetAmount_thenCallsGetCurrencyCode() {
+  public void testGetAmount_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
     BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
-    skuFeeImpl2.setDescription("The characteristics of someone or something");
-    skuFeeImpl2.setExpression("Expression");
-    skuFeeImpl2.setFeeType(SkuFeeType.FULFILLMENT);
-    skuFeeImpl2.setId(1L);
-    skuFeeImpl2.setName("Name");
-    skuFeeImpl2.setSkus(new ArrayList<>());
-    skuFeeImpl2.setTaxable(true);
-    Money amount = new Money();
-    skuFeeImpl2.setAmount(amount);
-    skuFeeImpl2.setCurrency(currency);
+    skuFeeImpl.setAmount(new Money());
+    skuFeeImpl.setCurrency(currency);
 
     // Act
-    Money actualAmount = skuFeeImpl2.getAmount();
+    Money actualAmount = skuFeeImpl.getAmount();
 
     // Assert
     verify(currency).getCurrencyCode();
-    assertEquals(amount, actualAmount);
+    Currency currency2 = actualAmount.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    Money actualAbsResult = actualAmount.abs();
+    assertEquals(actualAmount, actualAbsResult);
+    Money actualZeroResult = actualAmount.zero();
+    assertEquals(actualAmount, actualZeroResult);
   }
 
   /**
    * Test {@link SkuFeeImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then {@link SkuFeeImpl} (default constructor) {@link SkuFeeImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then {@link SkuFeeImpl} {@link SkuFeeImpl#amount} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuFeeImpl.setAmount(Money)"})
   public void testSetAmount_whenMoney_thenSkuFeeImplAmountIsBigDecimalWith000() {
     // Arrange
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
     Money amount = new Money();
 
     // Act
-    skuFeeImpl2.setAmount(amount);
+    skuFeeImpl.setAmount(amount);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), skuFeeImpl2.amount);
-    BigDecimal bigDecimal = skuFeeImpl2.amount;
+    assertEquals(new BigDecimal("0.00"), skuFeeImpl.amount);
+    BigDecimal bigDecimal = skuFeeImpl.amount;
     Money absResult = amount.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -181,107 +181,91 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuFeeImpl} (default constructor) {@link SkuFeeImpl#amount} is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link SkuFeeImpl} {@link SkuFeeImpl#amount} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuFeeImpl.setAmount(Money)"})
   public void testSetAmount_whenNull_thenSkuFeeImplAmountIsNull() {
-    // Arrange
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
-
-    // Act
-    skuFeeImpl2.setAmount(null);
+    // Arrange and Act
+    skuFeeImpl.setAmount(null);
 
     // Assert that nothing has changed
-    assertNull(skuFeeImpl2.amount);
+    assertNull(skuFeeImpl.amount);
   }
 
   /**
    * Test {@link SkuFeeImpl#getFeeType()}.
-   * <p>
-   * Method under test: {@link SkuFeeImpl#getFeeType()}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#getFeeType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SkuFeeType SkuFeeImpl.getFeeType()"})
   public void testGetFeeType() {
-    // Arrange and Act
-    SkuFeeType actualFeeType = (new SkuFeeImpl()).getFeeType();
-
-    // Assert
-    assertSame(actualFeeType.FULFILLMENT, actualFeeType);
+    // Arrange, Act and Assert
+    assertSame(SkuFeeType.FULFILLMENT, skuFeeImpl.getFeeType());
   }
 
   /**
    * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
+   *
    * <ul>
-   *   <li>Given {@link SkuFeeImpl} (default constructor) Amount is {@link Money#Money()}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link SkuFeeImpl} (default constructor) {@link SkuFeeImpl#feeType} is {@code null}.</li>
+   *   <li>When {@link SkuFeeType#FULFILLMENT}.
+   *   <li>Then {@link SkuFeeImpl} {@link SkuFeeImpl#feeType} is {@code FULFILLMENT}.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SkuFeeImpl.setFeeType(SkuFeeType)"})
-  public void testSetFeeType_givenSkuFeeImplAmountIsMoney_whenNull_thenSkuFeeImplFeeTypeIsNull() {
-    // Arrange
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
-    skuFeeImpl2.setAmount(new Money());
-    skuFeeImpl2.setCurrency(new BroadleafCurrencyImpl());
-    skuFeeImpl2.setDescription("The characteristics of someone or something");
-    skuFeeImpl2.setExpression("Expression");
-    skuFeeImpl2.setFeeType(SkuFeeType.FULFILLMENT);
-    skuFeeImpl2.setId(1L);
-    skuFeeImpl2.setName("Name");
-    skuFeeImpl2.setSkus(new ArrayList<>());
-    skuFeeImpl2.setTaxable(true);
-
-    // Act
-    skuFeeImpl2.setFeeType(null);
-
-    // Assert
-    assertNull(skuFeeImpl2.feeType);
-    assertNull(skuFeeImpl2.getFeeType());
-  }
-
-  /**
-   * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
-   * <ul>
-   *   <li>When {@link SkuFeeType#FULFILLMENT}.</li>
-   *   <li>Then {@link SkuFeeImpl} (default constructor) {@link SkuFeeImpl#feeType} is {@code FULFILLMENT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuFeeImpl.setFeeType(SkuFeeType)"})
   public void testSetFeeType_whenFulfillment_thenSkuFeeImplFeeTypeIsFulfillment() {
-    // Arrange
-    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
-    SkuFeeType feeType = SkuFeeType.FULFILLMENT;
-
-    // Act
-    skuFeeImpl2.setFeeType(feeType);
+    // Arrange and Act
+    skuFeeImpl.setFeeType(SkuFeeType.FULFILLMENT);
 
     // Assert that nothing has changed
-    assertEquals("FULFILLMENT", skuFeeImpl2.feeType);
-    SkuFeeType expectedFeeType = feeType.FULFILLMENT;
-    assertSame(expectedFeeType, skuFeeImpl2.getFeeType());
+    assertEquals("FULFILLMENT", skuFeeImpl.feeType);
+    assertSame(SkuFeeType.FULFILLMENT, skuFeeImpl.getFeeType());
+  }
+
+  /**
+   * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then {@link SkuFeeImpl} {@link SkuFeeImpl#feeType} is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SkuFeeImpl.setFeeType(SkuFeeType)"})
+  public void testSetFeeType_whenNull_thenSkuFeeImplFeeTypeIsNull() {
+    // Arrange and Act
+    skuFeeImpl.setFeeType(null);
+
+    // Assert
+    assertNull(skuFeeImpl.feeType);
+    assertNull(skuFeeImpl.getFeeType());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuFeeImpl#setCurrency(BroadleafCurrency)}
    *   <li>{@link SkuFeeImpl#setDescription(String)}
@@ -300,12 +284,24 @@ public class SkuFeeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"BroadleafCurrency SkuFeeImpl.getCurrency()", "String SkuFeeImpl.getDescription()",
-      "String SkuFeeImpl.getExpression()", "Long SkuFeeImpl.getId()", "String SkuFeeImpl.getName()",
-      "List SkuFeeImpl.getSkus()", "Boolean SkuFeeImpl.getTaxable()", "void SkuFeeImpl.setCurrency(BroadleafCurrency)",
-      "void SkuFeeImpl.setDescription(String)", "void SkuFeeImpl.setExpression(String)", "void SkuFeeImpl.setId(Long)",
-      "void SkuFeeImpl.setName(String)", "void SkuFeeImpl.setSkus(List)", "void SkuFeeImpl.setTaxable(Boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "BroadleafCurrency SkuFeeImpl.getCurrency()",
+    "String SkuFeeImpl.getDescription()",
+    "String SkuFeeImpl.getExpression()",
+    "Long SkuFeeImpl.getId()",
+    "String SkuFeeImpl.getName()",
+    "List SkuFeeImpl.getSkus()",
+    "Boolean SkuFeeImpl.getTaxable()",
+    "void SkuFeeImpl.setCurrency(BroadleafCurrency)",
+    "void SkuFeeImpl.setDescription(String)",
+    "void SkuFeeImpl.setExpression(String)",
+    "void SkuFeeImpl.setId(Long)",
+    "void SkuFeeImpl.setName(String)",
+    "void SkuFeeImpl.setSkus(List)",
+    "void SkuFeeImpl.setTaxable(Boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     SkuFeeImpl skuFeeImpl = new SkuFeeImpl();
@@ -341,19 +337,22 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#equals(Object)}, and {@link SkuFeeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuFeeImpl#equals(Object)}
    *   <li>{@link SkuFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuFeeImpl.equals(Object)", "int SkuFeeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -381,25 +380,27 @@ public class SkuFeeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(skuFeeImpl, skuFeeImpl2);
-    int expectedHashCodeResult = skuFeeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, skuFeeImpl2.hashCode());
+    assertEquals(skuFeeImpl.hashCode(), skuFeeImpl2.hashCode());
   }
 
   /**
    * Test {@link SkuFeeImpl#equals(Object)}, and {@link SkuFeeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SkuFeeImpl#equals(Object)}
    *   <li>{@link SkuFeeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuFeeImpl.equals(Object)", "int SkuFeeImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -422,15 +423,17 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuFeeImpl.equals(Object)", "int SkuFeeImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -462,15 +465,17 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuFeeImpl.equals(Object)", "int SkuFeeImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -491,15 +496,17 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SkuFeeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link SkuFeeImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuFeeImpl.equals(Object)", "int SkuFeeImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -520,11 +527,12 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test new {@link SkuFeeImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SkuFeeImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link SkuFeeImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SkuFeeImpl.<init>()"})
   public void testNewSkuFeeImpl() {
     // Arrange and Act

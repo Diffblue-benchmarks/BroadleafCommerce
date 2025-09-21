@@ -21,45 +21,33 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import com.yahoo.platform.yui.compressor.JarClassLoader;
-import java.util.List;
 import java.util.Properties;
 import javax.cache.CacheManager;
-import org.broadleafcommerce.common.extensibility.cache.JCacheConfigurationBuilder;
-import org.broadleafcommerce.common.extensibility.cache.JCacheRegionConfiguration;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class MergeJCacheManagerFactoryBeanDiffblueTest {
-  @Mock
-  private JCacheConfigurationBuilder jCacheConfigurationBuilder;
-
-  @Mock
-  private JCacheUriProvider jCacheUriProvider;
-
-  @Mock
-  private List<JCacheRegionConfiguration> list;
-
-  @InjectMocks
-  private MergeJCacheManagerFactoryBean mergeJCacheManagerFactoryBean;
+  @InjectMocks private MergeJCacheManagerFactoryBean mergeJCacheManagerFactoryBean;
 
   /**
    * Test {@link MergeJCacheManagerFactoryBean#getObject()}.
-   * <p>
-   * Method under test: {@link MergeJCacheManagerFactoryBean#getObject()}
+   *
+   * <p>Method under test: {@link MergeJCacheManagerFactoryBean#getObject()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CacheManager MergeJCacheManagerFactoryBean.getObject()"})
   public void testGetObject() {
     // Arrange, Act and Assert
@@ -68,11 +56,12 @@ public class MergeJCacheManagerFactoryBeanDiffblueTest {
 
   /**
    * Test {@link MergeJCacheManagerFactoryBean#getObjectType()}.
-   * <p>
-   * Method under test: {@link MergeJCacheManagerFactoryBean#getObjectType()}
+   *
+   * <p>Method under test: {@link MergeJCacheManagerFactoryBean#getObjectType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Class MergeJCacheManagerFactoryBean.getObjectType()"})
   public void testGetObjectType() {
     // Arrange and Act
@@ -85,15 +74,19 @@ public class MergeJCacheManagerFactoryBeanDiffblueTest {
 
   /**
    * Test {@link MergeJCacheManagerFactoryBean#getDefaultClassLoaderForProvider()}.
+   *
    * <ul>
-   *   <li>Then return not {@code null}.</li>
+   *   <li>Then return not {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeJCacheManagerFactoryBean#getDefaultClassLoaderForProvider()}
+   *
+   * <p>Method under test: {@link MergeJCacheManagerFactoryBean#getDefaultClassLoaderForProvider()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ClassLoader MergeJCacheManagerFactoryBean.getDefaultClassLoaderForProvider()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ClassLoader MergeJCacheManagerFactoryBean.getDefaultClassLoaderForProvider()"
+  })
   public void testGetDefaultClassLoaderForProvider_thenReturnNotNull() {
     // Arrange
     mergeJCacheManagerFactoryBean.setBeanClassLoader(new JarClassLoader());
@@ -104,8 +97,9 @@ public class MergeJCacheManagerFactoryBeanDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link MergeJCacheManagerFactoryBean}
    *   <li>{@link MergeJCacheManagerFactoryBean#setBeanClassLoader(ClassLoader)}
@@ -114,14 +108,18 @@ public class MergeJCacheManagerFactoryBeanDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void MergeJCacheManagerFactoryBean.<init>()",
-      "boolean MergeJCacheManagerFactoryBean.isSingleton()",
-      "void MergeJCacheManagerFactoryBean.setBeanClassLoader(ClassLoader)",
-      "void MergeJCacheManagerFactoryBean.setCacheManagerProperties(Properties)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MergeJCacheManagerFactoryBean.<init>()",
+    "boolean MergeJCacheManagerFactoryBean.isSingleton()",
+    "void MergeJCacheManagerFactoryBean.setBeanClassLoader(ClassLoader)",
+    "void MergeJCacheManagerFactoryBean.setCacheManagerProperties(Properties)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    MergeJCacheManagerFactoryBean actualMergeJCacheManagerFactoryBean = new MergeJCacheManagerFactoryBean();
+    MergeJCacheManagerFactoryBean actualMergeJCacheManagerFactoryBean =
+        new MergeJCacheManagerFactoryBean();
     actualMergeJCacheManagerFactoryBean.setBeanClassLoader(new JarClassLoader());
     actualMergeJCacheManagerFactoryBean.setCacheManagerProperties(new Properties());
     boolean actualIsSingletonResult = actualMergeJCacheManagerFactoryBean.isSingleton();

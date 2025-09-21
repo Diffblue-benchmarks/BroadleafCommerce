@@ -20,10 +20,9 @@ package org.broadleafcommerce.admin.web.controller.extension;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.extension.ExtensionManager;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionHandler;
 import org.broadleafcommerce.openadmin.web.controller.AdminTranslationControllerExtensionManager;
 import org.junit.Test;
@@ -36,8 +35,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class AdminProductTranslationExtensionHandlerDiffblueTest {
   @InjectMocks
   private AdminProductTranslationExtensionHandler adminProductTranslationExtensionHandler;
@@ -45,24 +44,25 @@ public class AdminProductTranslationExtensionHandlerDiffblueTest {
   @Mock
   private AdminTranslationControllerExtensionManager adminTranslationControllerExtensionManager;
 
-  @Mock
-  private CatalogService catalogService;
-
   /**
    * Test {@link AdminProductTranslationExtensionHandler#init()}.
+   *
    * <ul>
-   *   <li>Then calls {@link ExtensionManager#registerHandler(ExtensionHandler)}.</li>
+   *   <li>Then calls {@link
+   *       AdminTranslationControllerExtensionManager#registerHandler(ExtensionHandler)}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminProductTranslationExtensionHandler#init()}
+   *
+   * <p>Method under test: {@link AdminProductTranslationExtensionHandler#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminProductTranslationExtensionHandler.init()"})
   public void testInit_thenCallsRegisterHandler() {
     // Arrange
-    when(adminTranslationControllerExtensionManager
-        .registerHandler(Mockito.<AdminTranslationControllerExtensionHandler>any())).thenReturn(true);
+    when(adminTranslationControllerExtensionManager.registerHandler(
+            Mockito.<AdminTranslationControllerExtensionHandler>any()))
+        .thenReturn(true);
 
     // Act
     adminProductTranslationExtensionHandler.init();

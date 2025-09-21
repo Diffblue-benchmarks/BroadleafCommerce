@@ -32,7 +32,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -47,12 +48,10 @@ import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
-import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.persistence.EntityDuplicator;
-import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.common.util.StreamCapableTransactionalOperation;
 import org.broadleafcommerce.common.util.StreamingTransactionCapableUtil;
 import org.broadleafcommerce.core.offer.dao.CustomerOfferDao;
@@ -62,15 +61,16 @@ import org.broadleafcommerce.core.offer.dao.OfferCodeDaoImpl;
 import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.dao.OfferDaoImpl;
 import org.broadleafcommerce.core.offer.domain.CustomerOffer;
+import org.broadleafcommerce.core.offer.domain.CustomerOfferImpl;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.offer.domain.OfferCodeImpl;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
+import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
+import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
-import org.broadleafcommerce.core.offer.service.processor.BaseProcessor;
 import org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessor;
 import org.broadleafcommerce.core.offer.service.processor.FulfillmentGroupOfferProcessorImpl;
 import org.broadleafcommerce.core.offer.service.processor.ItemOfferProcessor;
@@ -111,62 +111,42 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(MockitoJUnitRunner.class)
 public class OfferServiceImplDiffblueTest {
-  @Mock
-  private CustomerOfferDao customerOfferDao;
+  @Mock private CustomerOfferDao customerOfferDao;
 
-  @Mock
-  private EntityDuplicator entityDuplicator;
+  @Mock private EntityDuplicator entityDuplicator;
 
-  @Mock
-  private FulfillmentGroupOfferProcessor fulfillmentGroupOfferProcessor;
+  @Mock private OfferAuditService offerAuditService;
 
-  @Mock
-  private ItemOfferProcessor itemOfferProcessor;
+  @Mock private OfferCodeDao offerCodeDao;
 
-  @Mock
-  private OfferAuditService offerAuditService;
+  @Mock private OfferDao offerDao;
 
-  @Mock
-  private OfferCodeDao offerCodeDao;
+  @Mock private OfferServiceExtensionManager offerServiceExtensionManager;
 
-  @Mock
-  private OfferDao offerDao;
+  @InjectMocks private OfferServiceImpl offerServiceImpl;
 
-  @Mock
-  private OfferServiceExtensionManager offerServiceExtensionManager;
-
-  @InjectMocks
-  private OfferServiceImpl offerServiceImpl;
-
-  @Mock
-  private OrderOfferProcessor orderOfferProcessor;
-
-  @Mock
-  private OrderService orderService;
-
-  @Mock
-  private PromotableItemFactory promotableItemFactory;
-
-  @Mock
-  private SandBoxHelper sandBoxHelper;
-
-  @Mock
-  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
+  @Mock private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
   /**
    * Test {@link OfferServiceImpl#findAllOffers()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDao} {@link OfferDao#readAllOffers()} return {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#readAllOffers()} return {@link
+   *       ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findAllOffers()}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findAllOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findAllOffers()"})
   public void testFindAllOffers_givenOfferDaoReadAllOffersReturnArrayList_thenReturnEmpty() {
     // Arrange
@@ -182,18 +162,20 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findAllOffers()}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findAllOffers()}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findAllOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findAllOffers()"})
   public void testFindAllOffers_thenThrowRuntimeException() {
     // Arrange
-    when(offerDao.readAllOffers()).thenThrow(new RuntimeException("foo"));
+    when(offerDao.readAllOffers()).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.findAllOffers());
@@ -202,15 +184,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#save(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} return {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} return {@link OfferImpl} (default
+   *       constructor).
+   *   <li>Then return {@link OfferImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#save(Offer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#save(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.save(Offer)"})
   public void testSave_givenOfferDaoSaveReturnOfferImpl_thenReturnOfferImpl() {
     // Arrange
@@ -227,19 +212,22 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#save(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} throw {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} throw {@link
+   *       RuntimeException#RuntimeException()}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#save(Offer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#save(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.save(Offer)"})
-  public void testSave_givenOfferDaoSaveThrowRuntimeExceptionWithFoo_thenThrowRuntimeException() {
+  public void testSave_givenOfferDaoSaveThrowRuntimeException_thenThrowRuntimeException() {
     // Arrange
-    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException("foo"));
+    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.save(new OfferImpl()));
@@ -248,20 +236,46 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeDao}.</li>
-   *   <li>When {@link OfferCodeImpl} (default constructor).</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#save(OfferCode)} throw {@link
+   *       RuntimeException#RuntimeException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.saveOfferCode(OfferCode)"})
-  public void testSaveOfferCode_givenOfferCodeDao_whenOfferCodeImpl_thenThrowRuntimeException() {
+  public void testSaveOfferCode_givenOfferCodeDaoSaveThrowRuntimeException() {
     // Arrange
-    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.save(Mockito.<OfferCode>any())).thenThrow(new RuntimeException());
+    when(offerDao.save(Mockito.<Offer>any())).thenReturn(new OfferImpl());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.saveOfferCode(new OfferCodeImpl()));
+    verify(offerCodeDao).save(isA(OfferCode.class));
+    verify(offerDao).save((Offer) isNull());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferDao} {@link OfferDao#save(Offer)} throw {@link
+   *       RuntimeException#RuntimeException()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OfferCode OfferServiceImpl.saveOfferCode(OfferCode)"})
+  public void testSaveOfferCode_givenOfferDaoSaveThrowRuntimeException() {
+    // Arrange
+    when(offerDao.save(Mockito.<Offer>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.saveOfferCode(new OfferCodeImpl()));
@@ -270,14 +284,16 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
+   *
    * <ul>
-   *   <li>Then {@link OfferCodeImpl} (default constructor) Offer {@link OfferImpl}.</li>
+   *   <li>Then {@link OfferCodeImpl} (default constructor) Offer {@link OfferImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.saveOfferCode(OfferCode)"})
   public void testSaveOfferCode_thenOfferCodeImplOfferOfferImpl() {
     // Arrange
@@ -301,14 +317,17 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@code null}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@code
+   *       null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
   public void testLookupOfferByCode_givenOfferCodeDaoReadOfferCodeByCodeReturnNull() {
     // Arrange
@@ -318,20 +337,23 @@ public class OfferServiceImplDiffblueTest {
     Offer actualLookupOfferByCodeResult = offerServiceImpl.lookupOfferByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
     assertNull(actualLookupOfferByCodeResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} return {@link
+   *       OfferCodeImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
   public void testLookupOfferByCode_givenOfferCodeDaoReadOfferCodeByCodeReturnOfferCodeImpl() {
     // Arrange
@@ -341,43 +363,70 @@ public class OfferServiceImplDiffblueTest {
     Offer actualLookupOfferByCodeResult = offerServiceImpl.lookupOfferByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
     assertNull(actualLookupOfferByCodeResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#readOfferCodeByCode(String)} throw {@link
+   *       RuntimeException#RuntimeException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
-  public void testLookupOfferByCode_thenThrowRuntimeException() {
+  public void testLookupOfferByCode_givenOfferCodeDaoReadOfferCodeByCodeThrowRuntimeException() {
+    // Arrange
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenThrow(new RuntimeException());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferByCode("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OfferCode#getOffer()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Offer OfferServiceImpl.lookupOfferByCode(String)"})
+  public void testLookupOfferByCode_thenCallsGetOffer() {
     // Arrange
     OfferCode offerCode = mock(OfferCode.class);
-    when(offerCode.getOffer()).thenThrow(new RuntimeException("foo"));
+    when(offerCode.getOffer()).thenThrow(new RuntimeException());
     when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenReturn(offerCode);
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferByCode("Code"));
-    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
     verify(offerCode).getOffer();
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
+   *
    * <ul>
-   *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then return {@link OfferCodeImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.lookupOfferCodeByCode(String)"})
   public void testLookupOfferCodeByCode_thenReturnOfferCodeImpl() {
     // Arrange
@@ -388,58 +437,64 @@ public class OfferServiceImplDiffblueTest {
     OfferCode actualLookupOfferCodeByCodeResult = offerServiceImpl.lookupOfferCodeByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
     assertSame(offerCodeImpl, actualLookupOfferCodeByCodeResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.lookupOfferCodeByCode(String)"})
   public void testLookupOfferCodeByCode_thenThrowRuntimeException() {
     // Arrange
-    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readOfferCodeByCode(Mockito.<String>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferCodeByCode("Code"));
-    verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
+    verify(offerCodeDao).readOfferCodeByCode("Code");
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode() {
     // Arrange
-    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOffersByCode("Code"));
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_givenArrayListAddNull_thenReturnEmpty() {
     // Arrange
@@ -451,21 +506,23 @@ public class OfferServiceImplDiffblueTest {
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
     assertTrue(actualLookupAllOffersByCodeResult.isEmpty());
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferCodeImpl} (default constructor).
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_givenArrayListAddOfferCodeImpl_thenReturnSizeIsOne() {
     // Arrange
@@ -477,26 +534,28 @@ public class OfferServiceImplDiffblueTest {
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
     assertEquals(1, actualLookupAllOffersByCodeResult.size());
     assertNull(actualLookupAllOffersByCodeResult.get(0));
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   *
    * <ul>
-   *   <li>Then calls {@link OfferCodeImpl#getOffer()}.</li>
+   *   <li>Then calls {@link OfferCodeImpl#getOffer()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_thenCallsGetOffer() {
     // Arrange
     OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
-    when(offerCodeImpl.getOffer()).thenThrow(new RuntimeException("foo"));
+    when(offerCodeImpl.getOffer()).thenThrow(new RuntimeException());
 
     ArrayList<OfferCode> offerCodeList = new ArrayList<>();
     offerCodeList.add(offerCodeImpl);
@@ -504,20 +563,22 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOffersByCode("Code"));
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
     verify(offerCodeImpl).getOffer();
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOffersByCode(String)"})
   public void testLookupAllOffersByCode_thenReturnEmpty() {
     // Arrange
@@ -527,96 +588,134 @@ public class OfferServiceImplDiffblueTest {
     List<Offer> actualLookupAllOffersByCodeResult = offerServiceImpl.lookupAllOffersByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
     assertTrue(actualLookupAllOffersByCodeResult.isEmpty());
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOfferCodesByCode(String)"})
   public void testLookupAllOfferCodesByCode_thenReturnEmpty() {
     // Arrange
     when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenReturn(new ArrayList<>());
 
     // Act
-    List<OfferCode> actualLookupAllOfferCodesByCodeResult = offerServiceImpl.lookupAllOfferCodesByCode("Code");
+    List<OfferCode> actualLookupAllOfferCodesByCodeResult =
+        offerServiceImpl.lookupAllOfferCodesByCode("Code");
 
     // Assert
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
     assertTrue(actualLookupAllOfferCodesByCodeResult.isEmpty());
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAllOfferCodesByCode(String)"})
   public void testLookupAllOfferCodesByCode_thenThrowRuntimeException() {
     // Arrange
-    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readAllOfferCodesByCode(Mockito.<String>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAllOfferCodesByCode("Code"));
-    verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
+    verify(offerCodeDao).readAllOfferCodesByCode("Code");
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
-  public void testBuildOfferListForOrder() throws Throwable {
+  public void testBuildOfferListForOrder() {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-    doThrow(new RuntimeException("foo")).when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
-            Mockito.<Class<RuntimeException>>any());
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(new NullOrderImpl()));
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    assertThrows(
+        RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(new NullOrderImpl()));
     verify(customerOfferDao).readCustomerOffersByCustomer(isNull());
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
   public void testBuildOfferListForOrder2() throws Throwable {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException("foo"));
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    doThrow(new RuntimeException())
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(new NullOrderImpl()));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isNull());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder3() throws Throwable {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException());
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     Auditable auditable = new Auditable();
-    auditable.setCreatedBy(2L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(2L);
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -636,7 +735,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -644,42 +744,43 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(order));
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
     verify(offerDao).readOffersByAutomaticDeliveryType();
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
-  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenReturnArrayList() throws Throwable {
+  public void testBuildOfferListForOrder4() throws Throwable {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-
-    ArrayList<Offer> offerList = new ArrayList<>();
-    offerList.add(new OfferImpl());
-    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(offerList);
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(
+            Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenThrow(new RuntimeException());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     Auditable auditable = new Auditable();
-    auditable.setCreatedBy(2L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(2L);
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -699,40 +800,44 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
-    // Act
-    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
-
-    // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferListForOrder(order));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
     verify(offerDao).readOffersByAutomaticDeliveryType();
     verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
-    assertEquals(offerList, actualBuildOfferListForOrderResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).
+   *   <li>Then first return {@link OfferImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
-  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenReturnSizeIsOne() throws Throwable {
+  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenFirstReturnOfferImpl()
+      throws Throwable {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(
+            Mockito.<List<Offer>>any(), Mockito.<Order>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
     ArrayList<Offer> offerList = new ArrayList<>();
@@ -740,15 +845,19 @@ public class OfferServiceImplDiffblueTest {
     offerList.add(offerImpl);
     offerList.add(new OfferImpl());
     when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(offerList);
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     Auditable auditable = new Auditable();
-    auditable.setCreatedBy(2L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(2L);
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -768,7 +877,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -778,8 +888,9 @@ public class OfferServiceImplDiffblueTest {
     List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
 
     // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
     verify(offerDao).readOffersByAutomaticDeliveryType();
     verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
@@ -791,30 +902,43 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OfferImpl} (default constructor).
+   *   <li>Then return {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
-  public void testBuildOfferListForOrder_thenReturnEmpty() throws Throwable {
+  public void testBuildOfferListForOrder_givenArrayListAddOfferImpl_thenReturnArrayList()
+      throws Throwable {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
-    when(offerServiceExtensionManager.applyAdditionalFilters(Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(
+            Mockito.<List<Offer>>any(), Mockito.<Order>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+
+    ArrayList<Offer> offerList = new ArrayList<>();
+    offerList.add(new OfferImpl());
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(offerList);
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     Auditable auditable = new Auditable();
-    auditable.setCreatedBy(2L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(2L);
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
     order.setAdditionalOfferInformation(new HashMap<>());
@@ -834,7 +958,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -844,8 +969,82 @@ public class OfferServiceImplDiffblueTest {
     List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
 
     // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(offerDao).readOffersByAutomaticDeliveryType();
+    verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
+    assertEquals(offerList, actualBuildOfferListForOrderResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   *
+   * <ul>
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder_thenReturnEmpty() throws Throwable {
+    // Arrange
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
+    when(offerServiceExtensionManager.applyAdditionalFilters(
+            Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act
+    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
+
+    // Assert
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
     verify(offerDao).readOffersByAutomaticDeliveryType();
     verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
@@ -853,37 +1052,118 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   *
+   * <ul>
+   *   <li>Then return first is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List OfferServiceImpl.buildOfferListForOrder(Order)"})
+  public void testBuildOfferListForOrder_thenReturnFirstIsNull() throws Throwable {
+    // Arrange
+    ArrayList<CustomerOffer> customerOfferList = new ArrayList<>();
+    customerOfferList.add(new CustomerOfferImpl());
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(customerOfferList);
+    when(offerServiceExtensionManager.applyAdditionalFilters(
+            Mockito.<List<Offer>>any(), Mockito.<Order>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act
+    List<Offer> actualBuildOfferListForOrderResult = offerServiceImpl.buildOfferListForOrder(order);
+
+    // Assert
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(offerDao).readOffersByAutomaticDeliveryType();
+    verify(offerServiceExtensionManager).applyAdditionalFilters(isA(List.class), isA(Order.class));
+    assertEquals(1, actualBuildOfferListForOrderResult.size());
+    assertNull(actualBuildOfferListForOrderResult.get(0));
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
   public void testBuildOfferCodeListForCustomerWithCustomer() {
     // Arrange
-    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
-        Mockito.<List<OfferCode>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(
+            Mockito.<Customer>any(), Mockito.<List<OfferCode>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    List<OfferCode> actualBuildOfferCodeListForCustomerResult = offerServiceImpl
-        .buildOfferCodeListForCustomer(new CustomerImpl());
+    List<OfferCode> actualBuildOfferCodeListForCustomerResult =
+        offerServiceImpl.buildOfferCodeListForCustomer(new CustomerImpl());
 
     // Assert
-    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
+    verify(offerServiceExtensionManager)
+        .buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
     assertTrue(actualBuildOfferCodeListForCustomerResult.isEmpty());
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
+   *
    * <ul>
-   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
   public void testBuildOfferCodeListForCustomerWithCustomer_givenOfferServiceImpl() {
     // Arrange
@@ -895,36 +1175,44 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with {@code customer}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Customer)"})
   public void testBuildOfferCodeListForCustomerWithCustomer_thenThrowRuntimeException() {
     // Arrange
-    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
-        Mockito.<List<OfferCode>>any())).thenThrow(new RuntimeException("foo"));
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(
+            Mockito.<Customer>any(), Mockito.<List<OfferCode>>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferCodeListForCustomer(new CustomerImpl()));
-    verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.buildOfferCodeListForCustomer(new CustomerImpl()));
+    verify(offerServiceExtensionManager)
+        .buildOfferCodeListForCustomer(isA(Customer.class), isA(List.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
   public void testBuildOfferCodeListForCustomerWithOrder_givenOfferServiceImpl_thenReturnEmpty() {
     // Arrange
@@ -936,23 +1224,26 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
   public void testBuildOfferCodeListForCustomerWithOrder_thenReturnEmpty() {
     // Arrange
-    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
-        Mockito.<List<OfferCode>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(
+            Mockito.<Customer>any(), Mockito.<List<OfferCode>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    List<OfferCode> actualBuildOfferCodeListForCustomerResult = offerServiceImpl
-        .buildOfferCodeListForCustomer(new NullOrderImpl());
+    List<OfferCode> actualBuildOfferCodeListForCustomerResult =
+        offerServiceImpl.buildOfferCodeListForCustomer(new NullOrderImpl());
 
     // Assert
     verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isNull(), isA(List.class));
@@ -961,43 +1252,51 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.buildOfferCodeListForCustomer(Order)"})
   public void testBuildOfferCodeListForCustomerWithOrder_thenThrowRuntimeException() {
     // Arrange
-    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(Mockito.<Customer>any(),
-        Mockito.<List<OfferCode>>any())).thenThrow(new RuntimeException("foo"));
+    when(offerServiceExtensionManager.buildOfferCodeListForCustomer(
+            Mockito.<Customer>any(), Mockito.<List<OfferCode>>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.buildOfferCodeListForCustomer(new NullOrderImpl()));
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.buildOfferCodeListForCustomer(new NullOrderImpl()));
     verify(offerServiceExtensionManager).buildOfferCodeListForCustomer(isNull(), isA(List.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupOfferCustomerByCustomer(Customer)"})
   public void testLookupOfferCustomerByCustomer_thenReturnEmpty() {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
-    List<CustomerOffer> actualLookupOfferCustomerByCustomerResult = offerServiceImpl
-        .lookupOfferCustomerByCustomer(new CustomerImpl());
+    List<CustomerOffer> actualLookupOfferCustomerByCustomerResult =
+        offerServiceImpl.lookupOfferCustomerByCustomer(new CustomerImpl());
 
     // Assert
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
@@ -1006,41 +1305,49 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupOfferCustomerByCustomer(Customer)"})
   public void testLookupOfferCustomerByCustomer_thenThrowRuntimeException() {
     // Arrange
-    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenThrow(new RuntimeException("foo"));
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupOfferCustomerByCustomer(new CustomerImpl()));
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.lookupOfferCustomerByCustomer(new CustomerImpl()));
     verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAutomaticDeliveryOffers()"})
   public void testLookupAutomaticDeliveryOffers_thenReturnEmpty() {
     // Arrange
     when(offerDao.readOffersByAutomaticDeliveryType()).thenReturn(new ArrayList<>());
 
     // Act
-    List<Offer> actualLookupAutomaticDeliveryOffersResult = offerServiceImpl.lookupAutomaticDeliveryOffers();
+    List<Offer> actualLookupAutomaticDeliveryOffersResult =
+        offerServiceImpl.lookupAutomaticDeliveryOffers();
 
     // Assert
     verify(offerDao).readOffersByAutomaticDeliveryType();
@@ -1049,18 +1356,20 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.lookupAutomaticDeliveryOffers()"})
   public void testLookupAutomaticDeliveryOffers_thenThrowRuntimeException() {
     // Arrange
-    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException("foo"));
+    when(offerDao.readOffersByAutomaticDeliveryType()).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.lookupAutomaticDeliveryOffers());
@@ -1069,14 +1378,16 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeImpl} {@link OfferCodeImpl#isActive()} return {@code false}.</li>
+   *   <li>Given {@link OfferCodeImpl} {@link OfferCodeImpl#isActive()} return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
   public void testRemoveOutOfDateOfferCodes_givenOfferCodeImplIsActiveReturnFalse() {
     // Arrange
@@ -1087,7 +1398,8 @@ public class OfferServiceImplDiffblueTest {
     offerCodes.add(offerCodeImpl);
 
     // Act
-    List<OfferCode> actualRemoveOutOfDateOfferCodesResult = offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
+    List<OfferCode> actualRemoveOutOfDateOfferCodesResult =
+        offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
 
     // Assert
     verify(offerCodeImpl).isActive();
@@ -1097,16 +1409,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
+   *
    * <ul>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
-  public void testRemoveOutOfDateOfferCodes_thenReturnArrayList() {
+  public void testRemoveOutOfDateOfferCodes_thenArrayListSizeIsOne() {
     // Arrange
     OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
     when(offerCodeImpl.isActive()).thenReturn(true);
@@ -1115,7 +1429,8 @@ public class OfferServiceImplDiffblueTest {
     offerCodes.add(offerCodeImpl);
 
     // Act
-    List<OfferCode> actualRemoveOutOfDateOfferCodesResult = offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
+    List<OfferCode> actualRemoveOutOfDateOfferCodesResult =
+        offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
 
     // Assert
     verify(offerCodeImpl).isActive();
@@ -1125,22 +1440,25 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.removeOutOfDateOfferCodes(List)"})
   public void testRemoveOutOfDateOfferCodes_whenArrayList_thenArrayListEmpty() {
     // Arrange
     ArrayList<OfferCode> offerCodes = new ArrayList<>();
 
     // Act
-    List<OfferCode> actualRemoveOutOfDateOfferCodesResult = offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
+    List<OfferCode> actualRemoveOutOfDateOfferCodesResult =
+        offerServiceImpl.removeOutOfDateOfferCodes(offerCodes);
 
     // Assert
     assertTrue(offerCodes.isEmpty());
@@ -1149,104 +1467,91 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.refreshOfferCodesIfApplicable(Order)"})
-  public void testRefreshOfferCodesIfApplicable_whenNullOrderImpl_thenReturnNull() throws Throwable {
+  public void testRefreshOfferCodesIfApplicable_thenReturnNull() throws Throwable {
     // Arrange
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
-    List<OfferCode> actualRefreshOfferCodesIfApplicableResult = offerServiceImpl
-        .refreshOfferCodesIfApplicable(new NullOrderImpl());
+    List<OfferCode> actualRefreshOfferCodesIfApplicableResult =
+        offerServiceImpl.refreshOfferCodesIfApplicable(new NullOrderImpl());
 
     // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     assertNull(actualRefreshOfferCodesIfApplicableResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}.
+   * Test {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}.
+   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Order OfferServiceImpl.applyAndSaveOffersToOrder(List, Order)"})
-  public void testApplyAndSaveOffersToOrder_thenReturnNullOrderImpl() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List OfferServiceImpl.refreshOfferCodesIfApplicable(Order)"})
+  public void testRefreshOfferCodesIfApplicable_thenThrowRuntimeException() throws Throwable {
     // Arrange
-    OrderOfferProcessor orderOfferProcessor = mock(OrderOfferProcessor.class);
-    when(orderOfferProcessor.filterOffers(Mockito.<List<Offer>>any(), Mockito.<Customer>any()))
-        .thenReturn(new ArrayList<>());
-    doNothing().when(orderOfferProcessor).synchronizeAdjustmentsAndPrices(Mockito.<PromotableOrder>any());
-    OrderService orderService = mock(OrderService.class);
-    NullOrderImpl nullOrderImpl = new NullOrderImpl();
-    when(orderService.save(Mockito.<Order>any(), Mockito.<Boolean>any())).thenReturn(nullOrderImpl);
+    doThrow(new RuntimeException())
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
+            Mockito.<Class<RuntimeException>>any());
 
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOrderService(orderService);
-    offerServiceImpl.setOrderOfferProcessor(orderOfferProcessor);
-    offerServiceImpl.setPromotableItemFactory(new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-    ArrayList<Offer> offers = new ArrayList<>();
-    Order order = mock(Order.class);
-    when(order.finalizeItemPrices()).thenReturn(true);
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.calculateSubTotal()).thenReturn(new Money());
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-    doNothing().when(order).setSubTotal(Mockito.<Money>any());
-
-    // Act
-    Order actualApplyAndSaveOffersToOrderResult = offerServiceImpl.applyAndSaveOffersToOrder(offers, order);
-
-    // Assert
-    verify(orderOfferProcessor).filterOffers(isA(List.class), isA(Customer.class));
-    verify(orderOfferProcessor).synchronizeAdjustmentsAndPrices(isA(PromotableOrder.class));
-    verify(order).calculateSubTotal();
-    verify(order).finalizeItemPrices();
-    verify(order).getCustomer();
-    verify(order, atLeast(1)).getOrderItems();
-    verify(order).setSubTotal(isA(Money.class));
-    verify(orderService).save(isA(Order.class), eq(false));
-    assertSame(nullOrderImpl, actualApplyAndSaveOffersToOrderResult);
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.refreshOfferCodesIfApplicable(new NullOrderImpl()));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
@@ -1311,7 +1616,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1324,22 +1630,26 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenAuditableCreatedByIsOne_thenReturnFalse() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -1359,7 +1669,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1372,27 +1683,34 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@link
+   *       ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenBundleOrderItemImplOrderItemPriceDetailsIsArrayList() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -1447,7 +1765,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1460,27 +1779,34 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code null}.</li>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code
+   *       null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenBundleOrderItemImplOrderItemPriceDetailsIsNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -1535,7 +1861,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1548,27 +1875,34 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor) OrderItemAdjustments is {@code null}.</li>
+   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor) OrderItemAdjustments is
+   *       {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_givenOrderItemPriceDetailImplOrderItemAdjustmentsIsNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
@@ -1633,7 +1967,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -1646,15 +1981,133 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then calls {@link OrderItemPriceDetailAdjustmentImpl#getOffer()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
+  public void testVerifyAdjustments_thenCallsGetOffer() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        mock(OrderItemPriceDetailAdjustmentImpl.class);
+    when(orderItemPriceDetailAdjustmentImpl.getOffer()).thenReturn(new OfferImpl());
+
+    ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
+    orderItemPriceDetailAdjustments.add(orderItemPriceDetailAdjustmentImpl);
+
+    OrderItemPriceDetailImpl orderItemPriceDetailImpl = new OrderItemPriceDetailImpl();
+    orderItemPriceDetailImpl.setId(1L);
+    orderItemPriceDetailImpl.setOrderItem(new BundleOrderItemImpl());
+    orderItemPriceDetailImpl.setQuantity(1);
+    orderItemPriceDetailImpl.setUseSalePrice(true);
+    orderItemPriceDetailImpl.setOrderItemAdjustments(orderItemPriceDetailAdjustments);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(orderItemPriceDetailImpl);
+
+    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
+    bundleOrderItemImpl.setAuditable(auditable2);
+    bundleOrderItemImpl.setBaseRetailPrice(new Money());
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(1);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+
+    // Act
+    boolean actualVerifyAdjustmentsResult = offerServiceImpl.verifyAdjustments(order, false);
+
+    // Assert
+    verify(orderItemPriceDetailAdjustmentImpl, atLeast(1)).getOffer();
+    assertFalse(actualVerifyAdjustmentsResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   *
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyAdjustments(Order, boolean)"})
   public void testVerifyAdjustments_whenNullOrderImpl_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -1662,79 +2115,31 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#applyOffersToOrder(List, Order)}.
-   * <ul>
-   *   <li>Then calls {@link BaseProcessor#filterOffers(List, Customer)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#applyOffersToOrder(List, Order)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferServiceImpl.applyOffersToOrder(List, Order)"})
-  public void testApplyOffersToOrder_thenCallsFilterOffers() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    OrderOfferProcessor orderOfferProcessor = mock(OrderOfferProcessor.class);
-    when(orderOfferProcessor.filterOffers(Mockito.<List<Offer>>any(), Mockito.<Customer>any()))
-        .thenReturn(new ArrayList<>());
-    doNothing().when(orderOfferProcessor).synchronizeAdjustmentsAndPrices(Mockito.<PromotableOrder>any());
-    OrderService orderService = mock(OrderService.class);
-    when(orderService.save(Mockito.<Order>any(), Mockito.<Boolean>any())).thenReturn(new NullOrderImpl());
-
-    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
-    offerServiceImpl.setOrderService(orderService);
-    offerServiceImpl.setOrderOfferProcessor(orderOfferProcessor);
-    offerServiceImpl.setPromotableItemFactory(new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
-    ArrayList<Offer> offers = new ArrayList<>();
-    Order order = mock(Order.class);
-    when(order.finalizeItemPrices()).thenReturn(true);
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.calculateSubTotal()).thenReturn(new Money());
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-    doNothing().when(order).setSubTotal(Mockito.<Money>any());
-
-    // Act
-    offerServiceImpl.applyOffersToOrder(offers, order);
-
-    // Assert
-    verify(orderOfferProcessor).filterOffers(isA(List.class), isA(Customer.class));
-    verify(orderOfferProcessor).synchronizeAdjustmentsAndPrices(isA(PromotableOrder.class));
-    verify(order).calculateSubTotal();
-    verify(order).finalizeItemPrices();
-    verify(order).getCustomer();
-    verify(order, atLeast(1)).getOrderItems();
-    verify(order).setSubTotal(isA(Money.class));
-    verify(orderService).save(isA(Order.class), eq(false));
-  }
-
-  /**
    * Test {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
+   *
    * <ul>
-   *   <li>Then calls {@link OfferImpl#getType()}.</li>
+   *   <li>Then calls {@link OfferImpl#getType()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferServiceImpl.applyFulfillmentGroupOffersToOrder(List, Order)"})
   public void testApplyFulfillmentGroupOffersToOrder_thenCallsGetType() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
     // Arrange
     OrderService orderService = mock(OrderService.class);
-    when(orderService.save(Mockito.<Order>any(), Mockito.<Boolean>any())).thenReturn(new NullOrderImpl());
+    when(orderService.save(Mockito.<Order>any(), Mockito.<Boolean>any()))
+        .thenReturn(new NullOrderImpl());
 
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     offerServiceImpl.setOrderService(orderService);
-    offerServiceImpl.setOrderOfferProcessor(new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl()));
-    offerServiceImpl.setPromotableItemFactory(new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+    offerServiceImpl.setOrderOfferProcessor(
+        new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl()));
+    offerServiceImpl.setPromotableItemFactory(
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+
     OfferImpl offerImpl = mock(OfferImpl.class);
     when(offerImpl.getType()).thenReturn(OfferType.ORDER);
 
@@ -1751,20 +2156,22 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}.
+   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List,
+   * Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Order OfferServiceImpl.applyAndSaveFulfillmentGroupOffersToOrder(List, Order)"})
-  public void testApplyAndSaveFulfillmentGroupOffersToOrder_thenReturnNullOrderImpl() throws PricingException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Order OfferServiceImpl.applyAndSaveFulfillmentGroupOffersToOrder(List, Order)"
+  })
+  public void testApplyAndSaveFulfillmentGroupOffersToOrder_thenReturnNullOrderImpl()
+      throws PricingException {
     // Arrange
     OrderService orderService = mock(OrderService.class);
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
@@ -1772,8 +2179,11 @@ public class OfferServiceImplDiffblueTest {
 
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     offerServiceImpl.setOrderService(orderService);
-    offerServiceImpl.setOrderOfferProcessor(new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl()));
-    offerServiceImpl.setPromotableItemFactory(new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+    offerServiceImpl.setOrderOfferProcessor(
+        new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl()));
+    offerServiceImpl.setPromotableItemFactory(
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+
     OfferImpl offerImpl = mock(OfferImpl.class);
     when(offerImpl.getType()).thenReturn(OfferType.ORDER);
 
@@ -1781,8 +2191,8 @@ public class OfferServiceImplDiffblueTest {
     offers.add(offerImpl);
 
     // Act
-    Order actualApplyAndSaveFulfillmentGroupOffersToOrderResult = offerServiceImpl
-        .applyAndSaveFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
+    Order actualApplyAndSaveFulfillmentGroupOffersToOrderResult =
+        offerServiceImpl.applyAndSaveFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
 
     // Assert
     verify(offerImpl).getType();
@@ -1791,195 +2201,168 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code
+   * customer}, {@code code}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"
+  })
   public void testVerifyMaxCustomerUsageThresholdWithCustomerCode() {
+    // Arrange
+    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any()))
+        .thenThrow(new RuntimeException());
+    CustomerImpl customer = new CustomerImpl();
+
+    OfferCodeImpl code = new OfferCodeImpl();
+    code.setMaxUses(3);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, code));
+    verify(offerAuditService).countOfferCodeUses(isNull());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code
+   * customer}, {@code code}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OfferImpl#getId()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer,
+   * OfferCode)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"
+  })
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenCallsGetId() {
+    // Arrange
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenThrow(new RuntimeException());
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+
+    OfferCode code = mock(OfferCode.class);
+    when(code.isLimitedUse()).thenReturn(false);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, code));
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).isLimitedUsePerCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code
+   * customer}, {@code code}.
+   *
+   * <ul>
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer,
+   * OfferCode)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"
+  })
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenReturnFalse() {
     // Arrange
     when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(3L);
     CustomerImpl customer = new CustomerImpl();
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
+
+    OfferCodeImpl code = new OfferCodeImpl();
+    code.setMaxUses(3);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        code);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, code);
 
     // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).isLimitedUse();
-    verify(offerAuditService).countOfferCodeUses(eq(1L));
+    verify(offerAuditService).countOfferCodeUses(isNull());
     assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode2() {
-    // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(-1L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
-    CustomerImpl customer = new CustomerImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        code);
-
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(eq(1L));
-    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
-    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code
+   * customer}, {@code code}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_givenOfferImpl() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"
+  })
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenReturnTrue() {
     // Arrange
-    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     CustomerImpl customer = new CustomerImpl();
+
     OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
+    when(code.isLimitedUse()).thenReturn(false);
     when(code.getOffer()).thenReturn(new OfferImpl());
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        code);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, code);
 
     // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
     verify(code).getOffer();
     verify(code).isLimitedUse();
-    verify(offerAuditService).countOfferCodeUses(eq(1L));
     assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
-   * <ul>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code
+   * customer}, {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenReturnFalse() {
-    // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Long>any())).thenReturn(1L);
-    CustomerImpl customer = new CustomerImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        code);
-
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(eq(1L));
-    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
-    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)} with {@code customer}, {@code code}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode_thenThrowRuntimeException() {
-    // Arrange
-    CustomerImpl customer = new CustomerImpl();
-    OfferCode code = mock(OfferCode.class);
-    when(code.getId()).thenThrow(new RuntimeException("foo"));
-    when(code.isLimitedUse()).thenReturn(true);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, code));
-    verify(code).getId();
-    verify(code).isLimitedUse();
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer() {
     // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(0L);
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(0L);
     CustomerImpl customer = new CustomerImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
     when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, offer);
 
     // Assert
     verify(offer).getId();
@@ -1990,28 +2373,33 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code
+   * customer}, {@code offer}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenReturnFalse() {
     // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
     CustomerImpl customer = new CustomerImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
     when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(customer,
-        offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, offer);
 
     // Assert
     verify(offer).getId();
@@ -2022,15 +2410,51 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code customer}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code
+   * customer}, {@code offer}.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenThrowRuntimeException() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenThrow(new RuntimeException());
+    CustomerImpl customer = new CustomerImpl();
+
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, offer));
+    verify(offer).getId();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isNull(), eq(1L));
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)} with {@code
+   * customer}, {@code offer}.
+   *
+   * <ul>
+   *   <li>When {@link OfferImpl} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Customer, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_whenOfferImpl() {
     // Arrange
@@ -2041,350 +2465,257 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderCode() {
     // Arrange
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any()))
+        .thenThrow(new RuntimeException());
     NullOrderImpl order = new NullOrderImpl();
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
 
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+    OfferCodeImpl code = new OfferCodeImpl();
+    code.setMaxUses(3);
 
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).isLimitedUse();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
-    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), isNull());
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderCode2() {
     // Arrange
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
+
     OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenThrow(new RuntimeException("ACCOUNT"));
-    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offerImpl.getMaxUsesStrategyType()).thenThrow(new RuntimeException());
     when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+
     OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
+    when(code.isLimitedUse()).thenReturn(false);
     when(code.getOffer()).thenReturn(offerImpl);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
-    verify(code).getId();
-    verify(code).getMaxUses();
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
     verify(code).getOffer();
     verify(code).isLimitedUse();
-    verify(offerImpl).getId();
     verify(offerImpl).getMaxUsesStrategyType();
     verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode3() {
-    // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(-1L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
-    NullOrderImpl order = new NullOrderImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
-
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).getMaxUsesStrategyType();
-    verify(offerImpl).getMinimumDaysPerUsage();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
-    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
-    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode4() {
-    // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
-    NullOrderImpl order = new NullOrderImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offerImpl.getMaxUsesStrategyType()).thenReturn(new CustomerMaxUsesStrategyType());
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
-
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).getMaxUsesStrategyType();
-    verify(offerImpl).getMinimumDaysPerUsage();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
-    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
-    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode5() {
-    // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
-    NullOrderImpl order = new NullOrderImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offerImpl.getMaxUsesStrategyType()).thenReturn(mock(CustomerMaxUsesStrategyType.class));
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
-
-    // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).getMaxUsesStrategyType();
-    verify(offerImpl).getMinimumDaysPerUsage();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
-    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
-    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenOfferImpl() {
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenOfferImpl_thenReturnTrue() {
     // Arrange
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
+
     OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
+    when(code.isLimitedUse()).thenReturn(false);
     when(code.getOffer()).thenReturn(new OfferImpl());
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
 
     // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
     verify(code).getOffer();
     verify(code).isLimitedUse();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
     assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
    * <ul>
-   *   <li>Given {@link RuntimeException#RuntimeException(String)} with {@code foo}.</li>
+   *   <li>Then calls {@link OfferImpl#getId()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_givenRuntimeExceptionWithFoo() {
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_thenCallsGetId() {
     // Arrange
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
     NullOrderImpl order = new NullOrderImpl();
+
+    OfferImpl offerImpl = mock(OfferImpl.class);
+    when(offerImpl.getId()).thenThrow(new RuntimeException());
+    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
+
     OfferCode code = mock(OfferCode.class);
-    when(code.getId()).thenThrow(new RuntimeException("foo"));
+    when(code.isLimitedUse()).thenReturn(false);
+    when(code.getOffer()).thenReturn(offerImpl);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
+    verify(code).getOffer();
+    verify(code).isLimitedUse();
+    verify(offerImpl).getId();
+    verify(offerImpl).getMaxUsesStrategyType();
+    verify(offerImpl).isLimitedUsePerCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OfferCode#getId()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode_thenCallsGetId2() {
+    // Arrange
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    OfferCode code = mock(OfferCode.class);
+    when(code.getId()).thenThrow(new RuntimeException());
     when(code.isLimitedUse()).thenReturn(true);
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code));
     verify(code).getId();
     verify(code).isLimitedUse();
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code order}, {@code code}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)} with {@code
+   * order}, {@code code}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order,
+   * OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, OfferCode)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderCode_thenReturnFalse() {
     // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
-    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any())).thenReturn(1L);
+    when(offerAuditService.countOfferCodeUses(Mockito.<Order>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
     NullOrderImpl order = new NullOrderImpl();
-    OfferImpl offerImpl = mock(OfferImpl.class);
-    when(offerImpl.getId()).thenReturn(1L);
-    when(offerImpl.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offerImpl.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offerImpl.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
-    when(offerImpl.isLimitedUsePerCustomer()).thenReturn(true);
-    OfferCode code = mock(OfferCode.class);
-    when(code.getMaxUses()).thenReturn(3);
-    when(code.getId()).thenReturn(1L);
-    when(code.isLimitedUse()).thenReturn(true);
-    when(code.getOffer()).thenReturn(offerImpl);
+
+    OfferCodeImpl code = new OfferCodeImpl();
+    code.setMaxUses(3);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, code);
 
     // Assert
-    verify(code).getId();
-    verify(code).getMaxUses();
-    verify(code).getOffer();
-    verify(code).isLimitedUse();
-    verify(offerImpl).getId();
-    verify(offerImpl).getMaxUsesPerCustomer();
-    verify(offerImpl).getMaxUsesStrategyType();
-    verify(offerImpl).getMinimumDaysPerUsage();
-    verify(offerImpl).isLimitedUsePerCustomer();
-    verify(offerAuditService).countOfferCodeUses(isA(Order.class), eq(1L));
-    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(offerAuditService).countOfferCodeUses(isA(Order.class), isNull());
     assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer() {
     // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(0L);
+    when(offerAuditService.countUsesByAccount(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenThrow(new RuntimeException());
     NullOrderImpl order = new NullOrderImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
-    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
     when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
     when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
-        offer);
-
-    // Assert
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer));
     verify(offer).getId();
-    verify(offer).getMaxUsesPerCustomer();
     verify(offer).getMaxUsesStrategyType();
     verify(offer).getMinimumDaysPerUsage();
     verify(offer).isLimitedUsePerCustomer();
     verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
-    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer2() {
     // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countUsesByAccount(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
     NullOrderImpl order = new NullOrderImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
     when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
@@ -2393,8 +2724,8 @@ public class OfferServiceImplDiffblueTest {
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
-        offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
 
     // Assert
     verify(offer).getId();
@@ -2407,18 +2738,22 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer3() {
     // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countUsesByAccount(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
     NullOrderImpl order = new NullOrderImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
     when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
@@ -2427,8 +2762,8 @@ public class OfferServiceImplDiffblueTest {
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
-        offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
 
     // Assert
     verify(offer).getId();
@@ -2441,58 +2776,22 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer4() {
     // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
-    Order order = mock(Order.class);
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.getId()).thenReturn(1L);
-    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
-    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
-    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
-
-    // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
-        offer);
-
-    // Assert
-    verify(offer).getId();
-    verify(offer).getMaxUsesPerCustomer();
-    verify(offer).getMaxUsesStrategyType();
-    verify(offer).getMinimumDaysPerUsage();
-    verify(offer).isLimitedUsePerCustomer();
-    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
-    verify(order).getCustomer();
-    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <ul>
-   *   <li>Given {@link CustomerMaxUsesStrategyType#ACCOUNT}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_givenAccount_thenReturnFalse() {
-    // Arrange
-    when(offerAuditService.countUsesByAccount(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenReturn(3L);
+    when(offerAuditService.countUsesByAccount(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(0L);
     NullOrderImpl order = new NullOrderImpl();
+
     OfferImpl offer = mock(OfferImpl.class);
     when(offer.getId()).thenReturn(1L);
     when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
@@ -2501,8 +2800,170 @@ public class OfferServiceImplDiffblueTest {
     when(offer.isLimitedUsePerCustomer()).thenReturn(true);
 
     // Act
-    boolean actualVerifyMaxCustomerUsageThresholdResult = offerServiceImpl.verifyMaxCustomerUsageThreshold(order,
-        offer);
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByAccount(isA(Order.class), isNull(), eq(1L), eq(1L));
+    assertTrue(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer5() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
+
+    Order order = mock(Order.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(order).getCustomer();
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer6() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenThrow(new RuntimeException());
+
+    Order order = mock(Order.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act and Assert
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer));
+    verify(offer).getId();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(order).getCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer7() {
+    // Arrange
+    when(offerAuditService.countUsesByCustomer(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
+
+    Order order = mock(Order.class);
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(null);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesPerCustomer();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).getMinimumDaysPerUsage();
+    verify(offer).isLimitedUsePerCustomer();
+    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
+    verify(order).getCustomer();
+    assertFalse(actualVerifyMaxCustomerUsageThresholdResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
+   * <ul>
+   *   <li>Given {@link CustomerMaxUsesStrategyType#ACCOUNT}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_givenAccount_thenReturnFalse() {
+    // Arrange
+    when(offerAuditService.countUsesByAccount(
+            Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(), Mockito.<Long>any()))
+        .thenReturn(3L);
+    NullOrderImpl order = new NullOrderImpl();
+
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenReturn(1L);
+    when(offer.getMaxUsesPerCustomer()).thenReturn(1L);
+    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    boolean actualVerifyMaxCustomerUsageThresholdResult =
+        offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
 
     // Assert
     verify(offer).getId();
@@ -2515,49 +2976,19 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order},
+   * {@code offer}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@link OfferImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
-  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_thenThrowRuntimeException() {
-    // Arrange
-    when(offerAuditService.countUsesByCustomer(Mockito.<Order>any(), Mockito.<Long>any(), Mockito.<Long>any(),
-        Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
-    Order order = mock(Order.class);
-    when(order.getCustomer()).thenReturn(new CustomerImpl());
-    OfferImpl offer = mock(OfferImpl.class);
-    when(offer.getId()).thenReturn(1L);
-    when(offer.getMinimumDaysPerUsage()).thenReturn(1L);
-    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.CUSTOMER);
-    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer));
-    verify(offer).getId();
-    verify(offer).getMaxUsesStrategyType();
-    verify(offer).getMinimumDaysPerUsage();
-    verify(offer).isLimitedUsePerCustomer();
-    verify(offerAuditService).countUsesByCustomer(isA(Order.class), isNull(), eq(1L), eq(1L));
-    verify(order).getCustomer();
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)} with {@code order}, {@code offer}.
-   * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferServiceImpl.verifyMaxCustomerUsageThreshold(Order, Offer)"})
   public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_whenOfferImpl_thenReturnTrue() {
     // Arrange
@@ -2569,18 +3000,21 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
@@ -2634,7 +3068,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2648,24 +3083,29 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder2() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -2719,7 +3159,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2733,27 +3174,133 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code null}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link OrderItemPriceDetailImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
+  public void testGetUniqueOffersFromOrder_givenArrayListAddOrderItemPriceDetailImpl() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    ArrayList<OrderItemPriceDetail> orderItemPriceDetails = new ArrayList<>();
+    orderItemPriceDetails.add(new OrderItemPriceDetailImpl());
+
+    BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
+    bundleOrderItemImpl.setAuditable(auditable2);
+    bundleOrderItemImpl.setBaseRetailPrice(new Money());
+    bundleOrderItemImpl.setBaseSalePrice(new Money());
+    bundleOrderItemImpl.setBundleOrderItemFeePrices(new ArrayList<>());
+    bundleOrderItemImpl.setCandidateItemOffers(new ArrayList<>());
+    bundleOrderItemImpl.setCartMessages(new ArrayList<>());
+    bundleOrderItemImpl.setChildOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setDiscountingAllowed(true);
+    bundleOrderItemImpl.setDiscreteOrderItems(new ArrayList<>());
+    bundleOrderItemImpl.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
+    bundleOrderItemImpl.setHasValidationError(true);
+    bundleOrderItemImpl.setId(1L);
+    bundleOrderItemImpl.setName("Name");
+    bundleOrderItemImpl.setOrder(new NullOrderImpl());
+    bundleOrderItemImpl.setOrderItemAttributes(new HashMap<>());
+    bundleOrderItemImpl.setOrderItemQualifiers(new ArrayList<>());
+    bundleOrderItemImpl.setOrderItemType(OrderItemType.BASIC);
+    bundleOrderItemImpl.setParentOrderItem(new BundleOrderItemImpl());
+    bundleOrderItemImpl.setPersonalMessage(new PersonalMessageImpl());
+    bundleOrderItemImpl.setPrice(new Money());
+    bundleOrderItemImpl.setProratedOrderItemAdjustments(new ArrayList<>());
+    bundleOrderItemImpl.setQuantity(1);
+    bundleOrderItemImpl.setRetailPrice(new Money());
+    bundleOrderItemImpl.setRetailPriceOverride(true);
+    bundleOrderItemImpl.setSalePrice(new Money());
+    bundleOrderItemImpl.setSalePriceOverride(true);
+    bundleOrderItemImpl.setTaxable(true);
+    bundleOrderItemImpl.updateSaleAndRetailPrices();
+    bundleOrderItemImpl.setOrderItemPriceDetails(orderItemPriceDetails);
+    bundleOrderItemImpl.setOrderItemAdjustments(new ArrayList<>());
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(bundleOrderItemImpl);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+    order.setOrderItems(orderItems);
+    order.setFulfillmentGroups(null);
+
+    // Act and Assert
+    assertTrue(offerServiceImpl.getUniqueOffersFromOrder(order).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   *
+   * <ul>
+   *   <li>Given {@link BundleOrderItemImpl} (default constructor) OrderItemPriceDetails is {@code
+   *       null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_givenBundleOrderItemImplOrderItemPriceDetailsIsNull() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     BundleOrderItemImpl bundleOrderItemImpl = new BundleOrderItemImpl();
@@ -2807,7 +3354,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2821,21 +3369,26 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   *
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) FulfillmentGroups is {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link OrderImpl} (default constructor) FulfillmentGroups is {@link
+   *       ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplFulfillmentGroupsIsArrayList() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -2854,7 +3407,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2868,22 +3422,26 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   *
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplOrderItemsIsArrayList_thenReturnEmpty() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -2902,7 +3460,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2916,22 +3475,26 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   *
    * <ul>
-   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link OrderImpl} (default constructor) OrderItems is {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferServiceImpl.getUniqueOffersFromOrder(Order)"})
   public void testGetUniqueOffersFromOrder_whenOrderImplOrderItemsIsNull_thenReturnEmpty() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -2950,7 +3513,8 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
@@ -2963,23 +3527,26 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code
+   * appliedOffers}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers() {
     // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+    when(offerServiceExtensionManager.getProxy())
+        .thenReturn(new AbstractOfferServiceExtensionHandler());
 
     ArrayList<OfferCode> codes = new ArrayList<>();
     codes.add(new OfferCodeImpl());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        new HashSet<>());
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>());
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -2987,12 +3554,14 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code
+   * appliedOffers}.
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers2() {
     // Arrange
@@ -3002,8 +3571,8 @@ public class OfferServiceImplDiffblueTest {
     codes.add(new OfferCodeImpl());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        new HashSet<>());
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>());
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -3011,125 +3580,18 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers3() {
-    // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
-
-    ArrayList<OfferCode> codes = new ArrayList<>();
-    codes.add(new OfferCodeImpl());
-    codes.add(new OfferCodeImpl());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        new HashSet<>());
-
-    // Assert
-    verify(offerServiceExtensionManager, atLeast(1)).getProxy();
-    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers4() {
-    // Arrange
-    OfferServiceExtensionManager offerServiceExtensionManager2 = new OfferServiceExtensionManager();
-    ArrayList<Offer> offers = new ArrayList<>();
-    offerServiceExtensionManager2.addAdditionalOffersForCode(offers, new OfferCodeImpl());
-    when(offerServiceExtensionManager.getProxy()).thenReturn(offerServiceExtensionManager2);
-
-    ArrayList<OfferCode> codes = new ArrayList<>();
-    codes.add(new OfferCodeImpl());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        new HashSet<>());
-
-    // Assert
-    verify(offerServiceExtensionManager).getProxy();
-    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers5() {
-    // Arrange
-    OfferServiceExtensionManager offerServiceExtensionManager2 = new OfferServiceExtensionManager();
-    offerServiceExtensionManager2.registerHandler(new AbstractOfferServiceExtensionHandler());
-    ArrayList<Offer> offers = new ArrayList<>();
-    offerServiceExtensionManager2.addAdditionalOffersForCode(offers, new OfferCodeImpl());
-    when(offerServiceExtensionManager.getProxy()).thenReturn(offerServiceExtensionManager2);
-
-    ArrayList<OfferCode> codes = new ArrayList<>();
-    codes.add(new OfferCodeImpl());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        new HashSet<>());
-
-    // Assert
-    verify(offerServiceExtensionManager).getProxy();
-    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code
+   * appliedOffers}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferServiceImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_givenOfferImpl() {
-    // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
-
-    ArrayList<OfferCode> codes = new ArrayList<>();
-    codes.add(new OfferCodeImpl());
-
-    HashSet<Offer> appliedOffers = new HashSet<>();
-    appliedOffers.add(new OfferImpl());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        appliedOffers);
-
-    // Assert
-    verify(offerServiceExtensionManager).getProxy();
-    assertTrue(actualOffersRetrievedFromCodes.isEmpty());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <ul>
-   *   <li>Given {@link OfferServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_givenOfferServiceImpl() {
     // Arrange
@@ -3137,7 +3599,6 @@ public class OfferServiceImplDiffblueTest {
     ArrayList<OfferCode> codes = new ArrayList<>();
 
     HashSet<Offer> appliedOffers = new HashSet<>();
-    appliedOffers.add(null);
     appliedOffers.add(new OfferImpl());
 
     // Act and Assert
@@ -3145,71 +3606,46 @@ public class OfferServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code
+   * appliedOffers}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
-  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenReturnSizeIsOne() {
-    // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
-    OfferCodeImpl offerCodeImpl = mock(OfferCodeImpl.class);
-    when(offerCodeImpl.getOffer()).thenReturn(new OfferImpl());
-
-    ArrayList<OfferCode> codes = new ArrayList<>();
-    codes.add(offerCodeImpl);
-
-    HashSet<Offer> appliedOffers = new HashSet<>();
-    appliedOffers.add(new OfferImpl());
-
-    // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(codes,
-        appliedOffers);
-
-    // Assert
-    verify(offerServiceExtensionManager).getProxy();
-    verify(offerCodeImpl, atLeast(1)).getOffer();
-    assertEquals(1, actualOffersRetrievedFromCodes.size());
-  }
-
-  /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_thenThrowRuntimeException() {
     // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenThrow(new RuntimeException("foo"));
+    when(offerServiceExtensionManager.getProxy()).thenThrow(new RuntimeException());
 
     ArrayList<OfferCode> codes = new ArrayList<>();
     codes.add(new OfferCodeImpl());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>()));
+    assertThrows(
+        RuntimeException.class,
+        () -> offerServiceImpl.getOffersRetrievedFromCodes(codes, new HashSet<>()));
     verify(offerServiceExtensionManager).getProxy();
   }
 
   /**
-   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code appliedOffers}.
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with {@code codes}, {@code
+   * appliedOffers}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(List, Set)"})
   public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers_whenArrayList() {
     // Arrange
@@ -3221,11 +3657,12 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder() {
     // Arrange
@@ -3233,8 +3670,10 @@ public class OfferServiceImplDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -3256,14 +3695,16 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -3272,23 +3713,29 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link BundleOrderItemImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder_givenArrayListAddBundleOrderItemImpl() {
     // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+    when(offerServiceExtensionManager.getProxy())
+        .thenReturn(new AbstractOfferServiceExtensionHandler());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItem> orderItems = new ArrayList<>();
@@ -3313,14 +3760,16 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -3329,23 +3778,29 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link FulfillmentGroupImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
   public void testGetOffersRetrievedFromCodesWithOrder_givenArrayListAddFulfillmentGroupImpl() {
     // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+    when(offerServiceExtensionManager.getProxy())
+        .thenReturn(new AbstractOfferServiceExtensionHandler());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
@@ -3370,14 +3825,16 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -3386,23 +3843,80 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Then calls {@link ExtensionManager#getProxy()}.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
-  public void testGetOffersRetrievedFromCodesWithOrder_thenCallsGetProxy() {
+  public void testGetOffersRetrievedFromCodesWithOrder_thenReturnEmpty() {
     // Arrange
-    when(offerServiceExtensionManager.getProxy()).thenReturn(new AbstractOfferServiceExtensionHandler());
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalTax(new Money());
+
+    // Act and Assert
+    assertTrue(offerServiceImpl.getOffersRetrievedFromCodes(order).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   *
+   * <ul>
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
+  public void testGetOffersRetrievedFromCodesWithOrder_thenReturnEmpty2() {
+    // Arrange
+    when(offerServiceExtensionManager.getProxy())
+        .thenReturn(new AbstractOfferServiceExtensionHandler());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -3424,14 +3938,16 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act
-    Map<Offer, OfferCode> actualOffersRetrievedFromCodes = offerServiceImpl.getOffersRetrievedFromCodes(order);
+    Map<Offer, OfferCode> actualOffersRetrievedFromCodes =
+        offerServiceImpl.getOffersRetrievedFromCodes(order);
 
     // Assert
     verify(offerServiceExtensionManager).getProxy();
@@ -3440,24 +3956,31 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with {@code order}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map OfferServiceImpl.getOffersRetrievedFromCodes(Order)"})
-  public void testGetOffersRetrievedFromCodesWithOrder_thenReturnEmpty() {
+  public void testGetOffersRetrievedFromCodesWithOrder_thenThrowRuntimeException() {
     // Arrange
+    when(offerServiceExtensionManager.getProxy()).thenThrow(new RuntimeException());
+
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
+    order.addAddedOfferCode(new OfferCodeImpl());
     order.setAdditionalOfferInformation(new HashMap<>());
     order.setAuditable(auditable);
     order.setCandidateOrderOffers(new ArrayList<>());
@@ -3475,27 +3998,32 @@ public class OfferServiceImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
-    assertTrue(offerServiceImpl.getOffersRetrievedFromCodes(order).isEmpty());
+    assertThrows(RuntimeException.class, () -> offerServiceImpl.getOffersRetrievedFromCodes(order));
+    verify(offerServiceExtensionManager).getProxy();
   }
 
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code false}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code
+   *       false}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
   public void testDeleteOfferCode_givenOfferCodeDaoOfferCodeIsUsedReturnFalse_thenReturnTrue() {
     // Arrange
@@ -3513,15 +4041,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code true}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferCodeDao} {@link OfferCodeDao#offerCodeIsUsed(OfferCode)} return {@code
+   *       true}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
   public void testDeleteOfferCode_givenOfferCodeDaoOfferCodeIsUsedReturnTrue_thenReturnFalse() {
     // Arrange
@@ -3537,35 +4068,41 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferServiceImpl.deleteOfferCode(OfferCode)"})
   public void testDeleteOfferCode_thenThrowRuntimeException() {
     // Arrange
-    when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.offerCodeIsUsed(Mockito.<OfferCode>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.deleteOfferCode(new OfferCodeImpl()));
+    assertThrows(
+        RuntimeException.class, () -> offerServiceImpl.deleteOfferCode(new OfferCodeImpl()));
     verify(offerCodeDao).offerCodeIsUsed(isA(OfferCode.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#duplicate(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then return {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link
+   *       OfferAdjustmentType#FUTURE_CREDIT}.
+   *   <li>Then return {@link OfferImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#duplicate(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#duplicate(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.duplicate(Long)"})
   public void testDuplicate_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOfferImpl() {
     // Arrange
@@ -3577,7 +4114,8 @@ public class OfferServiceImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -3595,7 +4133,8 @@ public class OfferServiceImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -3603,7 +4142,8 @@ public class OfferServiceImplDiffblueTest {
     offerImpl.setType(OfferType.FULFILLMENT_GROUP);
     offerImpl.setUseListForDiscounts(true);
     offerImpl.setValue(new BigDecimal("2.3"));
-    when(entityDuplicator.copy(Mockito.<Class<OfferImpl>>any(), Mockito.<Long>any())).thenReturn(offerImpl);
+    when(entityDuplicator.copy(Mockito.<Class<OfferImpl>>any(), Mockito.<Long>any()))
+        .thenReturn(offerImpl);
 
     // Act
     Offer actualDuplicateResult = offerServiceImpl.duplicate(1L);
@@ -3615,19 +4155,21 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#duplicate(Long)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#duplicate(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#duplicate(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.duplicate(Long)"})
   public void testDuplicate_thenThrowRuntimeException() {
     // Arrange
     when(entityDuplicator.copy(Mockito.<Class<OfferImpl>>any(), Mockito.<Long>any()))
-        .thenThrow(new RuntimeException("foo"));
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.duplicate(1L));
@@ -3636,11 +4178,13 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferServiceImpl#setCustomerOfferDao(CustomerOfferDao)}
-   *   <li>{@link OfferServiceImpl#setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)}
+   *   <li>{@link
+   *       OfferServiceImpl#setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)}
    *   <li>{@link OfferServiceImpl#setItemOfferProcessor(ItemOfferProcessor)}
    *   <li>{@link OfferServiceImpl#setOfferCodeDao(OfferCodeDao)}
    *   <li>{@link OfferServiceImpl#setOfferDao(OfferDao)}
@@ -3658,20 +4202,26 @@ public class OfferServiceImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CustomerOfferDao OfferServiceImpl.getCustomerOfferDao()",
-      "FulfillmentGroupOfferProcessor OfferServiceImpl.getFulfillmentGroupOfferProcessor()",
-      "ItemOfferProcessor OfferServiceImpl.getItemOfferProcessor()", "OfferCodeDao OfferServiceImpl.getOfferCodeDao()",
-      "OfferDao OfferServiceImpl.getOfferDao()", "OrderOfferProcessor OfferServiceImpl.getOrderOfferProcessor()",
-      "OrderService OfferServiceImpl.getOrderService()",
-      "PromotableItemFactory OfferServiceImpl.getPromotableItemFactory()",
-      "void OfferServiceImpl.setCustomerOfferDao(CustomerOfferDao)",
-      "void OfferServiceImpl.setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)",
-      "void OfferServiceImpl.setItemOfferProcessor(ItemOfferProcessor)",
-      "void OfferServiceImpl.setOfferCodeDao(OfferCodeDao)", "void OfferServiceImpl.setOfferDao(OfferDao)",
-      "void OfferServiceImpl.setOrderOfferProcessor(OrderOfferProcessor)",
-      "void OfferServiceImpl.setOrderService(OrderService)",
-      "void OfferServiceImpl.setPromotableItemFactory(PromotableItemFactory)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CustomerOfferDao OfferServiceImpl.getCustomerOfferDao()",
+    "FulfillmentGroupOfferProcessor OfferServiceImpl.getFulfillmentGroupOfferProcessor()",
+    "ItemOfferProcessor OfferServiceImpl.getItemOfferProcessor()",
+    "OfferCodeDao OfferServiceImpl.getOfferCodeDao()",
+    "OfferDao OfferServiceImpl.getOfferDao()",
+    "OrderOfferProcessor OfferServiceImpl.getOrderOfferProcessor()",
+    "OrderService OfferServiceImpl.getOrderService()",
+    "PromotableItemFactory OfferServiceImpl.getPromotableItemFactory()",
+    "void OfferServiceImpl.setCustomerOfferDao(CustomerOfferDao)",
+    "void OfferServiceImpl.setFulfillmentGroupOfferProcessor(FulfillmentGroupOfferProcessor)",
+    "void OfferServiceImpl.setItemOfferProcessor(ItemOfferProcessor)",
+    "void OfferServiceImpl.setOfferCodeDao(OfferCodeDao)",
+    "void OfferServiceImpl.setOfferDao(OfferDao)",
+    "void OfferServiceImpl.setOrderOfferProcessor(OrderOfferProcessor)",
+    "void OfferServiceImpl.setOrderService(OrderService)",
+    "void OfferServiceImpl.setPromotableItemFactory(PromotableItemFactory)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
@@ -3679,25 +4229,27 @@ public class OfferServiceImplDiffblueTest {
 
     // Act
     offerServiceImpl.setCustomerOfferDao(customerOfferDao);
-    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessor = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
+    FulfillmentGroupOfferProcessorImpl fulfillmentGroupOfferProcessor =
+        new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl());
     offerServiceImpl.setFulfillmentGroupOfferProcessor(fulfillmentGroupOfferProcessor);
-    ItemOfferProcessorImpl itemOfferProcessor = new ItemOfferProcessorImpl(new PromotableOfferUtilityImpl());
+    ItemOfferProcessorImpl itemOfferProcessor =
+        new ItemOfferProcessorImpl(new PromotableOfferUtilityImpl());
     offerServiceImpl.setItemOfferProcessor(itemOfferProcessor);
     OfferCodeDaoImpl offerCodeDao = new OfferCodeDaoImpl();
     offerServiceImpl.setOfferCodeDao(offerCodeDao);
     OfferDaoImpl offerDao = new OfferDaoImpl();
     offerServiceImpl.setOfferDao(offerDao);
-    FulfillmentGroupOfferProcessorImpl orderOfferProcessor = new FulfillmentGroupOfferProcessorImpl(
-        new PromotableOfferUtilityImpl());
+    FulfillmentGroupOfferProcessorImpl orderOfferProcessor =
+        new FulfillmentGroupOfferProcessorImpl(new PromotableOfferUtilityImpl());
     offerServiceImpl.setOrderOfferProcessor(orderOfferProcessor);
     OrderServiceImpl orderService = new OrderServiceImpl();
     offerServiceImpl.setOrderService(orderService);
-    PromotableItemFactoryImpl promotableItemFactory = new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
+    PromotableItemFactoryImpl promotableItemFactory =
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl());
     offerServiceImpl.setPromotableItemFactory(promotableItemFactory);
     CustomerOfferDao actualCustomerOfferDao = offerServiceImpl.getCustomerOfferDao();
-    FulfillmentGroupOfferProcessor actualFulfillmentGroupOfferProcessor = offerServiceImpl
-        .getFulfillmentGroupOfferProcessor();
+    FulfillmentGroupOfferProcessor actualFulfillmentGroupOfferProcessor =
+        offerServiceImpl.getFulfillmentGroupOfferProcessor();
     ItemOfferProcessor actualItemOfferProcessor = offerServiceImpl.getItemOfferProcessor();
     OfferCodeDao actualOfferCodeDao = offerServiceImpl.getOfferCodeDao();
     OfferDao actualOfferDao = offerServiceImpl.getOfferDao();
@@ -3722,14 +4274,16 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
+   *
    * <ul>
-   *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
+   *   <li>Then return {@link OfferCodeImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.findOfferCodeById(Long)"})
   public void testFindOfferCodeById_thenReturnOfferCodeImpl() {
     // Arrange
@@ -3740,46 +4294,51 @@ public class OfferServiceImplDiffblueTest {
     OfferCode actualFindOfferCodeByIdResult = offerServiceImpl.findOfferCodeById(1L);
 
     // Assert
-    verify(offerCodeDao).readOfferCodeById(eq(1L));
+    verify(offerCodeDao).readOfferCodeById(1L);
     assertSame(offerCodeImpl, actualFindOfferCodeByIdResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferCode OfferServiceImpl.findOfferCodeById(Long)"})
   public void testFindOfferCodeById_thenThrowRuntimeException() {
     // Arrange
-    when(offerCodeDao.readOfferCodeById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readOfferCodeById(Mockito.<Long>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferCodeById(1L));
-    verify(offerCodeDao).readOfferCodeById(eq(1L));
+    verify(offerCodeDao).readOfferCodeById(1L);
   }
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   *
    * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given one.
+   *   <li>When {@link ArrayList#ArrayList()} add one.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
   public void testFindOfferCodesByIds_givenOne_whenArrayListAddOne_thenReturnEmpty() {
     // Arrange
-    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any()))
+        .thenReturn(new ArrayList<>());
 
     ArrayList<Long> ids = new ArrayList<>();
     ids.add(1L);
@@ -3794,20 +4353,23 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given zero.
+   *   <li>When {@link ArrayList#ArrayList()} add zero.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
   public void testFindOfferCodesByIds_givenZero_whenArrayListAddZero_thenReturnEmpty() {
     // Arrange
-    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any()))
+        .thenReturn(new ArrayList<>());
 
     ArrayList<Long> ids = new ArrayList<>();
     ids.add(0L);
@@ -3823,42 +4385,50 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
   public void testFindOfferCodesByIds_thenThrowRuntimeException() {
     // Arrange
-    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenThrow(new RuntimeException("foo"));
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any()))
+        .thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferCodesByIds(new ArrayList<>()));
+    assertThrows(
+        RuntimeException.class, () -> offerServiceImpl.findOfferCodesByIds(new ArrayList<>()));
     verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
   }
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OfferServiceImpl.findOfferCodesByIds(Collection)"})
   public void testFindOfferCodesByIds_whenArrayList_thenReturnEmpty() {
     // Arrange
-    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any())).thenReturn(new ArrayList<>());
+    when(offerCodeDao.readOfferCodesByIds(Mockito.<Collection<Long>>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
-    List<OfferCode> actualFindOfferCodesByIdsResult = offerServiceImpl.findOfferCodesByIds(new ArrayList<>());
+    List<OfferCode> actualFindOfferCodesByIdsResult =
+        offerServiceImpl.findOfferCodesByIds(new ArrayList<>());
 
     // Assert
     verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
@@ -3867,15 +4437,18 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferById(Long)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDao} {@link OfferDao#readOfferById(Long)} return {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link OfferImpl} (default constructor).</li>
+   *   <li>Given {@link OfferDao} {@link OfferDao#readOfferById(Long)} return {@link OfferImpl}
+   *       (default constructor).
+   *   <li>Then return {@link OfferImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.findOfferById(Long)"})
   public void testFindOfferById_givenOfferDaoReadOfferByIdReturnOfferImpl_thenReturnOfferImpl() {
     // Arrange
@@ -3886,27 +4459,29 @@ public class OfferServiceImplDiffblueTest {
     Offer actualFindOfferByIdResult = offerServiceImpl.findOfferById(1L);
 
     // Assert
-    verify(offerDao).readOfferById(eq(1L));
+    verify(offerDao).readOfferById(1L);
     assertSame(offerImpl, actualFindOfferByIdResult);
   }
 
   /**
    * Test {@link OfferServiceImpl#findOfferById(Long)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
+   *
+   * <p>Method under test: {@link OfferServiceImpl#findOfferById(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferServiceImpl.findOfferById(Long)"})
   public void testFindOfferById_thenThrowRuntimeException() {
     // Arrange
-    when(offerDao.readOfferById(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+    when(offerDao.readOfferById(Mockito.<Long>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
     assertThrows(RuntimeException.class, () -> offerServiceImpl.findOfferById(1L));
-    verify(offerDao).readOfferById(eq(1L));
+    verify(offerDao).readOfferById(1L);
   }
 }

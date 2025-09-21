@@ -18,7 +18,8 @@
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.impl;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.ConversionException;
 import org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.conversion.Parameter;
@@ -32,22 +33,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DoubleParameterConverter.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DoubleParameterConverterDiffblueTest {
-  @Autowired
-  private DoubleParameterConverter doubleParameterConverter;
+  @Autowired private DoubleParameterConverter doubleParameterConverter;
 
   /**
    * Test {@link DoubleParameterConverter#convert(String, Double, boolean)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return ParameterInstance doubleValue is forty-two.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then return ParameterInstance doubleValue is forty-two.
    * </ul>
-   * <p>
-   * Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
+   *
+   * <p>Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Parameter DoubleParameterConverter.convert(String, Double, boolean)"})
-  public void testConvert_when42_thenReturnParameterInstanceDoubleValueIsFortyTwo() throws ConversionException {
+  public void testConvert_when42_thenReturnParameterInstanceDoubleValueIsFortyTwo()
+      throws ConversionException {
     // Arrange and Act
     Parameter actualConvertResult = doubleParameterConverter.convert("42", null, true);
 
@@ -58,17 +61,20 @@ public class DoubleParameterConverterDiffblueTest {
 
   /**
    * Test {@link DoubleParameterConverter#convert(String, Double, boolean)}.
+   *
    * <ul>
-   *   <li>When {@code false}.</li>
-   *   <li>Then return ParameterInstance doubleValue is forty-two.</li>
+   *   <li>When {@code false}.
+   *   <li>Then return ParameterInstance doubleValue is forty-two.
    * </ul>
-   * <p>
-   * Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
+   *
+   * <p>Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Parameter DoubleParameterConverter.convert(String, Double, boolean)"})
-  public void testConvert_whenFalse_thenReturnParameterInstanceDoubleValueIsFortyTwo() throws ConversionException {
+  public void testConvert_whenFalse_thenReturnParameterInstanceDoubleValueIsFortyTwo()
+      throws ConversionException {
     // Arrange and Act
     Parameter actualConvertResult = doubleParameterConverter.convert("42", null, false);
 
@@ -79,17 +85,20 @@ public class DoubleParameterConverterDiffblueTest {
 
   /**
    * Test {@link DoubleParameterConverter#convert(String, Double, boolean)}.
+   *
    * <ul>
-   *   <li>When ten.</li>
-   *   <li>Then return ParameterInstance doubleValue is {@code 4.2}.</li>
+   *   <li>When ten.
+   *   <li>Then return ParameterInstance doubleValue is {@code 4.2}.
    * </ul>
-   * <p>
-   * Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
+   *
+   * <p>Method under test: {@link DoubleParameterConverter#convert(String, Double, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Parameter DoubleParameterConverter.convert(String, Double, boolean)"})
-  public void testConvert_whenTen_thenReturnParameterInstanceDoubleValueIs42() throws ConversionException {
+  public void testConvert_whenTen_thenReturnParameterInstanceDoubleValueIs42()
+      throws ConversionException {
     // Arrange and Act
     Parameter actualConvertResult = doubleParameterConverter.convert("42", 10.0d, true);
 

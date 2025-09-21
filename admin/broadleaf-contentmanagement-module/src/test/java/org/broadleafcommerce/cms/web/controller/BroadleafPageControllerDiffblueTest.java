@@ -22,14 +22,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,26 +56,37 @@ import org.springframework.web.servlet.ModelAndView;
 @ContextConfiguration(classes = {BroadleafPageController.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafPageControllerDiffblueTest {
-  @Autowired
-  private BroadleafPageController broadleafPageController;
+  @Autowired private BroadleafPageController broadleafPageController;
 
   @MockBean(name = "blTemplateOverrideExtensionManager")
   private TemplateOverrideExtensionManager templateOverrideExtensionManager;
 
   /**
    * Test {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}.
-   * <p>
-   * Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}
+   *
+   * <ul>
+   *   <li>Given {@link NullPageDTO} (default constructor).
+   *   <li>Then return Model {@code pageFields} Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"})
-  public void testHandleRequest() throws Exception {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
+  public void testHandleRequest_givenNullPageDTO_thenReturnModelPageFieldsEmpty() throws Exception {
     // Arrange
-    TemplateOverrideExtensionHandler templateOverrideExtensionHandler = mock(TemplateOverrideExtensionHandler.class);
-    when(templateOverrideExtensionHandler.getOverrideTemplate(Mockito.<ExtensionResultHolder<String>>any(),
-        Mockito.<Object>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    TemplateOverrideExtensionHandler templateOverrideExtensionHandler =
+        mock(TemplateOverrideExtensionHandler.class);
+    when(templateOverrideExtensionHandler.getOverrideTemplate(
+            Mockito.<ExtensionResultHolder<String>>any(), Mockito.<Object>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
     when(templateOverrideExtensionManager.getProxy()).thenReturn(templateOverrideExtensionHandler);
+
     MockHttpServletRequest request = mock(MockHttpServletRequest.class);
     NullPageDTO nullPageDTO = new NullPageDTO();
     when(request.getAttribute(Mockito.<String>any())).thenReturn(nullPageDTO);
@@ -81,102 +94,235 @@ public class BroadleafPageControllerDiffblueTest {
     request.addParameter("https://example.org/example", "https://example.org/example");
 
     // Act
-    ModelAndView actualHandleRequestResult = broadleafPageController.handleRequest(request,
-        new MockHttpServletResponse());
+    ModelAndView actualHandleRequestResult =
+        broadleafPageController.handleRequest(request, new MockHttpServletResponse());
 
     // Assert
     verify(templateOverrideExtensionManager).getProxy();
-    verify(templateOverrideExtensionHandler).getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
-    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
-    verify(request).getAttribute(eq("BLC_PAGE"));
+    verify(templateOverrideExtensionHandler)
+        .getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
+    verify(request).addParameter("https://example.org/example", "https://example.org/example");
+    verify(request).getAttribute("BLC_PAGE");
     Map<String, Object> model = actualHandleRequestResult.getModel();
     assertEquals(3, model.size());
     Object getResult = model.get("pageFields");
     assertTrue(getResult instanceof Map);
-    Object getResult2 = model.get("page");
-    assertTrue(getResult2 instanceof NullPageDTO);
-    assertEquals("page", model.get("BLC_PAGE_TYPE"));
-    assertNull(actualHandleRequestResult.getViewName());
-    assertNull(actualHandleRequestResult.getStatus());
-    assertNull(actualHandleRequestResult.getView());
-    assertFalse(actualHandleRequestResult.hasView());
-    assertFalse(actualHandleRequestResult.isEmpty());
-    assertFalse(actualHandleRequestResult.isReference());
+    assertTrue(model.containsKey("BLC_PAGE_TYPE"));
     assertTrue(((Map<Object, Object>) getResult).isEmpty());
-    assertSame(nullPageDTO, getResult2);
-    assertSame(model, actualHandleRequestResult.getModelMap());
+    assertSame(nullPageDTO, model.get("page"));
   }
 
   /**
    * Test {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}.
-   * <p>
-   * Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}
+   *
+   * <ul>
+   *   <li>Then return Model {@code pageFields} {@code plainText} is empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"})
-  public void testHandleRequest2() throws Exception {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
+  public void testHandleRequest_thenReturnModelPageFieldsPlainTextIsEmptyString() throws Exception {
     // Arrange
-    TemplateOverrideExtensionHandler templateOverrideExtensionHandler = mock(TemplateOverrideExtensionHandler.class);
-    when(templateOverrideExtensionHandler.getOverrideTemplate(Mockito.<ExtensionResultHolder<String>>any(),
-        Mockito.<Object>any())).thenReturn(ExtensionResultStatusType.NOT_HANDLED);
+    TemplateOverrideExtensionHandler templateOverrideExtensionHandler =
+        mock(TemplateOverrideExtensionHandler.class);
+    when(templateOverrideExtensionHandler.getOverrideTemplate(
+            Mockito.<ExtensionResultHolder<String>>any(), Mockito.<Object>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
     when(templateOverrideExtensionManager.getProxy()).thenReturn(templateOverrideExtensionHandler);
+
+    HashMap<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put("plainText", "");
+
+    NullPageDTO nullPageDTO = mock(NullPageDTO.class);
+    when(nullPageDTO.getPageFields()).thenReturn(stringObjectMap);
+    when(nullPageDTO.getTemplatePath()).thenReturn("Template Path");
+
     MockHttpServletRequest request = mock(MockHttpServletRequest.class);
-    NullPageDTO nullPageDTO = new NullPageDTO();
     when(request.getAttribute(Mockito.<String>any())).thenReturn(nullPageDTO);
     doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
     request.addParameter("https://example.org/example", "https://example.org/example");
 
     // Act
-    ModelAndView actualHandleRequestResult = broadleafPageController.handleRequest(request,
-        new MockHttpServletResponse());
+    ModelAndView actualHandleRequestResult =
+        broadleafPageController.handleRequest(request, new MockHttpServletResponse());
 
     // Assert
     verify(templateOverrideExtensionManager).getProxy();
-    verify(templateOverrideExtensionHandler).getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
-    verify(request).addParameter(eq("https://example.org/example"), eq("https://example.org/example"));
-    verify(request).getAttribute(eq("BLC_PAGE"));
+    verify(nullPageDTO, atLeast(1)).getPageFields();
+    verify(nullPageDTO).getTemplatePath();
+    verify(templateOverrideExtensionHandler)
+        .getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
+    verify(request).addParameter("https://example.org/example", "https://example.org/example");
+    verify(request).getAttribute("BLC_PAGE");
     Map<String, Object> model = actualHandleRequestResult.getModel();
     assertEquals(3, model.size());
     Object getResult = model.get("pageFields");
     assertTrue(getResult instanceof Map);
-    Object getResult2 = model.get("page");
-    assertTrue(getResult2 instanceof NullPageDTO);
-    assertEquals("page", model.get("BLC_PAGE_TYPE"));
+    assertEquals(1, ((Map<String, String>) getResult).size());
+    assertEquals("", ((Map<String, String>) getResult).get("plainText"));
     assertNull(actualHandleRequestResult.getViewName());
-    assertNull(actualHandleRequestResult.getStatus());
-    assertNull(actualHandleRequestResult.getView());
     assertFalse(actualHandleRequestResult.hasView());
-    assertFalse(actualHandleRequestResult.isEmpty());
     assertFalse(actualHandleRequestResult.isReference());
-    assertTrue(((Map<Object, Object>) getResult).isEmpty());
-    assertSame(nullPageDTO, getResult2);
-    assertSame(model, actualHandleRequestResult.getModelMap());
+    assertTrue(model.containsKey("BLC_PAGE_TYPE"));
+    assertTrue(model.containsKey("page"));
+    assertSame(stringObjectMap, getResult);
+  }
+
+  /**
+   * Test {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}.
+   *
+   * <ul>
+   *   <li>Then return Model {@code pageFields} {@code plainText} is {@code Page Fields}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
+  public void testHandleRequest_thenReturnModelPageFieldsPlainTextIsPageFields() throws Exception {
+    // Arrange
+    TemplateOverrideExtensionHandler templateOverrideExtensionHandler =
+        mock(TemplateOverrideExtensionHandler.class);
+    when(templateOverrideExtensionHandler.getOverrideTemplate(
+            Mockito.<ExtensionResultHolder<String>>any(), Mockito.<Object>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(templateOverrideExtensionManager.getProxy()).thenReturn(templateOverrideExtensionHandler);
+
+    HashMap<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put("plainText", "Page Fields");
+
+    NullPageDTO nullPageDTO = mock(NullPageDTO.class);
+    when(nullPageDTO.getPageFields()).thenReturn(stringObjectMap);
+    when(nullPageDTO.getTemplatePath()).thenReturn("Template Path");
+
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getAttribute(Mockito.<String>any())).thenReturn(nullPageDTO);
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+
+    // Act
+    ModelAndView actualHandleRequestResult =
+        broadleafPageController.handleRequest(request, new MockHttpServletResponse());
+
+    // Assert
+    verify(templateOverrideExtensionManager).getProxy();
+    verify(nullPageDTO, atLeast(1)).getPageFields();
+    verify(nullPageDTO).getTemplatePath();
+    verify(templateOverrideExtensionHandler)
+        .getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
+    verify(request).addParameter("https://example.org/example", "https://example.org/example");
+    verify(request).getAttribute("BLC_PAGE");
+    Map<String, Object> model = actualHandleRequestResult.getModel();
+    assertEquals(3, model.size());
+    Object getResult = model.get("pageFields");
+    assertTrue(getResult instanceof Map);
+    assertEquals(1, ((Map<String, String>) getResult).size());
+    assertEquals("Page Fields", ((Map<String, String>) getResult).get("plainText"));
+    assertNull(actualHandleRequestResult.getViewName());
+    assertFalse(actualHandleRequestResult.hasView());
+    assertFalse(actualHandleRequestResult.isReference());
+    assertTrue(model.containsKey("BLC_PAGE_TYPE"));
+    assertTrue(model.containsKey("page"));
+    assertSame(stringObjectMap, getResult);
+  }
+
+  /**
+   * Test {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}.
+   *
+   * <ul>
+   *   <li>Then return ViewName is {@code Template Path}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafPageController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafPageController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
+  public void testHandleRequest_thenReturnViewNameIsTemplatePath() throws Exception {
+    // Arrange
+    TemplateOverrideExtensionHandler templateOverrideExtensionHandler =
+        mock(TemplateOverrideExtensionHandler.class);
+    when(templateOverrideExtensionHandler.getOverrideTemplate(
+            Mockito.<ExtensionResultHolder<String>>any(), Mockito.<Object>any()))
+        .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
+    when(templateOverrideExtensionManager.getProxy()).thenReturn(templateOverrideExtensionHandler);
+
+    HashMap<String, Object> stringObjectMap = new HashMap<>();
+    stringObjectMap.put("plainText", "Page Fields");
+
+    NullPageDTO nullPageDTO = mock(NullPageDTO.class);
+    when(nullPageDTO.getPageFields()).thenReturn(stringObjectMap);
+    when(nullPageDTO.getTemplatePath()).thenReturn("Template Path");
+
+    MockHttpServletRequest request = mock(MockHttpServletRequest.class);
+    when(request.getAttribute(Mockito.<String>any())).thenReturn(nullPageDTO);
+    doNothing().when(request).addParameter(Mockito.<String>any(), Mockito.<String>any());
+    request.addParameter("https://example.org/example", "https://example.org/example");
+
+    // Act
+    ModelAndView actualHandleRequestResult =
+        broadleafPageController.handleRequest(request, new MockHttpServletResponse());
+
+    // Assert
+    verify(templateOverrideExtensionManager).getProxy();
+    verify(nullPageDTO, atLeast(1)).getPageFields();
+    verify(nullPageDTO).getTemplatePath();
+    verify(templateOverrideExtensionHandler)
+        .getOverrideTemplate(isA(ExtensionResultHolder.class), isA(Object.class));
+    verify(request).addParameter("https://example.org/example", "https://example.org/example");
+    verify(request).getAttribute("BLC_PAGE");
+    Map<String, Object> model = actualHandleRequestResult.getModel();
+    assertEquals(3, model.size());
+    Object getResult = model.get("pageFields");
+    assertTrue(getResult instanceof Map);
+    assertEquals(1, ((Map<String, String>) getResult).size());
+    assertEquals("Page Fields", ((Map<String, String>) getResult).get("plainText"));
+    assertEquals("Template Path", actualHandleRequestResult.getViewName());
+    assertTrue(model.containsKey("BLC_PAGE_TYPE"));
+    assertTrue(model.containsKey("page"));
+    assertTrue(actualHandleRequestResult.hasView());
+    assertTrue(actualHandleRequestResult.isReference());
   }
 
   /**
    * Test {@link BroadleafPageController#getTemplateType(HttpServletRequest)}.
-   * <p>
-   * Method under test: {@link BroadleafPageController#getTemplateType(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link BroadleafPageController#getTemplateType(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"TemplateType BroadleafPageController.getTemplateType(HttpServletRequest)"})
   public void testGetTemplateType() {
-    // Arrange and Act
-    TemplateType actualTemplateType = broadleafPageController.getTemplateType(new MockHttpServletRequest());
-
-    // Assert
-    assertSame(actualTemplateType.PAGE, actualTemplateType);
+    // Arrange, Act and Assert
+    assertSame(
+        TemplateType.PAGE, broadleafPageController.getTemplateType(new MockHttpServletRequest()));
   }
 
   /**
    * Test new {@link BroadleafPageController} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link BroadleafPageController}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link BroadleafPageController}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BroadleafPageController.<init>()"})
   public void testNewBroadleafPageController() {
     // Arrange and Act

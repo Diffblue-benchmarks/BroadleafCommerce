@@ -19,7 +19,8 @@ package org.broadleafcommerce.core.catalog.service.extension;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,16 +42,21 @@ public class AbstractProductProcessorExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}.
+   *
    * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add one.</li>
+   *   <li>Given one.
+   *   <li>When {@link ArrayList#ArrayList()} add one.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}
+   *
+   * <p>Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"
+  })
   public void testExpandProduct_givenOne_whenArrayListAddOne() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -59,22 +65,28 @@ public class AbstractProductProcessorExtensionHandlerDiffblueTest {
     returnList.add(1L);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractProductProcessorExtensionHandler.expandProduct(product, returnList));
   }
 
   /**
    * Test {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add zero.</li>
+   *   <li>Given zero.
+   *   <li>When {@link ArrayList#ArrayList()} add zero.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}
+   *
+   * <p>Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"
+  })
   public void testExpandProduct_givenZero_whenArrayListAddZero() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -84,41 +96,51 @@ public class AbstractProductProcessorExtensionHandlerDiffblueTest {
     returnList.add(1L);
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractProductProcessorExtensionHandler.expandProduct(product, returnList));
   }
 
   /**
    * Test {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product, List)}
+   *
+   * <p>Method under test: {@link AbstractProductProcessorExtensionHandler#expandProduct(Product,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractProductProcessorExtensionHandler.expandProduct(Product, List)"
+  })
   public void testExpandProduct_whenArrayList() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         abstractProductProcessorExtensionHandler.expandProduct(product, new ArrayList<>()));
   }
 
   /**
    * Test new {@link AbstractProductProcessorExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractProductProcessorExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractProductProcessorExtensionHandler}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractProductProcessorExtensionHandler.<init>()"})
   public void testNewAbstractProductProcessorExtensionHandler() {
     // Arrange and Act
-    AbstractProductProcessorExtensionHandler actualAbstractProductProcessorExtensionHandler = new AbstractProductProcessorExtensionHandler();
+    AbstractProductProcessorExtensionHandler actualAbstractProductProcessorExtensionHandler =
+        new AbstractProductProcessorExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractProductProcessorExtensionHandler.getPriority());

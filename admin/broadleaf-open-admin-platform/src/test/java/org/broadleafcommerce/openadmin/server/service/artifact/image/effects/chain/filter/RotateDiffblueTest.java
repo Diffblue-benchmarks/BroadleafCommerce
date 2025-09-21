@@ -21,7 +21,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -44,16 +45,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {Rotate.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class RotateDiffblueTest {
-  @Autowired
-  private Rotate rotate;
+  @Autowired private Rotate rotate;
 
   /**
    * Test {@link Rotate#Rotate()}.
-   * <p>
-   * Method under test: {@link Rotate#Rotate()}
+   *
+   * <p>Method under test: {@link Rotate#Rotate()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Rotate.<init>()"})
   public void testNewRotate() {
     // Arrange and Act
@@ -66,11 +67,12 @@ public class RotateDiffblueTest {
 
   /**
    * Test {@link Rotate#Rotate(double, RenderingHints)}.
-   * <p>
-   * Method under test: {@link Rotate#Rotate(double, RenderingHints)}
+   *
+   * <p>Method under test: {@link Rotate#Rotate(double, RenderingHints)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Rotate.<init>(double, RenderingHints)"})
   public void testNewRotate2() {
     // Arrange and Act
@@ -83,57 +85,68 @@ public class RotateDiffblueTest {
 
   /**
    * Test {@link Rotate#buildOperation(Map, InputStream, String)}.
-   * <p>
-   * Method under test: {@link Rotate#buildOperation(Map, InputStream, String)}
+   *
+   * <p>Method under test: {@link Rotate#buildOperation(Map, InputStream, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Rotate.buildOperation(Map, InputStream, String)"})
+    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Rotate.buildOperation(Map, InputStream, String)"
+  })
   public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
     assertNull(
-        rotate.buildOperation(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Mime Type"));
+        rotate.buildOperation(
+            parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain"));
   }
 
   /**
    * Test {@link Rotate#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.</li>
+   *   <li>Given {@link Rotate#Rotate()}.
+   *   <li>Then return {@link BufferedImage#BufferedImage(int, int, int)} with one and one and one.
    * </ul>
-   * <p>
-   * Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Rotate.filter(BufferedImage, BufferedImage)"})
-  public void testFilter_thenReturnBufferedImageWithOneAndOneAndOne() {
+  public void testFilter_givenRotate_thenReturnBufferedImageWithOneAndOneAndOne() {
     // Arrange
     Rotate rotate = new Rotate();
     BufferedImage src = new BufferedImage(1, 1, 1);
-
     BufferedImage dst = new BufferedImage(1, 1, 1);
 
-    // Act and Assert
-    assertSame(dst, rotate.filter(src, dst));
+    // Act
+    BufferedImage actualFilterResult = rotate.filter(src, dst);
+
+    // Assert
+    assertSame(dst, actualFilterResult);
   }
 
   /**
    * Test {@link Rotate#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
+   *   <li>Given {@link Rotate#Rotate()}.
+   *   <li>When {@code null}.
+   *   <li>Then ColorModel return {@link DirectColorModel}.
    * </ul>
-   * <p>
-   * Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Rotate#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Rotate.filter(BufferedImage, BufferedImage)"})
-  public void testFilter_whenNull_thenColorModelReturnDirectColorModel() {
+  public void testFilter_givenRotate_whenNull_thenColorModelReturnDirectColorModel() {
     // Arrange
     Rotate rotate = new Rotate();
 
@@ -147,11 +160,14 @@ public class RotateDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

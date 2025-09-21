@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.security.channel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
@@ -36,78 +37,104 @@ import org.springframework.security.web.access.channel.RetryWithHttpEntryPoint;
 public class ProtoInsecureChannelProcessorDiffblueTest {
   /**
    * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   *
    * <ul>
-   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link SecurityConfig#SecurityConfig(String)} with {@code Config}.</li>
+   *   <li>When {@link LinkedHashSet#LinkedHashSet()} add {@link
+   *       SecurityConfig#SecurityConfig(String)} with {@code Config}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   *
+   * <p>Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
-  public void testDecide_whenLinkedHashSetAddSecurityConfigWithConfig() throws IOException, ServletException {
+  public void testDecide_whenLinkedHashSetAddSecurityConfigWithConfig()
+      throws IOException, ServletException {
     // Arrange
-    ProtoInsecureChannelProcessor protoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();
+    ProtoInsecureChannelProcessor protoInsecureChannelProcessor =
+        new ProtoInsecureChannelProcessor();
 
     LinkedHashSet<ConfigAttribute> config = new LinkedHashSet<>();
     config.add(new SecurityConfig("Config"));
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> protoInsecureChannelProcessor.decide(null, config));
+    assertThrows(
+        IllegalArgumentException.class, () -> protoInsecureChannelProcessor.decide(null, config));
   }
 
   /**
    * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then throw {@link IllegalArgumentException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   *
+   * <p>Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
-  public void testDecide_whenNull_thenThrowIllegalArgumentException() throws IOException, ServletException {
+  public void testDecide_whenNull_thenThrowIllegalArgumentException()
+      throws IOException, ServletException {
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> (new ProtoInsecureChannelProcessor()).decide(null, null));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new ProtoInsecureChannelProcessor().decide(null, null));
   }
 
   /**
    * Test {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then throw {@link IllegalArgumentException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation, Collection)}
+   *
+   * <p>Method under test: {@link ProtoInsecureChannelProcessor#decide(FilterInvocation,
+   * Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProtoInsecureChannelProcessor.decide(FilterInvocation, Collection)"})
-  public void testDecide_whenNull_thenThrowIllegalArgumentException2() throws IOException, ServletException {
+  public void testDecide_whenNull_thenThrowIllegalArgumentException2()
+      throws IOException, ServletException {
     // Arrange
-    ProtoInsecureChannelProcessor protoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();
+    ProtoInsecureChannelProcessor protoInsecureChannelProcessor =
+        new ProtoInsecureChannelProcessor();
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> protoInsecureChannelProcessor.decide(new FilterInvocation("Servlet Path", "Method"), null));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            protoInsecureChannelProcessor.decide(
+                new FilterInvocation("Servlet Path", "Method"), null));
   }
 
   /**
    * Test new {@link ProtoInsecureChannelProcessor} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link ProtoInsecureChannelProcessor}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * ProtoInsecureChannelProcessor}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProtoInsecureChannelProcessor.<init>()"})
   public void testNewProtoInsecureChannelProcessor() {
     // Arrange and Act
-    ProtoInsecureChannelProcessor actualProtoInsecureChannelProcessor = new ProtoInsecureChannelProcessor();
+    ProtoInsecureChannelProcessor actualProtoInsecureChannelProcessor =
+        new ProtoInsecureChannelProcessor();
 
     // Assert
-    assertTrue(actualProtoInsecureChannelProcessor.getEntryPoint() instanceof RetryWithHttpEntryPoint);
-    assertEquals("REQUIRES_INSECURE_CHANNEL", actualProtoInsecureChannelProcessor.getInsecureKeyword());
+    assertTrue(
+        actualProtoInsecureChannelProcessor.getEntryPoint() instanceof RetryWithHttpEntryPoint);
+    assertEquals(
+        "REQUIRES_INSECURE_CHANNEL", actualProtoInsecureChannelProcessor.getInsecureKeyword());
   }
 }

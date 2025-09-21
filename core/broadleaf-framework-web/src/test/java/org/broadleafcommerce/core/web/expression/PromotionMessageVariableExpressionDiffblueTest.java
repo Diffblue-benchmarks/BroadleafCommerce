@@ -25,6 +25,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -36,7 +37,6 @@ import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.service.CatalogURLService;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
@@ -60,52 +60,55 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class PromotionMessageVariableExpressionDiffblueTest {
-  @Mock
-  private CatalogURLService catalogURLService;
+  @Mock private List<PromotionMessageGenerator> list;
 
-  @Mock
-  private List<PromotionMessageGenerator> list;
-
-  @InjectMocks
-  private PromotionMessageVariableExpression promotionMessageVariableExpression;
+  @InjectMocks private PromotionMessageVariableExpression promotionMessageVariableExpression;
 
   /**
    * Test {@link PromotionMessageVariableExpression#getName()}.
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getName()}
+   *
+   * <p>Method under test: {@link PromotionMessageVariableExpression#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String PromotionMessageVariableExpression.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("promotion_messages", (new PromotionMessageVariableExpression()).getName());
+    assertEquals("promotion_messages", new PromotionMessageVariableExpression().getName());
   }
 
   /**
    * Test {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}.
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
    */
   @Test
   @DisplayName("Test getProductPromotionMessages(Product, String[])")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"
+  })
   void testGetProductPromotionMessages() {
     // Arrange
     HashMap<String, List<PromotionMessageDTO>> stringListMap = new HashMap<>();
     stringListMap.put("Stripping out invalid promotion message placement ", new ArrayList<>());
+
     PromotionMessageGenerator promotionMessageGenerator = mock(PromotionMessageGenerator.class);
-    when(promotionMessageGenerator.generatePromotionMessages(Mockito.<Product>any())).thenReturn(stringListMap);
+    when(promotionMessageGenerator.generatePromotionMessages(Mockito.<Product>any()))
+        .thenReturn(stringListMap);
 
     ArrayList<PromotionMessageGenerator> promotionMessageGeneratorList = new ArrayList<>();
     promotionMessageGeneratorList.add(promotionMessageGenerator);
     when(list.iterator()).thenReturn(promotionMessageGeneratorList.iterator());
 
     // Act
-    List<PromotionMessageDTO> actualProductPromotionMessages = promotionMessageVariableExpression
-        .getProductPromotionMessages(new ProductBundleImpl(), "Placements");
+    List<PromotionMessageDTO> actualProductPromotionMessages =
+        promotionMessageVariableExpression.getProductPromotionMessages(
+            new ProductBundleImpl(), "Placements");
 
     // Assert
     verify(list).iterator();
@@ -115,28 +118,36 @@ class PromotionMessageVariableExpressionDiffblueTest {
 
   /**
    * Test {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}.
+   *
    * <ul>
-   *   <li>Then calls {@link PromotionMessageGenerator#generatePromotionMessages(Product)}.</li>
+   *   <li>Then calls {@link PromotionMessageGenerator#generatePromotionMessages(Product)}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
    */
   @Test
-  @DisplayName("Test getProductPromotionMessages(Product, String[]); then calls generatePromotionMessages(Product)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"})
+  @DisplayName(
+      "Test getProductPromotionMessages(Product, String[]); then calls generatePromotionMessages(Product)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"
+  })
   void testGetProductPromotionMessages_thenCallsGeneratePromotionMessages() {
     // Arrange
     PromotionMessageGenerator promotionMessageGenerator = mock(PromotionMessageGenerator.class);
-    when(promotionMessageGenerator.generatePromotionMessages(Mockito.<Product>any())).thenReturn(new HashMap<>());
+    when(promotionMessageGenerator.generatePromotionMessages(Mockito.<Product>any()))
+        .thenReturn(new HashMap<>());
 
     ArrayList<PromotionMessageGenerator> promotionMessageGeneratorList = new ArrayList<>();
     promotionMessageGeneratorList.add(promotionMessageGenerator);
     when(list.iterator()).thenReturn(promotionMessageGeneratorList.iterator());
 
     // Act
-    List<PromotionMessageDTO> actualProductPromotionMessages = promotionMessageVariableExpression
-        .getProductPromotionMessages(new ProductBundleImpl(), "Placements");
+    List<PromotionMessageDTO> actualProductPromotionMessages =
+        promotionMessageVariableExpression.getProductPromotionMessages(
+            new ProductBundleImpl(), "Placements");
 
     // Assert
     verify(list).iterator();
@@ -146,25 +157,32 @@ class PromotionMessageVariableExpressionDiffblueTest {
 
   /**
    * Test {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}.
+   *
    * <ul>
-   *   <li>When {@code Placements}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code Placements}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getProductPromotionMessages(Product, String[])}
    */
   @Test
-  @DisplayName("Test getProductPromotionMessages(Product, String[]); when 'Placements'; then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"})
+  @DisplayName(
+      "Test getProductPromotionMessages(Product, String[]); when 'Placements'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PromotionMessageVariableExpression.getProductPromotionMessages(Product, String[])"
+  })
   void testGetProductPromotionMessages_whenPlacements_thenReturnEmpty() {
     // Arrange
     ArrayList<PromotionMessageGenerator> promotionMessageGeneratorList = new ArrayList<>();
     when(list.iterator()).thenReturn(promotionMessageGeneratorList.iterator());
 
     // Act
-    List<PromotionMessageDTO> actualProductPromotionMessages = promotionMessageVariableExpression
-        .getProductPromotionMessages(new ProductBundleImpl(), "Placements");
+    List<PromotionMessageDTO> actualProductPromotionMessages =
+        promotionMessageVariableExpression.getProductPromotionMessages(
+            new ProductBundleImpl(), "Placements");
 
     // Assert
     verify(list).iterator();
@@ -173,29 +191,37 @@ class PromotionMessageVariableExpressionDiffblueTest {
 
   /**
    * Test {@link PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return size is two.</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}
    */
   @Test
-  @DisplayName("Test getItemPromotionMessages(OrderItem); given Auditable (default constructor) CreatedBy is one; then return size is two")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getItemPromotionMessages(OrderItem); given Auditable (default constructor) CreatedBy is one; then return size is two")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PromotionMessageVariableExpression.getItemPromotionMessages(OrderItem)"})
   void testGetItemPromotionMessages_givenAuditableCreatedByIsOne_thenReturnSizeIsTwo() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
@@ -292,7 +318,8 @@ class PromotionMessageVariableExpressionDiffblueTest {
     orderItem.setOrderItemPriceDetails(orderItemPriceDetails2);
 
     // Act
-    List<String> actualItemPromotionMessages = promotionMessageVariableExpression.getItemPromotionMessages(orderItem);
+    List<String> actualItemPromotionMessages =
+        promotionMessageVariableExpression.getItemPromotionMessages(orderItem);
 
     // Assert
     assertEquals(2, actualItemPromotionMessages.size());
@@ -302,40 +329,54 @@ class PromotionMessageVariableExpressionDiffblueTest {
 
   /**
    * Test {@link PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}.
+   *
    * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link BundleOrderItemImpl} (default constructor).
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getItemPromotionMessages(OrderItem)}
    */
   @Test
-  @DisplayName("Test getItemPromotionMessages(OrderItem); when BundleOrderItemImpl (default constructor); then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test getItemPromotionMessages(OrderItem); when BundleOrderItemImpl (default constructor); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PromotionMessageVariableExpression.getItemPromotionMessages(OrderItem)"})
   void testGetItemPromotionMessages_whenBundleOrderItemImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(promotionMessageVariableExpression.getItemPromotionMessages(new BundleOrderItemImpl()).isEmpty());
+    assertTrue(
+        promotionMessageVariableExpression
+            .getItemPromotionMessages(new BundleOrderItemImpl())
+            .isEmpty());
   }
 
   /**
    * Test {@link PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}
    */
   @Test
   @DisplayName("Test getAppliedOfferNamesForOrderItem(OrderItem); then return size is one")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List PromotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(OrderItem)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PromotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(OrderItem)"
+  })
   void testGetAppliedOfferNamesForOrderItem_thenReturnSizeIsOne() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItemPriceDetailAdjustment> orderItemPriceDetailAdjustments = new ArrayList<>();
@@ -384,8 +425,8 @@ class PromotionMessageVariableExpressionDiffblueTest {
     orderItem.setOrderItemPriceDetails(orderItemPriceDetails);
 
     // Act
-    List<String> actualAppliedOfferNamesForOrderItem = promotionMessageVariableExpression
-        .getAppliedOfferNamesForOrderItem(orderItem);
+    List<String> actualAppliedOfferNamesForOrderItem =
+        promotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(orderItem);
 
     // Assert
     assertEquals(1, actualAppliedOfferNamesForOrderItem.size());
@@ -394,65 +435,88 @@ class PromotionMessageVariableExpressionDiffblueTest {
 
   /**
    * Test {@link PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}.
+   *
    * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link BundleOrderItemImpl} (default constructor).
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#getAppliedOfferNamesForOrderItem(OrderItem)}
    */
   @Test
-  @DisplayName("Test getAppliedOfferNamesForOrderItem(OrderItem); when BundleOrderItemImpl (default constructor); then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"List PromotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(OrderItem)"})
+  @DisplayName(
+      "Test getAppliedOfferNamesForOrderItem(OrderItem); when BundleOrderItemImpl (default constructor); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List PromotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(OrderItem)"
+  })
   void testGetAppliedOfferNamesForOrderItem_whenBundleOrderItemImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue(
-        promotionMessageVariableExpression.getAppliedOfferNamesForOrderItem(new BundleOrderItemImpl()).isEmpty());
+        promotionMessageVariableExpression
+            .getAppliedOfferNamesForOrderItem(new BundleOrderItemImpl())
+            .isEmpty());
   }
 
   /**
    * Test {@link PromotionMessageVariableExpression#filterInvalidPlacements(String[])}.
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#filterInvalidPlacements(String[])}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#filterInvalidPlacements(String[])}
    */
   @Test
   @DisplayName("Test filterInvalidPlacements(String[])")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PromotionMessageVariableExpression.filterInvalidPlacements(String[])"})
   void testFilterInvalidPlacements() {
     // Arrange, Act and Assert
-    assertTrue(promotionMessageVariableExpression
-        .filterInvalidPlacements(new String[]{"Stripping out invalid promotion message placement "})
-        .isEmpty());
+    assertTrue(
+        promotionMessageVariableExpression
+            .filterInvalidPlacements(
+                new String[] {
+                  "Stripping out invalid promotion message placement ",
+                  ". See PromotionMessagePlacementType for valid placements"
+                })
+            .isEmpty());
   }
 
   /**
    * Test {@link PromotionMessageVariableExpression#filterInvalidPlacements(String[])}.
+   *
    * <ul>
-   *   <li>When array of {@link String} with {@code Placements}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When array of {@link String} with {@code Placements}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#filterInvalidPlacements(String[])}
+   *
+   * <p>Method under test: {@link
+   * PromotionMessageVariableExpression#filterInvalidPlacements(String[])}
    */
   @Test
-  @DisplayName("Test filterInvalidPlacements(String[]); when array of String with 'Placements'; then return Empty")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test filterInvalidPlacements(String[]); when array of String with 'Placements'; then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PromotionMessageVariableExpression.filterInvalidPlacements(String[])"})
   void testFilterInvalidPlacements_whenArrayOfStringWithPlacements_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(promotionMessageVariableExpression.filterInvalidPlacements(new String[]{"Placements"}).isEmpty());
+    assertTrue(
+        promotionMessageVariableExpression
+            .filterInvalidPlacements(new String[] {"Placements"})
+            .isEmpty());
   }
 
   /**
    * Test {@link PromotionMessageVariableExpression#isValidPlacementType(String)}.
-   * <p>
-   * Method under test: {@link PromotionMessageVariableExpression#isValidPlacementType(String)}
+   *
+   * <p>Method under test: {@link PromotionMessageVariableExpression#isValidPlacementType(String)}
    */
   @Test
   @DisplayName("Test isValidPlacementType(String)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PromotionMessageVariableExpression.isValidPlacementType(String)"})
   void testIsValidPlacementType() {
     // Arrange, Act and Assert

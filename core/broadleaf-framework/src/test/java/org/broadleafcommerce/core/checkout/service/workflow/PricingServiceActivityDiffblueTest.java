@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.checkout.service.workflow;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,11 +29,12 @@ import org.junit.experimental.categories.Category;
 public class PricingServiceActivityDiffblueTest {
   /**
    * Test new {@link PricingServiceActivity} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link PricingServiceActivity}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link PricingServiceActivity}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PricingServiceActivity.<init>()"})
   public void testNewPricingServiceActivity() {
     // Arrange and Act

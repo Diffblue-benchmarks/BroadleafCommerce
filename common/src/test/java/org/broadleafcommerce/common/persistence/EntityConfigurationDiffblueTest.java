@@ -19,9 +19,11 @@ package org.broadleafcommerce.common.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Set;
@@ -33,32 +35,53 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeansException;
-import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class EntityConfigurationDiffblueTest {
-  @InjectMocks
-  private EntityConfiguration entityConfiguration;
+  @InjectMocks private EntityConfiguration entityConfiguration;
 
-  @Mock
-  private Set<String> set;
+  @Mock private Set<String> set;
 
   /**
    * Test {@link EntityConfiguration#configureMergedItems()}.
-   * <ul>
-   *   <li>Given {@link EntityConfiguration} (default constructor).</li>
-   *   <li>Then array length is zero.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EntityConfiguration#configureMergedItems()}
+   *
+   * <p>Method under test: {@link EntityConfiguration#configureMergedItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void EntityConfiguration.configureMergedItems()"})
+  public void testConfigureMergedItems() {
+    // Arrange
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    entityConfiguration.setEntityContexts(new Resource[] {});
+
+    // Act
+    entityConfiguration.configureMergedItems();
+
+    // Assert
+    assertEquals(0, entityConfiguration.getEntityBeanNames().length);
+    assertEquals(0, entityConfiguration.getEntityContexts().length);
+  }
+
+  /**
+   * Test {@link EntityConfiguration#configureMergedItems()}.
+   *
+   * <ul>
+   *   <li>Given {@link EntityConfiguration} (default constructor).
+   *   <li>Then array length is zero.
+   * </ul>
+   *
+   * <p>Method under test: {@link EntityConfiguration#configureMergedItems()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EntityConfiguration.configureMergedItems()"})
   public void testConfigureMergedItems_givenEntityConfiguration_thenArrayLengthIsZero() {
     // Arrange
@@ -74,15 +97,17 @@ public class EntityConfigurationDiffblueTest {
 
   /**
    * Test {@link EntityConfiguration#configureMergedItems()}.
+   *
    * <ul>
-   *   <li>Given {@link Set} {@link Set#isEmpty()} return {@code false}.</li>
-   *   <li>Then calls {@link Set#iterator()}.</li>
+   *   <li>Given {@link Set} {@link Set#isEmpty()} return {@code false}.
+   *   <li>Then calls {@link Set#iterator()}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityConfiguration#configureMergedItems()}
+   *
+   * <p>Method under test: {@link EntityConfiguration#configureMergedItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EntityConfiguration.configureMergedItems()"})
   public void testConfigureMergedItems_givenSetIsEmptyReturnFalse_thenCallsIterator() {
     // Arrange
@@ -103,15 +128,17 @@ public class EntityConfigurationDiffblueTest {
 
   /**
    * Test {@link EntityConfiguration#configureMergedItems()}.
+   *
    * <ul>
-   *   <li>Given {@link Set} {@link Set#isEmpty()} return {@code true}.</li>
-   *   <li>Then calls {@link Set#isEmpty()}.</li>
+   *   <li>Given {@link Set} {@link Set#isEmpty()} return {@code true}.
+   *   <li>Then calls {@link Set#isEmpty()}.
    * </ul>
-   * <p>
-   * Method under test: {@link EntityConfiguration#configureMergedItems()}
+   *
+   * <p>Method under test: {@link EntityConfiguration#configureMergedItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EntityConfiguration.configureMergedItems()"})
   public void testConfigureMergedItems_givenSetIsEmptyReturnTrue_thenCallsIsEmpty() {
     // Arrange
@@ -128,8 +155,9 @@ public class EntityConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EntityConfiguration#setApplicationContext(ApplicationContext)}
    *   <li>{@link EntityConfiguration#setEntityContexts(Resource[])}
@@ -137,17 +165,20 @@ public class EntityConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Resource[] EntityConfiguration.getEntityContexts()",
-      "void EntityConfiguration.setApplicationContext(ApplicationContext)",
-      "void EntityConfiguration.setEntityContexts(Resource[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Resource[] EntityConfiguration.getEntityContexts()",
+    "void EntityConfiguration.setApplicationContext(ApplicationContext)",
+    "void EntityConfiguration.setEntityContexts(Resource[])"
+  })
   public void testGettersAndSetters() throws BeansException {
     // Arrange
     EntityConfiguration entityConfiguration = new EntityConfiguration();
 
     // Act
-    entityConfiguration.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
-    Resource[] entityContexts = new Resource[]{new GeneratedResource()};
+    entityConfiguration.setApplicationContext(mock(ApplicationContext.class));
+    Resource[] entityContexts = new Resource[] {new GeneratedResource()};
     entityConfiguration.setEntityContexts(entityContexts);
 
     // Assert

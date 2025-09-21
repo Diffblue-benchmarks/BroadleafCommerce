@@ -22,64 +22,60 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.template.TemplateType;
-import org.broadleafcommerce.core.search.service.SearchService;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
-import org.broadleafcommerce.core.web.security.XssRequestWrapper;
-import org.broadleafcommerce.core.web.service.SearchFacetDTOService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.web.servlet.ModelAndView;
 
-@ExtendWith(MockitoExtension.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@ExtendWith(MockitoExtension.class)
 class BroadleafCategoryControllerDiffblueTest {
-  @InjectMocks
-  private BroadleafCategoryController broadleafCategoryController;
-
-  @Mock
-  private SearchFacetDTOService searchFacetDTOService;
-
-  @Mock
-  private SearchService searchService;
+  @InjectMocks private BroadleafCategoryController broadleafCategoryController;
 
   /**
-   * Test {@link BroadleafCategoryController#handleRequest(HttpServletRequest, HttpServletResponse)}.
-   * <p>
-   * Method under test: {@link BroadleafCategoryController#handleRequest(HttpServletRequest, HttpServletResponse)}
+   * Test {@link BroadleafCategoryController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}.
+   *
+   * <p>Method under test: {@link BroadleafCategoryController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
    */
   @Test
   @DisplayName("Test handleRequest(HttpServletRequest, HttpServletResponse)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"ModelAndView BroadleafCategoryController.handleRequest(HttpServletRequest, HttpServletResponse)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafCategoryController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
   void testHandleRequest() throws Exception {
     // Arrange
     MockHttpServletRequest servletRequest = new MockHttpServletRequest();
     servletRequest.addParameter("facetField", "42");
     servletRequest.addParameter("https://example.org/example", "https://example.org/example");
-    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(servletRequest));
 
     // Act
-    ModelAndView actualHandleRequestResult = broadleafCategoryController.handleRequest(request,
-        new MockHttpServletResponse());
+    ModelAndView actualHandleRequestResult =
+        broadleafCategoryController.handleRequest(request, new MockHttpServletResponse());
 
     // Assert
-    assertEquals("redirect:http://localhost?https%3A%2F%2Fexample.org%2Fexample=https%3A%2F%2Fexample.org%2Fexample",
+    assertEquals(
+        "redirect:http://localhost?https%3A%2F%2Fexample.org%2Fexample=https%3A%2F%2Fexample.org%2Fexample",
         actualHandleRequestResult.getViewName());
     assertNull(actualHandleRequestResult.getStatus());
     assertNull(actualHandleRequestResult.getView());
@@ -92,31 +88,73 @@ class BroadleafCategoryControllerDiffblueTest {
   }
 
   /**
+   * Test {@link BroadleafCategoryController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}.
+   *
+   * <ul>
+   *   <li>Then return ViewName is {@code redirect:http://localhost}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BroadleafCategoryController#handleRequest(HttpServletRequest,
+   * HttpServletResponse)}
+   */
+  @Test
+  @DisplayName(
+      "Test handleRequest(HttpServletRequest, HttpServletResponse); then return ViewName is 'redirect:http://localhost'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ModelAndView BroadleafCategoryController.handleRequest(HttpServletRequest, HttpServletResponse)"
+  })
+  void testHandleRequest_thenReturnViewNameIsRedirectHttpLocalhost() throws Exception {
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    servletRequest.addParameter("facetField", "https://example.org/example");
+    servletRequest.addParameter("https://example.org/example", "https://example.org/example");
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(servletRequest));
+
+    // Act
+    ModelAndView actualHandleRequestResult =
+        broadleafCategoryController.handleRequest(request, new MockHttpServletResponse());
+
+    // Assert
+    assertEquals("redirect:http://localhost", actualHandleRequestResult.getViewName());
+    assertNull(actualHandleRequestResult.getStatus());
+    assertNull(actualHandleRequestResult.getView());
+    assertFalse(actualHandleRequestResult.isEmpty());
+    Map<String, Object> model = actualHandleRequestResult.getModel();
+    assertTrue(model.isEmpty());
+    assertTrue(actualHandleRequestResult.hasView());
+    assertTrue(actualHandleRequestResult.isReference());
+    assertSame(model, actualHandleRequestResult.getModelMap());
+  }
+
+  /**
    * Test {@link BroadleafCategoryController#getTemplateType(HttpServletRequest)}.
-   * <p>
-   * Method under test: {@link BroadleafCategoryController#getTemplateType(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link BroadleafCategoryController#getTemplateType(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test getTemplateType(HttpServletRequest)")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"TemplateType BroadleafCategoryController.getTemplateType(HttpServletRequest)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "TemplateType BroadleafCategoryController.getTemplateType(HttpServletRequest)"
+  })
   void testGetTemplateType() {
-    // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-
-    // Act
-    TemplateType actualTemplateType = broadleafCategoryController
-        .getTemplateType(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
-
-    // Assert
-    assertSame(actualTemplateType.CATEGORY, actualTemplateType);
+    // Arrange, Act and Assert
+    assertSame(
+        TemplateType.CATEGORY,
+        broadleafCategoryController.getTemplateType(
+            new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()))));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafCategoryController}
    *   <li>{@link BroadleafCategoryController#getDefaultCategoryView()}
@@ -125,13 +163,17 @@ class BroadleafCategoryControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void BroadleafCategoryController.<init>()",
-      "String BroadleafCategoryController.getDefaultCategoryView()",
-      "SearchService BroadleafCategoryController.getSearchService()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafCategoryController.<init>()",
+    "String BroadleafCategoryController.getDefaultCategoryView()",
+    "org.broadleafcommerce.core.search.service.SearchService BroadleafCategoryController.getSearchService()"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
-    BroadleafCategoryController actualBroadleafCategoryController = new BroadleafCategoryController();
+    BroadleafCategoryController actualBroadleafCategoryController =
+        new BroadleafCategoryController();
     String actualDefaultCategoryView = actualBroadleafCategoryController.getDefaultCategoryView();
 
     // Assert

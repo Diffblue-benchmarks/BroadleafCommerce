@@ -19,11 +19,11 @@ package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.broadleafcommerce.core.inventory.service.ContextualInventoryService;
 import org.broadleafcommerce.core.workflow.Activity;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
@@ -31,124 +31,162 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DecrementInventoryRollbackHandlerDiffblueTest {
-  @Mock
-  private ContextualInventoryService contextualInventoryService;
-
-  @InjectMocks
-  private DecrementInventoryRollbackHandler decrementInventoryRollbackHandler;
+  @InjectMocks private DecrementInventoryRollbackHandler decrementInventoryRollbackHandler;
 
   /**
    * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   * <p>
-   * Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   *
+   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
+   * ProcessContext, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
+  })
   public void testShouldExecute() {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, "State Configuration");
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED,
+        "State Configuration");
     stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, null);
 
     // Act and Assert
-    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
+    assertTrue(
+        decrementInventoryRollbackHandler.shouldExecute(
+            activity, processContext, stateConfiguration));
   }
 
   /**
    * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
-   * <p>
-   * Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   *
+   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
+   * ProcessContext, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
+  })
   public void testShouldExecute2() {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, "State Configuration");
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED,
+        "State Configuration");
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
     stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, null);
 
     // Act and Assert
-    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
+    assertTrue(
+        decrementInventoryRollbackHandler.shouldExecute(
+            activity, processContext, stateConfiguration));
   }
 
   /**
    * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
+   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()} {@link DecrementInventoryRollbackHandler#EXTENDED_ROLLBACK_STATE} is {@code State Configuration}.</li>
+   *   <li>When {@link HashMap#HashMap()} {@link
+   *       DecrementInventoryRollbackHandler#EXTENDED_ROLLBACK_STATE} is {@code State
+   *       Configuration}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   *
+   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
+   * ProcessContext, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
+  })
   public void testShouldExecute_whenHashMapExtended_rollback_stateIsStateConfiguration() {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     HashMap<String, Object> stateConfiguration = new HashMap<>();
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
-    stateConfiguration.put(DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
-    stateConfiguration.put(DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, "State Configuration");
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_DECREMENTED, null);
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.ROLLBACK_BLC_INVENTORY_INCREMENTED, null);
+    stateConfiguration.put(
+        DecrementInventoryRollbackHandler.EXTENDED_ROLLBACK_STATE, "State Configuration");
 
     // Act and Assert
-    assertTrue(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, stateConfiguration));
+    assertTrue(
+        decrementInventoryRollbackHandler.shouldExecute(
+            activity, processContext, stateConfiguration));
   }
 
   /**
    * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
+   *
    * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link HashMap#HashMap()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   *
+   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
+   * ProcessContext, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
+  })
   public void testShouldExecute_whenHashMap_thenReturnFalse() {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
     DefaultProcessContextImpl<CheckoutSeed> processContext = new DefaultProcessContextImpl<>();
 
     // Act and Assert
-    assertFalse(decrementInventoryRollbackHandler.shouldExecute(activity, processContext, new HashMap<>()));
+    assertFalse(
+        decrementInventoryRollbackHandler.shouldExecute(activity, processContext, new HashMap<>()));
   }
 
   /**
    * Test {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity, ProcessContext, Map)}
+   *
+   * <p>Method under test: {@link DecrementInventoryRollbackHandler#shouldExecute(Activity,
+   * ProcessContext, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DecrementInventoryRollbackHandler.shouldExecute(Activity, ProcessContext, Map)"
+  })
   public void testShouldExecute_whenNull_thenReturnFalse() {
     // Arrange
     CommitTaxActivity activity = new CommitTaxActivity(new CommitTaxRollbackHandler());
 
     // Act and Assert
-    assertFalse(decrementInventoryRollbackHandler.shouldExecute(activity, new DefaultProcessContextImpl<>(), null));
+    assertFalse(
+        decrementInventoryRollbackHandler.shouldExecute(
+            activity, new DefaultProcessContextImpl<>(), null));
   }
 }

@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
@@ -38,8 +39,9 @@ import org.mockito.Mockito;
 public class FeaturedProductImplDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#setCategory(Category)}
    *   <li>{@link FeaturedProductImpl#setId(Long)}
@@ -55,13 +57,21 @@ public class FeaturedProductImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Category FeaturedProductImpl.getCategory()", "Long FeaturedProductImpl.getId()",
-      "Product FeaturedProductImpl.getProduct()", "String FeaturedProductImpl.getPromotionMessage()",
-      "Product FeaturedProductImpl.getRelatedProduct()", "BigDecimal FeaturedProductImpl.getSequence()",
-      "void FeaturedProductImpl.setCategory(Category)", "void FeaturedProductImpl.setId(Long)",
-      "void FeaturedProductImpl.setProduct(Product)", "void FeaturedProductImpl.setPromotionMessage(String)",
-      "void FeaturedProductImpl.setSequence(BigDecimal)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Category FeaturedProductImpl.getCategory()",
+    "Long FeaturedProductImpl.getId()",
+    "Product FeaturedProductImpl.getProduct()",
+    "String FeaturedProductImpl.getPromotionMessage()",
+    "Product FeaturedProductImpl.getRelatedProduct()",
+    "BigDecimal FeaturedProductImpl.getSequence()",
+    "void FeaturedProductImpl.setCategory(Category)",
+    "void FeaturedProductImpl.setId(Long)",
+    "void FeaturedProductImpl.setProduct(Product)",
+    "void FeaturedProductImpl.setPromotionMessage(String)",
+    "void FeaturedProductImpl.setSequence(BigDecimal)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -94,20 +104,26 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -126,26 +142,31 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    int expectedHashCodeResult = featuredProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
+    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
   }
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -164,26 +185,31 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    int expectedHashCodeResult = featuredProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
+    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
   }
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -202,26 +228,31 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    int expectedHashCodeResult = featuredProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
+    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
   }
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -240,26 +271,74 @@ public class FeaturedProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(featuredProductImpl, featuredProductImpl2);
-    int expectedHashCodeResult = featuredProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, featuredProductImpl2.hashCode());
+    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
   }
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link FeaturedProductImpl#equals(Object)}
    *   <li>{@link FeaturedProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    featuredProductImpl.setCategory(new CategoryImpl());
+    featuredProductImpl.setId(1L);
+    featuredProductImpl.setProduct(new ProductBundleImpl());
+    featuredProductImpl.setPromotionMessage("Promotion Message");
+    featuredProductImpl.setSequence(null);
+
+    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
+    featuredProductImpl2.setCategory(new CategoryImpl());
+    featuredProductImpl2.setId(1L);
+    featuredProductImpl2.setProduct(new ProductBundleImpl());
+    featuredProductImpl2.setPromotionMessage("Promotion Message");
+    featuredProductImpl2.setSequence(null);
+
+    // Act and Assert
+    assertEquals(featuredProductImpl, featuredProductImpl2);
+    assertEquals(featuredProductImpl.hashCode(), featuredProductImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link FeaturedProductImpl#equals(Object)}, and {@link FeaturedProductImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link FeaturedProductImpl#equals(Object)}
+   *   <li>{@link FeaturedProductImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -277,16 +356,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -309,16 +393,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -341,16 +430,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -376,16 +470,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -408,16 +507,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -440,16 +544,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -472,49 +581,22 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
-    // Arrange
-    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    featuredProductImpl.setCategory(new CategoryImpl());
-    featuredProductImpl.setId(1L);
-    featuredProductImpl.setProduct(new ProductBundleImpl());
-    featuredProductImpl.setPromotionMessage("Promotion Message");
-    featuredProductImpl.setSequence(new BigDecimal("4.5"));
-
-    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
-    featuredProductImpl2.setCategory(new CategoryImpl());
-    featuredProductImpl2.setId(1L);
-    featuredProductImpl2.setProduct(new ProductBundleImpl());
-    featuredProductImpl2.setPromotionMessage("Promotion Message");
-    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertNotEquals(featuredProductImpl, featuredProductImpl2);
-  }
-
-  /**
-   * Test {@link FeaturedProductImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
     featuredProductImpl.setCategory(new CategoryImpl());
@@ -536,16 +618,58 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
+    featuredProductImpl.setCategory(new CategoryImpl());
+    featuredProductImpl.setId(1L);
+    featuredProductImpl.setProduct(new ProductBundleImpl());
+    featuredProductImpl.setPromotionMessage("Promotion Message");
+    featuredProductImpl.setSequence(BigDecimal.valueOf(1L));
+
+    FeaturedProductImpl featuredProductImpl2 = new FeaturedProductImpl();
+    featuredProductImpl2.setCategory(new CategoryImpl());
+    featuredProductImpl2.setId(1L);
+    featuredProductImpl2.setProduct(new ProductBundleImpl());
+    featuredProductImpl2.setPromotionMessage("Promotion Message");
+    featuredProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertNotEquals(featuredProductImpl, featuredProductImpl2);
+  }
+
+  /**
+   * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -561,16 +685,21 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FeaturedProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FeaturedProductImpl.equals(Object)", "int FeaturedProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FeaturedProductImpl.equals(Object)",
+    "int FeaturedProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
@@ -586,23 +715,27 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test {@link FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * FeaturedProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse FeaturedProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FeaturedProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
     FeaturedProductImpl featuredProductImpl = new FeaturedProductImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
 
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(new FeaturedProductImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FeaturedProduct> actualCreateOrRetrieveCopyInstanceResult = featuredProductImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<FeaturedProduct> actualCreateOrRetrieveCopyInstanceResult =
+        featuredProductImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -611,11 +744,12 @@ public class FeaturedProductImplDiffblueTest {
 
   /**
    * Test new {@link FeaturedProductImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link FeaturedProductImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link FeaturedProductImpl}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FeaturedProductImpl.<init>()"})
   public void testNewFeaturedProductImpl() {
     // Arrange and Act

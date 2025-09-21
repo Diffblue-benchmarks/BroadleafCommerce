@@ -29,13 +29,12 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.common.payment.PaymentGatewayType;
-import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
@@ -54,8 +53,6 @@ import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceMan
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
-import org.broadleafcommerce.profile.core.domain.AddressImpl;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
 import org.broadleafcommerce.profile.core.service.CustomerPaymentService;
@@ -72,21 +69,25 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   @InjectMocks
   private CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
 
-  @Mock
-  private CustomerPaymentService customerPaymentService;
+  @Mock private CustomerPaymentService customerPaymentService;
 
   /**
    * Test {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleInspect(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleInspect(PersistencePackage)"
+  })
   public void testCanHandleInspect_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(customerPaymentCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
@@ -94,35 +95,47 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleFetch(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean CustomerPaymentCustomPersistenceHandler.canHandleFetch(PersistencePackage)"
+  })
   public void testCanHandleFetch_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(customerPaymentCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage,
+   * DynamicEntityDao, InspectHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.</li>
-   *   <li>Then return PromptSearch is {@code null}.</li>
+   *   <li>Given {@link ClassMetadata} (default constructor) CeilingType is {@code Type}.
+   *   <li>Then return PromptSearch is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao,
+   * InspectHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"})
-  public void testInspect_givenClassMetadataCeilingTypeIsType_thenReturnPromptSearchIsNull() throws ServiceException {
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.inspect(PersistencePackage, DynamicEntityDao, InspectHelper)"
+  })
+  public void testInspect_givenClassMetadataCeilingTypeIsType_thenReturnPromptSearchIsNull()
+      throws ServiceException {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
@@ -131,22 +144,31 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     classMetadata.setCeilingType("Type");
     classMetadata.setCurrencyCode("GBP");
     classMetadata.setPolymorphicEntities(new ClassTree());
-    classMetadata.setProperties(new Property[]{new Property()});
+    classMetadata.setProperties(new Property[] {new Property()});
     classMetadata.setSecurityCeilingType("Security Ceiling Type");
     classMetadata.setTabAndGroupMetadata(new HashMap<>());
+
     PersistenceManagerImpl helper = mock(PersistenceManagerImpl.class);
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(
+            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
-    when(helper.buildClassMetadata(Mockito.<Class<Object>[]>any(), Mockito.<PersistencePackage>any(),
-        Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any())).thenReturn(classMetadata);
+    when(helper.buildClassMetadata(
+            Mockito.<Class<Object>[]>any(),
+            Mockito.<PersistencePackage>any(),
+            Mockito.<Map<MergedPropertyType, Map<String, FieldMetadata>>>any()))
+        .thenReturn(classMetadata);
 
     // Act
-    DynamicResultSet actualInspectResult = customerPaymentCustomPersistenceHandler.inspect(persistencePackage,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualInspectResult =
+        customerPaymentCustomPersistenceHandler.inspect(
+            persistencePackage, dynamicEntityDao, helper);
 
     // Assert
-    verify(helper).buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"), isNull());
+    verify(helper)
+        .buildClassMetadata(isA(Class[].class), isA(PersistencePackage.class), isA(Map.class));
+    verify(helper)
+        .getSimpleMergedProperties(
+            eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"), isNull());
     assertNull(actualInspectResult.getPromptSearch());
     assertNull(actualInspectResult.getTotalCountLessThanPageSize());
     assertNull(actualInspectResult.getBatchId());
@@ -164,14 +186,18 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
   public void testFetch() throws ServiceException {
     // Arrange
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
@@ -181,41 +207,55 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    DynamicResultSet dynamicResultSet = new DynamicResultSet(new Entity[]{new Entity()}, 1);
 
-    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    Entity[] records = new Entity[] {new Entity()};
+    DynamicResultSet dynamicResultSet = new DynamicResultSet(records, 1);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult = customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult =
+        customerPaymentCustomPersistenceHandler.fetch(
+            persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerPaymentService} {@link CustomerPaymentService#readCustomerPaymentById(Long)} return {@code null}.</li>
+   *   <li>Given {@link CustomerPaymentService} {@link
+   *       CustomerPaymentService#readCustomerPaymentById(Long)} return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
-  public void testFetch_givenCustomerPaymentServiceReadCustomerPaymentByIdReturnNull() throws ServiceException {
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
+  public void testFetch_givenCustomerPaymentServiceReadCustomerPaymentByIdReturnNull()
+      throws ServiceException {
     // Arrange
     when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(null);
+
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -223,45 +263,58 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("id", "42"));
+
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    customerPaymentCustomPersistenceHandler.fetch(
+        persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
     verify(dynamicResultSet).getRecords();
-    verify(entity).findProperty(eq("id"));
+    verify(entity).findProperty("id");
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
-    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(customerPaymentService).readCustomerPaymentById(42L);
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#addProperty(Property)} does nothing.</li>
-   *   <li>Then calls {@link Entity#addProperty(Property)}.</li>
+   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@code null}.
+   *   <li>Then calls {@link DynamicResultSet#getRecords()}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
-  public void testFetch_givenEntityAddPropertyDoesNothing_thenCallsAddProperty() throws ServiceException {
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
+  public void testFetch_givenEntityFindPropertyReturnNull_thenCallsGetRecords()
+      throws ServiceException {
     // Arrange
-    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -269,47 +322,128 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(null);
+
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    customerPaymentCustomPersistenceHandler.fetch(
+        persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(entity).findProperty("id");
+    verify(persistencePerspective).getOperationTypes();
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
+  }
+
+  /**
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
+   * <ul>
+   *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return {@link
+   *       Property#Property(String, String)} with name is {@code id} and value is {@code 42}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
+  public void testFetch_givenEntityFindPropertyReturnPropertyWithNameIsIdAndValueIs42()
+      throws ServiceException {
+    // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any()))
+        .thenReturn(new CustomerPaymentImpl());
+
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addProperty(Mockito.<Property>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("id", "42"));
+
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    customerPaymentCustomPersistenceHandler.fetch(
+        persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
     verify(dynamicResultSet).getRecords();
     verify(entity).addProperty(isA(Property.class));
-    verify(entity).findProperty(eq("id"));
+    verify(entity).findProperty("id");
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
-    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(customerPaymentService).readCustomerPaymentById(42L);
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
-   *   <li>Then calls {@link Property#getValue()}.</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
+   *   <li>Then calls {@link Property#getValue()}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
-  public void testFetch_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
+  public void testFetch_givenHashMapFooIsFoo_thenCallsGetValue() throws ServiceException {
     // Arrange
-    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any())).thenReturn(new CustomerPaymentImpl());
+    HashMap<String, String> additionalFields = new HashMap<>();
+    additionalFields.put("foo", "foo");
+
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    customerPaymentImpl.setAdditionalFields(additionalFields);
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any()))
+        .thenReturn(customerPaymentImpl);
+
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
     when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
 
@@ -317,46 +451,127 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
     Property property = mock(Property.class);
     when(property.getValue()).thenReturn("42");
+
     Entity entity = mock(Entity.class);
     doNothing().when(entity).addProperty(Mockito.<Property>any());
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
     DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
-    when(dynamicResultSet.getRecords()).thenReturn(new Entity[]{entity});
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
-    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto, dynamicEntityDao, helper);
+    customerPaymentCustomPersistenceHandler.fetch(
+        persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
     verify(dynamicResultSet).getRecords();
     verify(entity).addProperty(isA(Property.class));
-    verify(entity).findProperty(eq("id"));
+    verify(entity).findProperty("id");
     verify(persistencePerspective).getOperationTypes();
     verify(property).getValue();
-    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
-    verify(customerPaymentService).readCustomerPaymentById(eq(42L));
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(customerPaymentService).readCustomerPaymentById(42L);
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
    * <ul>
-   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.
+   *   <li>Then calls {@link Property#getValue()}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"})
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
+  public void testFetch_givenPropertyGetValueReturn42_thenCallsGetValue() throws ServiceException {
+    // Arrange
+    when(customerPaymentService.readCustomerPaymentById(Mockito.<Long>any()))
+        .thenReturn(new CustomerPaymentImpl());
+
+    PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
+    when(persistencePerspective.getOperationTypes()).thenReturn(new OperationTypes());
+
+    PersistencePackage persistencePackage = new PersistencePackage();
+    persistencePackage.setPersistencePerspective(persistencePerspective);
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    Property property = mock(Property.class);
+    when(property.getValue()).thenReturn("42");
+
+    Entity entity = mock(Entity.class);
+    doNothing().when(entity).addProperty(Mockito.<Property>any());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+
+    DynamicResultSet dynamicResultSet = mock(DynamicResultSet.class);
+    when(dynamicResultSet.getRecords()).thenReturn(new Entity[] {entity});
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
+    AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
+
+    // Act
+    customerPaymentCustomPersistenceHandler.fetch(
+        persistencePackage, cto, dynamicEntityDao, helper);
+
+    // Assert
+    verify(dynamicResultSet).getRecords();
+    verify(entity).addProperty(isA(Property.class));
+    verify(entity).findProperty("id");
+    verify(persistencePerspective).getOperationTypes();
+    verify(property).getValue();
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
+    verify(customerPaymentService).readCustomerPaymentById(42L);
+  }
+
+  /**
+   * Test {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   *
+   * <ul>
+   *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage,
+   * CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "DynamicResultSet CustomerPaymentCustomPersistenceHandler.fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)"
+  })
   public void testFetch_thenReturnDynamicResultSet() throws ServiceException {
     // Arrange
     PersistencePerspective persistencePerspective = mock(PersistencePerspective.class);
@@ -366,63 +581,48 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     persistencePackage.setPersistencePerspective(persistencePerspective);
     CriteriaTransferObject cto = new CriteriaTransferObject();
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
-    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = mock(
-        AdornedTargetListPersistenceModule.class);
+
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule =
+        mock(AdornedTargetListPersistenceModule.class);
     DynamicResultSet dynamicResultSet = new DynamicResultSet();
-    when(adornedTargetListPersistenceModule.fetch(Mockito.<PersistencePackage>any(),
-        Mockito.<CriteriaTransferObject>any())).thenReturn(dynamicResultSet);
+    when(adornedTargetListPersistenceModule.fetch(
+            Mockito.<PersistencePackage>any(), Mockito.<CriteriaTransferObject>any()))
+        .thenReturn(dynamicResultSet);
+
     AdornedTargetListPersistenceModule helper = mock(AdornedTargetListPersistenceModule.class);
-    when(helper.getCompatibleModule(Mockito.<OperationType>any())).thenReturn(adornedTargetListPersistenceModule);
+    when(helper.getCompatibleModule(Mockito.<OperationType>any()))
+        .thenReturn(adornedTargetListPersistenceModule);
 
     // Act
-    DynamicResultSet actualFetchResult = customerPaymentCustomPersistenceHandler.fetch(persistencePackage, cto,
-        dynamicEntityDao, helper);
+    DynamicResultSet actualFetchResult =
+        customerPaymentCustomPersistenceHandler.fetch(
+            persistencePackage, cto, dynamicEntityDao, helper);
 
     // Assert
     verify(persistencePerspective).getOperationTypes();
-    verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
-    verify(helper).getCompatibleModule(eq(OperationType.BASIC));
+    verify(adornedTargetListPersistenceModule)
+        .fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
+    verify(helper).getCompatibleModule(OperationType.BASIC);
     assertSame(dynamicResultSet, actualFetchResult);
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * Test {@link
+   * CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).</li>
+   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
-  public void testBuildSavedPaymentDisplayValue_givenAddressImpl() {
-    // Arrange
-    CustomerPaymentImpl customerPayment = new CustomerPaymentImpl();
-    customerPayment.setBillingAddress(new AddressImpl());
-    customerPayment.setCustomer(new CustomerImpl());
-    customerPayment.setId(1L);
-    customerPayment.setIsDefault(true);
-    customerPayment.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
-    customerPayment.setPaymentToken("ABC123");
-    customerPayment.setPaymentType(new PaymentType("Type", "Friendly Type"));
-    customerPayment.setAdditionalFields(null);
-
-    // Act and Assert
-    assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(customerPayment));
-  }
-
-  /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"
+  })
   public void testBuildSavedPaymentDisplayValue_givenHashMapFooIsFoo() {
     // Arrange
     HashMap<String, String> additionalFields = new HashMap<>();
@@ -432,91 +632,130 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     customerPayment.setAdditionalFields(additionalFields);
 
     // Act and Assert
-    assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(customerPayment));
+    assertEquals(
+        "", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(customerPayment));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * Test {@link
+   * CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   *
    * <ul>
-   *   <li>When {@link CustomerPaymentImpl} (default constructor).</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@link CustomerPaymentImpl} (default constructor).
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(CustomerPayment)"
+  })
   public void testBuildSavedPaymentDisplayValue_whenCustomerPaymentImpl_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(new CustomerPaymentImpl()));
+    assertEquals(
+        "",
+        customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(
+            new CustomerPaymentImpl()));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String,
+   * String)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@code | 42}.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then return {@code | 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"
+  })
   public void testBuildPropertyValueIfAvailable_when42_thenReturn42() {
     // Arrange, Act and Assert
-    assertEquals("\t|\t42", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("42", "42"));
+    assertEquals(
+        "\t|\t42",
+        customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("42", "42"));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String,
+   * String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code 42}.</li>
+   *   <li>When empty string.
+   *   <li>Then return {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"
+  })
   public void testBuildPropertyValueIfAvailable_whenEmptyString_thenReturn42() {
     // Arrange, Act and Assert
-    assertEquals("42", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "42"));
+    assertEquals(
+        "42", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "42"));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String,
+   * String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"
+  })
   public void testBuildPropertyValueIfAvailable_whenNull_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", null));
+    assertEquals(
+        "", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", null));
   }
 
   /**
-   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * Test {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String,
+   * String)}.
+   *
    * <ul>
-   *   <li>When {@code ****null}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code ****null}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   *
+   * <p>Method under test: {@link
+   * CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String CustomerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable(String, String)"
+  })
   public void testBuildPropertyValueIfAvailable_whenNull_thenReturnEmptyString2() {
     // Arrange, Act and Assert
-    assertEquals("", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "****null"));
+    assertEquals(
+        "", customerPaymentCustomPersistenceHandler.buildPropertyValueIfAvailable("", "****null"));
   }
 }

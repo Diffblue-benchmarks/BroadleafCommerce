@@ -23,12 +23,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -38,18 +34,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
-import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
-import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -57,268 +46,192 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerImplDiffblueTest {
-  @Autowired
-  private CustomerImpl customerImpl;
+  @Autowired private CustomerImpl customerImpl;
 
   /**
    * Test {@link CustomerImpl#isPasswordChangeRequired()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isPasswordChangeRequired()"})
-  public void testIsPasswordChangeRequired_givenAuditableCreatedByIsOne_thenReturnTrue() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-    customerImpl2.setPasswordChangeRequired(true);
-
-    // Act and Assert
-    assertTrue(customerImpl2.isPasswordChangeRequired());
+  public void testIsPasswordChangeRequired_givenCustomerImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(customerImpl.isPasswordChangeRequired());
   }
 
   /**
    * Test {@link CustomerImpl#isPasswordChangeRequired()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isPasswordChangeRequired()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isPasswordChangeRequired()"})
-  public void testIsPasswordChangeRequired_givenCustomerImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse((new CustomerImpl()).isPasswordChangeRequired());
+  public void testIsPasswordChangeRequired_thenReturnTrue() {
+    // Arrange
+    customerImpl.setPasswordChangeRequired(true);
+
+    // Act and Assert
+    assertTrue(customerImpl.isPasswordChangeRequired());
   }
 
   /**
    * Test {@link CustomerImpl#setPasswordChangeRequired(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setPasswordChangeRequired(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setPasswordChangeRequired(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setPasswordChangeRequired(boolean)"})
   public void testSetPasswordChangeRequired() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setPasswordChangeRequired(true);
+    // Arrange and Act
+    customerImpl.setPasswordChangeRequired(true);
 
     // Assert
-    assertTrue(customerImpl2.isPasswordChangeRequired());
-    assertTrue(customerImpl2.passwordChangeRequired);
+    assertTrue(customerImpl.isPasswordChangeRequired());
+    assertTrue(customerImpl.passwordChangeRequired);
   }
 
   /**
    * Test {@link CustomerImpl#isReceiveEmail()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CustomerImpl} ReceiveEmail is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isReceiveEmail()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isReceiveEmail()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isReceiveEmail()"})
-  public void testIsReceiveEmail_givenAuditableCreatedByIsOne_thenReturnTrue() {
+  public void testIsReceiveEmail_givenCustomerImplReceiveEmailIsTrue_thenReturnTrue() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-    customerImpl2.setReceiveEmail(true);
+    customerImpl.setReceiveEmail(true);
 
     // Act and Assert
-    assertTrue(customerImpl2.isReceiveEmail());
+    assertTrue(customerImpl.isReceiveEmail());
   }
 
   /**
    * Test {@link CustomerImpl#isReceiveEmail()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isReceiveEmail()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isReceiveEmail()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isReceiveEmail()"})
   public void testIsReceiveEmail_givenCustomerImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new CustomerImpl()).isReceiveEmail());
+    assertFalse(customerImpl.isReceiveEmail());
   }
 
   /**
    * Test {@link CustomerImpl#setReceiveEmail(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setReceiveEmail(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setReceiveEmail(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setReceiveEmail(boolean)"})
   public void testSetReceiveEmail() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setReceiveEmail(true);
+    // Arrange and Act
+    customerImpl.setReceiveEmail(true);
 
     // Assert
-    assertTrue(customerImpl2.isReceiveEmail());
-    assertTrue(customerImpl2.receiveEmail);
+    assertTrue(customerImpl.isReceiveEmail());
+    assertTrue(customerImpl.receiveEmail);
   }
 
   /**
    * Test {@link CustomerImpl#isRegistered()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CustomerImpl} Registered is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isRegistered()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isRegistered()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isRegistered()"})
-  public void testIsRegistered_givenAuditableCreatedByIsOne_thenReturnTrue() {
+  public void testIsRegistered_givenCustomerImplRegisteredIsTrue_thenReturnTrue() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-    customerImpl2.setRegistered(true);
+    customerImpl.setRegistered(true);
 
     // Act and Assert
-    assertTrue(customerImpl2.isRegistered());
+    assertTrue(customerImpl.isRegistered());
   }
 
   /**
    * Test {@link CustomerImpl#isRegistered()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isRegistered()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isRegistered()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isRegistered()"})
   public void testIsRegistered_givenCustomerImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new CustomerImpl()).isRegistered());
+    assertFalse(customerImpl.isRegistered());
   }
 
   /**
    * Test {@link CustomerImpl#setRegistered(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setRegistered(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setRegistered(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setRegistered(boolean)"})
   public void testSetRegistered() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setRegistered(true);
+    // Arrange and Act
+    customerImpl.setRegistered(true);
 
     // Assert
-    assertTrue(customerImpl2.isRegistered());
-    assertTrue(customerImpl2.registered);
+    assertTrue(customerImpl.isRegistered());
+    assertTrue(customerImpl.registered);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerImpl#setAuditable(Auditable)}
    *   <li>{@link CustomerImpl#setChallengeAnswer(String)}
@@ -362,34 +275,59 @@ public class CustomerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Auditable CustomerImpl.getAuditable()", "String CustomerImpl.getChallengeAnswer()",
-      "ChallengeQuestion CustomerImpl.getChallengeQuestion()", "List CustomerImpl.getCustomerAddresses()",
-      "Map CustomerImpl.getCustomerAttributes()", "Locale CustomerImpl.getCustomerLocale()",
-      "List CustomerImpl.getCustomerPayments()", "List CustomerImpl.getCustomerPhones()",
-      "String CustomerImpl.getEmailAddress()", "String CustomerImpl.getExternalId()",
-      "String CustomerImpl.getFirstName()", "Long CustomerImpl.getId()", "String CustomerImpl.getLastName()",
-      "String CustomerImpl.getPassword()", "String CustomerImpl.getTaxExemptionCode()",
-      "Map CustomerImpl.getTransientProperties()", "String CustomerImpl.getUnencodedChallengeAnswer()",
-      "String CustomerImpl.getUnencodedPassword()", "String CustomerImpl.getUsername()",
-      "boolean CustomerImpl.isAnonymous()", "boolean CustomerImpl.isCookied()", "boolean CustomerImpl.isLoggedIn()",
-      "void CustomerImpl.setAuditable(Auditable)", "void CustomerImpl.setChallengeAnswer(String)",
-      "void CustomerImpl.setChallengeQuestion(ChallengeQuestion)", "void CustomerImpl.setCustomerAddresses(List)",
-      "void CustomerImpl.setCustomerAttributes(Map)", "void CustomerImpl.setCustomerLocale(Locale)",
-      "void CustomerImpl.setCustomerPayments(List)", "void CustomerImpl.setCustomerPhones(List)",
-      "void CustomerImpl.setEmailAddress(String)", "void CustomerImpl.setExternalId(String)",
-      "void CustomerImpl.setFirstName(String)", "void CustomerImpl.setId(Long)",
-      "void CustomerImpl.setLastName(String)", "void CustomerImpl.setPassword(String)",
-      "void CustomerImpl.setUnencodedChallengeAnswer(String)", "void CustomerImpl.setUnencodedPassword(String)",
-      "void CustomerImpl.setUsername(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Auditable CustomerImpl.getAuditable()",
+    "String CustomerImpl.getChallengeAnswer()",
+    "ChallengeQuestion CustomerImpl.getChallengeQuestion()",
+    "List CustomerImpl.getCustomerAddresses()",
+    "Map CustomerImpl.getCustomerAttributes()",
+    "Locale CustomerImpl.getCustomerLocale()",
+    "List CustomerImpl.getCustomerPayments()",
+    "List CustomerImpl.getCustomerPhones()",
+    "String CustomerImpl.getEmailAddress()",
+    "String CustomerImpl.getExternalId()",
+    "String CustomerImpl.getFirstName()",
+    "Long CustomerImpl.getId()",
+    "String CustomerImpl.getLastName()",
+    "String CustomerImpl.getPassword()",
+    "String CustomerImpl.getTaxExemptionCode()",
+    "Map CustomerImpl.getTransientProperties()",
+    "String CustomerImpl.getUnencodedChallengeAnswer()",
+    "String CustomerImpl.getUnencodedPassword()",
+    "String CustomerImpl.getUsername()",
+    "boolean CustomerImpl.isAnonymous()",
+    "boolean CustomerImpl.isCookied()",
+    "boolean CustomerImpl.isLoggedIn()",
+    "void CustomerImpl.setAuditable(Auditable)",
+    "void CustomerImpl.setChallengeAnswer(String)",
+    "void CustomerImpl.setChallengeQuestion(ChallengeQuestion)",
+    "void CustomerImpl.setCustomerAddresses(List)",
+    "void CustomerImpl.setCustomerAttributes(Map)",
+    "void CustomerImpl.setCustomerLocale(Locale)",
+    "void CustomerImpl.setCustomerPayments(List)",
+    "void CustomerImpl.setCustomerPhones(List)",
+    "void CustomerImpl.setEmailAddress(String)",
+    "void CustomerImpl.setExternalId(String)",
+    "void CustomerImpl.setFirstName(String)",
+    "void CustomerImpl.setId(Long)",
+    "void CustomerImpl.setLastName(String)",
+    "void CustomerImpl.setPassword(String)",
+    "void CustomerImpl.setUnencodedChallengeAnswer(String)",
+    "void CustomerImpl.setUnencodedPassword(String)",
+    "void CustomerImpl.setUsername(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     CustomerImpl customerImpl = new CustomerImpl();
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     // Act
@@ -470,623 +408,418 @@ public class CustomerImplDiffblueTest {
 
   /**
    * Test {@link CustomerImpl#setAnonymous(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then not {@link CustomerImpl} (default constructor) Anonymous.</li>
+   *   <li>When {@code false}.
+   *   <li>Then not {@link CustomerImpl} Anonymous.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setAnonymous(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setAnonymous(boolean)"})
-  public void testSetAnonymous_givenAuditableCreatedByIsOne_thenNotCustomerImplAnonymous() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-
-    // Act
-    customerImpl2.setAnonymous(false);
+  public void testSetAnonymous_whenFalse_thenNotCustomerImplAnonymous() {
+    // Arrange and Act
+    customerImpl.setAnonymous(false);
 
     // Assert that nothing has changed
-    assertFalse(customerImpl2.isAnonymous());
+    assertFalse(customerImpl.isAnonymous());
   }
 
   /**
    * Test {@link CustomerImpl#setAnonymous(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>When {@code true}.</li>
-   *   <li>Then {@link CustomerImpl} (default constructor) Anonymous.</li>
+   *   <li>When {@code true}.
+   *   <li>Then {@link CustomerImpl} Anonymous.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setAnonymous(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setAnonymous(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setAnonymous(boolean)"})
-  public void testSetAnonymous_givenCustomerImpl_whenTrue_thenCustomerImplAnonymous() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setAnonymous(true);
+  public void testSetAnonymous_whenTrue_thenCustomerImplAnonymous() {
+    // Arrange and Act
+    customerImpl.setAnonymous(true);
 
     // Assert
-    assertTrue(customerImpl2.isAnonymous());
+    assertTrue(customerImpl.isAnonymous());
   }
 
   /**
    * Test {@link CustomerImpl#setCookied(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>When {@code false}.</li>
-   *   <li>Then not {@link CustomerImpl} (default constructor) Cookied.</li>
+   *   <li>When {@code false}.
+   *   <li>Then not {@link CustomerImpl} Cookied.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setCookied(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setCookied(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setCookied(boolean)"})
-  public void testSetCookied_givenAuditableCreatedByIsOne_whenFalse_thenNotCustomerImplCookied() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-
-    // Act
-    customerImpl2.setCookied(false);
+  public void testSetCookied_whenFalse_thenNotCustomerImplCookied() {
+    // Arrange and Act
+    customerImpl.setCookied(false);
 
     // Assert that nothing has changed
-    assertFalse(customerImpl2.isCookied());
+    assertFalse(customerImpl.isCookied());
   }
 
   /**
    * Test {@link CustomerImpl#setCookied(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>When {@code true}.</li>
-   *   <li>Then {@link CustomerImpl} (default constructor) Cookied.</li>
+   *   <li>When {@code true}.
+   *   <li>Then {@link CustomerImpl} Cookied.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setCookied(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setCookied(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setCookied(boolean)"})
-  public void testSetCookied_givenCustomerImpl_whenTrue_thenCustomerImplCookied() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setCookied(true);
+  public void testSetCookied_whenTrue_thenCustomerImplCookied() {
+    // Arrange and Act
+    customerImpl.setCookied(true);
 
     // Assert
-    assertTrue(customerImpl2.isCookied());
+    assertTrue(customerImpl.isCookied());
   }
 
   /**
    * Test {@link CustomerImpl#setLoggedIn(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then not {@link CustomerImpl} (default constructor) LoggedIn.</li>
+   *   <li>When {@code false}.
+   *   <li>Then not {@link CustomerImpl} LoggedIn.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setLoggedIn(boolean)"})
-  public void testSetLoggedIn_givenAuditableCreatedByIsOne_thenNotCustomerImplLoggedIn() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-
-    // Act
-    customerImpl2.setLoggedIn(false);
+  public void testSetLoggedIn_whenFalse_thenNotCustomerImplLoggedIn() {
+    // Arrange and Act
+    customerImpl.setLoggedIn(false);
 
     // Assert that nothing has changed
-    assertFalse(customerImpl2.isLoggedIn());
+    assertFalse(customerImpl.isLoggedIn());
   }
 
   /**
    * Test {@link CustomerImpl#setLoggedIn(boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>When {@code true}.</li>
-   *   <li>Then {@link CustomerImpl} (default constructor) LoggedIn.</li>
+   *   <li>When {@code true}.
+   *   <li>Then {@link CustomerImpl} LoggedIn.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setLoggedIn(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setLoggedIn(boolean)"})
-  public void testSetLoggedIn_givenCustomerImpl_whenTrue_thenCustomerImplLoggedIn() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setLoggedIn(true);
+  public void testSetLoggedIn_whenTrue_thenCustomerImplLoggedIn() {
+    // Arrange and Act
+    customerImpl.setLoggedIn(true);
 
     // Assert
-    assertTrue(customerImpl2.isLoggedIn());
+    assertTrue(customerImpl.isLoggedIn());
   }
 
   /**
    * Test {@link CustomerImpl#isDeactivated()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CustomerImpl} Deactivated is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isDeactivated()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isDeactivated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isDeactivated()"})
-  public void testIsDeactivated_givenAuditableCreatedByIsOne_thenReturnTrue() {
+  public void testIsDeactivated_givenCustomerImplDeactivatedIsTrue_thenReturnTrue() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-    customerImpl2.setDeactivated(true);
+    customerImpl.setDeactivated(true);
 
     // Act and Assert
-    assertTrue(customerImpl2.isDeactivated());
+    assertTrue(customerImpl.isDeactivated());
   }
 
   /**
    * Test {@link CustomerImpl#isDeactivated()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#isDeactivated()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isDeactivated()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isDeactivated()"})
   public void testIsDeactivated_givenCustomerImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new CustomerImpl()).isDeactivated());
+    assertFalse(customerImpl.isDeactivated());
   }
 
   /**
    * Test {@link CustomerImpl#setDeactivated(boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setDeactivated(boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setDeactivated(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setDeactivated(boolean)"})
   public void testSetDeactivated() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setDeactivated(true);
+    // Arrange and Act
+    customerImpl.setDeactivated(true);
 
     // Assert
-    assertTrue(customerImpl2.isDeactivated());
-    assertTrue(customerImpl2.deactivated);
+    assertTrue(customerImpl.isDeactivated());
+    assertTrue(customerImpl.deactivated);
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) FirstName is empty string.</li>
-   *   <li>Then return {@code 1}.</li>
+   *   <li>Given {@link CustomerImpl} FirstName is empty string.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenCustomerImplFirstNameIsEmptyString_thenReturn1() {
+  public void testGetMainEntityName_givenCustomerImplFirstNameIsEmptyString_thenReturnNull() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setId(1L);
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setFirstName("");
-    customerImpl2.setLastName("");
-    customerImpl2.setUsername("");
+    customerImpl.setFirstName("");
+    customerImpl.setLastName("");
+    customerImpl.setUsername("");
 
     // Act and Assert
-    assertEquals("1", customerImpl2.getMainEntityName());
+    assertEquals("null", customerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) FirstName is {@code foo}.</li>
-   *   <li>Then return {@code 1}.</li>
+   *   <li>Given {@link CustomerImpl} FirstName is {@code foo}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
-  public void testGetMainEntityName_givenCustomerImplFirstNameIsFoo_thenReturn1() {
+  public void testGetMainEntityName_givenCustomerImplFirstNameIsFoo_thenReturnNull() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setId(1L);
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setFirstName("foo");
-    customerImpl2.setLastName("");
-    customerImpl2.setUsername("");
+    customerImpl.setFirstName("foo");
+    customerImpl.setLastName("");
+    customerImpl.setUsername("");
 
     // Act and Assert
-    assertEquals("1", customerImpl2.getMainEntityName());
+    assertEquals("null", customerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) LastName is {@code foo}.</li>
-   *   <li>Then return {@code foo foo}.</li>
+   *   <li>Given {@link CustomerImpl} LastName is {@code foo}.
+   *   <li>Then return {@code foo foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImplLastNameIsFoo_thenReturnFooFoo() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setId(1L);
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setFirstName("foo");
-    customerImpl2.setLastName("foo");
-    customerImpl2.setUsername("");
+    customerImpl.setFirstName("foo");
+    customerImpl.setLastName("foo");
+    customerImpl.setUsername("");
 
     // Act and Assert
-    assertEquals("foo foo", customerImpl2.getMainEntityName());
+    assertEquals("foo foo", customerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor) Username is {@code foo}.</li>
-   *   <li>Then return {@code foo}.</li>
+   *   <li>Given {@link CustomerImpl} Username is {@code foo}.
+   *   <li>Then return {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImplUsernameIsFoo_thenReturnFoo() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setId(1L);
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setFirstName("");
-    customerImpl2.setLastName("");
-    customerImpl2.setUsername("foo");
+    customerImpl.setFirstName("");
+    customerImpl.setLastName("");
+    customerImpl.setUsername("foo");
 
     // Act and Assert
-    assertEquals("foo", customerImpl2.getMainEntityName());
+    assertEquals("foo", customerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CustomerImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCustomerImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertEquals("null", (new CustomerImpl()).getMainEntityName());
+    assertEquals("null", customerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link CustomerImpl#getPreview()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CustomerImpl} Preview is {@code false}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getPreview()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getPreview()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean CustomerImpl.getPreview()"})
-  public void testGetPreview_givenAuditableCreatedByIsOne_thenReturnTrue() {
+  public void testGetPreview_givenCustomerImplPreviewIsFalse_thenReturnFalse() {
     // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-    customerImpl2.setPreview(true);
+    customerImpl.setPreview(false);
 
     // Act and Assert
-    assertTrue(customerImpl2.getPreview());
+    assertFalse(customerImpl.getPreview());
   }
 
   /**
    * Test {@link CustomerImpl#getPreview()}.
+   *
    * <ul>
-   *   <li>Given {@link CustomerImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link CustomerImpl} Preview is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#getPreview()}
+   *
+   * <p>Method under test: {@link CustomerImpl#getPreview()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean CustomerImpl.getPreview()"})
+  public void testGetPreview_givenCustomerImplPreviewIsTrue_thenReturnTrue() {
+    // Arrange
+    customerImpl.setPreview(true);
+
+    // Act and Assert
+    assertTrue(customerImpl.getPreview());
+  }
+
+  /**
+   * Test {@link CustomerImpl#getPreview()}.
+   *
+   * <ul>
+   *   <li>Given {@link CustomerImpl}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerImpl#getPreview()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean CustomerImpl.getPreview()"})
   public void testGetPreview_givenCustomerImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new CustomerImpl()).getPreview());
+    assertNull(customerImpl.getPreview());
   }
 
   /**
    * Test {@link CustomerImpl#setPreview(Boolean)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#setPreview(Boolean)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setPreview(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setPreview(Boolean)"})
   public void testSetPreview() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setPreview(true);
+    // Arrange and Act
+    customerImpl.setPreview(true);
 
     // Assert
-    assertTrue(customerImpl2.previewable.getPreview());
-    assertTrue(customerImpl2.getPreview());
+    assertTrue(customerImpl.previewable.getPreview());
+    assertTrue(customerImpl.getPreview());
   }
 
   /**
    * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerImpl#equals(Object)}
    *   <li>{@link CustomerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1114,8 +847,10 @@ public class CustomerImplDiffblueTest {
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     CustomerImpl customerImpl2 = new CustomerImpl();
@@ -1143,32 +878,36 @@ public class CustomerImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerImpl, customerImpl2);
-    int expectedHashCodeResult = customerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, customerImpl2.hashCode());
+    assertEquals(customerImpl.hashCode(), customerImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerImpl#equals(Object)}
    *   <li>{@link CustomerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1196,8 +935,10 @@ public class CustomerImplDiffblueTest {
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     CustomerImpl customerImpl2 = new CustomerImpl();
@@ -1225,32 +966,36 @@ public class CustomerImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerImpl, customerImpl2);
-    int expectedHashCodeResult = customerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, customerImpl2.hashCode());
+    assertEquals(customerImpl.hashCode(), customerImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerImpl#equals(Object)}
    *   <li>{@link CustomerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1278,8 +1023,10 @@ public class CustomerImplDiffblueTest {
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     CustomerImpl customerImpl2 = new CustomerImpl();
@@ -1307,32 +1054,124 @@ public class CustomerImplDiffblueTest {
 
     // Act and Assert
     assertEquals(customerImpl, customerImpl2);
-    int expectedHashCodeResult = customerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, customerImpl2.hashCode());
+    assertEquals(customerImpl.hashCode(), customerImpl2.hashCode());
   }
 
   /**
    * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerImpl#equals(Object)}
    *   <li>{@link CustomerImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl = new CustomerImpl();
+    customerImpl.setAuditable(auditable);
+    customerImpl.setChallengeAnswer("Challenge Answer");
+    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl.setCustomerAddresses(new ArrayList<>());
+    customerImpl.setCustomerAttributes(new HashMap<>());
+    customerImpl.setCustomerLocale(new LocaleImpl());
+    customerImpl.setCustomerPayments(new ArrayList<>());
+    customerImpl.setCustomerPhones(new ArrayList<>());
+    customerImpl.setDeactivated(true);
+    customerImpl.setEmailAddress("42 Main St");
+    customerImpl.setExternalId("42");
+    customerImpl.setFirstName("Jane");
+    customerImpl.setId(null);
+    customerImpl.setLastName("Doe");
+    customerImpl.setPassword("iloveyou");
+    customerImpl.setPasswordChangeRequired(true);
+    customerImpl.setReceiveEmail(true);
+    customerImpl.setRegistered(true);
+    customerImpl.setUnencodedChallengeAnswer("secret");
+    customerImpl.setUnencodedPassword("secret");
+    customerImpl.setUsername(null);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable2);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername(null);
+
+    // Act and Assert
+    assertEquals(customerImpl, customerImpl2);
+    assertEquals(customerImpl.hashCode(), customerImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CustomerImpl#equals(Object)}, and {@link CustomerImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CustomerImpl#equals(Object)}
+   *   <li>{@link CustomerImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1366,22 +1205,26 @@ public class CustomerImplDiffblueTest {
 
   /**
    * Test {@link CustomerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1409,8 +1252,10 @@ public class CustomerImplDiffblueTest {
 
     Auditable auditable2 = new Auditable();
     auditable2.setCreatedBy(1L);
-    auditable2.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable2.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable2.setUpdatedBy(1L);
 
     CustomerImpl customerImpl2 = new CustomerImpl();
@@ -1442,22 +1287,190 @@ public class CustomerImplDiffblueTest {
 
   /**
    * Test {@link CustomerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl = new CustomerImpl();
+    customerImpl.setAuditable(auditable);
+    customerImpl.setChallengeAnswer("Challenge Answer");
+    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl.setCustomerAddresses(new ArrayList<>());
+    customerImpl.setCustomerAttributes(new HashMap<>());
+    customerImpl.setCustomerLocale(new LocaleImpl());
+    customerImpl.setCustomerPayments(new ArrayList<>());
+    customerImpl.setCustomerPhones(new ArrayList<>());
+    customerImpl.setDeactivated(true);
+    customerImpl.setEmailAddress("42 Main St");
+    customerImpl.setExternalId("42");
+    customerImpl.setFirstName("Jane");
+    customerImpl.setId(null);
+    customerImpl.setLastName("Doe");
+    customerImpl.setPassword("iloveyou");
+    customerImpl.setPasswordChangeRequired(true);
+    customerImpl.setReceiveEmail(true);
+    customerImpl.setRegistered(true);
+    customerImpl.setUnencodedChallengeAnswer("secret");
+    customerImpl.setUnencodedPassword("secret");
+    customerImpl.setUsername("Username");
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable2);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+
+    // Act and Assert
+    assertNotEquals(customerImpl, customerImpl2);
+  }
+
+  /**
+   * Test {@link CustomerImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl = new CustomerImpl();
+    customerImpl.setAuditable(auditable);
+    customerImpl.setChallengeAnswer("Challenge Answer");
+    customerImpl.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl.setCustomerAddresses(new ArrayList<>());
+    customerImpl.setCustomerAttributes(new HashMap<>());
+    customerImpl.setCustomerLocale(new LocaleImpl());
+    customerImpl.setCustomerPayments(new ArrayList<>());
+    customerImpl.setCustomerPhones(new ArrayList<>());
+    customerImpl.setDeactivated(true);
+    customerImpl.setEmailAddress("42 Main St");
+    customerImpl.setExternalId("42");
+    customerImpl.setFirstName("Jane");
+    customerImpl.setId(null);
+    customerImpl.setLastName("Doe");
+    customerImpl.setPassword("iloveyou");
+    customerImpl.setPasswordChangeRequired(true);
+    customerImpl.setReceiveEmail(true);
+    customerImpl.setRegistered(true);
+    customerImpl.setUnencodedChallengeAnswer("secret");
+    customerImpl.setUnencodedPassword("secret");
+    customerImpl.setUsername(null);
+
+    Auditable auditable2 = new Auditable();
+    auditable2.setCreatedBy(1L);
+    auditable2.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable2.setUpdatedBy(1L);
+
+    CustomerImpl customerImpl2 = new CustomerImpl();
+    customerImpl2.setAuditable(auditable2);
+    customerImpl2.setChallengeAnswer("Challenge Answer");
+    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
+    customerImpl2.setCustomerAddresses(new ArrayList<>());
+    customerImpl2.setCustomerAttributes(new HashMap<>());
+    customerImpl2.setCustomerLocale(new LocaleImpl());
+    customerImpl2.setCustomerPayments(new ArrayList<>());
+    customerImpl2.setCustomerPhones(new ArrayList<>());
+    customerImpl2.setDeactivated(true);
+    customerImpl2.setEmailAddress("42 Main St");
+    customerImpl2.setExternalId("42");
+    customerImpl2.setFirstName("Jane");
+    customerImpl2.setId(1L);
+    customerImpl2.setLastName("Doe");
+    customerImpl2.setPassword("iloveyou");
+    customerImpl2.setPasswordChangeRequired(true);
+    customerImpl2.setReceiveEmail(true);
+    customerImpl2.setRegistered(true);
+    customerImpl2.setUnencodedChallengeAnswer("secret");
+    customerImpl2.setUnencodedPassword("secret");
+    customerImpl2.setUsername("janedoe");
+
+    // Act and Assert
+    assertNotEquals(customerImpl, customerImpl2);
+  }
+
+  /**
+   * Test {@link CustomerImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CustomerImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1489,22 +1502,26 @@ public class CustomerImplDiffblueTest {
 
   /**
    * Test {@link CustomerImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CustomerImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.equals(Object)", "int CustomerImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -1535,161 +1552,71 @@ public class CustomerImplDiffblueTest {
   }
 
   /**
-   * Test {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CustomerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl2
-        .createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then Clone return {@link CustomerImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CustomerImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnCustomerImpl()
-      throws CloneNotSupportedException {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-
-    // Act
-    CreateResponse<Customer> actualCreateOrRetrieveCopyInstanceResult = customerImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
-
-    // Assert
-    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.profile.core.domain.CustomerImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    Customer clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof CustomerImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(customerImpl2, clone);
-  }
-
-  /**
    * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
+   *
    * <ul>
-   *   <li>Then {@link CustomerImpl} (default constructor) TaxExemptionCode is {@code Exemption}.</li>
+   *   <li>Then {@link CustomerImpl} TaxExemptionCode is {@code Exemption}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setTaxExemptionCode(String)"})
   public void testSetTaxExemptionCode_thenCustomerImplTaxExemptionCodeIsExemption() {
-    // Arrange
-    CustomerImpl customerImpl2 = new CustomerImpl();
-
-    // Act
-    customerImpl2.setTaxExemptionCode("Exemption");
+    // Arrange and Act
+    customerImpl.setTaxExemptionCode("Exemption");
 
     // Assert
-    assertEquals("Exemption", customerImpl2.getTaxExemptionCode());
-    assertTrue(customerImpl2.isTaxExempt);
+    assertEquals("Exemption", customerImpl.getTaxExemptionCode());
+    assertTrue(customerImpl.isTaxExempt);
   }
 
   /**
    * Test {@link CustomerImpl#setTaxExemptionCode(String)}.
+   *
    * <ul>
-   *   <li>Then not {@link CustomerImpl} (default constructor) {@link CustomerImpl#isTaxExempt}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then not {@link CustomerImpl} {@link CustomerImpl#isTaxExempt}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
+   *
+   * <p>Method under test: {@link CustomerImpl#setTaxExemptionCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.setTaxExemptionCode(String)"})
-  public void testSetTaxExemptionCode_thenNotCustomerImplIsTaxExempt() {
-    // Arrange
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    CustomerImpl customerImpl2 = new CustomerImpl();
-    customerImpl2.setAuditable(auditable);
-    customerImpl2.setChallengeAnswer("Challenge Answer");
-    customerImpl2.setChallengeQuestion(new ChallengeQuestionImpl());
-    customerImpl2.setCustomerAddresses(new ArrayList<>());
-    customerImpl2.setCustomerAttributes(new HashMap<>());
-    customerImpl2.setCustomerLocale(new LocaleImpl());
-    customerImpl2.setCustomerPayments(new ArrayList<>());
-    customerImpl2.setCustomerPhones(new ArrayList<>());
-    customerImpl2.setDeactivated(true);
-    customerImpl2.setEmailAddress("42 Main St");
-    customerImpl2.setExternalId("42");
-    customerImpl2.setFirstName("Jane");
-    customerImpl2.setId(1L);
-    customerImpl2.setLastName("Doe");
-    customerImpl2.setPassword("iloveyou");
-    customerImpl2.setPasswordChangeRequired(true);
-    customerImpl2.setReceiveEmail(true);
-    customerImpl2.setRegistered(true);
-    customerImpl2.setUnencodedChallengeAnswer("secret");
-    customerImpl2.setUnencodedPassword("secret");
-    customerImpl2.setUsername("janedoe");
-
-    // Act
-    customerImpl2.setTaxExemptionCode(null);
+  public void testSetTaxExemptionCode_whenNull_thenNotCustomerImplIsTaxExempt() {
+    // Arrange and Act
+    customerImpl.setTaxExemptionCode(null);
 
     // Assert that nothing has changed
-    assertFalse(customerImpl2.isTaxExempt);
+    assertFalse(customerImpl.isTaxExempt);
   }
 
   /**
    * Test {@link CustomerImpl#isTaxExempt()}.
-   * <p>
-   * Method under test: {@link CustomerImpl#isTaxExempt()}
+   *
+   * <p>Method under test: {@link CustomerImpl#isTaxExempt()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerImpl.isTaxExempt()"})
   public void testIsTaxExempt() {
     // Arrange, Act and Assert
-    assertFalse((new CustomerImpl()).isTaxExempt());
+    assertFalse(customerImpl.isTaxExempt());
   }
 
   /**
    * Test new {@link CustomerImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CustomerImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link CustomerImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerImpl.<init>()"})
   public void testNewCustomerImpl() {
     // Arrange and Act

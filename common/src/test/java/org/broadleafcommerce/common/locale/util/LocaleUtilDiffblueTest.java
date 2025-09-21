@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.locale.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.Locale;
@@ -30,41 +31,18 @@ import org.junit.experimental.categories.Category;
 public class LocaleUtilDiffblueTest {
   /**
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
+   *
    * <ul>
-   *   <li>Given {@link BroadleafCurrencyImpl} (default constructor).</li>
-   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code en}.</li>
+   *   <li>Given {@code en_}.
+   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code en_}.
+   *   <li>Then return {@code en}.
    * </ul>
-   * <p>
-   * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
+   *
+   * <p>Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
-  public void testFindLanguageCode_givenBroadleafCurrencyImpl_whenLocaleImplLocaleCodeIsEn() {
-    // Arrange
-    LocaleImpl locale = new LocaleImpl();
-    locale.setDefaultCurrency(new BroadleafCurrencyImpl());
-    locale.setDefaultFlag(true);
-    locale.setFriendlyName("en");
-    locale.setUseCountryInSearchIndex(true);
-    locale.setLocaleCode("en");
-
-    // Act and Assert
-    assertNull(LocaleUtil.findLanguageCode(locale));
-  }
-
-  /**
-   * Test {@link LocaleUtil#findLanguageCode(Locale)}.
-   * <ul>
-   *   <li>Given {@code en_}.</li>
-   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code en_}.</li>
-   *   <li>Then return {@code en}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_givenEn_whenLocaleImplLocaleCodeIsEn_thenReturnEn() {
     // Arrange
@@ -81,15 +59,44 @@ public class LocaleUtilDiffblueTest {
 
   /**
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
+   *
    * <ul>
-   *   <li>When {@link LocaleImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@code _}.
+   *   <li>When {@link LocaleImpl} (default constructor) LocaleCode is {@code _}.
    * </ul>
-   * <p>
-   * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
+   *
+   * <p>Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
+  public void testFindLanguageCode_givenUnderscore_whenLocaleImplLocaleCodeIsUnderscore() {
+    // Arrange
+    LocaleImpl locale = new LocaleImpl();
+    locale.setDefaultCurrency(new BroadleafCurrencyImpl());
+    locale.setDefaultFlag(true);
+    locale.setFriendlyName("en");
+    locale.setUseCountryInSearchIndex(true);
+    locale.setLocaleCode("_");
+
+    // Act and Assert
+    assertNull(LocaleUtil.findLanguageCode(locale));
+  }
+
+  /**
+   * Test {@link LocaleUtil#findLanguageCode(Locale)}.
+   *
+   * <ul>
+   *   <li>When {@link LocaleImpl} (default constructor).
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_whenLocaleImpl_thenReturnNull() {
     // Arrange, Act and Assert
@@ -98,15 +105,17 @@ public class LocaleUtilDiffblueTest {
 
   /**
    * Test {@link LocaleUtil#findLanguageCode(Locale)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
+   *
+   * <p>Method under test: {@link LocaleUtil#findLanguageCode(Locale)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String LocaleUtil.findLanguageCode(Locale)"})
   public void testFindLanguageCode_whenNull_thenReturnNull() {
     // Arrange, Act and Assert

@@ -18,12 +18,15 @@
 package org.broadleafcommerce.core.order.service.workflow;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroupItem;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -36,61 +39,128 @@ import org.junit.experimental.categories.Category;
 public class CartOperationRequestDiffblueTest {
   /**
    * Test {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}.
-   * <ul>
-   *   <li>Then return ItemRequest ChildOrderItems is {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}
+   *
+   * <p>Method under test: {@link CartOperationRequest#CartOperationRequest(Order,
+   * OrderItemRequestDTO, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CartOperationRequest.<init>(Order, OrderItemRequestDTO, boolean)"})
-  public void testNewCartOperationRequest_thenReturnItemRequestChildOrderItemsIsArrayList() {
+  public void testNewCartOperationRequest() {
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO();
+
+    // Act
+    CartOperationRequest actualCartOperationRequest =
+        new CartOperationRequest(order, itemRequest, true);
+
+    // Assert
+    Order order2 = actualCartOperationRequest.getOrder();
+    assertTrue(order2 instanceof NullOrderImpl);
+    Money orderAdjustmentsValue = order2.getOrderAdjustmentsValue();
+    Money actualAbsResult = orderAdjustmentsValue.abs();
+    assertEquals(orderAdjustmentsValue, actualAbsResult);
+    Money actualZeroResult = orderAdjustmentsValue.zero();
+    assertEquals(orderAdjustmentsValue, actualZeroResult);
+    assertEquals(orderAdjustmentsValue, order2.getSubTotal());
+    assertSame(itemRequest, actualCartOperationRequest.getItemRequest());
+  }
+
+  /**
+   * Test {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}.
+   *
+   * <p>Method under test: {@link CartOperationRequest#CartOperationRequest(Order,
+   * OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void CartOperationRequest.<init>(Order, OrderItemRequestDTO, boolean)"})
+  public void testNewCartOperationRequest2() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
-    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    ArrayList<OrderItemRequestDTO> childOrderItems = new ArrayList<>();
+    childOrderItems.add(new OrderItemRequestDTO());
+
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
+    orderItemRequestDTO.setChildOrderItems(childOrderItems);
+
+    ArrayList<OrderItemRequestDTO> childOrderItems2 = new ArrayList<>();
+    childOrderItems2.add(orderItemRequestDTO);
+
+    OrderItemRequestDTO orderItemRequestDTO2 = new OrderItemRequestDTO(1L, 1);
+    orderItemRequestDTO2.setChildOrderItems(childOrderItems2);
+
+    ArrayList<OrderItemRequestDTO> childOrderItems3 = new ArrayList<>();
+    childOrderItems3.add(orderItemRequestDTO2);
+
+    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO(1L, 1);
+    itemRequest.setChildOrderItems(childOrderItems3);
+
+    // Act
+    CartOperationRequest actualCartOperationRequest =
+        new CartOperationRequest(order, itemRequest, true);
+
+    // Assert
+    List<OrderItemRequestDTO> childOrderItems4 =
+        actualCartOperationRequest.getItemRequest().getChildOrderItems();
+    assertEquals(1, childOrderItems4.size());
+    List<OrderItemRequestDTO> childOrderItems5 = childOrderItems4.get(0).getChildOrderItems();
+    assertEquals(1, childOrderItems5.size());
+    assertSame(childOrderItems, childOrderItems5.get(0).getChildOrderItems());
+  }
+
+  /**
+   * Test {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}.
+   *
+   * <p>Method under test: {@link CartOperationRequest#CartOperationRequest(Order,
+   * OrderItemRequestDTO, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void CartOperationRequest.<init>(Order, OrderItemRequestDTO, boolean)"})
+  public void testNewCartOperationRequest3() {
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO(1L, 1);
     orderItemRequestDTO.setChildOrderItems(null);
 
     ArrayList<OrderItemRequestDTO> childOrderItems = new ArrayList<>();
     childOrderItems.add(orderItemRequestDTO);
 
-    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO();
-    itemRequest.setChildOrderItems(childOrderItems);
+    OrderItemRequestDTO orderItemRequestDTO2 = new OrderItemRequestDTO(1L, 1);
+    orderItemRequestDTO2.setChildOrderItems(childOrderItems);
 
-    // Act and Assert
-    assertSame(childOrderItems,
-        (new CartOperationRequest(order, itemRequest, true)).getItemRequest().getChildOrderItems());
-  }
+    ArrayList<OrderItemRequestDTO> childOrderItems2 = new ArrayList<>();
+    childOrderItems2.add(orderItemRequestDTO2);
 
-  /**
-   * Test {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}.
-   * <ul>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
-   *   <li>Then Order return {@link NullOrderImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CartOperationRequest#CartOperationRequest(Order, OrderItemRequestDTO, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CartOperationRequest.<init>(Order, OrderItemRequestDTO, boolean)"})
-  public void testNewCartOperationRequest_whenOrderItemRequestDTO_thenOrderReturnNullOrderImpl() {
-    // Arrange
-    NullOrderImpl order = new NullOrderImpl();
+    OrderItemRequestDTO itemRequest = new OrderItemRequestDTO(1L, 1);
+    itemRequest.setChildOrderItems(childOrderItems2);
 
     // Act
-    CartOperationRequest actualCartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    CartOperationRequest actualCartOperationRequest =
+        new CartOperationRequest(order, itemRequest, true);
 
     // Assert
     assertTrue(actualCartOperationRequest.getOrder() instanceof NullOrderImpl);
-    assertTrue(actualCartOperationRequest.getItemRequest().getChildOrderItems().isEmpty());
+    List<OrderItemRequestDTO> childOrderItems3 =
+        actualCartOperationRequest.getItemRequest().getChildOrderItems();
+    assertEquals(1, childOrderItems3.size());
+    List<OrderItemRequestDTO> childOrderItems4 = childOrderItems3.get(0).getChildOrderItems();
+    assertEquals(1, childOrderItems4.size());
+    assertNull(childOrderItems4.get(0).getChildOrderItems());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CartOperationRequest#setAddedOrderItem(OrderItem)}
    *   <li>{@link CartOperationRequest#setFgisToDelete(List)}
@@ -113,22 +183,33 @@ public class CartOperationRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderItem CartOperationRequest.getAddedOrderItem()",
-      "List CartOperationRequest.getFgisToDelete()", "OrderItemRequestDTO CartOperationRequest.getItemRequest()",
-      "List CartOperationRequest.getMultishipOptionsToDelete()", "List CartOperationRequest.getOisToDelete()",
-      "Order CartOperationRequest.getOrder()", "OrderItem CartOperationRequest.getOrderItem()",
-      "Integer CartOperationRequest.getOrderItemQuantityDelta()", "boolean CartOperationRequest.isPriceOrder()",
-      "void CartOperationRequest.setAddedOrderItem(OrderItem)", "void CartOperationRequest.setFgisToDelete(List)",
-      "void CartOperationRequest.setItemRequest(OrderItemRequestDTO)",
-      "void CartOperationRequest.setMultishipOptionsToDelete(List)", "void CartOperationRequest.setOisToDelete(List)",
-      "void CartOperationRequest.setOrder(Order)", "void CartOperationRequest.setOrderItem(OrderItem)",
-      "void CartOperationRequest.setOrderItemQuantityDelta(Integer)",
-      "void CartOperationRequest.setPriceOrder(boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderItem CartOperationRequest.getAddedOrderItem()",
+    "List CartOperationRequest.getFgisToDelete()",
+    "OrderItemRequestDTO CartOperationRequest.getItemRequest()",
+    "List CartOperationRequest.getMultishipOptionsToDelete()",
+    "List CartOperationRequest.getOisToDelete()",
+    "Order CartOperationRequest.getOrder()",
+    "OrderItem CartOperationRequest.getOrderItem()",
+    "Integer CartOperationRequest.getOrderItemQuantityDelta()",
+    "boolean CartOperationRequest.isPriceOrder()",
+    "void CartOperationRequest.setAddedOrderItem(OrderItem)",
+    "void CartOperationRequest.setFgisToDelete(List)",
+    "void CartOperationRequest.setItemRequest(OrderItemRequestDTO)",
+    "void CartOperationRequest.setMultishipOptionsToDelete(List)",
+    "void CartOperationRequest.setOisToDelete(List)",
+    "void CartOperationRequest.setOrder(Order)",
+    "void CartOperationRequest.setOrderItem(OrderItem)",
+    "void CartOperationRequest.setOrderItemQuantityDelta(Integer)",
+    "void CartOperationRequest.setPriceOrder(boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
-    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    CartOperationRequest cartOperationRequest =
+        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
 
     // Act
     cartOperationRequest.setAddedOrderItem(new BundleOrderItemImpl());
@@ -149,7 +230,8 @@ public class CartOperationRequestDiffblueTest {
     OrderItem actualAddedOrderItem = cartOperationRequest.getAddedOrderItem();
     List<FulfillmentGroupItem> actualFgisToDelete = cartOperationRequest.getFgisToDelete();
     OrderItemRequestDTO actualItemRequest = cartOperationRequest.getItemRequest();
-    List<Long[]> actualMultishipOptionsToDelete = cartOperationRequest.getMultishipOptionsToDelete();
+    List<Long[]> actualMultishipOptionsToDelete =
+        cartOperationRequest.getMultishipOptionsToDelete();
     List<OrderItem> actualOisToDelete = cartOperationRequest.getOisToDelete();
     Order actualOrder = cartOperationRequest.getOrder();
     OrderItem actualOrderItem = cartOperationRequest.getOrderItem();

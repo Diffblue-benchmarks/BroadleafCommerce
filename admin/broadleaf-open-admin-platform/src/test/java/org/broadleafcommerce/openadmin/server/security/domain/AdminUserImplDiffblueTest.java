@@ -21,7 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,50 +45,53 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminUserImplDiffblueTest {
-  @Autowired
-  private AdminUserImpl adminUserImpl;
+  @Autowired private AdminUserImpl adminUserImpl;
 
   /**
    * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link AdminUserImpl}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map AdminUserImpl.getFlatAdditionalFields()"})
   public void testGetFlatAdditionalFields_givenAdminUserImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue((new AdminUserImpl()).getFlatAdditionalFields().isEmpty());
+    assertTrue(adminUserImpl.getFlatAdditionalFields().isEmpty());
   }
 
   /**
    * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map AdminUserImpl.getFlatAdditionalFields()"})
   public void testGetFlatAdditionalFields_thenReturnSizeIsOne() {
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("foo", new AdminUserAttributeImpl());
 
-    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
-    adminUserImpl2.setAdditionalFields(additionalFields);
+    AdminUserImpl adminUserImpl = new AdminUserImpl();
+    adminUserImpl.setAdditionalFields(additionalFields);
 
     // Act
-    Map<String, String> actualFlatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
+    Map<String, String> actualFlatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
 
     // Assert
     assertEquals(1, actualFlatAdditionalFields.size());
@@ -92,15 +100,17 @@ public class AdminUserImplDiffblueTest {
 
   /**
    * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminUserAttributeImpl} (default constructor) Value is space.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link AdminUserAttributeImpl} (default constructor) Value is space.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
   public void testGetLastUsedSandBoxId_givenAdminUserAttributeImplValueIsSpace_thenReturnNull() {
     // Arrange
@@ -112,164 +122,162 @@ public class AdminUserImplDiffblueTest {
 
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("LAST_USED_SANDBOX", adminUserAttributeImpl);
-
-    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
-    adminUserImpl2.setActiveStatusFlag(true);
-    adminUserImpl2.setAllPermissions(new HashSet<>());
-    adminUserImpl2.setAllRoles(new HashSet<>());
-    adminUserImpl2.setEmail("jane.doe@example.org");
-    adminUserImpl2.setId(1L);
-    adminUserImpl2.setLogin("Login");
-    adminUserImpl2.setName("Name");
-    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl2.setPassword("iloveyou");
-    adminUserImpl2.setPhoneNumber("6625550144");
-    adminUserImpl2.setUnencodedPassword("secret");
-    adminUserImpl2.setAdditionalFields(additionalFields);
+    adminUserImpl.setAdditionalFields(additionalFields);
 
     // Act and Assert
-    assertNull(adminUserImpl2.getLastUsedSandBoxId());
+    assertNull(adminUserImpl.getLastUsedSandBoxId());
   }
 
   /**
    * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminUserImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link AdminUserImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
   public void testGetLastUsedSandBoxId_givenAdminUserImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new AdminUserImpl()).getLastUsedSandBoxId());
+    assertNull(adminUserImpl.getLastUsedSandBoxId());
   }
 
   /**
    * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
+   *
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return longValue is forty-two.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
+  public void testGetLastUsedSandBoxId_thenReturnLongValueIsFortyTwo() {
+    // Arrange
+    AdminUserAttribute adminUserAttribute = mock(AdminUserAttribute.class);
+    when(adminUserAttribute.getValue()).thenReturn("42");
+
+    HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
+    additionalFields.put("LAST_USED_SANDBOX", adminUserAttribute);
+    adminUserImpl.setAdditionalFields(additionalFields);
+
+    // Act
+    Long actualLastUsedSandBoxId = adminUserImpl.getLastUsedSandBoxId();
+
+    // Assert
+    verify(adminUserAttribute, atLeast(1)).getValue();
+    assertEquals(42L, actualLastUsedSandBoxId.longValue());
+  }
+
+  /**
+   * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long AdminUserImpl.getLastUsedSandBoxId()"})
   public void testGetLastUsedSandBoxId_thenReturnNull() {
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
-
-    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
-    adminUserImpl2.setActiveStatusFlag(true);
-    adminUserImpl2.setAllPermissions(new HashSet<>());
-    adminUserImpl2.setAllRoles(new HashSet<>());
-    adminUserImpl2.setEmail("jane.doe@example.org");
-    adminUserImpl2.setId(1L);
-    adminUserImpl2.setLogin("Login");
-    adminUserImpl2.setName("Name");
-    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl2.setPassword("iloveyou");
-    adminUserImpl2.setPhoneNumber("6625550144");
-    adminUserImpl2.setUnencodedPassword("secret");
-    adminUserImpl2.setAdditionalFields(additionalFields);
+    adminUserImpl.setAdditionalFields(additionalFields);
 
     // Act and Assert
-    assertNull(adminUserImpl2.getLastUsedSandBoxId());
+    assertNull(adminUserImpl.getLastUsedSandBoxId());
   }
 
   /**
    * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
+   *
    * <ul>
-   *   <li>Then {@link AdminUserImpl} (default constructor) AdditionalFields is {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link AdminUserImpl} AdditionalFields is {@link HashMap#HashMap()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
+   *
+   * <p>Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminUserImpl.setLastUsedSandBoxId(Long)"})
   public void testSetLastUsedSandBoxId_thenAdminUserImplAdditionalFieldsIsHashMap() {
     // Arrange
     HashMap<String, AdminUserAttribute> additionalFields = new HashMap<>();
     additionalFields.put("LAST_USED_SANDBOX", new AdminUserAttributeImpl());
-
-    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
-    adminUserImpl2.setActiveStatusFlag(true);
-    adminUserImpl2.setAllPermissions(new HashSet<>());
-    adminUserImpl2.setAllRoles(new HashSet<>());
-    adminUserImpl2.setEmail("jane.doe@example.org");
-    adminUserImpl2.setId(1L);
-    adminUserImpl2.setLogin("Login");
-    adminUserImpl2.setName("Name");
-    adminUserImpl2.setOverrideSandBox(new SandBoxImpl());
-    adminUserImpl2.setPassword("iloveyou");
-    adminUserImpl2.setPhoneNumber("6625550144");
-    adminUserImpl2.setUnencodedPassword("secret");
-    adminUserImpl2.setAdditionalFields(additionalFields);
+    adminUserImpl.setAdditionalFields(additionalFields);
 
     // Act
-    adminUserImpl2.setLastUsedSandBoxId(1L);
+    adminUserImpl.setLastUsedSandBoxId(1L);
 
     // Assert that nothing has changed
-    Map<String, String> flatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
+    Map<String, String> flatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
     assertEquals(1, flatAdditionalFields.size());
     assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
-    assertSame(additionalFields, adminUserImpl2.getAdditionalFields());
+    assertSame(additionalFields, adminUserImpl.getAdditionalFields());
   }
 
   /**
    * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
+   *
    * <ul>
-   *   <li>Then {@link AdminUserImpl} (default constructor) AdditionalFields size is one.</li>
+   *   <li>Then {@link AdminUserImpl} AdditionalFields size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
+   *
+   * <p>Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminUserImpl.setLastUsedSandBoxId(Long)"})
   public void testSetLastUsedSandBoxId_thenAdminUserImplAdditionalFieldsSizeIsOne() {
-    // Arrange
-    AdminUserImpl adminUserImpl2 = new AdminUserImpl();
-
-    // Act
-    adminUserImpl2.setLastUsedSandBoxId(1L);
+    // Arrange and Act
+    adminUserImpl.setLastUsedSandBoxId(1L);
 
     // Assert
-    Map<String, AdminUserAttribute> additionalFields = adminUserImpl2.getAdditionalFields();
+    Map<String, AdminUserAttribute> additionalFields = adminUserImpl.getAdditionalFields();
     assertEquals(1, additionalFields.size());
     AdminUserAttribute getResult = additionalFields.get("LAST_USED_SANDBOX");
     assertTrue(getResult instanceof AdminUserAttributeImpl);
     assertEquals("LAST_USED_SANDBOX", getResult.getName());
     assertNull(getResult.getId());
-    Map<String, String> flatAdditionalFields = adminUserImpl2.getFlatAdditionalFields();
+    Map<String, String> flatAdditionalFields = adminUserImpl.getFlatAdditionalFields();
     assertEquals(1, flatAdditionalFields.size());
     assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
-    assertSame(adminUserImpl2, getResult.getAdminUser());
+    assertSame(adminUserImpl, getResult.getAdminUser());
   }
 
   /**
    * Test {@link AdminUserImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link AdminUserImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link AdminUserImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminUserImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new AdminUserImpl()).getMainEntityName());
+    assertNull(adminUserImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminUserImpl}
    *   <li>{@link AdminUserImpl#setActiveStatusFlag(Boolean)}
@@ -303,20 +311,39 @@ public class AdminUserImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminUserImpl.<init>()", "Boolean AdminUserImpl.getActiveStatusFlag()",
-      "Map AdminUserImpl.getAdditionalFields()", "Set AdminUserImpl.getAllPermissions()",
-      "Set AdminUserImpl.getAllRoles()", "String AdminUserImpl.getContextKey()",
-      "ContextType AdminUserImpl.getContextType()", "String AdminUserImpl.getEmail()", "Long AdminUserImpl.getId()",
-      "String AdminUserImpl.getLogin()", "String AdminUserImpl.getName()", "SandBox AdminUserImpl.getOverrideSandBox()",
-      "String AdminUserImpl.getPassword()", "String AdminUserImpl.getPhoneNumber()",
-      "String AdminUserImpl.getUnencodedPassword()", "void AdminUserImpl.setActiveStatusFlag(Boolean)",
-      "void AdminUserImpl.setAdditionalFields(Map)", "void AdminUserImpl.setAllPermissions(Set)",
-      "void AdminUserImpl.setAllRoles(Set)", "void AdminUserImpl.setContextKey(String)",
-      "void AdminUserImpl.setContextType(ContextType)", "void AdminUserImpl.setEmail(String)",
-      "void AdminUserImpl.setId(Long)", "void AdminUserImpl.setLogin(String)", "void AdminUserImpl.setName(String)",
-      "void AdminUserImpl.setOverrideSandBox(SandBox)", "void AdminUserImpl.setPassword(String)",
-      "void AdminUserImpl.setPhoneNumber(String)", "void AdminUserImpl.setUnencodedPassword(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminUserImpl.<init>()",
+    "Boolean AdminUserImpl.getActiveStatusFlag()",
+    "Map AdminUserImpl.getAdditionalFields()",
+    "Set AdminUserImpl.getAllPermissions()",
+    "Set AdminUserImpl.getAllRoles()",
+    "String AdminUserImpl.getContextKey()",
+    "ContextType AdminUserImpl.getContextType()",
+    "String AdminUserImpl.getEmail()",
+    "Long AdminUserImpl.getId()",
+    "String AdminUserImpl.getLogin()",
+    "String AdminUserImpl.getName()",
+    "SandBox AdminUserImpl.getOverrideSandBox()",
+    "String AdminUserImpl.getPassword()",
+    "String AdminUserImpl.getPhoneNumber()",
+    "String AdminUserImpl.getUnencodedPassword()",
+    "void AdminUserImpl.setActiveStatusFlag(Boolean)",
+    "void AdminUserImpl.setAdditionalFields(Map)",
+    "void AdminUserImpl.setAllPermissions(Set)",
+    "void AdminUserImpl.setAllRoles(Set)",
+    "void AdminUserImpl.setContextKey(String)",
+    "void AdminUserImpl.setContextType(ContextType)",
+    "void AdminUserImpl.setEmail(String)",
+    "void AdminUserImpl.setId(Long)",
+    "void AdminUserImpl.setLogin(String)",
+    "void AdminUserImpl.setName(String)",
+    "void AdminUserImpl.setOverrideSandBox(SandBox)",
+    "void AdminUserImpl.setPassword(String)",
+    "void AdminUserImpl.setPhoneNumber(String)",
+    "void AdminUserImpl.setUnencodedPassword(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminUserImpl actualAdminUserImpl = new AdminUserImpl();
@@ -339,7 +366,8 @@ public class AdminUserImplDiffblueTest {
     actualAdminUserImpl.setContextKey("Context Key");
     actualAdminUserImpl.setContextType(ContextType.CATALOG);
     Boolean actualActiveStatusFlag = actualAdminUserImpl.getActiveStatusFlag();
-    Map<String, AdminUserAttribute> actualAdditionalFields = actualAdminUserImpl.getAdditionalFields();
+    Map<String, AdminUserAttribute> actualAdditionalFields =
+        actualAdminUserImpl.getAdditionalFields();
     Set<AdminPermission> actualAllPermissions = actualAdminUserImpl.getAllPermissions();
     Set<AdminRole> actualAllRoles = actualAdminUserImpl.getAllRoles();
     String actualContextKey = actualAdminUserImpl.getContextKey();
@@ -369,6 +397,6 @@ public class AdminUserImplDiffblueTest {
     assertSame(allPermissions, actualAllPermissions);
     assertSame(allRoles, actualAllRoles);
     assertSame(overrideSandBox, actualOverrideSandBox);
-    assertSame(actualContextType.GLOBAL, actualContextType);
+    assertSame(ContextType.GLOBAL, actualContextType);
   }
 }

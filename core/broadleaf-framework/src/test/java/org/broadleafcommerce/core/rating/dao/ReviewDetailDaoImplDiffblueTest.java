@@ -19,10 +19,10 @@ package org.broadleafcommerce.core.rating.dao;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.persistence.NoResultException;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -41,47 +41,51 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReviewDetailDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private ReviewDetailDaoImpl reviewDetailDaoImpl;
+  @InjectMocks private ReviewDetailDaoImpl reviewDetailDaoImpl;
 
   /**
    * Test {@link ReviewDetailDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Then return {@link ReviewDetailImpl#ReviewDetailImpl()}.</li>
+   *   <li>Then return {@link ReviewDetailImpl#ReviewDetailImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailDaoImpl#create()}
+   *
+   * <p>Method under test: {@link ReviewDetailDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReviewDetail ReviewDetailDaoImpl.create()"})
   public void testCreate_thenReturnReviewDetailImpl() {
     // Arrange
     ReviewDetailImpl reviewDetailImpl = new ReviewDetailImpl();
     reviewDetailImpl.setReviewText("Review Text");
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(reviewDetailImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(reviewDetailImpl);
 
     // Act
     ReviewDetail actualCreateResult = reviewDetailDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.ReviewDetail"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.rating.domain.ReviewDetail");
     assertSame(reviewDetailImpl, actualCreateResult);
   }
 
   /**
    * Test {@link ReviewDetailDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
+   *   <li>Then throw {@link NoResultException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailDaoImpl#create()}
+   *
+   * <p>Method under test: {@link ReviewDetailDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReviewDetail ReviewDetailDaoImpl.create()"})
   public void testCreate_thenThrowNoResultException() {
     // Arrange
@@ -90,19 +94,22 @@ public class ReviewDetailDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> reviewDetailDaoImpl.create());
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.ReviewDetail"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.rating.domain.ReviewDetail");
   }
 
   /**
    * Test {@link ReviewDetailDaoImpl#createFeedback()}.
+   *
    * <ul>
-   *   <li>Then return {@link ReviewFeedbackImpl} (default constructor).</li>
+   *   <li>Then return {@link ReviewFeedbackImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailDaoImpl#createFeedback()}
+   *
+   * <p>Method under test: {@link ReviewDetailDaoImpl#createFeedback()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReviewFeedback ReviewDetailDaoImpl.createFeedback()"})
   public void testCreateFeedback_thenReturnReviewFeedbackImpl() {
     // Arrange
@@ -111,26 +118,30 @@ public class ReviewDetailDaoImplDiffblueTest {
     reviewFeedbackImpl.setId(1L);
     reviewFeedbackImpl.setIsHelpful(true);
     reviewFeedbackImpl.setReviewDetail(new ReviewDetailImpl());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(reviewFeedbackImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(reviewFeedbackImpl);
 
     // Act
     ReviewFeedback actualCreateFeedbackResult = reviewDetailDaoImpl.createFeedback();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.ReviewFeedback"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.rating.domain.ReviewFeedback");
     assertSame(reviewFeedbackImpl, actualCreateFeedbackResult);
   }
 
   /**
    * Test {@link ReviewDetailDaoImpl#createFeedback()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
+   *   <li>Then throw {@link NoResultException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ReviewDetailDaoImpl#createFeedback()}
+   *
+   * <p>Method under test: {@link ReviewDetailDaoImpl#createFeedback()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReviewFeedback ReviewDetailDaoImpl.createFeedback()"})
   public void testCreateFeedback_thenThrowNoResultException() {
     // Arrange
@@ -139,6 +150,7 @@ public class ReviewDetailDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> reviewDetailDaoImpl.createFeedback());
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.rating.domain.ReviewFeedback"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.rating.domain.ReviewFeedback");
   }
 }

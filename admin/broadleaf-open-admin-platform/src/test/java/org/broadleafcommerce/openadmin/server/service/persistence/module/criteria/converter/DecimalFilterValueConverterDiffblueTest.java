@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.junit.Test;
@@ -32,20 +33,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DecimalFilterValueConverter.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DecimalFilterValueConverterDiffblueTest {
-  @Autowired
-  private DecimalFilterValueConverter decimalFilterValueConverter;
+  @Autowired private DecimalFilterValueConverter decimalFilterValueConverter;
 
   /**
    * Test {@link DecimalFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 42}.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecimalFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link DecimalFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal DecimalFilterValueConverter.convert(String)"})
   public void testConvert_when42_thenReturnBigDecimalWith42() {
     // Arrange and Act
@@ -57,15 +59,17 @@ public class DecimalFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link DecimalFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When empty string.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecimalFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link DecimalFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal DecimalFilterValueConverter.convert(String)"})
   public void testConvert_whenEmptyString_thenReturnNull() {
     // Arrange, Act and Assert
@@ -74,15 +78,17 @@ public class DecimalFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link DecimalFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecimalFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link DecimalFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal DecimalFilterValueConverter.convert(String)"})
   public void testConvert_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -91,15 +97,17 @@ public class DecimalFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link DecimalFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code String Value}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code String Value}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DecimalFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link DecimalFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal DecimalFilterValueConverter.convert(String)"})
   public void testConvert_whenStringValue_thenReturnNull() {
     // Arrange, Act and Assert

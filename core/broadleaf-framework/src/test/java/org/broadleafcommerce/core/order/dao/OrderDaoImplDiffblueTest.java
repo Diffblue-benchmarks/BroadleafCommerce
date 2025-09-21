@@ -22,13 +22,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -60,29 +60,27 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @Mock
-  private OrderDaoExtensionManager orderDaoExtensionManager;
+  @Mock private OrderDaoExtensionManager orderDaoExtensionManager;
 
-  @InjectMocks
-  private OrderDaoImpl orderDaoImpl;
+  @InjectMocks private OrderDaoImpl orderDaoImpl;
 
-  @Mock
-  private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
+  @Mock private StreamingTransactionCapableUtil streamingTransactionCapableUtil;
 
   /**
    * Test {@link OrderDaoImpl#readOrdersByIds(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OrderDaoImpl.readOrdersByIds(List)"})
   public void testReadOrdersByIds_whenArrayList_thenReturnNull() {
     // Arrange, Act and Assert
@@ -91,15 +89,17 @@ public class OrderDaoImplDiffblueTest {
 
   /**
    * Test {@link OrderDaoImpl#readOrdersByIds(List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OrderDaoImpl.readOrdersByIds(List)"})
   public void testReadOrdersByIds_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -108,21 +108,46 @@ public class OrderDaoImplDiffblueTest {
 
   /**
    * Test {@link OrderDaoImpl#createNewCartForCustomer(Customer)}.
-   * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#createNewCartForCustomer(Customer)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#createNewCartForCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderDaoImpl.createNewCartForCustomer(Customer)"})
-  public void testCreateNewCartForCustomer_thenThrowNoResultException() {
+  public void testCreateNewCartForCustomer() {
+    // Arrange
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenThrow(new NoResultException("An error occurred"));
+
+    // Act and Assert
+    assertThrows(
+        NoResultException.class, () -> orderDaoImpl.createNewCartForCustomer(new CustomerImpl()));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.order.domain.Order");
+  }
+
+  /**
+   * Test {@link OrderDaoImpl#createNewCartForCustomer(Customer)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link OrderDaoExtensionManager#getProxy()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderDaoImpl#createNewCartForCustomer(Customer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Order OrderDaoImpl.createNewCartForCustomer(Customer)"})
+  public void testCreateNewCartForCustomer_thenCallsGetProxy() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -143,7 +168,8 @@ public class OrderDaoImplDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
@@ -152,29 +178,35 @@ public class OrderDaoImplDiffblueTest {
     when(orderDaoExtensionManager.getProxy()).thenThrow(new NoResultException("An error occurred"));
 
     // Act and Assert
-    assertThrows(NoResultException.class, () -> orderDaoImpl.createNewCartForCustomer(new CustomerImpl()));
+    assertThrows(
+        NoResultException.class, () -> orderDaoImpl.createNewCartForCustomer(new CustomerImpl()));
     verify(orderDaoExtensionManager).getProxy();
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.Order"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.order.domain.Order");
   }
 
   /**
    * Test {@link OrderDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   *   <li>Then return {@link OrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#create()}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderDaoImpl.create()"})
   public void testCreate_givenAuditableCreatedByIsOne_thenReturnOrderImpl() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -195,7 +227,8 @@ public class OrderDaoImplDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
@@ -206,20 +239,23 @@ public class OrderDaoImplDiffblueTest {
     Order actualCreateResult = orderDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.Order"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.order.domain.Order");
     assertSame(orderImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OrderDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
+   *   <li>Then throw {@link NoResultException}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#create()}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderDaoImpl.create()"})
   public void testCreate_thenThrowNoResultException() {
     // Arrange
@@ -228,20 +264,23 @@ public class OrderDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> orderDaoImpl.create());
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.order.domain.Order"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.order.domain.Order");
   }
 
   /**
    * Test {@link OrderDaoImpl#readOrderByOrderNumber(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When empty string.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderDaoImpl.readOrderByOrderNumber(String)"})
   public void testReadOrderByOrderNumber_whenEmptyString_thenReturnNull() {
     // Arrange, Act and Assert
@@ -250,15 +289,17 @@ public class OrderDaoImplDiffblueTest {
 
   /**
    * Test {@link OrderDaoImpl#readOrderByOrderNumber(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderDaoImpl.readOrderByOrderNumber(String)"})
   public void testReadOrderByOrderNumber_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -267,87 +308,103 @@ public class OrderDaoImplDiffblueTest {
 
   /**
    * Test {@link OrderDaoImpl#releaseLock(Order)}.
-   * <p>
-   * Method under test: {@link OrderDaoImpl#releaseLock(Order)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#releaseLock(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderDaoImpl.releaseLock(Order)"})
   public void testReleaseLock() throws Throwable {
     // Arrange
-    doNothing().when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    doNothing()
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
     boolean actualReleaseLockResult = orderDaoImpl.releaseLock(new NullOrderImpl());
 
     // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     assertFalse(actualReleaseLockResult);
   }
 
   /**
    * Test {@link OrderDaoImpl#releaseLock(Order)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#releaseLock(Order)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#releaseLock(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderDaoImpl.releaseLock(Order)"})
   public void testReleaseLock_thenReturnFalse() throws Throwable {
     // Arrange
-    doThrow(new NoResultException("An error occurred")).when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new NoResultException("An error occurred"))
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act
     boolean actualReleaseLockResult = orderDaoImpl.releaseLock(new NullOrderImpl());
 
     // Assert
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
     assertFalse(actualReleaseLockResult);
   }
 
   /**
    * Test {@link OrderDaoImpl#releaseLock(Order)}.
+   *
    * <ul>
-   *   <li>Then throw {@link Exception}.</li>
+   *   <li>Then throw {@link Exception}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#releaseLock(Order)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#releaseLock(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderDaoImpl.releaseLock(Order)"})
   public void testReleaseLock_thenThrowException() throws Throwable {
     // Arrange
-    doThrow(new Exception("foo")).when(streamingTransactionCapableUtil)
-        .runTransactionalOperation(Mockito.<StreamCapableTransactionalOperation>any(),
+    doThrow(new Exception())
+        .when(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            Mockito.<StreamCapableTransactionalOperation>any(),
             Mockito.<Class<RuntimeException>>any());
 
     // Act and Assert
     assertThrows(Exception.class, () -> orderDaoImpl.releaseLock(new NullOrderImpl()));
-    verify(streamingTransactionCapableUtil).runTransactionalOperation(isA(StreamCapableTransactionalOperation.class),
-        isA(Class.class));
+    verify(streamingTransactionCapableUtil)
+        .runTransactionalOperation(
+            isA(StreamCapableTransactionalOperation.class), isA(Class.class));
   }
 
   /**
    * Test {@link OrderDaoImpl#readOrdersByEmail(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When empty string.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OrderDaoImpl.readOrdersByEmail(String)"})
   public void testReadOrdersByEmail_whenEmptyString_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -356,15 +413,17 @@ public class OrderDaoImplDiffblueTest {
 
   /**
    * Test {@link OrderDaoImpl#readOrdersByEmail(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
+   *
+   * <p>Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List OrderDaoImpl.readOrdersByEmail(String)"})
   public void testReadOrdersByEmail_whenNull_thenReturnEmpty() {
     // Arrange, Act and Assert

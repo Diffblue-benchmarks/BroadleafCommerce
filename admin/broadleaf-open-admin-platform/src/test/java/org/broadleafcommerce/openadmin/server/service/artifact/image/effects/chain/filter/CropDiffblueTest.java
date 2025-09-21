@@ -17,17 +17,21 @@
  */
 package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.chain.filter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
+import java.awt.image.SampleModel;
 import java.awt.image.SinglePixelPackedSampleModel;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -43,16 +47,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {Crop.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CropDiffblueTest {
-  @Autowired
-  private Crop crop;
+  @Autowired private Crop crop;
 
   /**
    * Test {@link Crop#Crop()}.
-   * <p>
-   * Method under test: {@link Crop#Crop()}
+   *
+   * <p>Method under test: {@link Crop#Crop()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Crop.<init>()", "void Crop.<init>(Rectangle, RenderingHints)"})
   public void testNewCrop() {
     // Arrange and Act
@@ -65,18 +69,20 @@ public class CropDiffblueTest {
 
   /**
    * Test {@link Crop#Crop(Rectangle, RenderingHints)}.
+   *
    * <ul>
-   *   <li>When {@link Rectangle#Rectangle(int, int)} with one and one.</li>
+   *   <li>When {@link Rectangle#Rectangle()}.
    * </ul>
-   * <p>
-   * Method under test: {@link Crop#Crop(Rectangle, RenderingHints)}
+   *
+   * <p>Method under test: {@link Crop#Crop(Rectangle, RenderingHints)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Crop.<init>()", "void Crop.<init>(Rectangle, RenderingHints)"})
-  public void testNewCrop_whenRectangleWithOneAndOne() {
+  public void testNewCrop_whenRectangle() {
     // Arrange and Act
-    Crop actualCrop = new Crop(new Rectangle(1, 1), null);
+    Crop actualCrop = new Crop(new Rectangle(), null);
 
     // Assert
     assertNull(actualCrop.getRenderingHints());
@@ -85,32 +91,38 @@ public class CropDiffblueTest {
 
   /**
    * Test {@link Crop#buildOperation(Map, InputStream, String)}.
-   * <p>
-   * Method under test: {@link Crop#buildOperation(Map, InputStream, String)}
+   *
+   * <p>Method under test: {@link Crop#buildOperation(Map, InputStream, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Crop.buildOperation(Map, InputStream, String)"})
+    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation Crop.buildOperation(Map, InputStream, String)"
+  })
   public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
-    assertNull(crop.buildOperation(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Mime Type"));
+    assertNull(
+        crop.buildOperation(
+            parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain"));
   }
 
   /**
    * Test {@link Crop#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>Given {@link Rectangle#Rectangle(int, int)} with five and five.</li>
-   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
+   *   <li>Given {@link Rectangle#Rectangle(int, int)} with five and five.
+   *   <li>Then ColorModel return {@link DirectColorModel}.
    * </ul>
-   * <p>
-   * Method under test: {@link Crop#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link Crop#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage Crop.filter(BufferedImage, BufferedImage)"})
   public void testFilter_givenRectangleWithFiveAndFive_thenColorModelReturnDirectColorModel() {
     // Arrange
@@ -121,27 +133,69 @@ public class CropDiffblueTest {
     BufferedImage actualFilterResult = crop.filter(src, new BufferedImage(1, 1, 1));
 
     // Assert
-    assertTrue(actualFilterResult.getColorModel() instanceof DirectColorModel);
-    assertTrue(actualFilterResult.getSampleModel() instanceof SinglePixelPackedSampleModel);
-    assertNull(actualFilterResult.getPropertyNames());
-    assertNull(actualFilterResult.getSources());
-    assertEquals(0, actualFilterResult.getMinTileX());
-    assertEquals(0, actualFilterResult.getMinTileY());
-    assertEquals(0, actualFilterResult.getMinX());
-    assertEquals(0, actualFilterResult.getMinY());
-    assertEquals(0, actualFilterResult.getTileGridXOffset());
-    assertEquals(0, actualFilterResult.getTileGridYOffset());
-    assertEquals(0.5f, actualFilterResult.getAccelerationPriority(), 0.0f);
-    assertEquals(1, actualFilterResult.getNumXTiles());
-    assertEquals(1, actualFilterResult.getNumYTiles());
-    assertEquals(1, actualFilterResult.getWritableTileIndices().length);
-    assertEquals(2, actualFilterResult.getType());
-    assertEquals(3, actualFilterResult.getTransparency());
-    assertEquals(5, actualFilterResult.getHeight());
-    assertEquals(5, actualFilterResult.getTileHeight());
-    assertEquals(5, actualFilterResult.getTileWidth());
-    assertEquals(5, actualFilterResult.getWidth());
-    assertFalse(actualFilterResult.isAlphaPremultiplied());
-    assertTrue(actualFilterResult.hasTileWriters());
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    WritableRaster raster = actualFilterResult.getRaster();
+    WritableRaster alphaRaster = actualFilterResult.getAlphaRaster();
+    assertSame(raster, alphaRaster.getParent());
+    assertSame(raster, alphaRaster.getWritableParent());
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, raster.getSampleModel());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255, -16777216}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255, -16777216},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0, 24},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
+  }
+
+  /**
+   * Test {@link Crop#filter(BufferedImage, BufferedImage)}.
+   *
+   * <ul>
+   *   <li>Given {@link Rectangle#Rectangle(int, int)} with five and five.
+   *   <li>Then ColorModel return {@link DirectColorModel}.
+   * </ul>
+   *
+   * <p>Method under test: {@link Crop#filter(BufferedImage, BufferedImage)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BufferedImage Crop.filter(BufferedImage, BufferedImage)"})
+  public void testFilter_givenRectangleWithFiveAndFive_thenColorModelReturnDirectColorModel2() {
+    // Arrange
+    Crop crop = new Crop(new Rectangle(5, 5), null);
+
+    // Act
+    BufferedImage actualFilterResult = crop.filter(new BufferedImage(1, 1, 1), null);
+
+    // Assert
+    ColorModel colorModel = actualFilterResult.getColorModel();
+    assertTrue(colorModel instanceof DirectColorModel);
+    SampleModel sampleModel = actualFilterResult.getSampleModel();
+    assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
+    WritableRaster raster = actualFilterResult.getRaster();
+    WritableRaster alphaRaster = actualFilterResult.getAlphaRaster();
+    assertSame(raster, alphaRaster.getParent());
+    assertSame(raster, alphaRaster.getWritableParent());
+    assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
+    assertSame(sampleModel, raster.getSampleModel());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255, -16777216}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255, -16777216},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0, 24},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

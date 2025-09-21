@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,14 +28,16 @@ import org.junit.experimental.categories.Category;
 public class Mod43CheckDigitUtilDiffblueTest {
   /**
    * Test {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
+   *   <li>When {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
+   *
+   * <p>Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_when42() {
     // Arrange, Act and Assert
@@ -43,14 +46,16 @@ public class Mod43CheckDigitUtilDiffblueTest {
 
   /**
    * Test {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
+   *   <li>When empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
+   *
+   * <p>Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_whenEmptyString() {
     // Arrange, Act and Assert
@@ -59,14 +64,16 @@ public class Mod43CheckDigitUtilDiffblueTest {
 
   /**
    * Test {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
+   *
+   * <p>Method under test: {@link Mod43CheckDigitUtil#isValidCheckedValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean Mod43CheckDigitUtil.isValidCheckedValue(String)"})
   public void testIsValidCheckedValue_whenNull() {
     // Arrange, Act and Assert
@@ -75,11 +82,12 @@ public class Mod43CheckDigitUtilDiffblueTest {
 
   /**
    * Test {@link Mod43CheckDigitUtil#generateCheckDigit(String)}.
-   * <p>
-   * Method under test: {@link Mod43CheckDigitUtil#generateCheckDigit(String)}
+   *
+   * <p>Method under test: {@link Mod43CheckDigitUtil#generateCheckDigit(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"char Mod43CheckDigitUtil.generateCheckDigit(String)"})
   public void testGenerateCheckDigit() {
     // Arrange, Act and Assert

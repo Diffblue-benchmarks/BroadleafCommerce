@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,19 +37,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {ComboField.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ComboFieldDiffblueTest {
-  @Autowired
-  private ComboField comboField;
+  @Autowired private ComboField comboField;
 
   /**
    * Test {@link ComboField#putOption(String, String)}.
-   * <p>
-   * Method under test: {@link ComboField#putOption(String, String)}
+   *
+   * <p>Method under test: {@link ComboField#putOption(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ComboField.putOption(String, String)"})
   public void testPutOption() {
     // Arrange and Act
@@ -62,21 +63,23 @@ public class ComboFieldDiffblueTest {
 
   /**
    * Test {@link ComboField#setOptions(String[][])} with {@code String[][]}.
+   *
    * <ul>
-   *   <li>Then {@link ComboField} (default constructor) Options size is one.</li>
+   *   <li>Then {@link ComboField} (default constructor) Options size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ComboField#setOptions(String[][])}
+   *
+   * <p>Method under test: {@link ComboField#setOptions(String[][])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
   public void testSetOptionsWithString_thenComboFieldOptionsSizeIsOne() {
     // Arrange
     ComboField comboField = new ComboField();
 
     // Act
-    comboField.setOptions(new String[][]{new String[]{"Options", null}});
+    comboField.setOptions(new String[][] {new String[] {"Options", null}});
 
     // Assert
     Map<String, String> options = comboField.getOptions();
@@ -86,15 +89,17 @@ public class ComboFieldDiffblueTest {
 
   /**
    * Test {@link ComboField#setOptions(String[][])} with {@code String[][]}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link ComboField} (default constructor) Options Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link ComboField} (default constructor) Options Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link ComboField#setOptions(String[][])}
+   *
+   * <p>Method under test: {@link ComboField#setOptions(String[][])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ComboField.setOptions(String[][])"})
   public void testSetOptionsWithString_whenNull_thenComboFieldOptionsEmpty() {
     // Arrange
@@ -109,11 +114,12 @@ public class ComboFieldDiffblueTest {
 
   /**
    * Test {@link ComboField#getOption(String)}.
-   * <p>
-   * Method under test: {@link ComboField#getOption(String)}
+   *
+   * <p>Method under test: {@link ComboField#getOption(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ComboField.getOption(String)"})
   public void testGetOption() {
     // Arrange, Act and Assert
@@ -122,8 +128,9 @@ public class ComboFieldDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ComboField}
    *   <li>{@link ComboField#setOptions(Map)}
@@ -131,8 +138,13 @@ public class ComboFieldDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ComboField.<init>()", "Map ComboField.getOptions()", "void ComboField.setOptions(Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ComboField.<init>()",
+    "Map ComboField.getOptions()",
+    "void ComboField.setOptions(Map)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ComboField actualComboField = new ComboField();

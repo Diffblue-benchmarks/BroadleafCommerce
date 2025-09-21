@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.junit.jupiter.api.DisplayName;
@@ -33,15 +34,17 @@ import org.springframework.validation.FieldError;
 class OrderInfoFormValidatorDiffblueTest {
   /**
    * Test {@link OrderInfoFormValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderInfoFormValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
@@ -54,16 +57,18 @@ class OrderInfoFormValidatorDiffblueTest {
 
   /**
    * Test {@link OrderInfoFormValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Object}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OrderInfoFormValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange
@@ -76,12 +81,13 @@ class OrderInfoFormValidatorDiffblueTest {
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate() {
     // Arrange
@@ -89,8 +95,9 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("42 Main St");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
@@ -99,30 +106,39 @@ class OrderInfoFormValidatorDiffblueTest {
     FieldError fieldError = errors.getFieldError();
     assertEquals("42 Main St", fieldError.getRejectedValue());
     assertEquals("emailAddress.invalid", fieldError.getCode());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [42 Main St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [42 Main St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [42 Main St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [42 Main St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getMessage());
     assertArrayEquals(
-        new String[]{"emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
-            "emailAddress.invalid.emailAddress", "emailAddress.invalid.java.lang.String", "emailAddress.invalid"},
+        new String[] {
+          "emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
+          "emailAddress.invalid.emailAddress",
+          "emailAddress.invalid.java.lang.String",
+          "emailAddress.invalid"
+        },
         fieldError.getCodes());
   }
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate2() {
     // Arrange
@@ -130,8 +146,9 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("17 High St");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
@@ -140,30 +157,39 @@ class OrderInfoFormValidatorDiffblueTest {
     FieldError fieldError = errors.getFieldError();
     assertEquals("17 High St", fieldError.getRejectedValue());
     assertEquals("emailAddress.invalid", fieldError.getCode());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [17 High St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [17 High St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [17 High St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [17 High St]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getMessage());
     assertArrayEquals(
-        new String[]{"emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
-            "emailAddress.invalid.emailAddress", "emailAddress.invalid.java.lang.String", "emailAddress.invalid"},
+        new String[] {
+          "emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
+          "emailAddress.invalid.emailAddress",
+          "emailAddress.invalid.java.lang.String",
+          "emailAddress.invalid"
+        },
         fieldError.getCodes());
   }
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate3() {
     // Arrange
@@ -171,25 +197,30 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("jane.doe@example.org");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
 
     // Assert that nothing has changed
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 0 errors", errors.getMessage());
   }
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate4() {
     // Arrange
@@ -197,8 +228,9 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("U@U");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
@@ -207,30 +239,39 @@ class OrderInfoFormValidatorDiffblueTest {
     FieldError fieldError = errors.getFieldError();
     assertEquals("U@U", fieldError.getRejectedValue());
     assertEquals("emailAddress.invalid", fieldError.getCode());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [U@U]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [U@U]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
-        + ",emailAddress.invalid]; arguments []; default message [null]", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [U@U]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [U@U]; codes [emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress.invalid.java.lang.String"
+            + ",emailAddress.invalid]; arguments []; default message [null]",
+        errors.getMessage());
     assertArrayEquals(
-        new String[]{"emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
-            "emailAddress.invalid.emailAddress", "emailAddress.invalid.java.lang.String", "emailAddress.invalid"},
+        new String[] {
+          "emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
+          "emailAddress.invalid.emailAddress",
+          "emailAddress.invalid.java.lang.String",
+          "emailAddress.invalid"
+        },
         fieldError.getCodes());
   }
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate5() {
     // Arrange
@@ -238,8 +279,9 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
@@ -248,30 +290,39 @@ class OrderInfoFormValidatorDiffblueTest {
     FieldError fieldError = errors.getFieldError();
     assertEquals("", fieldError.getRejectedValue());
     assertEquals("emailAddress.required", fieldError.getCode());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value []; codes [emailAddress.required.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.required.emailAddress,emailAddress.required.java.lang.String"
-        + ",emailAddress.required]; arguments []; default message [null]", errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value []; codes [emailAddress.required.org.broadleafcommerce.core.web.checkout.model"
-        + ".OrderInfoForm.emailAddress,emailAddress.required.emailAddress,emailAddress.required.java.lang.String"
-        + ",emailAddress.required]; arguments []; default message [null]", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value []; codes [emailAddress.required.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.required.emailAddress,emailAddress.required.java.lang.String"
+            + ",emailAddress.required]; arguments []; default message [null]",
+        errors.getLocalizedMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value []; codes [emailAddress.required.org.broadleafcommerce.core.web.checkout.model"
+            + ".OrderInfoForm.emailAddress,emailAddress.required.emailAddress,emailAddress.required.java.lang.String"
+            + ",emailAddress.required]; arguments []; default message [null]",
+        errors.getMessage());
     assertArrayEquals(
-        new String[]{"emailAddress.required.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
-            "emailAddress.required.emailAddress", "emailAddress.required.java.lang.String", "emailAddress.required"},
+        new String[] {
+          "emailAddress.required.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
+          "emailAddress.required.emailAddress",
+          "emailAddress.required.java.lang.String",
+          "emailAddress.required"
+        },
         fieldError.getCodes());
   }
 
   /**
    * Test {@link OrderInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link OrderInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderInfoFormValidator.validate(Object, Errors)"})
   void testValidate6() {
     // Arrange
@@ -279,8 +330,9 @@ class OrderInfoFormValidatorDiffblueTest {
 
     OrderInfoForm orderInfoForm = new OrderInfoForm();
     orderInfoForm.setEmailAddress("42 Main Stjane.doe@example.org");
-    BindException errors = new BindException(orderInfoForm,
-        "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
+    BindException errors =
+        new BindException(
+            orderInfoForm, "org.broadleafcommerce.core.web.checkout.model.OrderInfoForm");
 
     // Act
     orderInfoFormValidator.validate(orderInfoForm, errors);
@@ -289,20 +341,27 @@ class OrderInfoFormValidatorDiffblueTest {
     FieldError fieldError = errors.getFieldError();
     assertEquals("42 Main Stjane.doe@example.org", fieldError.getRejectedValue());
     assertEquals("emailAddress.invalid", fieldError.getCode());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [42 Main Stjane.doe@example.org]; codes [emailAddress.invalid.org.broadleafcommerce"
-        + ".core.web.checkout.model.OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress"
-        + ".invalid.java.lang.String,emailAddress.invalid]; arguments []; default message [null]",
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [42 Main Stjane.doe@example.org]; codes [emailAddress.invalid.org.broadleafcommerce"
+            + ".core.web.checkout.model.OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress"
+            + ".invalid.java.lang.String,emailAddress.invalid]; arguments []; default message [null]",
         errors.getLocalizedMessage());
-    assertEquals("org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
-        + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
-        + " rejected value [42 Main Stjane.doe@example.org]; codes [emailAddress.invalid.org.broadleafcommerce"
-        + ".core.web.checkout.model.OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress"
-        + ".invalid.java.lang.String,emailAddress.invalid]; arguments []; default message [null]", errors.getMessage());
+    assertEquals(
+        "org.springframework.validation.BeanPropertyBindingResult: 1 errors\n"
+            + "Field error in object 'org.broadleafcommerce.core.web.checkout.model.OrderInfoForm' on field 'emailAddress':"
+            + " rejected value [42 Main Stjane.doe@example.org]; codes [emailAddress.invalid.org.broadleafcommerce"
+            + ".core.web.checkout.model.OrderInfoForm.emailAddress,emailAddress.invalid.emailAddress,emailAddress"
+            + ".invalid.java.lang.String,emailAddress.invalid]; arguments []; default message [null]",
+        errors.getMessage());
     assertArrayEquals(
-        new String[]{"emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
-            "emailAddress.invalid.emailAddress", "emailAddress.invalid.java.lang.String", "emailAddress.invalid"},
+        new String[] {
+          "emailAddress.invalid.org.broadleafcommerce.core.web.checkout.model.OrderInfoForm.emailAddress",
+          "emailAddress.invalid.emailAddress",
+          "emailAddress.invalid.java.lang.String",
+          "emailAddress.invalid"
+        },
         fieldError.getCodes());
   }
 }

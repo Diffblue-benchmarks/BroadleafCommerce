@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,9 @@ import org.junit.experimental.categories.Category;
 public class AdminSectionImplDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AdminSectionImpl#setCeilingEntity(String)}
    *   <li>{@link AdminSectionImpl#setDisplayController(String)}
@@ -58,17 +60,30 @@ public class AdminSectionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AdminSectionImpl.getCeilingEntity()", "String AdminSectionImpl.getDisplayController()",
-      "Integer AdminSectionImpl.getDisplayOrder()", "Long AdminSectionImpl.getId()",
-      "AdminModule AdminSectionImpl.getModule()", "String AdminSectionImpl.getName()",
-      "List AdminSectionImpl.getPermissions()", "String AdminSectionImpl.getSectionKey()",
-      "String AdminSectionImpl.getUrl()", "Boolean AdminSectionImpl.getUseDefaultHandler()",
-      "void AdminSectionImpl.setCeilingEntity(String)", "void AdminSectionImpl.setDisplayController(String)",
-      "void AdminSectionImpl.setDisplayOrder(Integer)", "void AdminSectionImpl.setId(Long)",
-      "void AdminSectionImpl.setModule(AdminModule)", "void AdminSectionImpl.setName(String)",
-      "void AdminSectionImpl.setPermissions(List)", "void AdminSectionImpl.setSectionKey(String)",
-      "void AdminSectionImpl.setUrl(String)", "void AdminSectionImpl.setUseDefaultHandler(Boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AdminSectionImpl.getCeilingEntity()",
+    "String AdminSectionImpl.getDisplayController()",
+    "Integer AdminSectionImpl.getDisplayOrder()",
+    "Long AdminSectionImpl.getId()",
+    "AdminModule AdminSectionImpl.getModule()",
+    "String AdminSectionImpl.getName()",
+    "List AdminSectionImpl.getPermissions()",
+    "String AdminSectionImpl.getSectionKey()",
+    "String AdminSectionImpl.getUrl()",
+    "Boolean AdminSectionImpl.getUseDefaultHandler()",
+    "void AdminSectionImpl.setCeilingEntity(String)",
+    "void AdminSectionImpl.setDisplayController(String)",
+    "void AdminSectionImpl.setDisplayOrder(Integer)",
+    "void AdminSectionImpl.setId(Long)",
+    "void AdminSectionImpl.setModule(AdminModule)",
+    "void AdminSectionImpl.setName(String)",
+    "void AdminSectionImpl.setPermissions(List)",
+    "void AdminSectionImpl.setSectionKey(String)",
+    "void AdminSectionImpl.setUrl(String)",
+    "void AdminSectionImpl.setUseDefaultHandler(Boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     AdminSectionImpl adminSectionImpl = new AdminSectionImpl();
@@ -113,31 +128,35 @@ public class AdminSectionImplDiffblueTest {
 
   /**
    * Test {@link AdminSectionImpl#isFolderable()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminSectionImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link AdminSectionImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSectionImpl#isFolderable()}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#isFolderable()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminSectionImpl.isFolderable()"})
   public void testIsFolderable_givenAdminSectionImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new AdminSectionImpl()).isFolderable());
+    assertFalse(new AdminSectionImpl().isFolderable());
   }
 
   /**
    * Test {@link AdminSectionImpl#isFolderable()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSectionImpl#isFolderable()}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#isFolderable()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminSectionImpl.isFolderable()"})
   public void testIsFolderable_thenReturnTrue() {
     // Arrange
@@ -145,6 +164,7 @@ public class AdminSectionImplDiffblueTest {
     adminSectionImpl.setCeilingEntity("Ceiling Entity");
     adminSectionImpl.setDisplayController("Display Controller");
     adminSectionImpl.setDisplayOrder(1);
+    adminSectionImpl.setFolderable(true);
     adminSectionImpl.setFolderedByDefault(true);
     adminSectionImpl.setId(1L);
     adminSectionImpl.setModule(new AdminModuleDTO());
@@ -153,7 +173,6 @@ public class AdminSectionImplDiffblueTest {
     adminSectionImpl.setSectionKey("Section Key");
     adminSectionImpl.setUrl("https://example.org/example");
     adminSectionImpl.setUseDefaultHandler(true);
-    adminSectionImpl.setFolderable(true);
 
     // Act and Assert
     assertTrue(adminSectionImpl.isFolderable());
@@ -161,11 +180,12 @@ public class AdminSectionImplDiffblueTest {
 
   /**
    * Test {@link AdminSectionImpl#setFolderable(boolean)}.
-   * <p>
-   * Method under test: {@link AdminSectionImpl#setFolderable(boolean)}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#setFolderable(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminSectionImpl.setFolderable(boolean)"})
   public void testSetFolderable() {
     // Arrange
@@ -180,31 +200,35 @@ public class AdminSectionImplDiffblueTest {
 
   /**
    * Test {@link AdminSectionImpl#isFolderedByDefault()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminSectionImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link AdminSectionImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSectionImpl#isFolderedByDefault()}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#isFolderedByDefault()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminSectionImpl.isFolderedByDefault()"})
   public void testIsFolderedByDefault_givenAdminSectionImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new AdminSectionImpl()).isFolderedByDefault());
+    assertFalse(new AdminSectionImpl().isFolderedByDefault());
   }
 
   /**
    * Test {@link AdminSectionImpl#isFolderedByDefault()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSectionImpl#isFolderedByDefault()}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#isFolderedByDefault()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminSectionImpl.isFolderedByDefault()"})
   public void testIsFolderedByDefault_thenReturnTrue() {
     // Arrange
@@ -213,6 +237,7 @@ public class AdminSectionImplDiffblueTest {
     adminSectionImpl.setDisplayController("Display Controller");
     adminSectionImpl.setDisplayOrder(1);
     adminSectionImpl.setFolderable(true);
+    adminSectionImpl.setFolderedByDefault(true);
     adminSectionImpl.setId(1L);
     adminSectionImpl.setModule(new AdminModuleDTO());
     adminSectionImpl.setName("Name");
@@ -220,7 +245,6 @@ public class AdminSectionImplDiffblueTest {
     adminSectionImpl.setSectionKey("Section Key");
     adminSectionImpl.setUrl("https://example.org/example");
     adminSectionImpl.setUseDefaultHandler(true);
-    adminSectionImpl.setFolderedByDefault(true);
 
     // Act and Assert
     assertTrue(adminSectionImpl.isFolderedByDefault());
@@ -228,11 +252,12 @@ public class AdminSectionImplDiffblueTest {
 
   /**
    * Test {@link AdminSectionImpl#setFolderedByDefault(boolean)}.
-   * <p>
-   * Method under test: {@link AdminSectionImpl#setFolderedByDefault(boolean)}
+   *
+   * <p>Method under test: {@link AdminSectionImpl#setFolderedByDefault(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminSectionImpl.setFolderedByDefault(boolean)"})
   public void testSetFolderedByDefault() {
     // Arrange
@@ -247,11 +272,12 @@ public class AdminSectionImplDiffblueTest {
 
   /**
    * Test new {@link AdminSectionImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AdminSectionImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link AdminSectionImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminSectionImpl.<init>()"})
   public void testNewAdminSectionImpl() {
     // Arrange and Act

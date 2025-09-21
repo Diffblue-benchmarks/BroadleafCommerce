@@ -18,10 +18,10 @@
 package org.broadleafcommerce.core.geolocation;
 
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.junit.Test;
@@ -37,25 +37,22 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {GeolocationServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GeolocationServiceImplDiffblueTest {
-  @MockBean
-  private Environment environment;
+  @MockBean private Environment environment;
 
-  @MockBean
-  private GeolocationAPI geolocationAPI;
+  @MockBean private GeolocationAPI geolocationAPI;
 
-  @Autowired
-  private GeolocationServiceImpl geolocationServiceImpl;
+  @Autowired private GeolocationServiceImpl geolocationServiceImpl;
 
-  @Autowired
-  private Map<String, GeolocationAPI> map;
+  @Autowired private Map<String, GeolocationAPI> map;
 
   /**
    * Test {@link GeolocationServiceImpl#getLocationData(String)}.
-   * <p>
-   * Method under test: {@link GeolocationServiceImpl#getLocationData(String)}
+   *
+   * <p>Method under test: {@link GeolocationServiceImpl#getLocationData(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GeolocationDTO GeolocationServiceImpl.getLocationData(String)"})
   public void testGetLocationData() {
     // Arrange
@@ -65,19 +62,24 @@ public class GeolocationServiceImplDiffblueTest {
     GeolocationDTO actualLocationData = geolocationServiceImpl.getLocationData("42 Main St");
 
     // Assert
-    verify(environment).getProperty(eq("geolocation.api"));
+    verify(environment).getProperty("geolocation.api");
     assertNull(actualLocationData);
   }
 
   /**
    * Test {@link GeolocationServiceImpl#getGeolocationAPI()}.
-   * <p>
-   * Method under test: {@link GeolocationServiceImpl#getGeolocationAPI()}
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link GeolocationServiceImpl#getGeolocationAPI()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GeolocationAPI GeolocationServiceImpl.getGeolocationAPI()"})
-  public void testGetGeolocationAPI() {
+  public void testGetGeolocationAPI_thenReturnNull() {
     // Arrange
     when(environment.getProperty(Mockito.<String>any())).thenReturn("Property");
 
@@ -85,7 +87,7 @@ public class GeolocationServiceImplDiffblueTest {
     GeolocationAPI actualGeolocationAPI = geolocationServiceImpl.getGeolocationAPI();
 
     // Assert
-    verify(environment).getProperty(eq("geolocation.api"));
+    verify(environment).getProperty("geolocation.api");
     assertNull(actualGeolocationAPI);
   }
 }

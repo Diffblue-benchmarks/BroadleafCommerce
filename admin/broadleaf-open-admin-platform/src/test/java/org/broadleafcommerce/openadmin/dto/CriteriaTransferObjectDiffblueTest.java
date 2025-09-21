@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,22 +42,23 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {CriteriaTransferObject.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CriteriaTransferObjectDiffblueTest {
-  @Autowired
-  private CriteriaTransferObject criteriaTransferObject;
+  @Autowired private CriteriaTransferObject criteriaTransferObject;
 
   /**
    * Test {@link CriteriaTransferObject#add(FilterAndSortCriteria)}.
+   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#add(FilterAndSortCriteria)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#add(FilterAndSortCriteria)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CriteriaTransferObject.add(FilterAndSortCriteria)"})
   public void testAdd_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
@@ -74,11 +76,12 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#addAll(Collection)}.
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll() {
     // Arrange
@@ -100,14 +103,17 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#addAll(Collection)}.
+   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap {@code 42} PropertyId is {@code 42}.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap {@code 42}
+   *       PropertyId is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll_thenCriteriaTransferObjectCriteriaMap42PropertyIdIs42() {
     // Arrange
@@ -136,15 +142,17 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#addAll(Collection)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#addAll(Collection)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#addAll(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CriteriaTransferObject.addAll(Collection)"})
   public void testAddAll_whenArrayList_thenCriteriaTransferObjectCriteriaMapEmpty() {
     // Arrange
@@ -159,16 +167,18 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#get(String)}.
+   *
    * <ul>
-   *   <li>Given {@link CriteriaTransferObject}.</li>
-   *   <li>When {@code Name}.</li>
-   *   <li>Then return PropertyId is {@code Name}.</li>
+   *   <li>Given {@link CriteriaTransferObject}.
+   *   <li>When {@code Name}.
+   *   <li>Then return PropertyId is {@code Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#get(String)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#get(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
   public void testGet_givenCriteriaTransferObject_whenName_thenReturnPropertyIdIsName() {
     // Arrange and Act
@@ -191,14 +201,16 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#get(String)}.
+   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} CriteriaMap is {@link HashMap#HashMap()}.</li>
+   *   <li>Then {@link CriteriaTransferObject} CriteriaMap is {@link HashMap#HashMap()}.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#get(String)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#get(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
   public void testGet_thenCriteriaTransferObjectCriteriaMapIsHashMap() {
     // Arrange
@@ -226,14 +238,16 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#get(String)}.
+   *
    * <ul>
-   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.</li>
+   *   <li>Then {@link CriteriaTransferObject} (default constructor) CriteriaMap size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#get(String)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#get(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FilterAndSortCriteria CriteriaTransferObject.get(String)"})
   public void testGet_thenCriteriaTransferObjectCriteriaMapSizeIsOne() {
     // Arrange
@@ -253,12 +267,16 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}.
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String,
+   * SortDirection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CriteriaTransferObject.defaultSortDirectionForFieldIfUnset(String, SortDirection)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CriteriaTransferObject.defaultSortDirectionForFieldIfUnset(String, SortDirection)"
+  })
   public void testDefaultSortDirectionForFieldIfUnset() {
     // Arrange and Act
     criteriaTransferObject.defaultSortDirectionForFieldIfUnset("Name", SortDirection.ASCENDING);
@@ -280,15 +298,17 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#isFolderLookup()}.
+   *
    * <ul>
-   *   <li>Given {@link CriteriaTransferObject} (default constructor) FolderLookup is {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link CriteriaTransferObject} (default constructor) FolderLookup is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#isFolderLookup()}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#isFolderLookup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CriteriaTransferObject.isFolderLookup()"})
   public void testIsFolderLookup_givenCriteriaTransferObjectFolderLookupIsTrue_thenReturnTrue() {
     // Arrange
@@ -301,25 +321,28 @@ public class CriteriaTransferObjectDiffblueTest {
 
   /**
    * Test {@link CriteriaTransferObject#isFolderLookup()}.
+   *
    * <ul>
-   *   <li>Given {@link CriteriaTransferObject} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link CriteriaTransferObject} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CriteriaTransferObject#isFolderLookup()}
+   *
+   * <p>Method under test: {@link CriteriaTransferObject#isFolderLookup()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CriteriaTransferObject.isFolderLookup()"})
   public void testIsFolderLookup_givenCriteriaTransferObject_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new CriteriaTransferObject()).isFolderLookup());
+    assertFalse(new CriteriaTransferObject().isFolderLookup());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CriteriaTransferObject}
    *   <li>{@link CriteriaTransferObject#setAdditionalFilterMappings(List)}
@@ -348,22 +371,34 @@ public class CriteriaTransferObjectDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CriteriaTransferObject.<init>()",
-      "List CriteriaTransferObject.getAdditionalFilterMappings()", "Map CriteriaTransferObject.getCriteriaMap()",
-      "Long CriteriaTransferObject.getFirstId()", "Integer CriteriaTransferObject.getFirstResult()",
-      "Long CriteriaTransferObject.getFolderId()", "Long CriteriaTransferObject.getLastId()",
-      "Integer CriteriaTransferObject.getLowerCount()", "Integer CriteriaTransferObject.getMaxResults()",
-      "List CriteriaTransferObject.getNonCountAdditionalFilterMappings()",
-      "Boolean CriteriaTransferObject.getPresentationFetch()", "Integer CriteriaTransferObject.getUpperCount()",
-      "void CriteriaTransferObject.setAdditionalFilterMappings(List)",
-      "void CriteriaTransferObject.setCriteriaMap(Map)", "void CriteriaTransferObject.setFirstId(Long)",
-      "void CriteriaTransferObject.setFirstResult(Integer)", "void CriteriaTransferObject.setFolderId(Long)",
-      "void CriteriaTransferObject.setFolderLookup(Boolean)", "void CriteriaTransferObject.setLastId(Long)",
-      "void CriteriaTransferObject.setLowerCount(Integer)", "void CriteriaTransferObject.setMaxResults(Integer)",
-      "void CriteriaTransferObject.setNonCountAdditionalFilterMappings(List)",
-      "void CriteriaTransferObject.setPresentationFetch(Boolean)",
-      "void CriteriaTransferObject.setUpperCount(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CriteriaTransferObject.<init>()",
+    "List CriteriaTransferObject.getAdditionalFilterMappings()",
+    "Map CriteriaTransferObject.getCriteriaMap()",
+    "Long CriteriaTransferObject.getFirstId()",
+    "Integer CriteriaTransferObject.getFirstResult()",
+    "Long CriteriaTransferObject.getFolderId()",
+    "Long CriteriaTransferObject.getLastId()",
+    "Integer CriteriaTransferObject.getLowerCount()",
+    "Integer CriteriaTransferObject.getMaxResults()",
+    "List CriteriaTransferObject.getNonCountAdditionalFilterMappings()",
+    "Boolean CriteriaTransferObject.getPresentationFetch()",
+    "Integer CriteriaTransferObject.getUpperCount()",
+    "void CriteriaTransferObject.setAdditionalFilterMappings(List)",
+    "void CriteriaTransferObject.setCriteriaMap(Map)",
+    "void CriteriaTransferObject.setFirstId(Long)",
+    "void CriteriaTransferObject.setFirstResult(Integer)",
+    "void CriteriaTransferObject.setFolderId(Long)",
+    "void CriteriaTransferObject.setFolderLookup(Boolean)",
+    "void CriteriaTransferObject.setLastId(Long)",
+    "void CriteriaTransferObject.setLowerCount(Integer)",
+    "void CriteriaTransferObject.setMaxResults(Integer)",
+    "void CriteriaTransferObject.setNonCountAdditionalFilterMappings(List)",
+    "void CriteriaTransferObject.setPresentationFetch(Boolean)",
+    "void CriteriaTransferObject.setUpperCount(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CriteriaTransferObject actualCriteriaTransferObject = new CriteriaTransferObject();
@@ -379,19 +414,22 @@ public class CriteriaTransferObjectDiffblueTest {
     actualCriteriaTransferObject.setLowerCount(3);
     actualCriteriaTransferObject.setMaxResults(3);
     ArrayList<FilterMapping> nonCountAdditionalFilterMappings = new ArrayList<>();
-    actualCriteriaTransferObject.setNonCountAdditionalFilterMappings(nonCountAdditionalFilterMappings);
+    actualCriteriaTransferObject.setNonCountAdditionalFilterMappings(
+        nonCountAdditionalFilterMappings);
     actualCriteriaTransferObject.setPresentationFetch(true);
     actualCriteriaTransferObject.setUpperCount(3);
-    List<FilterMapping> actualAdditionalFilterMappings = actualCriteriaTransferObject.getAdditionalFilterMappings();
-    Map<String, FilterAndSortCriteria> actualCriteriaMap = actualCriteriaTransferObject.getCriteriaMap();
+    List<FilterMapping> actualAdditionalFilterMappings =
+        actualCriteriaTransferObject.getAdditionalFilterMappings();
+    Map<String, FilterAndSortCriteria> actualCriteriaMap =
+        actualCriteriaTransferObject.getCriteriaMap();
     Long actualFirstId = actualCriteriaTransferObject.getFirstId();
     Integer actualFirstResult = actualCriteriaTransferObject.getFirstResult();
     Long actualFolderId = actualCriteriaTransferObject.getFolderId();
     Long actualLastId = actualCriteriaTransferObject.getLastId();
     Integer actualLowerCount = actualCriteriaTransferObject.getLowerCount();
     Integer actualMaxResults = actualCriteriaTransferObject.getMaxResults();
-    List<FilterMapping> actualNonCountAdditionalFilterMappings = actualCriteriaTransferObject
-        .getNonCountAdditionalFilterMappings();
+    List<FilterMapping> actualNonCountAdditionalFilterMappings =
+        actualCriteriaTransferObject.getNonCountAdditionalFilterMappings();
     Boolean actualPresentationFetch = actualCriteriaTransferObject.getPresentationFetch();
     Integer actualUpperCount = actualCriteriaTransferObject.getUpperCount();
 

@@ -1,0 +1,480 @@
+{
+  "meta" : {
+    "reportVersion" : "2.7"
+  },
+  "run" : {
+    "version" : "2025.09.01-44e352d-licensed",
+    "creationTimestamp" : "2025-09-19T10:40:50.455477524Z",
+    "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
+    "totalTime" : 103.579,
+    "environmentDetectionTime" : 0.022,
+    "indexingTime" : 0.421,
+    "entryPointsTime" : 0.017,
+    "generationTime" : 148329.704,
+    "timeToFirstTest" : 126770.641,
+    "timeToLastTest" : 153191.809,
+    "indexQueryTime" : 3.814,
+    "verificationTime" : 4089.581,
+    "validationTime" : 5.799
+  },
+  "codes" : {
+    "R000" : "Success",
+    "T000" : "Method eligible for test creation",
+    "T003" : "Private method",
+    "T004" : "In anonymous inner class",
+    "T009" : "No implementation for abstract class",
+    "T010" : "Abstract or interface method",
+    "T012" : "Synthetic method",
+    "V000" : "Validated successfully",
+    "V003" : "Tests discarded during validation"
+  },
+  "summary" : {
+    "classesCount" : 3,
+    "methodsCount" : 33,
+    "cumulativeDiffblueTestCount" : 3,
+    "cumulativeManualTestCount" : 0,
+    "completeTestCount" : 3,
+    "incompleteTestCount" : 0,
+    "skeletonTestCount" : 0,
+    "totalPhysicalLineCount" : 0,
+    "perMethodTestability" : {
+      "T000" : 2,
+      "T003" : 3,
+      "T004" : 3,
+      "T009" : 4,
+      "T010" : 1,
+      "T012" : 20
+    },
+    "perMethodOutcome" : {
+      "R000" : 2,
+      "T003" : 3,
+      "T004" : 3,
+      "T009" : 4,
+      "T010" : 1,
+      "T012" : 20
+    },
+    "perTestOutcome" : {
+      "R000" : 3
+    },
+    "perTestValidation" : {
+      "V000" : 3,
+      "V003" : 8
+    }
+  },
+  "classes" : {
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport" : {
+      "methodsCount" : 11,
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T012" : 9
+      },
+      "perMethodOutcome" : {
+        "R000" : 2,
+        "T012" : 9
+      },
+      "perTestOutcome" : {
+        "R000" : 3
+      }
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec" : {
+      "methodsCount" : 15,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T003" : 3,
+        "T009" : 4,
+        "T010" : 1,
+        "T012" : 7
+      },
+      "perMethodOutcome" : {
+        "T003" : 3,
+        "T009" : 4,
+        "T010" : 1,
+        "T012" : 7
+      }
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1" : {
+      "methodsCount" : 7,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T004" : 3,
+        "T012" : 4
+      },
+      "perMethodOutcome" : {
+        "T004" : 3,
+        "T012" : 4
+      }
+    }
+  },
+  "methods" : {
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.$createCallSiteArray:()Lorg/codehaus/groovy/runtime/callsite/CallSiteArray;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.$createCallSiteArray_1:([Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.$getCallSiteArray:()[Lorg/codehaus/groovy/runtime/callsite/CallSite;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.$getStaticMetaClass:()Lgroovy/lang/MetaClass;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        41
+      ]
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.convertFieldName:(Ljava/lang/String;)Ljava/lang/String;" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        38,
+        39
+      ]
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.getMetaClass:()Lgroovy/lang/MetaClass;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.getProperty:(Ljava/lang/String;)Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.invokeMethod:(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.setMetaClass:(Lgroovy/lang/MetaClass;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.page.FieldConverterSupport.setProperty:(Ljava/lang/String;Ljava/lang/Object;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.$createCallSiteArray:()Lorg/codehaus/groovy/runtime/callsite/CallSiteArray;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.$createCallSiteArray_1:([Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.$getCallSiteArray:()[Lorg/codehaus/groovy/runtime/callsite/CallSite;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.$getStaticMetaClass:()Lgroovy/lang/MetaClass;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.<init>:(Ljava/lang/Object;Ljava/lang/Object;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T004",
+      "perMethodOutcome" : "T004"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.doCall:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T004",
+      "perMethodOutcome" : "T004"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec$_loginAsDefaultUser_closure1.doCall:(Ljava/lang/Object;)Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T004",
+      "perMethodOutcome" : "T004",
+      "lineNumbers" : [
+        73,
+        74,
+        75,
+        76,
+        73
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.$createCallSiteArray:()Lorg/codehaus/groovy/runtime/callsite/CallSiteArray;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.$createCallSiteArray_1:([Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.$getCallSiteArray:()[Lorg/codehaus/groovy/runtime/callsite/CallSite;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.$getStaticMetaClass:()Lgroovy/lang/MetaClass;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010",
+      "lineNumbers" : [
+        84
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.cleanup:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T003",
+      "perMethodOutcome" : "T003",
+      "lineNumbers" : [
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.get$spock_sharedField_snapshotFile:()Ljava/lang/String;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T009",
+      "perMethodOutcome" : "T009"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.getSnapshotFile:()Ljava/lang/String;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.isSpecStepwise:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T009",
+      "perMethodOutcome" : "T009",
+      "lineNumbers" : [
+        81,
+        82
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.loginAsDefaultUser:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T009",
+      "perMethodOutcome" : "T009",
+      "lineNumbers" : [
+        72,
+        78
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.set$spock_sharedField_snapshotFile:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T009",
+      "perMethodOutcome" : "T009"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.setSnapshotFile:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.setup:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T003",
+      "perMethodOutcome" : "T003",
+      "lineNumbers" : [
+        53,
+        54,
+        55,
+        56,
+        57,
+        54,
+        55,
+        56,
+        57
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.setupSpec:()Ljava/lang/Object;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T003",
+      "perMethodOutcome" : "T003",
+      "lineNumbers" : [
+        39,
+        40,
+        41,
+        39,
+        40,
+        41,
+        43,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ]
+    },
+    "org.broadleafcommerce.browsertest.spec.BroadleafAdminSpec.super$6$$getStaticMetaClass:()Lgroovy/lang/MetaClass;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012"
+    }
+  },
+  "validationMetrics" : {
+    "failingTests" : [
+      "org.broadleafcommerce.core.catalog.service.CatalogTest.testSkus",
+      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsByName",
+      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testFeaturedProduct",
+      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsById",
+      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadArchivedProductsByName",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForId",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readFulfillmentGroupsForId",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForOrder",
+      "org.broadleafcommerce.test.translation.sitejvm.TranslationServiceTest.testTranslation",
+      "org.broadleafcommerce.security.service.AdminUserTest.testAdminUserSave",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testDetectedModuleActivity",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testSameOrderingConfiguredActivity",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testInBetweenActivity",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testNonExplicitOrdering",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testFrameworkOrderingChanged",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testMergedOrderedActivities",
+      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToSpecificItems",
+      "org.broadleafcommerce.core.offer.service.MVELTest.testBasicMVELFunctions",
+      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToItemsInCategoryAndOrderValueGreaterThanFifty",
+      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToFulfillmentGroup",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createPayment",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoById",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createTestPayment",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoByOrder",
+      "org.broadleafcommerce.core.checkout.service.CheckoutTest.testCheckout",
+      "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrderById",
+      "org.broadleafcommerce.core.order.dao.OrderDaoTest.createOrder",
+      "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrdersForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.testReadOrdersForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.findOrderByOrderNumber",
+      "org.broadleafcommerce.core.order.service.OrderTest.findCartForAnonymousCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.addItemToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testSubmitOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.findNamedOrderForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.addPaymentToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalAddScenarios",
+      "org.broadleafcommerce.core.order.service.OrderTest.removeItemFromOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testManyToOneFGItemToOrderItem",
+      "org.broadleafcommerce.core.order.service.OrderTest.findCurrentCartForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.addBundleToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.addAnotherItemToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.updateItemsInOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testOrderPaymentInfos",
+      "org.broadleafcommerce.core.order.service.OrderTest.getItemsForOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.getOrdersForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.createCartForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.testNamedOrderForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalUpdateScenarios",
+      "org.broadleafcommerce.core.order.service.OrderTest.checkOrderItems",
+      "org.broadleafcommerce.core.order.service.OrderTest.findCartForNullCustomerId",
+      "org.broadleafcommerce.core.order.service.OrderTest.testOrderProperties",
+      "org.broadleafcommerce.core.order.service.OrderTest.removeBundleFromOrder",
+      "org.broadleafcommerce.profile.web.core.service.PhoneTest.readPhoneById",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.createFulfillmentGroupItem",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsForFulfillmentGroup",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsById",
+      "org.broadleafcommerce.security.service.AdminPermissionTest.testAdminPermissionSave",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsByIdAfterGiftWrapDeletion",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readGiftWrapOrderItemsById",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.deleteGiftWrapOrderItemsById",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createGiftWrapOrderItem",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsById",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createDiscreteOrderItem",
+      "org.broadleafcommerce.common.email.service.EmailTest.testSynchronousEmail",
+      "org.broadleafcommerce.common.config.SystemPropertiesTest.testOverridesPropertyFiles",
+      "org.broadleafcommerce.common.config.SystemPropertiesTest.testEnvironmentResolvedFromDatabase",
+      "org.broadleafcommerce.security.service.AdminRoleTest.testAdminRoleSave",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithInactiveAnonymousCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testAddItemToCartFromNamedOrder",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoAnonymousCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrderWithoutExistingCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrder",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoCustomerCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrderWithoutExistingCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testMoveAllItemsToCartFromNamedOrder",
+      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrder",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithBothCarts",
+      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readFirstSku",
+      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.createSku",
+      "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readSkuById",
+      "org.broadleafcommerce.common.workflow.RollbackTest.testRollbackOrder",
+      "org.broadleafcommerce.core.catalog.dao.CategoryDaoTest.testSetFeaturedProducts",
+      "org.broadleafcommerce.profile.web.core.service.CustomerTest.readCustomersById"
+    ]
+  }
+}

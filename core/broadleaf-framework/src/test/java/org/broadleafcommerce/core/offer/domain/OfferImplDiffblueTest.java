@@ -27,13 +27,13 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,16 +59,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferImplDiffblueTest {
-  @Autowired
-  private OfferImpl offerImpl;
+  @Autowired private OfferImpl offerImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferImpl#setDescription(String)}
    *   <li>{@link OfferImpl#setEndDate(Date)}
@@ -102,27 +102,47 @@ public class OfferImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String OfferImpl.getDescription()", "Date OfferImpl.getEndDate()", "Long OfferImpl.getId()",
-      "Long OfferImpl.getMinimumDaysPerUsage()", "String OfferImpl.getName()", "List OfferImpl.getOfferCodes()",
-      "Map OfferImpl.getOfferMatchRulesXref()", "List OfferImpl.getOfferPriceData()",
-      "Set OfferImpl.getQualifyingItemCriteriaXref()", "String OfferImpl.getTargetSystem()",
-      "BigDecimal OfferImpl.getValue()", "void OfferImpl.setDescription(String)", "void OfferImpl.setEndDate(Date)",
-      "void OfferImpl.setId(Long)", "void OfferImpl.setMarketingMessage(String)",
-      "void OfferImpl.setMaxUsesPerCustomer(Long)", "void OfferImpl.setMinimumDaysPerUsage(Long)",
-      "void OfferImpl.setName(String)", "void OfferImpl.setOfferCodes(List)",
-      "void OfferImpl.setOfferMatchRulesXref(Map)", "void OfferImpl.setOfferPriceData(List)",
-      "void OfferImpl.setPriority(Integer)", "void OfferImpl.setQualifyingItemCriteriaXref(Set)",
-      "void OfferImpl.setRequiresRelatedTargetAndQualifiers(Boolean)", "void OfferImpl.setStartDate(Date)",
-      "void OfferImpl.setTargetItemCriteriaXref(Set)", "void OfferImpl.setTargetSystem(String)",
-      "void OfferImpl.setUseListForDiscounts(Boolean)", "void OfferImpl.setValue(BigDecimal)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String OfferImpl.getDescription()",
+    "Date OfferImpl.getEndDate()",
+    "Long OfferImpl.getId()",
+    "Long OfferImpl.getMinimumDaysPerUsage()",
+    "String OfferImpl.getName()",
+    "List OfferImpl.getOfferCodes()",
+    "Map OfferImpl.getOfferMatchRulesXref()",
+    "List OfferImpl.getOfferPriceData()",
+    "Set OfferImpl.getQualifyingItemCriteriaXref()",
+    "String OfferImpl.getTargetSystem()",
+    "BigDecimal OfferImpl.getValue()",
+    "void OfferImpl.setDescription(String)",
+    "void OfferImpl.setEndDate(Date)",
+    "void OfferImpl.setId(Long)",
+    "void OfferImpl.setMarketingMessage(String)",
+    "void OfferImpl.setMaxUsesPerCustomer(Long)",
+    "void OfferImpl.setMinimumDaysPerUsage(Long)",
+    "void OfferImpl.setName(String)",
+    "void OfferImpl.setOfferCodes(List)",
+    "void OfferImpl.setOfferMatchRulesXref(Map)",
+    "void OfferImpl.setOfferPriceData(List)",
+    "void OfferImpl.setPriority(Integer)",
+    "void OfferImpl.setQualifyingItemCriteriaXref(Set)",
+    "void OfferImpl.setRequiresRelatedTargetAndQualifiers(Boolean)",
+    "void OfferImpl.setStartDate(Date)",
+    "void OfferImpl.setTargetItemCriteriaXref(Set)",
+    "void OfferImpl.setTargetSystem(String)",
+    "void OfferImpl.setUseListForDiscounts(Boolean)",
+    "void OfferImpl.setValue(BigDecimal)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     OfferImpl offerImpl = new OfferImpl();
 
     // Act
     offerImpl.setDescription("The characteristics of someone or something");
-    Date endDate = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date endDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     offerImpl.setEndDate(endDate);
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
@@ -139,7 +159,8 @@ public class OfferImplDiffblueTest {
     HashSet<OfferQualifyingCriteriaXref> qualifyingItemCriteriaXref = new HashSet<>();
     offerImpl.setQualifyingItemCriteriaXref(qualifyingItemCriteriaXref);
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetSystem("Target System");
     offerImpl.setUseListForDiscounts(true);
@@ -153,7 +174,8 @@ public class OfferImplDiffblueTest {
     List<OfferCode> actualOfferCodes = offerImpl.getOfferCodes();
     Map<String, OfferOfferRuleXref> actualOfferMatchRulesXref = offerImpl.getOfferMatchRulesXref();
     List<OfferPriceData> actualOfferPriceData = offerImpl.getOfferPriceData();
-    Set<OfferQualifyingCriteriaXref> actualQualifyingItemCriteriaXref = offerImpl.getQualifyingItemCriteriaXref();
+    Set<OfferQualifyingCriteriaXref> actualQualifyingItemCriteriaXref =
+        offerImpl.getQualifyingItemCriteriaXref();
     String actualTargetSystem = offerImpl.getTargetSystem();
     BigDecimal actualValue = offerImpl.getValue();
 
@@ -178,1748 +200,1548 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#getType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferType OfferImpl.getType()"})
   public void testGetType() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getType());
+    assertNull(offerImpl.getType());
+  }
+
+  /**
+   * Test {@link OfferImpl#setType(OfferType)}.
+   *
+   * <ul>
+   *   <li>When {@link OfferType#FULFILLMENT_GROUP}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#type} is {@code FULFILLMENT_GROUP}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#setType(OfferType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setType(OfferType)"})
+  public void testSetType_whenFulfillment_group_thenOfferImplTypeIsFulfillmentGroup() {
+    // Arrange and Act
+    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
+
+    // Assert
+    assertEquals("FULFILLMENT_GROUP", offerImpl.type);
+    assertSame(OfferType.FULFILLMENT_GROUP, offerImpl.getType());
   }
 
   /**
    * Test {@link OfferImpl#getDiscountType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getDiscountType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getDiscountType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferDiscountType OfferImpl.getDiscountType()"})
   public void testGetDiscountType() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getDiscountType());
+    assertNull(offerImpl.getDiscountType());
+  }
+
+  /**
+   * Test {@link OfferImpl#setDiscountType(OfferDiscountType)}.
+   *
+   * <ul>
+   *   <li>When {@link OfferDiscountType#AMOUNT_OFF}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#discountType} is {@code AMOUNT_OFF}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#setDiscountType(OfferDiscountType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setDiscountType(OfferDiscountType)"})
+  public void testSetDiscountType_whenAmount_off_thenOfferImplDiscountTypeIsAmountOff() {
+    // Arrange and Act
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+
+    // Assert
+    assertEquals("AMOUNT_OFF", offerImpl.discountType);
+    assertSame(OfferDiscountType.AMOUNT_OFF, offerImpl.getDiscountType());
   }
 
   /**
    * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then {@link OfferImpl} OfferItemTargetRuleType is {@link
+   *       OfferItemRestrictionRuleType#NONE}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemQualifierRuleType()"})
-  public void testGetOfferItemQualifierRuleType_givenOfferImpl() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl2.getOfferItemQualifierRuleType();
-
-    // Assert
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemQualifierRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, actualOfferItemQualifierRuleType);
-    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemTargetRuleType());
+  public void testGetOfferItemQualifierRuleType_thenOfferImplOfferItemTargetRuleTypeIsNone() {
+    // Arrange, Act and Assert
+    OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemTargetRuleType());
   }
 
   /**
    * Test {@link OfferImpl#getOfferItemQualifierRuleType()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
+   *   <li>Then {@link OfferImpl} (default constructor) OfferItemTargetRuleType is {@link
+   *       OfferItemRestrictionRuleType#NONE}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getOfferItemQualifierRuleType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemQualifierRuleType()"})
-  public void testGetOfferItemQualifierRuleType_givenOfferImplAdjustmentTypeIsFuture_credit() {
+  public void testGetOfferItemQualifierRuleType_thenOfferImplOfferItemTargetRuleTypeIsNone2() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemQualifierRuleType = offerImpl2.getOfferItemQualifierRuleType();
-
-    // Assert
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemQualifierRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, actualOfferItemQualifierRuleType);
-    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemTargetRuleType());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
-  public void testGetOfferItemTargetRuleType_givenOfferImpl() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl2.getOfferItemTargetRuleType();
-
-    // Assert
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemTargetRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemQualifierRuleType());
-    assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
-  public void testGetOfferItemTargetRuleType_givenOfferImplAdjustmentTypeIsFuture_credit() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-
-    // Act
-    OfferItemRestrictionRuleType actualOfferItemTargetRuleType = offerImpl2.getOfferItemTargetRuleType();
-
-    // Assert
-    OfferItemRestrictionRuleType offerItemRestrictionRuleType = actualOfferItemTargetRuleType.NONE;
-    assertSame(offerItemRestrictionRuleType, offerImpl2.getOfferItemQualifierRuleType());
-    assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
-  }
-
-  /**
-   * Test {@link OfferImpl#getPriority()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then return one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getPriority()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"int OfferImpl.getPriority()"})
-  public void testGetPriority_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOne() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setPriority(1);
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
 
     // Act and Assert
-    assertEquals(1, offerImpl2.getPriority());
+    OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemTargetRuleType());
+  }
+
+  /**
+   * Test {@link OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}.
+   *
+   * <ul>
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#offerItemQualifierRuleType} is {@code NONE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OfferImpl#setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType)"})
+  public void testSetOfferItemQualifierRuleType_thenOfferImplOfferItemQualifierRuleTypeIsNone() {
+    // Arrange and Act
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+
+    // Assert
+    assertEquals("NONE", offerImpl.offerItemQualifierRuleType);
+  }
+
+  /**
+   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
+   *
+   * <ul>
+   *   <li>Then {@link OfferImpl} OfferItemQualifierRuleType is {@link
+   *       OfferItemRestrictionRuleType#NONE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
+  public void testGetOfferItemTargetRuleType_thenOfferImplOfferItemQualifierRuleTypeIsNone() {
+    // Arrange and Act
+    OfferItemRestrictionRuleType actualOfferItemTargetRuleType =
+        offerImpl.getOfferItemTargetRuleType();
+
+    // Assert
+    OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
+  }
+
+  /**
+   * Test {@link OfferImpl#getOfferItemTargetRuleType()}.
+   *
+   * <ul>
+   *   <li>Then {@link OfferImpl} (default constructor) OfferItemQualifierRuleType is {@link
+   *       OfferItemRestrictionRuleType#NONE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getOfferItemTargetRuleType()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OfferItemRestrictionRuleType OfferImpl.getOfferItemTargetRuleType()"})
+  public void testGetOfferItemTargetRuleType_thenOfferImplOfferItemQualifierRuleTypeIsNone2() {
+    // Arrange
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+
+    // Act
+    OfferItemRestrictionRuleType actualOfferItemTargetRuleType =
+        offerImpl.getOfferItemTargetRuleType();
+
+    // Assert
+    OfferItemRestrictionRuleType offerItemRestrictionRuleType = OfferItemRestrictionRuleType.NONE;
+    assertSame(offerItemRestrictionRuleType, offerImpl.getOfferItemQualifierRuleType());
+    assertSame(offerItemRestrictionRuleType, actualOfferItemTargetRuleType);
+  }
+
+  /**
+   * Test {@link OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}.
+   *
+   * <ul>
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#offerItemTargetRuleType} is {@code NONE}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * OfferImpl#setOfferItemTargetRuleType(OfferItemRestrictionRuleType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType)"})
+  public void testSetOfferItemTargetRuleType_thenOfferImplOfferItemTargetRuleTypeIsNone() {
+    // Arrange and Act
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+
+    // Assert
+    assertEquals("NONE", offerImpl.offerItemTargetRuleType);
   }
 
   /**
    * Test {@link OfferImpl#getPriority()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link Integer#MAX_VALUE} less one.</li>
+   *   <li>Given {@link OfferImpl} Priority is one.
+   *   <li>Then return one.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getPriority()}
+   *
+   * <p>Method under test: {@link OfferImpl#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"int OfferImpl.getPriority()"})
+  public void testGetPriority_givenOfferImplPriorityIsOne_thenReturnOne() {
+    // Arrange
+    offerImpl.setPriority(1);
+
+    // Act and Assert
+    assertEquals(1, offerImpl.getPriority());
+  }
+
+  /**
+   * Test {@link OfferImpl#getPriority()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@link Integer#MAX_VALUE} less one.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getPriority()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int OfferImpl.getPriority()"})
   public void testGetPriority_givenOfferImpl_thenReturnMax_valueLessOne() {
     // Arrange, Act and Assert
-    assertEquals(2147483646, (new OfferImpl()).getPriority());
+    assertEquals(2147483646, offerImpl.getPriority());
   }
 
   /**
    * Test {@link OfferImpl#getStartDate()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) Archived is {@code Y}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OfferImpl} Archived is {@code Y}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getStartDate()}
+   *
+   * <p>Method under test: {@link OfferImpl#getStartDate()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date OfferImpl.getStartDate()"})
   public void testGetStartDate_givenOfferImplArchivedIsY_thenReturnNull() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setArchived('Y');
+    offerImpl.setArchived('Y');
 
     // Act and Assert
-    assertNull(offerImpl2.getStartDate());
+    assertNull(offerImpl.getStartDate());
   }
 
   /**
    * Test {@link OfferImpl#getStartDate()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getStartDate()}
+   *
+   * <p>Method under test: {@link OfferImpl#getStartDate()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date OfferImpl.getStartDate()"})
   public void testGetStartDate_givenOfferImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getStartDate());
+    assertNull(offerImpl.getStartDate());
   }
 
   /**
    * Test {@link OfferImpl#getApplyDiscountToSalePrice()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
+   *
+   * <p>Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.getApplyDiscountToSalePrice()"})
   public void testGetApplyDiscountToSalePrice_givenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).getApplyDiscountToSalePrice());
+    assertTrue(offerImpl.getApplyDiscountToSalePrice());
   }
 
   /**
    * Test {@link OfferImpl#getApplyDiscountToSalePrice()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
+   *
+   * <p>Method under test: {@link OfferImpl#getApplyDiscountToSalePrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.getApplyDiscountToSalePrice()"})
   public void testGetApplyDiscountToSalePrice_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setApplyDiscountToSalePrice(false);
+    offerImpl.setApplyDiscountToSalePrice(false);
 
     // Act and Assert
-    assertFalse(offerImpl2.getApplyDiscountToSalePrice());
+    assertFalse(offerImpl.getApplyDiscountToSalePrice());
   }
 
   /**
    * Test {@link OfferImpl#getApplyToChildItems()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} ApplyToChildItems is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyToChildItems()}
+   *
+   * <p>Method under test: {@link OfferImpl#getApplyToChildItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean OfferImpl.getApplyToChildItems()"})
+  public void testGetApplyToChildItems_givenOfferImplApplyToChildItemsIsTrue_thenReturnTrue() {
+    // Arrange
+    offerImpl.setApplyToChildItems(true);
+
+    // Act and Assert
+    assertTrue(offerImpl.getApplyToChildItems());
+  }
+
+  /**
+   * Test {@link OfferImpl#getApplyToChildItems()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getApplyToChildItems()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getApplyToChildItems()"})
   public void testGetApplyToChildItems_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).getApplyToChildItems());
-  }
-
-  /**
-   * Test {@link OfferImpl#getApplyToChildItems()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getApplyToChildItems()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Boolean OfferImpl.getApplyToChildItems()"})
-  public void testGetApplyToChildItems_thenReturnTrue() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setApplyToChildItems(true);
-
-    // Act and Assert
-    assertTrue(offerImpl2.getApplyToChildItems());
+    assertFalse(offerImpl.getApplyToChildItems());
   }
 
   /**
    * Test {@link OfferImpl#setApplyToChildItems(boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setApplyToChildItems(boolean)}
+   *
+   * <p>Method under test: {@link OfferImpl#setApplyToChildItems(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setApplyToChildItems(boolean)"})
   public void testSetApplyToChildItems() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setApplyToChildItems(true);
+    // Arrange and Act
+    offerImpl.setApplyToChildItems(true);
 
     // Assert
-    assertTrue(offerImpl2.getApplyToChildItems());
-    assertTrue(offerImpl2.applyToChildItems);
+    assertTrue(offerImpl.getApplyToChildItems());
+    assertTrue(offerImpl.applyToChildItems);
   }
 
   /**
    * Test {@link OfferImpl#isCombinableWithOtherOffers()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
+   *
+   * <p>Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isCombinableWithOtherOffers()"})
   public void testIsCombinableWithOtherOffers_givenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).isCombinableWithOtherOffers());
+    assertTrue(offerImpl.isCombinableWithOtherOffers());
   }
 
   /**
    * Test {@link OfferImpl#isCombinableWithOtherOffers()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
+   *
+   * <p>Method under test: {@link OfferImpl#isCombinableWithOtherOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isCombinableWithOtherOffers()"})
   public void testIsCombinableWithOtherOffers_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setCombinableWithOtherOffers(false);
+    offerImpl.setCombinableWithOtherOffers(false);
 
     // Act and Assert
-    assertFalse(offerImpl2.isCombinableWithOtherOffers());
+    assertFalse(offerImpl.isCombinableWithOtherOffers());
   }
 
   /**
    * Test {@link OfferImpl#getCombinableWithOtherOffers()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
+   *
+   * <p>Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.getCombinableWithOtherOffers()"})
   public void testGetCombinableWithOtherOffers_givenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).getCombinableWithOtherOffers());
+    assertTrue(offerImpl.getCombinableWithOtherOffers());
   }
 
   /**
    * Test {@link OfferImpl#getCombinableWithOtherOffers()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
+   *
+   * <p>Method under test: {@link OfferImpl#getCombinableWithOtherOffers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.getCombinableWithOtherOffers()"})
   public void testGetCombinableWithOtherOffers_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setCombinableWithOtherOffers(false);
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setCombinableWithOtherOffers(false);
 
     // Act and Assert
-    assertFalse(offerImpl2.getCombinableWithOtherOffers());
+    assertFalse(offerImpl.getCombinableWithOtherOffers());
   }
 
   /**
    * Test {@link OfferImpl#isAutomaticallyAdded()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} AutomaticallyAdded is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
+   *
+   * <p>Method under test: {@link OfferImpl#isAutomaticallyAdded()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferImpl.isAutomaticallyAdded()"})
+  public void testIsAutomaticallyAdded_givenOfferImplAutomaticallyAddedIsTrue_thenReturnTrue() {
+    // Arrange
+    offerImpl.setAutomaticallyAdded(true);
+
+    // Act and Assert
+    assertTrue(offerImpl.isAutomaticallyAdded());
+  }
+
+  /**
+   * Test {@link OfferImpl#isAutomaticallyAdded()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#isAutomaticallyAdded()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isAutomaticallyAdded()"})
   public void testIsAutomaticallyAdded_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isAutomaticallyAdded());
-  }
-
-  /**
-   * Test {@link OfferImpl#isAutomaticallyAdded()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isAutomaticallyAdded()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferImpl.isAutomaticallyAdded()"})
-  public void testIsAutomaticallyAdded_thenReturnTrue() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setAutomaticallyAdded(true);
-
-    // Act and Assert
-    assertTrue(offerImpl2.isAutomaticallyAdded());
+    assertFalse(offerImpl.isAutomaticallyAdded());
   }
 
   /**
    * Test {@link OfferImpl#setAutomaticallyAdded(boolean)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
+   *
+   * <p>Method under test: {@link OfferImpl#setAutomaticallyAdded(boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setAutomaticallyAdded(boolean)"})
   public void testSetAutomaticallyAdded() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setAutomaticallyAdded(true);
+    // Arrange and Act
+    offerImpl.setAutomaticallyAdded(true);
 
     // Assert
-    assertTrue(offerImpl2.automaticallyAdded);
+    assertTrue(offerImpl.automaticallyAdded);
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesPerCustomer()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return longValue is zero.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return longValue is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long OfferImpl.getMaxUsesPerCustomer()"})
   public void testGetMaxUsesPerCustomer_givenOfferImpl_thenReturnLongValueIsZero() {
     // Arrange, Act and Assert
-    assertEquals(0L, (new OfferImpl()).getMaxUsesPerCustomer().longValue());
+    assertEquals(0L, offerImpl.getMaxUsesPerCustomer().longValue());
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesPerCustomer()}.
+   *
    * <ul>
-   *   <li>Then return longValue is {@link OfferImpl#serialVersionUID}.</li>
+   *   <li>Then return longValue is {@link OfferImpl#serialVersionUID}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMaxUsesPerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long OfferImpl.getMaxUsesPerCustomer()"})
   public void testGetMaxUsesPerCustomer_thenReturnLongValueIsSerialVersionUID() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
     // Act and Assert
-    assertEquals(OfferImpl.serialVersionUID, offerImpl2.getMaxUsesPerCustomer().longValue());
+    assertEquals(OfferImpl.serialVersionUID, offerImpl.getMaxUsesPerCustomer().longValue());
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesStrategyType()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMaxUsesStrategyType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CustomerMaxUsesStrategyType OfferImpl.getMaxUsesStrategyType()"})
   public void testGetMaxUsesStrategyType() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getMaxUsesStrategyType());
+    assertNull(offerImpl.getMaxUsesStrategyType());
+  }
+
+  /**
+   * Test {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}.
+   *
+   * <ul>
+   *   <li>When {@link CustomerMaxUsesStrategyType#ACCOUNT}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#maxUsesStrategy} is {@code ACCOUNT}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#setMaxUsesStrategyType(CustomerMaxUsesStrategyType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType)"})
+  public void testSetMaxUsesStrategyType_whenAccount_thenOfferImplMaxUsesStrategyIsAccount() {
+    // Arrange and Act
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+
+    // Assert
+    assertEquals("ACCOUNT", offerImpl.maxUsesStrategy);
+    assertSame(CustomerMaxUsesStrategyType.ACCOUNT, offerImpl.getMaxUsesStrategyType());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerCustomer()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerCustomer()"})
   public void testIsUnlimitedUsePerCustomer_givenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).isUnlimitedUsePerCustomer());
+    assertTrue(offerImpl.isUnlimitedUsePerCustomer());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerCustomer()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#isUnlimitedUsePerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerCustomer()"})
   public void testIsUnlimitedUsePerCustomer_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
     // Act and Assert
-    assertFalse(offerImpl2.isUnlimitedUsePerCustomer());
+    assertFalse(offerImpl.isUnlimitedUsePerCustomer());
   }
 
   /**
    * Test {@link OfferImpl#isLimitedUsePerCustomer()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerCustomer()"})
   public void testIsLimitedUsePerCustomer_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isLimitedUsePerCustomer());
+    assertFalse(offerImpl.isLimitedUsePerCustomer());
   }
 
   /**
    * Test {@link OfferImpl#isLimitedUsePerCustomer()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
+   *
+   * <p>Method under test: {@link OfferImpl#isLimitedUsePerCustomer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerCustomer()"})
   public void testIsLimitedUsePerCustomer_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
 
     // Act and Assert
-    assertTrue(offerImpl2.isLimitedUsePerCustomer());
+    assertTrue(offerImpl.isLimitedUsePerCustomer());
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesPerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then return one.</li>
+   *   <li>Given {@link OfferImpl} MaxUsesPerOrder is one.
+   *   <li>Then return one.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int OfferImpl.getMaxUsesPerOrder()"})
-  public void testGetMaxUsesPerOrder_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnOne() {
+  public void testGetMaxUsesPerOrder_givenOfferImplMaxUsesPerOrderIsOne_thenReturnOne() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerOrder(1);
+    offerImpl.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertEquals(1, offerImpl2.getMaxUsesPerOrder());
+    assertEquals(1, offerImpl.getMaxUsesPerOrder());
   }
 
   /**
    * Test {@link OfferImpl#getMaxUsesPerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return zero.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return zero.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMaxUsesPerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int OfferImpl.getMaxUsesPerOrder()"})
   public void testGetMaxUsesPerOrder_givenOfferImpl_thenReturnZero() {
     // Arrange, Act and Assert
-    assertEquals(0, (new OfferImpl()).getMaxUsesPerOrder());
+    assertEquals(0, offerImpl.getMaxUsesPerOrder());
   }
 
   /**
    * Test {@link OfferImpl#setMaxUsesPerOrder(int)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setMaxUsesPerOrder(int)}
+   *
+   * <p>Method under test: {@link OfferImpl#setMaxUsesPerOrder(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setMaxUsesPerOrder(int)"})
   public void testSetMaxUsesPerOrder() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setMaxUsesPerOrder(3);
+    // Arrange and Act
+    offerImpl.setMaxUsesPerOrder(3);
 
     // Assert
-    assertEquals(3, offerImpl2.maxUsesPerOrder.intValue());
-    assertEquals(3, offerImpl2.getMaxUsesPerOrder());
-    assertFalse(offerImpl2.isUnlimitedUsePerOrder());
-    assertTrue(offerImpl2.isLimitedUsePerOrder());
+    assertEquals(3, offerImpl.maxUsesPerOrder.intValue());
+    assertEquals(3, offerImpl.getMaxUsesPerOrder());
+    assertFalse(offerImpl.isUnlimitedUsePerOrder());
+    assertTrue(offerImpl.isLimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is one.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} MaxUsesPerOrder is one.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
   public void testIsUnlimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsOne_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerOrder(1);
+    offerImpl.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertFalse(offerImpl2.isUnlimitedUsePerOrder());
+    assertFalse(offerImpl.isUnlimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is zero.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl} MaxUsesPerOrder is zero.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
   public void testIsUnlimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsZero_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerOrder(0);
+    offerImpl.setMaxUsesPerOrder(0);
 
     // Act and Assert
-    assertTrue(offerImpl2.isUnlimitedUsePerOrder());
+    assertTrue(offerImpl.isUnlimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isUnlimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isUnlimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isUnlimitedUsePerOrder()"})
   public void testIsUnlimitedUsePerOrder_givenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).isUnlimitedUsePerOrder());
+    assertTrue(offerImpl.isUnlimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isLimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is one.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl} MaxUsesPerOrder is one.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
   public void testIsLimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsOne_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerOrder(1);
+    offerImpl.setMaxUsesPerOrder(1);
 
     // Act and Assert
-    assertTrue(offerImpl2.isLimitedUsePerOrder());
+    assertTrue(offerImpl.isLimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isLimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) MaxUsesPerOrder is zero.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} MaxUsesPerOrder is zero.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
   public void testIsLimitedUsePerOrder_givenOfferImplMaxUsesPerOrderIsZero_thenReturnFalse() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setMaxUsesPerOrder(0);
+    offerImpl.setMaxUsesPerOrder(0);
 
     // Act and Assert
-    assertFalse(offerImpl2.isLimitedUsePerOrder());
+    assertFalse(offerImpl.isLimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#isLimitedUsePerOrder()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
+   *
+   * <p>Method under test: {@link OfferImpl#isLimitedUsePerOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isLimitedUsePerOrder()"})
   public void testIsLimitedUsePerOrder_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isLimitedUsePerOrder());
+    assertFalse(offerImpl.isLimitedUsePerOrder());
   }
 
   /**
    * Test {@link OfferImpl#getMarketingMessage()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMarketingMessage()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMarketingMessage()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OfferImpl.getMarketingMessage()"})
-  public void testGetMarketingMessage_givenOfferImpl_thenReturnNull() {
+  public void testGetMarketingMessage() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getMarketingMessage());
-  }
-
-  /**
-   * Test {@link OfferImpl#getMarketingMessage()}.
-   * <ul>
-   *   <li>Then return {@code Marketing Message}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getMarketingMessage()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String OfferImpl.getMarketingMessage()"})
-  public void testGetMarketingMessage_thenReturnMarketingMessage() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals("Marketing Message", offerImpl2.getMarketingMessage());
+    assertNull(offerImpl.getMarketingMessage());
   }
 
   /**
    * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor) TargetItemCriteriaXref is {@link
+   *       HashSet#HashSet()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
-  public void testGetTargetItemCriteriaXref() {
+  public void testGetTargetItemCriteriaXref_givenOfferImplTargetItemCriteriaXrefIsHashSet() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setType(new OfferType("ORDER_ITEM", "ORDER_ITEM", 1));
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.ORDER_ITEM);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+    offerImpl.setTargetItemCriteriaXref(new HashSet<>());
 
     // Act and Assert
-    assertEquals(1, offerImpl2.getTargetItemCriteriaXref().size());
+    assertEquals(1, offerImpl.getTargetItemCriteriaXref().size());
   }
 
   /**
    * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) Type is {@link OfferType#FULFILLMENT_GROUP}.</li>
+   *   <li>Given {@link OfferImpl} (default constructor) TargetItemCriteriaXref is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
-  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsFulfillment_group() {
+  public void testGetTargetItemCriteriaXref_givenOfferImplTargetItemCriteriaXrefIsNull() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.ORDER_ITEM);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+    offerImpl.setTargetItemCriteriaXref(null);
 
     // Act and Assert
-    assertTrue(offerImpl2.getTargetItemCriteriaXref().isEmpty());
+    assertEquals(1, offerImpl.getTargetItemCriteriaXref().size());
   }
 
   /**
    * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) Type is {@link OfferType#ORDER_ITEM}.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
-  public void testGetTargetItemCriteriaXref_givenOfferImplTypeIsOrder_item_thenReturnSizeIsOne() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setType(OfferType.ORDER_ITEM);
-
-    // Act and Assert
-    assertEquals(1, offerImpl2.getTargetItemCriteriaXref().size());
-  }
-
-  /**
-   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
   public void testGetTargetItemCriteriaXref_givenOfferImpl_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue((new OfferImpl()).getTargetItemCriteriaXref().isEmpty());
+    assertTrue(offerImpl.getTargetItemCriteriaXref().isEmpty());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   *
+   * <ul>
+   *   <li>Then return {@link HashSet#HashSet()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref_thenReturnHashSet() {
+    // Arrange
+    HashSet<OfferTargetCriteriaXref> targetItemCriteriaXref = new HashSet<>();
+    targetItemCriteriaXref.add(new OfferTargetCriteriaXrefImpl());
+
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.ORDER_ITEM);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+    offerImpl.setTargetItemCriteriaXref(targetItemCriteriaXref);
+
+    // Act
+    Set<OfferTargetCriteriaXref> actualTargetItemCriteriaXref =
+        offerImpl.getTargetItemCriteriaXref();
+
+    // Assert
+    assertEquals(1, actualTargetItemCriteriaXref.size());
+    assertSame(targetItemCriteriaXref, actualTargetItemCriteriaXref);
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetItemCriteriaXref()}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetItemCriteriaXref()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Set OfferImpl.getTargetItemCriteriaXref()"})
+  public void testGetTargetItemCriteriaXref_thenReturnNull() {
+    // Arrange
+    OfferImpl offerImpl = new OfferImpl();
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setApplyDiscountToSalePrice(true);
+    offerImpl.setApplyToChildItems(true);
+    offerImpl.setAutomaticallyAdded(true);
+    offerImpl.setCombinableWithOtherOffers(true);
+    offerImpl.setDescription("The characteristics of someone or something");
+    offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setId(OfferImpl.serialVersionUID);
+    offerImpl.setMarketingMessage("Marketing Message");
+    offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offerImpl.setMaxUsesPerOrder(3);
+    offerImpl.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offerImpl.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offerImpl.setName("Name");
+    offerImpl.setOfferCodes(new ArrayList<>());
+    offerImpl.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offerImpl.setOfferMatchRulesXref(new HashMap<>());
+    offerImpl.setOfferPriceData(new ArrayList<>());
+    offerImpl.setOrderMinSubTotal(new Money());
+    offerImpl.setPriority(1);
+    offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
+    offerImpl.setQualifyingItemSubTotal(new Money());
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setTargetMinSubTotal(new Money());
+    offerImpl.setTargetSystem("Target System");
+    offerImpl.setTotalitarianOffer(true);
+    offerImpl.setType(OfferType.FULFILLMENT_GROUP);
+    offerImpl.setUseListForDiscounts(true);
+    offerImpl.setValue(new BigDecimal("2.3"));
+    offerImpl.setTargetItemCriteriaXref(null);
+
+    // Act and Assert
+    assertNull(offerImpl.getTargetItemCriteriaXref());
   }
 
   /**
    * Test {@link OfferImpl#isTotalitarianOffer()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} TotalitarianOffer is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
+   *
+   * <p>Method under test: {@link OfferImpl#isTotalitarianOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean OfferImpl.isTotalitarianOffer()"})
+  public void testIsTotalitarianOffer_givenOfferImplTotalitarianOfferIsTrue_thenReturnTrue() {
+    // Arrange
+    offerImpl.setTotalitarianOffer(true);
+
+    // Act and Assert
+    assertTrue(offerImpl.isTotalitarianOffer());
+  }
+
+  /**
+   * Test {@link OfferImpl#isTotalitarianOffer()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#isTotalitarianOffer()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.isTotalitarianOffer()"})
   public void testIsTotalitarianOffer_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isTotalitarianOffer());
-  }
-
-  /**
-   * Test {@link OfferImpl#isTotalitarianOffer()}.
-   * <ul>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isTotalitarianOffer()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Boolean OfferImpl.isTotalitarianOffer()"})
-  public void testIsTotalitarianOffer_thenReturnTrue() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setTotalitarianOffer(true);
-
-    // Act and Assert
-    assertTrue(offerImpl2.isTotalitarianOffer());
+    assertFalse(offerImpl.isTotalitarianOffer());
   }
 
   /**
    * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>When {@code true}.</li>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#totalitarianOffer}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then not {@link OfferImpl} {@link OfferImpl#totalitarianOffer}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
+   *
+   * <p>Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setTotalitarianOffer(Boolean)"})
-  public void testSetTotalitarianOffer_givenOfferImpl_whenTrue_thenOfferImplTotalitarianOffer() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
+  public void testSetTotalitarianOffer_whenNull_thenNotOfferImplTotalitarianOffer() {
+    // Arrange and Act
+    offerImpl.setTotalitarianOffer(null);
 
-    // Act
-    offerImpl2.setTotalitarianOffer(true);
-
-    // Assert
-    assertTrue(offerImpl2.totalitarianOffer);
+    // Assert that nothing has changed
+    assertFalse(offerImpl.totalitarianOffer);
   }
 
   /**
    * Test {@link OfferImpl#setTotalitarianOffer(Boolean)}.
+   *
    * <ul>
-   *   <li>Then not {@link OfferImpl} (default constructor) {@link OfferImpl#totalitarianOffer}.</li>
+   *   <li>When {@code true}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#totalitarianOffer}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
+   *
+   * <p>Method under test: {@link OfferImpl#setTotalitarianOffer(Boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setTotalitarianOffer(Boolean)"})
-  public void testSetTotalitarianOffer_thenNotOfferImplTotalitarianOffer() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl2.setTotalitarianOffer(null);
+  public void testSetTotalitarianOffer_whenTrue_thenOfferImplTotalitarianOffer() {
+    // Arrange and Act
+    offerImpl.setTotalitarianOffer(true);
 
     // Assert
-    assertFalse(offerImpl2.totalitarianOffer);
+    assertTrue(offerImpl.totalitarianOffer);
   }
 
   /**
    * Test {@link OfferImpl#getUseListForDiscounts()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) UseListForDiscounts is {@code null}.</li>
+   *   <li>Given {@link OfferImpl} UseListForDiscounts is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   *
+   * <p>Method under test: {@link OfferImpl#getUseListForDiscounts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
   public void testGetUseListForDiscounts_givenOfferImplUseListForDiscountsIsNull() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setUseListForDiscounts(null);
+    offerImpl.setUseListForDiscounts(null);
 
     // Act and Assert
-    assertFalse(offerImpl2.getUseListForDiscounts());
+    assertFalse(offerImpl.getUseListForDiscounts());
   }
 
   /**
    * Test {@link OfferImpl#getUseListForDiscounts()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   *
+   * <p>Method under test: {@link OfferImpl#getUseListForDiscounts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
   public void testGetUseListForDiscounts_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).getUseListForDiscounts());
+    assertFalse(offerImpl.getUseListForDiscounts());
   }
 
   /**
    * Test {@link OfferImpl#getUseListForDiscounts()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getUseListForDiscounts()}
+   *
+   * <p>Method under test: {@link OfferImpl#getUseListForDiscounts()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getUseListForDiscounts()"})
   public void testGetUseListForDiscounts_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setUseListForDiscounts(true);
+    offerImpl.setUseListForDiscounts(true);
 
     // Act and Assert
-    assertTrue(offerImpl2.getUseListForDiscounts());
+    assertTrue(offerImpl.getUseListForDiscounts());
   }
 
   /**
    * Test {@link OfferImpl#getArchived()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getArchived()}
+   *
+   * <p>Method under test: {@link OfferImpl#getArchived()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Character OfferImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
-    assertEquals('N', (new OfferImpl()).getArchived().charValue());
+    assertEquals('N', offerImpl.getArchived().charValue());
   }
 
   /**
    * Test {@link OfferImpl#setArchived(Character)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setArchived(Character)}
+   *
+   * <p>Method under test: {@link OfferImpl#setArchived(Character)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setArchived(Character)"})
   public void testSetArchived() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-
-    // Act
-    offerImpl2.setArchived('A');
+    // Arrange and Act
+    offerImpl.setArchived('A');
 
     // Assert
-    assertEquals('A', offerImpl2.archiveStatus.getArchived().charValue());
-    assertEquals('A', offerImpl2.getArchived().charValue());
+    assertEquals('A', offerImpl.archiveStatus.getArchived().charValue());
+    assertEquals('A', offerImpl.getArchived().charValue());
   }
 
   /**
    * Test {@link OfferImpl#isActive()}.
-   * <p>
-   * Method under test: {@link OfferImpl#isActive()}
+   *
+   * <p>Method under test: {@link OfferImpl#isActive()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isActive()"})
   public void testIsActive() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setArchived(null);
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setArchived(null);
 
     // Act and Assert
-    assertFalse(offerImpl2.isActive());
+    assertFalse(offerImpl.isActive());
   }
 
   /**
    * Test {@link OfferImpl#isActive()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl} Archived is {@code Y}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isActive()}
+   *
+   * <p>Method under test: {@link OfferImpl#isActive()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferImpl.isActive()"})
+  public void testIsActive_givenOfferImplArchivedIsY_thenReturnFalse() {
+    // Arrange
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(null);
+    offerImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(offerImpl.isActive());
+  }
+
+  /**
+   * Test {@link OfferImpl#isActive()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl} EndDate is {@link Date#Date()}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#isActive()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferImpl.isActive()"})
+  public void testIsActive_givenOfferImplEndDateIsDate_thenReturnFalse() {
+    // Arrange
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(new Date());
+    offerImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(offerImpl.isActive());
+  }
+
+  /**
+   * Test {@link OfferImpl#isActive()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#isActive()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isActive()"})
   public void testIsActive_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isActive());
+    assertFalse(offerImpl.isActive());
   }
 
   /**
    * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
+   *
+   * <p>Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OfferImpl.getQualifyingItemSubTotal()"})
   public void testGetQualifyingItemSubTotal_givenOfferImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getQualifyingItemSubTotal());
+    assertNull(offerImpl.getQualifyingItemSubTotal());
   }
 
   /**
    * Test {@link OfferImpl#getQualifyingItemSubTotal()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
+   *
+   * <p>Method under test: {@link OfferImpl#getQualifyingItemSubTotal()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OfferImpl.getQualifyingItemSubTotal()"})
   public void testGetQualifyingItemSubTotal_thenReturnMoney() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setQualifyingItemSubTotal(new Money());
+    Money qualifyingItemSubTotal = new Money();
+    offerImpl.setQualifyingItemSubTotal(qualifyingItemSubTotal);
 
     // Act and Assert
-    assertEquals(orderMinSubTotal, offerImpl2.getQualifyingItemSubTotal());
+    assertEquals(qualifyingItemSubTotal, offerImpl.getQualifyingItemSubTotal());
   }
 
   /**
    * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
+   *
+   * <p>Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setQualifyingItemSubTotal(Money)"})
   public void testSetQualifyingItemSubTotal() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
     Money qualifyingItemSubTotal = new Money();
 
     // Act
-    offerImpl2.setQualifyingItemSubTotal(qualifyingItemSubTotal);
+    offerImpl.setQualifyingItemSubTotal(qualifyingItemSubTotal);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl2.qualifyingItemSubTotal);
-    BigDecimal bigDecimal = offerImpl2.qualifyingItemSubTotal;
+    assertEquals(new BigDecimal("0.00"), offerImpl.qualifyingItemSubTotal);
+    BigDecimal bigDecimal = offerImpl.qualifyingItemSubTotal;
     Money absResult = qualifyingItemSubTotal.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -1944,219 +1766,92 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#setQualifyingItemSubTotal(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#qualifyingItemSubTotal} is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#qualifyingItemSubTotal} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
+   *
+   * <p>Method under test: {@link OfferImpl#setQualifyingItemSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setQualifyingItemSubTotal(Money)"})
-  public void testSetQualifyingItemSubTotal_thenOfferImplQualifyingItemSubTotalIsNull() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
+  public void testSetQualifyingItemSubTotal_whenNull_thenOfferImplQualifyingItemSubTotalIsNull() {
+    // Arrange and Act
+    offerImpl.setQualifyingItemSubTotal(null);
 
-    // Act
-    offerImpl2.setQualifyingItemSubTotal(null);
-
-    // Assert
-    assertNull(offerImpl2.qualifyingItemSubTotal);
-    assertNull(offerImpl2.getQualifyingItemSubTotal());
+    // Assert that nothing has changed
+    assertNull(offerImpl.qualifyingItemSubTotal);
   }
 
   /**
    * Test {@link OfferImpl#getOrderMinSubTotal()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link OfferImpl} OrderMinSubTotal is {@link Money#Money()}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
+   *
+   * <p>Method under test: {@link OfferImpl#getOrderMinSubTotal()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OfferImpl.getOrderMinSubTotal()"})
+  public void testGetOrderMinSubTotal_givenOfferImplOrderMinSubTotalIsMoney_thenReturnMoney() {
+    // Arrange
+    Money orderMinSubTotal = new Money();
+    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
+
+    // Act and Assert
+    assertEquals(orderMinSubTotal, offerImpl.getOrderMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getOrderMinSubTotal()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getOrderMinSubTotal()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OfferImpl.getOrderMinSubTotal()"})
   public void testGetOrderMinSubTotal_givenOfferImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getOrderMinSubTotal());
-  }
-
-  /**
-   * Test {@link OfferImpl#getOrderMinSubTotal()}.
-   * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getOrderMinSubTotal()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OfferImpl.getOrderMinSubTotal()"})
-  public void testGetOrderMinSubTotal_thenReturnMoney() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    Money qualifyingItemSubTotal = new Money();
-    offerImpl2.setQualifyingItemSubTotal(qualifyingItemSubTotal);
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setOrderMinSubTotal(new Money());
-
-    // Act and Assert
-    assertEquals(qualifyingItemSubTotal, offerImpl2.getOrderMinSubTotal());
+    assertNull(offerImpl.getOrderMinSubTotal());
   }
 
   /**
    * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferImpl.setOrderMinSubTotal(Money)"})
-  public void testSetOrderMinSubTotal() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-
-    // Act
-    offerImpl2.setOrderMinSubTotal(null);
-
-    // Assert
-    Money qualifyingItemSubTotal = offerImpl2.getQualifyingItemSubTotal();
-    Currency currency = qualifyingItemSubTotal.getCurrency();
-    assertEquals("British Pound", currency.getDisplayName());
-    assertEquals("GBP", currency.getCurrencyCode());
-    assertEquals("GBP", currency.toString());
-    assertEquals("£", currency.getSymbol());
-    assertNull(offerImpl2.orderMinSubTotal);
-    assertNull(offerImpl2.getOrderMinSubTotal());
-    assertEquals(2, currency.getDefaultFractionDigits());
-    assertEquals(826, currency.getNumericCode());
-    assertSame(currency, qualifyingItemSubTotal.abs().getCurrency());
-    Money targetMinSubTotal = offerImpl2.getTargetMinSubTotal();
-    assertSame(currency, targetMinSubTotal.abs().getCurrency());
-    assertSame(currency, qualifyingItemSubTotal.zero().getCurrency());
-    assertSame(currency, targetMinSubTotal.zero().getCurrency());
-    assertSame(currency, targetMinSubTotal.getCurrency());
-  }
-
-  /**
-   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#orderMinSubTotal} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#orderMinSubTotal} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
+   *
+   * <p>Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setOrderMinSubTotal(Money)"})
   public void testSetOrderMinSubTotal_thenOfferImplOrderMinSubTotalIsBigDecimalWith000() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
     Money orderMinSubTotal = new Money();
 
     // Act
-    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
+    offerImpl.setOrderMinSubTotal(orderMinSubTotal);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl2.orderMinSubTotal);
-    BigDecimal bigDecimal = offerImpl2.orderMinSubTotal;
+    assertEquals(new BigDecimal("0.00"), offerImpl.orderMinSubTotal);
+    BigDecimal bigDecimal = offerImpl.orderMinSubTotal;
     Money absResult = orderMinSubTotal.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -2180,97 +1875,93 @@ public class OfferImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferImpl#getTargetMinSubTotal()}.
+   * Test {@link OfferImpl#setOrderMinSubTotal(Money)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#orderMinSubTotal} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
+   *
+   * <p>Method under test: {@link OfferImpl#setOrderMinSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money OfferImpl.getTargetMinSubTotal()"})
-  public void testGetTargetMinSubTotal_givenOfferImpl_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getTargetMinSubTotal());
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OfferImpl.setOrderMinSubTotal(Money)"})
+  public void testSetOrderMinSubTotal_whenNull_thenOfferImplOrderMinSubTotalIsNull() {
+    // Arrange and Act
+    offerImpl.setOrderMinSubTotal(null);
+
+    // Assert that nothing has changed
+    assertNull(offerImpl.orderMinSubTotal);
   }
 
   /**
    * Test {@link OfferImpl#getTargetMinSubTotal()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link OfferImpl} TargetMinSubTotal is {@link Money#Money()}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getTargetMinSubTotal()}
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetMinSubTotal()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money OfferImpl.getTargetMinSubTotal()"})
-  public void testGetTargetMinSubTotal_thenReturnMoney() {
+  public void testGetTargetMinSubTotal_givenOfferImplTargetMinSubTotalIsMoney_thenReturnMoney() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    Money orderMinSubTotal = new Money();
-    offerImpl2.setOrderMinSubTotal(orderMinSubTotal);
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setTargetMinSubTotal(new Money());
+    Money targetMinSubTotal = new Money();
+    offerImpl.setTargetMinSubTotal(targetMinSubTotal);
 
     // Act and Assert
-    assertEquals(orderMinSubTotal, offerImpl2.getTargetMinSubTotal());
+    assertEquals(targetMinSubTotal, offerImpl.getTargetMinSubTotal());
+  }
+
+  /**
+   * Test {@link OfferImpl#getTargetMinSubTotal()}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getTargetMinSubTotal()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money OfferImpl.getTargetMinSubTotal()"})
+  public void testGetTargetMinSubTotal_givenOfferImpl_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(offerImpl.getTargetMinSubTotal());
   }
 
   /**
    * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#targetMinSubTotal} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#targetMinSubTotal} is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
+   *
+   * <p>Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setTargetMinSubTotal(Money)"})
   public void testSetTargetMinSubTotal_thenOfferImplTargetMinSubTotalIsBigDecimalWith000() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
     Money targetMinSubTotal = new Money();
 
     // Act
-    offerImpl2.setTargetMinSubTotal(targetMinSubTotal);
+    offerImpl.setTargetMinSubTotal(targetMinSubTotal);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), offerImpl2.targetMinSubTotal);
-    BigDecimal bigDecimal = offerImpl2.targetMinSubTotal;
+    assertEquals(new BigDecimal("0.00"), offerImpl.targetMinSubTotal);
+    BigDecimal bigDecimal = offerImpl.targetMinSubTotal;
     Money absResult = targetMinSubTotal.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -2295,285 +1986,196 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#setTargetMinSubTotal(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link OfferImpl} (default constructor) {@link OfferImpl#targetMinSubTotal} is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link OfferImpl} {@link OfferImpl#targetMinSubTotal} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
+   *
+   * <p>Method under test: {@link OfferImpl#setTargetMinSubTotal(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.setTargetMinSubTotal(Money)"})
-  public void testSetTargetMinSubTotal_thenOfferImplTargetMinSubTotalIsNull() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
+  public void testSetTargetMinSubTotal_whenNull_thenOfferImplTargetMinSubTotalIsNull() {
+    // Arrange and Act
+    offerImpl.setTargetMinSubTotal(null);
 
-    // Act
-    offerImpl2.setTargetMinSubTotal(null);
-
-    // Assert
-    assertNull(offerImpl2.targetMinSubTotal);
-    assertNull(offerImpl2.getTargetMinSubTotal());
+    // Assert that nothing has changed
+    assertNull(offerImpl.targetMinSubTotal);
   }
 
   /**
    * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   *
+   * <p>Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
   public void testGetRequiresRelatedTargetAndQualifiers() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(null);
+    offerImpl.setRequiresRelatedTargetAndQualifiers(null);
 
     // Act and Assert
-    assertFalse(offerImpl2.getRequiresRelatedTargetAndQualifiers());
+    assertFalse(offerImpl.getRequiresRelatedTargetAndQualifiers());
   }
 
   /**
    * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   *
+   * <p>Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
   public void testGetRequiresRelatedTargetAndQualifiers_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).getRequiresRelatedTargetAndQualifiers());
+    assertFalse(offerImpl.getRequiresRelatedTargetAndQualifiers());
   }
 
   /**
    * Test {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
+   *
+   * <p>Method under test: {@link OfferImpl#getRequiresRelatedTargetAndQualifiers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean OfferImpl.getRequiresRelatedTargetAndQualifiers()"})
   public void testGetRequiresRelatedTargetAndQualifiers_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
-    offerImpl2.setApplyDiscountToSalePrice(true);
-    offerImpl2.setApplyToChildItems(true);
-    offerImpl2.setAutomaticallyAdded(true);
-    offerImpl2.setCombinableWithOtherOffers(true);
-    offerImpl2.setDescription("The characteristics of someone or something");
-    offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setId(OfferImpl.serialVersionUID);
-    offerImpl2.setMarketingMessage("Marketing Message");
-    offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
-    offerImpl2.setMaxUsesPerOrder(3);
-    offerImpl2.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
-    offerImpl2.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
-    offerImpl2.setName("Name");
-    offerImpl2.setOfferCodes(new ArrayList<>());
-    offerImpl2.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
-    offerImpl2.setOfferMatchRulesXref(new HashMap<>());
-    offerImpl2.setOfferPriceData(new ArrayList<>());
-    offerImpl2.setOrderMinSubTotal(new Money());
-    offerImpl2.setPriority(1);
-    offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
-    offerImpl2.setQualifyingItemSubTotal(new Money());
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
-    offerImpl2.setTargetMinSubTotal(new Money());
-    offerImpl2.setTargetSystem("Target System");
-    offerImpl2.setTotalitarianOffer(true);
-    offerImpl2.setType(OfferType.FULFILLMENT_GROUP);
-    offerImpl2.setUseListForDiscounts(true);
-    offerImpl2.setValue(new BigDecimal("2.3"));
-    offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
+    offerImpl.setRequiresRelatedTargetAndQualifiers(true);
 
     // Act and Assert
-    assertTrue(offerImpl2.getRequiresRelatedTargetAndQualifiers());
+    assertTrue(offerImpl.getRequiresRelatedTargetAndQualifiers());
   }
 
   /**
    * Test {@link OfferImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link OfferImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link OfferImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OfferImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new OfferImpl()).getMainEntityName());
+    assertNull(offerImpl.getMainEntityName());
   }
 
   /**
    * Test {@link OfferImpl#getAdjustmentType()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@link OfferAdjustmentType#ORDER_DISCOUNT}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#getAdjustmentType()}
+   *
+   * <p>Method under test: {@link OfferImpl#getAdjustmentType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferAdjustmentType OfferImpl.getAdjustmentType()"})
   public void testGetAdjustmentType_givenOfferImpl_thenReturnOrder_discount() {
-    // Arrange and Act
-    OfferAdjustmentType actualAdjustmentType = (new OfferImpl()).getAdjustmentType();
+    // Arrange, Act and Assert
+    assertSame(OfferAdjustmentType.ORDER_DISCOUNT, offerImpl.getAdjustmentType());
+  }
 
-    // Assert
-    assertSame(actualAdjustmentType.ORDER_DISCOUNT, actualAdjustmentType);
+  /**
+   * Test {@link OfferImpl#getAdjustmentType()}.
+   *
+   * <ul>
+   *   <li>Then return {@link OfferAdjustmentType#FUTURE_CREDIT}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferImpl#getAdjustmentType()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"OfferAdjustmentType OfferImpl.getAdjustmentType()"})
+  public void testGetAdjustmentType_thenReturnFuture_credit() {
+    // Arrange
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+
+    // Act and Assert
+    assertSame(OfferAdjustmentType.FUTURE_CREDIT, offerImpl.getAdjustmentType());
   }
 
   /**
    * Test {@link OfferImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferImpl} AdjustmentType is {@link OfferAdjustmentType#FUTURE_CREDIT}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OfferImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsFuture_credit_thenReturnTrue() {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offerImpl.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
 
     // Act and Assert
-    assertTrue(offerImpl2.isFutureCredit());
+    assertTrue(offerImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OfferImpl#isFutureCredit()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor) AdjustmentType is {@link OfferAdjustmentType#ORDER_DISCOUNT}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link OfferImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
+   *
+   * <p>Method under test: {@link OfferImpl#isFutureCredit()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
-  public void testIsFutureCredit_givenOfferImplAdjustmentTypeIsOrder_discount_thenReturnFalse() {
-    // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
-    offerImpl2.setAdjustmentType(OfferAdjustmentType.ORDER_DISCOUNT);
-
-    // Act and Assert
-    assertFalse(offerImpl2.isFutureCredit());
-  }
-
-  /**
-   * Test {@link OfferImpl#isFutureCredit()}.
-   * <ul>
-   *   <li>Given {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#isFutureCredit()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.isFutureCredit()"})
   public void testIsFutureCredit_givenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new OfferImpl()).isFutureCredit());
+    assertFalse(offerImpl.isFutureCredit());
   }
 
   /**
    * Test {@link OfferImpl#equals(Object)}, and {@link OfferImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferImpl#equals(Object)}
    *   <li>{@link OfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -2585,7 +2187,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2603,7 +2206,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -2620,7 +2224,8 @@ public class OfferImplDiffblueTest {
     offerImpl2.setCombinableWithOtherOffers(true);
     offerImpl2.setDescription("The characteristics of someone or something");
     offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl2.setId(OfferImpl.serialVersionUID);
     offerImpl2.setMarketingMessage("Marketing Message");
     offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2638,7 +2243,8 @@ public class OfferImplDiffblueTest {
     offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl2.setQualifyingItemSubTotal(new Money());
     offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl2.setTargetMinSubTotal(new Money());
     offerImpl2.setTargetSystem("Target System");
@@ -2649,25 +2255,27 @@ public class OfferImplDiffblueTest {
 
     // Act and Assert
     assertEquals(offerImpl, offerImpl2);
-    int expectedHashCodeResult = offerImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerImpl2.hashCode());
+    assertEquals(offerImpl.hashCode(), offerImpl2.hashCode());
   }
 
   /**
    * Test {@link OfferImpl#equals(Object)}, and {@link OfferImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferImpl#equals(Object)}
    *   <li>{@link OfferImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -2679,7 +2287,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2697,7 +2306,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -2714,15 +2324,17 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -2734,7 +2346,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(2L);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2752,7 +2365,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -2769,7 +2383,8 @@ public class OfferImplDiffblueTest {
     offerImpl2.setCombinableWithOtherOffers(true);
     offerImpl2.setDescription("The characteristics of someone or something");
     offerImpl2.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl2.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl2.setId(OfferImpl.serialVersionUID);
     offerImpl2.setMarketingMessage("Marketing Message");
     offerImpl2.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2787,7 +2402,8 @@ public class OfferImplDiffblueTest {
     offerImpl2.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl2.setQualifyingItemSubTotal(new Money());
     offerImpl2.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl2.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl2.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl2.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl2.setTargetMinSubTotal(new Money());
     offerImpl2.setTargetSystem("Target System");
@@ -2802,15 +2418,17 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -2822,7 +2440,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2840,7 +2459,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -2855,15 +2475,17 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OfferImpl.equals(Object)", "int OfferImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -2875,7 +2497,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -2893,7 +2516,8 @@ public class OfferImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -2908,22 +2532,24 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse OfferImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse OfferImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OfferImpl offerImpl2 = new OfferImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new OfferImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<Offer> actualCreateOrRetrieveCopyInstanceResult = offerImpl2.createOrRetrieveCopyInstance(context);
+    CreateResponse<Offer> actualCreateOrRetrieveCopyInstanceResult =
+        offerImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -2932,11 +2558,12 @@ public class OfferImplDiffblueTest {
 
   /**
    * Test new {@link OfferImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link OfferImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link OfferImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferImpl.<init>()"})
   public void testNewOfferImpl() {
     // Arrange and Act

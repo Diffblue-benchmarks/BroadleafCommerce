@@ -26,11 +26,11 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.broadleafcommerce.common.vendor.service.monitor.handler.LogStatusHandler;
@@ -42,15 +42,17 @@ import org.mockito.Mockito;
 public class ServiceMonitorDiffblueTest {
   /**
    * Test {@link ServiceMonitor#init()}.
+   *
    * <ul>
-   *   <li>Given {@link ServiceMonitor} (default constructor).</li>
-   *   <li>Then {@link ServiceMonitor} (default constructor) {@link ServiceMonitor#statusMap} Empty.</li>
+   *   <li>Given {@link ServiceMonitor} (default constructor).
+   *   <li>Then {@link ServiceMonitor} (default constructor) {@link ServiceMonitor#statusMap} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#init()}
+   *
+   * <p>Method under test: {@link ServiceMonitor#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.init()"})
   public void testInit_givenServiceMonitor_thenServiceMonitorStatusMapEmpty() {
     // Arrange
@@ -65,24 +67,31 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#init()}.
+   *
    * <ul>
-   *   <li>Then {@link ServiceMonitor} (default constructor) {@link ServiceMonitor#statusMap} size is one.</li>
+   *   <li>Then {@link ServiceMonitor} (default constructor) {@link ServiceMonitor#statusMap} size
+   *       is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#init()}
+   *
+   * <p>Method under test: {@link ServiceMonitor#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.init()"})
   public void testInit_thenServiceMonitorStatusMapSizeIsOne() {
     // Arrange
-    ServiceStatusDetectable<Object> serviceStatusDetectable = mock(ServiceStatusDetectable.class);
+    ServiceStatusDetectable serviceStatusDetectable = mock(ServiceStatusDetectable.class);
     when(serviceStatusDetectable.getServiceName()).thenReturn("Service Name");
     when(serviceStatusDetectable.getServiceStatus()).thenReturn(ServiceStatusType.DOWN);
+
     StatusHandler statusHandler = mock(StatusHandler.class);
-    doNothing().when(statusHandler).handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
+    doNothing()
+        .when(statusHandler)
+        .handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
 
     HashMap<ServiceStatusDetectable, StatusHandler> serviceHandlers = new HashMap<>();
+
     serviceHandlers.put(serviceStatusDetectable, statusHandler);
 
     ServiceMonitor serviceMonitor = new ServiceMonitor();
@@ -100,19 +109,22 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#checkServiceAOP(ProceedingJoinPoint)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then calls {@link JoinPoint#getThis()}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then calls {@link ProceedingJoinPoint#getThis()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#checkServiceAOP(ProceedingJoinPoint)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#checkServiceAOP(ProceedingJoinPoint)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object ServiceMonitor.checkServiceAOP(ProceedingJoinPoint)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.Object ServiceMonitor.checkServiceAOP(ProceedingJoinPoint)"})
   public void testCheckServiceAOP_givenNull_field_thenCallsGetThis() throws Throwable {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
+
     ProceedingJoinPoint call = mock(ProceedingJoinPoint.class);
     when(call.getThis()).thenReturn(BLCFieldUtils.NULL_FIELD);
     when(call.proceed()).thenReturn(BLCFieldUtils.NULL_FIELD);
@@ -127,47 +139,23 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#checkService(ServiceStatusDetectable)}.
+   *
    * <ul>
-   *   <li>Given {@link ServiceStatusType#DOWN}.</li>
-   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.</li>
+   *   <li>Given {@link ServiceStatusType#PAUSED}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServiceMonitor.checkService(ServiceStatusDetectable)"})
-  public void testCheckService_givenDown_thenCallsGetServiceName() {
-    // Arrange
-    ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> statusDetectable = mock(ServiceStatusDetectable.class);
-    when(statusDetectable.getServiceName()).thenReturn("Service Name");
-    when(statusDetectable.getServiceStatus()).thenReturn(ServiceStatusType.DOWN);
-
-    // Act
-    serviceMonitor.checkService(statusDetectable);
-
-    // Assert
-    verify(statusDetectable).getServiceName();
-    verify(statusDetectable).getServiceStatus();
-    assertEquals(1, serviceMonitor.statusMap.size());
-  }
-
-  /**
-   * Test {@link ServiceMonitor#checkService(ServiceStatusDetectable)}.
-   * <ul>
-   *   <li>Given {@link ServiceStatusType#PAUSED}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.checkService(ServiceStatusDetectable)"})
   public void testCheckService_givenPaused() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> statusDetectable = mock(ServiceStatusDetectable.class);
+    serviceMonitor.setDefaultHandler(mock(StatusHandler.class));
+
+    ServiceStatusDetectable statusDetectable = mock(ServiceStatusDetectable.class);
     when(statusDetectable.getServiceStatus()).thenReturn(ServiceStatusType.PAUSED);
 
     // Act
@@ -180,19 +168,54 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#checkService(ServiceStatusDetectable)}.
+   *
    * <ul>
-   *   <li>Given {@link ServiceStatusType#ServiceStatusType()}.</li>
+   *   <li>Given {@link ServiceMonitor} (default constructor).
+   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ServiceMonitor.checkService(ServiceStatusDetectable)"})
+  public void testCheckService_givenServiceMonitor_thenCallsGetServiceName() {
+    // Arrange
+    ServiceMonitor serviceMonitor = new ServiceMonitor();
+
+    ServiceStatusDetectable statusDetectable = mock(ServiceStatusDetectable.class);
+    when(statusDetectable.getServiceName()).thenReturn("Service Name");
+    when(statusDetectable.getServiceStatus()).thenReturn(ServiceStatusType.DOWN);
+
+    // Act
+    serviceMonitor.checkService(statusDetectable);
+
+    // Assert
+    verify(statusDetectable).getServiceName();
+    verify(statusDetectable).getServiceStatus();
+    assertEquals(1, serviceMonitor.statusMap.size());
+  }
+
+  /**
+   * Test {@link ServiceMonitor#checkService(ServiceStatusDetectable)}.
+   *
+   * <ul>
+   *   <li>Given {@link ServiceStatusType#ServiceStatusType()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.checkService(ServiceStatusDetectable)"})
   public void testCheckService_givenServiceStatusType() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> statusDetectable = mock(ServiceStatusDetectable.class);
+    serviceMonitor.setDefaultHandler(mock(StatusHandler.class));
+
+    ServiceStatusDetectable statusDetectable = mock(ServiceStatusDetectable.class);
     when(statusDetectable.getServiceStatus()).thenReturn(new ServiceStatusType());
 
     // Act
@@ -205,24 +228,30 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#checkService(ServiceStatusDetectable)}.
+   *
    * <ul>
-   *   <li>Given {@link StatusHandler} {@link StatusHandler#handleStatus(String, ServiceStatusType)} does nothing.</li>
-   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.</li>
+   *   <li>Given {@link StatusHandler} {@link StatusHandler#handleStatus(String, ServiceStatusType)}
+   *       does nothing.
+   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#checkService(ServiceStatusDetectable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.checkService(ServiceStatusDetectable)"})
   public void testCheckService_givenStatusHandlerHandleStatusDoesNothing_thenCallsHandleStatus() {
     // Arrange
     StatusHandler defaultHandler = mock(StatusHandler.class);
-    doNothing().when(defaultHandler).handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
+    doNothing()
+        .when(defaultHandler)
+        .handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
 
     ServiceMonitor serviceMonitor = new ServiceMonitor();
     serviceMonitor.setDefaultHandler(defaultHandler);
-    ServiceStatusDetectable<Object> statusDetectable = mock(ServiceStatusDetectable.class);
+
+    ServiceStatusDetectable statusDetectable = mock(ServiceStatusDetectable.class);
     when(statusDetectable.getServiceName()).thenReturn("Service Name");
     when(statusDetectable.getServiceStatus()).thenReturn(ServiceStatusType.DOWN);
 
@@ -238,21 +267,27 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}.
+   *
    * <ul>
-   *   <li>Given {@link ServiceMonitor} (default constructor).</li>
-   *   <li>When {@link ServiceStatusType#DOWN}.</li>
-   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.</li>
+   *   <li>Given {@link ServiceMonitor} (default constructor).
+   *   <li>When {@link ServiceStatusType#DOWN}.
+   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable,
+   * ServiceStatusType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"
+  })
   public void testHandleStatusChange_givenServiceMonitor_whenDown_thenCallsGetServiceName() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> serviceStatus = mock(ServiceStatusDetectable.class);
+
+    ServiceStatusDetectable serviceStatus = mock(ServiceStatusDetectable.class);
     when(serviceStatus.getServiceName()).thenReturn("Service Name");
 
     // Act
@@ -264,21 +299,27 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}.
+   *
    * <ul>
-   *   <li>Given {@link ServiceMonitor} (default constructor).</li>
-   *   <li>When {@link ServiceStatusType#PAUSED}.</li>
-   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.</li>
+   *   <li>Given {@link ServiceMonitor} (default constructor).
+   *   <li>When {@link ServiceStatusType#PAUSED}.
+   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable,
+   * ServiceStatusType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"
+  })
   public void testHandleStatusChange_givenServiceMonitor_whenPaused_thenCallsGetServiceName() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> serviceStatus = mock(ServiceStatusDetectable.class);
+
+    ServiceStatusDetectable serviceStatus = mock(ServiceStatusDetectable.class);
     when(serviceStatus.getServiceName()).thenReturn("Service Name");
 
     // Act
@@ -290,23 +331,31 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}.
+   *
    * <ul>
-   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.</li>
+   *   <li>Then calls {@link StatusHandler#handleStatus(String, ServiceStatusType)}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable,
+   * ServiceStatusType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"
+  })
   public void testHandleStatusChange_thenCallsHandleStatus() {
     // Arrange
     StatusHandler defaultHandler = mock(StatusHandler.class);
-    doNothing().when(defaultHandler).handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
+    doNothing()
+        .when(defaultHandler)
+        .handleStatus(Mockito.<String>any(), Mockito.<ServiceStatusType>any());
 
     ServiceMonitor serviceMonitor = new ServiceMonitor();
     serviceMonitor.setDefaultHandler(defaultHandler);
-    ServiceStatusDetectable<Object> serviceStatus = mock(ServiceStatusDetectable.class);
+
+    ServiceStatusDetectable serviceStatus = mock(ServiceStatusDetectable.class);
     when(serviceStatus.getServiceName()).thenReturn("Service Name");
 
     // Act
@@ -319,20 +368,26 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}.
+   *
    * <ul>
-   *   <li>When {@link ServiceStatusType#ServiceStatusType()}.</li>
-   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.</li>
+   *   <li>When {@link ServiceStatusType#ServiceStatusType()}.
+   *   <li>Then calls {@link ServiceStatusDetectable#getServiceName()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable, ServiceStatusType)}
+   *
+   * <p>Method under test: {@link ServiceMonitor#handleStatusChange(ServiceStatusDetectable,
+   * ServiceStatusType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ServiceMonitor.handleStatusChange(ServiceStatusDetectable, ServiceStatusType)"
+  })
   public void testHandleStatusChange_whenServiceStatusType_thenCallsGetServiceName() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
-    ServiceStatusDetectable<Object> serviceStatus = mock(ServiceStatusDetectable.class);
+
+    ServiceStatusDetectable serviceStatus = mock(ServiceStatusDetectable.class);
     when(serviceStatus.getServiceName()).thenReturn("Service Name");
 
     // Act
@@ -344,8 +399,9 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ServiceMonitor#setDefaultHandler(StatusHandler)}
    *   <li>{@link ServiceMonitor#setServiceHandlers(Map)}
@@ -354,9 +410,14 @@ public class ServiceMonitorDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"StatusHandler ServiceMonitor.getDefaultHandler()", "Map ServiceMonitor.getServiceHandlers()",
-      "void ServiceMonitor.setDefaultHandler(StatusHandler)", "void ServiceMonitor.setServiceHandlers(Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "StatusHandler ServiceMonitor.getDefaultHandler()",
+    "Map ServiceMonitor.getServiceHandlers()",
+    "void ServiceMonitor.setDefaultHandler(StatusHandler)",
+    "void ServiceMonitor.setServiceHandlers(Map)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     ServiceMonitor serviceMonitor = new ServiceMonitor();
@@ -367,7 +428,8 @@ public class ServiceMonitorDiffblueTest {
     HashMap<ServiceStatusDetectable, StatusHandler> serviceHandlers = new HashMap<>();
     serviceMonitor.setServiceHandlers(serviceHandlers);
     StatusHandler actualDefaultHandler = serviceMonitor.getDefaultHandler();
-    Map<ServiceStatusDetectable, StatusHandler> actualServiceHandlers = serviceMonitor.getServiceHandlers();
+    Map<ServiceStatusDetectable, StatusHandler> actualServiceHandlers =
+        serviceMonitor.getServiceHandlers();
 
     // Assert
     assertTrue(actualServiceHandlers.isEmpty());
@@ -377,11 +439,12 @@ public class ServiceMonitorDiffblueTest {
 
   /**
    * Test new {@link ServiceMonitor} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link ServiceMonitor}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link ServiceMonitor}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ServiceMonitor.<init>()"})
   public void testNewServiceMonitor() {
     // Arrange and Act

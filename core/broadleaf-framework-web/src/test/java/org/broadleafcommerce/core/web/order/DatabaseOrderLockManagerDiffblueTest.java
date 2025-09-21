@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -51,24 +52,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class DatabaseOrderLockManagerDiffblueTest {
-  @InjectMocks
-  private DatabaseOrderLockManager databaseOrderLockManager;
+  @InjectMocks private DatabaseOrderLockManager databaseOrderLockManager;
 
-  @Mock
-  private OrderService orderService;
+  @Mock private OrderService orderService;
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code true}.</li>
-   *   <li>Then return {@link OrderImpl} (default constructor).</li>
+   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code true}.
+   *   <li>Then return {@link OrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); given OrderService acquireLock(Order) return 'true'; then return OrderImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test acquireLock(Order); given OrderService acquireLock(Order) return 'true'; then return OrderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
   void testAcquireLock_givenOrderServiceAcquireLockReturnTrue_thenReturnOrderImpl() {
     // Arrange
@@ -85,63 +87,73 @@ class DatabaseOrderLockManagerDiffblueTest {
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService}.</li>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); given OrderService; when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test acquireLock(Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
-  void testAcquireLock_givenOrderService_whenNullOrderImpl_thenReturnNullOrderImpl() {
+  void testAcquireLock_whenNullOrderImpl_thenReturnNullOrderImpl() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
-    // Act and Assert
-    assertSame(order, databaseOrderLockManager.acquireLock(order));
+    // Act
+    Object actualAcquireLockResult = databaseOrderLockManager.acquireLock(order);
+
+    // Assert
+    assertSame(order, actualAcquireLockResult);
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLock(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLock(Order)}
    */
   @Test
-  @DisplayName("Test acquireLock(Order); given OrderService; when 'null'; then return 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName("Test acquireLock(Order); when 'null'; then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLock(Order)"})
-  void testAcquireLock_givenOrderService_whenNull_thenReturnNull() {
+  void testAcquireLock_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(databaseOrderLockManager.acquireLock(null));
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code false}.</li>
+   *   <li>Given {@link OrderService} {@link OrderService#acquireLock(Order)} return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); given OrderService acquireLock(Order) return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test acquireLockIfAvailable(Order); given OrderService acquireLock(Order) return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable_givenOrderServiceAcquireLockReturnFalse() {
     // Arrange
     when(orderService.acquireLock(Mockito.<Order>any())).thenReturn(false);
 
     // Act
-    Object actualAcquireLockIfAvailableResult = databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl());
+    Object actualAcquireLockIfAvailableResult =
+        databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl());
 
     // Assert
     verify(orderService).acquireLock(isA(Order.class));
@@ -150,34 +162,17 @@ class DatabaseOrderLockManagerDiffblueTest {
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@link OrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
-   */
-  @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); given OrderService; when 'null'; then return 'null'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
-  void testAcquireLockIfAvailable_givenOrderService_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(databaseOrderLockManager.acquireLockIfAvailable(null));
-  }
-
-  /**
-   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
-   * <ul>
-   *   <li>Then return {@link OrderImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
   @DisplayName("Test acquireLockIfAvailable(Order); then return OrderImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable_thenReturnOrderImpl() {
     // Arrange
@@ -185,7 +180,8 @@ class DatabaseOrderLockManagerDiffblueTest {
     OrderImpl order = new OrderImpl();
 
     // Act
-    Object actualAcquireLockIfAvailableResult = databaseOrderLockManager.acquireLockIfAvailable(order);
+    Object actualAcquireLockIfAvailableResult =
+        databaseOrderLockManager.acquireLockIfAvailable(order);
 
     // Assert
     verify(orderService).acquireLock(isA(Order.class));
@@ -194,58 +190,92 @@ class DatabaseOrderLockManagerDiffblueTest {
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
   @DisplayName("Test acquireLockIfAvailable(Order); then throw RuntimeException")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable_thenThrowRuntimeException() {
     // Arrange
-    when(orderService.acquireLock(Mockito.<Order>any())).thenThrow(new RuntimeException("foo"));
+    when(orderService.acquireLock(Mockito.<Order>any())).thenThrow(new RuntimeException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl()));
+    assertThrows(
+        RuntimeException.class,
+        () -> databaseOrderLockManager.acquireLockIfAvailable(new OrderImpl()));
     verify(orderService).acquireLock(isA(Order.class));
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
    */
   @Test
-  @DisplayName("Test acquireLockIfAvailable(Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test acquireLockIfAvailable(Order); when NullOrderImpl (default constructor); then return NullOrderImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
   void testAcquireLockIfAvailable_whenNullOrderImpl_thenReturnNullOrderImpl() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
-    // Act and Assert
-    assertSame(order, databaseOrderLockManager.acquireLockIfAvailable(order));
+    // Act
+    Object actualAcquireLockIfAvailableResult =
+        databaseOrderLockManager.acquireLockIfAvailable(order);
+
+    // Assert
+    assertSame(order, actualAcquireLockIfAvailableResult);
+  }
+
+  /**
+   * Test {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#acquireLockIfAvailable(Order)}
+   */
+  @Test
+  @DisplayName("Test acquireLockIfAvailable(Order); when 'null'; then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Object DatabaseOrderLockManager.acquireLockIfAvailable(Order)"})
+  void testAcquireLockIfAvailable_whenNull_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(databaseOrderLockManager.acquireLockIfAvailable(null));
   }
 
   /**
    * Test {@link DatabaseOrderLockManager#releaseLock(Object)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderService} {@link OrderService#releaseLock(Order)} return {@code true}.</li>
-   *   <li>Then calls {@link OrderService#releaseLock(Order)}.</li>
+   *   <li>Given {@link OrderService} {@link OrderService#releaseLock(Order)} return {@code true}.
+   *   <li>Then calls {@link OrderService#releaseLock(Order)}.
    * </ul>
-   * <p>
-   * Method under test: {@link DatabaseOrderLockManager#releaseLock(Object)}
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#releaseLock(Object)}
    */
   @Test
-  @DisplayName("Test releaseLock(Object); given OrderService releaseLock(Order) return 'true'; then calls releaseLock(Order)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test releaseLock(Object); given OrderService releaseLock(Order) return 'true'; then calls releaseLock(Order)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DatabaseOrderLockManager.releaseLock(Object)"})
   void testReleaseLock_givenOrderServiceReleaseLockReturnTrue_thenCallsReleaseLock() {
     // Arrange
@@ -253,8 +283,10 @@ class DatabaseOrderLockManagerDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl orderImpl = new OrderImpl();
@@ -275,7 +307,8 @@ class DatabaseOrderLockManagerDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(new OrderStatus("Type", "Friendly Type"));
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
@@ -289,9 +322,66 @@ class DatabaseOrderLockManagerDiffblueTest {
   }
 
   /**
+   * Test {@link DatabaseOrderLockManager#releaseLock(Object)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link RuntimeException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DatabaseOrderLockManager#releaseLock(Object)}
+   */
+  @Test
+  @DisplayName("Test releaseLock(Object); then throw RuntimeException")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void DatabaseOrderLockManager.releaseLock(Object)"})
+  void testReleaseLock_thenThrowRuntimeException() {
+    // Arrange
+    when(orderService.releaseLock(Mockito.<Order>any())).thenThrow(new RuntimeException());
+
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    OrderImpl orderImpl = new OrderImpl();
+    orderImpl.setAdditionalOfferInformation(new HashMap<>());
+    orderImpl.setAuditable(auditable);
+    orderImpl.setCandidateOrderOffers(new ArrayList<>());
+    orderImpl.setCurrency(new BroadleafCurrencyImpl());
+    orderImpl.setCustomer(new CustomerImpl());
+    orderImpl.setEmailAddress("42 Main St");
+    orderImpl.setFulfillmentGroups(new ArrayList<>());
+    orderImpl.setId(1L);
+    orderImpl.setLocale(new LocaleImpl());
+    orderImpl.setName("Name");
+    orderImpl.setOrderAttributes(new HashMap<>());
+    orderImpl.setOrderItems(new ArrayList<>());
+    orderImpl.setOrderMessages(new ArrayList<>());
+    orderImpl.setOrderNumber("42");
+    orderImpl.setPayments(new ArrayList<>());
+    orderImpl.setStatus(new OrderStatus("Type", "Friendly Type"));
+    orderImpl.setSubTotal(new Money());
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setTaxOverride(true);
+    orderImpl.setTotal(new Money());
+    orderImpl.setTotalFulfillmentCharges(new Money());
+    orderImpl.setTotalTax(new Money());
+
+    // Act and Assert
+    assertThrows(RuntimeException.class, () -> databaseOrderLockManager.releaseLock(orderImpl));
+    verify(orderService).releaseLock(isA(Order.class));
+  }
+
+  /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link DatabaseOrderLockManager}
    *   <li>{@link DatabaseOrderLockManager#isActive()}
@@ -299,10 +389,14 @@ class DatabaseOrderLockManagerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void DatabaseOrderLockManager.<init>()", "boolean DatabaseOrderLockManager.isActive()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DatabaseOrderLockManager.<init>()",
+    "boolean DatabaseOrderLockManager.isActive()"
+  })
   void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertTrue((new DatabaseOrderLockManager()).isActive());
+    assertTrue(new DatabaseOrderLockManager().isActive());
   }
 }

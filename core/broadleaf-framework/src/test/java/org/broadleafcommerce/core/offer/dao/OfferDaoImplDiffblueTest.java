@@ -19,10 +19,10 @@ package org.broadleafcommerce.core.offer.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -70,19 +70,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OfferDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private OfferDaoImpl offerDaoImpl;
+  @InjectMocks private OfferDaoImpl offerDaoImpl;
 
   /**
    * Test {@link OfferDaoImpl#create()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#create()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Offer OfferDaoImpl.create()"})
   public void testCreate() {
     // Arrange
@@ -94,7 +93,8 @@ public class OfferDaoImplDiffblueTest {
     offerImpl.setCombinableWithOtherOffers(true);
     offerImpl.setDescription("The characteristics of someone or something");
     offerImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
-    offerImpl.setEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setId(OfferImpl.serialVersionUID);
     offerImpl.setMarketingMessage("Marketing Message");
     offerImpl.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
@@ -112,7 +112,8 @@ public class OfferDaoImplDiffblueTest {
     offerImpl.setQualifyingItemCriteriaXref(new HashSet<>());
     offerImpl.setQualifyingItemSubTotal(new Money());
     offerImpl.setRequiresRelatedTargetAndQualifiers(true);
-    offerImpl.setStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerImpl.setTargetItemCriteriaXref(new HashSet<>());
     offerImpl.setTargetMinSubTotal(new Money());
     offerImpl.setTargetSystem("Target System");
@@ -126,17 +127,19 @@ public class OfferDaoImplDiffblueTest {
     Offer actualCreateResult = offerDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.Offer"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.Offer");
     assertSame(offerImpl, actualCreateResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createOfferInfo()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createOfferInfo()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createOfferInfo()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OfferInfo OfferDaoImpl.createOfferInfo()"})
   public void testCreateOfferInfo() {
     // Arrange
@@ -149,40 +152,46 @@ public class OfferDaoImplDiffblueTest {
     OfferInfo actualCreateOfferInfoResult = offerDaoImpl.createOfferInfo();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OfferInfo"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OfferInfo");
     assertSame(offerInfoImpl, actualCreateOfferInfoResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createCandidateOrderOffer()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createCandidateOrderOffer()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createCandidateOrderOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CandidateOrderOffer OfferDaoImpl.createCandidateOrderOffer()"})
   public void testCreateCandidateOrderOffer() {
     // Arrange
     CandidateOrderOfferImpl candidateOrderOfferImpl = new CandidateOrderOfferImpl();
     candidateOrderOfferImpl.setDiscountedPrice(new Money());
     candidateOrderOfferImpl.setId(CandidateOrderOfferImpl.serialVersionUID);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(candidateOrderOfferImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(candidateOrderOfferImpl);
 
     // Act
-    CandidateOrderOffer actualCreateCandidateOrderOfferResult = offerDaoImpl.createCandidateOrderOffer();
+    CandidateOrderOffer actualCreateCandidateOrderOfferResult =
+        offerDaoImpl.createCandidateOrderOffer();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.CandidateOrderOffer"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.CandidateOrderOffer");
     assertSame(candidateOrderOfferImpl, actualCreateCandidateOrderOfferResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createCandidateItemOffer()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createCandidateItemOffer()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createCandidateItemOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CandidateItemOffer OfferDaoImpl.createCandidateItemOffer()"})
   public void testCreateCandidateItemOffer() {
     // Arrange
@@ -190,49 +199,59 @@ public class OfferDaoImplDiffblueTest {
     candidateItemOfferImpl.setDiscountedPrice(new Money());
     candidateItemOfferImpl.setId(CandidateItemOfferImpl.serialVersionUID);
     candidateItemOfferImpl.setOrderItem(new BundleOrderItemImpl());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(candidateItemOfferImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(candidateItemOfferImpl);
 
     // Act
-    CandidateItemOffer actualCreateCandidateItemOfferResult = offerDaoImpl.createCandidateItemOffer();
+    CandidateItemOffer actualCreateCandidateItemOfferResult =
+        offerDaoImpl.createCandidateItemOffer();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.CandidateItemOffer"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.CandidateItemOffer");
     assertSame(candidateItemOfferImpl, actualCreateCandidateItemOfferResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createCandidateFulfillmentGroupOffer()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createCandidateFulfillmentGroupOffer()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createCandidateFulfillmentGroupOffer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CandidateFulfillmentGroupOffer OfferDaoImpl.createCandidateFulfillmentGroupOffer()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CandidateFulfillmentGroupOffer OfferDaoImpl.createCandidateFulfillmentGroupOffer()"
+  })
   public void testCreateCandidateFulfillmentGroupOffer() {
     // Arrange
-    CandidateFulfillmentGroupOfferImpl candidateFulfillmentGroupOfferImpl = new CandidateFulfillmentGroupOfferImpl();
+    CandidateFulfillmentGroupOfferImpl candidateFulfillmentGroupOfferImpl =
+        new CandidateFulfillmentGroupOfferImpl();
     candidateFulfillmentGroupOfferImpl.setDiscountedPrice(new Money());
     candidateFulfillmentGroupOfferImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
         .thenReturn(candidateFulfillmentGroupOfferImpl);
 
     // Act
-    CandidateFulfillmentGroupOffer actualCreateCandidateFulfillmentGroupOfferResult = offerDaoImpl
-        .createCandidateFulfillmentGroupOffer();
+    CandidateFulfillmentGroupOffer actualCreateCandidateFulfillmentGroupOfferResult =
+        offerDaoImpl.createCandidateFulfillmentGroupOffer();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer"));
-    assertSame(candidateFulfillmentGroupOfferImpl, actualCreateCandidateFulfillmentGroupOfferResult);
+        .createEntityInstance(
+            "org.broadleafcommerce.core.offer.domain.CandidateFulfillmentGroupOffer");
+    assertSame(
+        candidateFulfillmentGroupOfferImpl, actualCreateCandidateFulfillmentGroupOfferResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createOrderItemAdjustment()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createOrderItemAdjustment()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createOrderItemAdjustment()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OrderItemAdjustment OfferDaoImpl.createOrderItemAdjustment()"})
   public void testCreateOrderItemAdjustment() {
     // Arrange
@@ -244,27 +263,34 @@ public class OfferDaoImplDiffblueTest {
     orderItemAdjustmentImpl.setRetailPriceValue(new Money());
     orderItemAdjustmentImpl.setSalesPriceValue(new Money());
     orderItemAdjustmentImpl.setValue(new Money());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderItemAdjustmentImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(orderItemAdjustmentImpl);
 
     // Act
-    OrderItemAdjustment actualCreateOrderItemAdjustmentResult = offerDaoImpl.createOrderItemAdjustment();
+    OrderItemAdjustment actualCreateOrderItemAdjustmentResult =
+        offerDaoImpl.createOrderItemAdjustment();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OrderItemAdjustment"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OrderItemAdjustment");
     assertSame(orderItemAdjustmentImpl, actualCreateOrderItemAdjustmentResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createOrderItemPriceDetailAdjustment()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createOrderItemPriceDetailAdjustment()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createOrderItemPriceDetailAdjustment()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OrderItemPriceDetailAdjustment OfferDaoImpl.createOrderItemPriceDetailAdjustment()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OrderItemPriceDetailAdjustment OfferDaoImpl.createOrderItemPriceDetailAdjustment()"
+  })
   public void testCreateOrderItemPriceDetailAdjustment() {
     // Arrange
-    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl = new OrderItemPriceDetailAdjustmentImpl();
+    OrderItemPriceDetailAdjustmentImpl orderItemPriceDetailAdjustmentImpl =
+        new OrderItemPriceDetailAdjustmentImpl();
     orderItemPriceDetailAdjustmentImpl.setAppliedToSalePrice(true);
     orderItemPriceDetailAdjustmentImpl.setFutureCredit(true);
     orderItemPriceDetailAdjustmentImpl.setId(OrderItemPriceDetailAdjustmentImpl.serialVersionUID);
@@ -278,22 +304,25 @@ public class OfferDaoImplDiffblueTest {
         .thenReturn(orderItemPriceDetailAdjustmentImpl);
 
     // Act
-    OrderItemPriceDetailAdjustment actualCreateOrderItemPriceDetailAdjustmentResult = offerDaoImpl
-        .createOrderItemPriceDetailAdjustment();
+    OrderItemPriceDetailAdjustment actualCreateOrderItemPriceDetailAdjustmentResult =
+        offerDaoImpl.createOrderItemPriceDetailAdjustment();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment"));
-    assertSame(orderItemPriceDetailAdjustmentImpl, actualCreateOrderItemPriceDetailAdjustmentResult);
+        .createEntityInstance(
+            "org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment");
+    assertSame(
+        orderItemPriceDetailAdjustmentImpl, actualCreateOrderItemPriceDetailAdjustmentResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createOrderAdjustment()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createOrderAdjustment()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createOrderAdjustment()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OrderAdjustment OfferDaoImpl.createOrderAdjustment()"})
   public void testCreateOrderAdjustment() {
     // Arrange
@@ -303,57 +332,66 @@ public class OfferDaoImplDiffblueTest {
     orderAdjustmentImpl.setOrder(new NullOrderImpl());
     orderAdjustmentImpl.setReason("Just cause");
     orderAdjustmentImpl.setValue(new Money());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(orderAdjustmentImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(orderAdjustmentImpl);
 
     // Act
     OrderAdjustment actualCreateOrderAdjustmentResult = offerDaoImpl.createOrderAdjustment();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.OrderAdjustment"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.OrderAdjustment");
     assertSame(orderAdjustmentImpl, actualCreateOrderAdjustmentResult);
   }
 
   /**
    * Test {@link OfferDaoImpl#createFulfillmentGroupAdjustment()}.
-   * <p>
-   * Method under test: {@link OfferDaoImpl#createFulfillmentGroupAdjustment()}
+   *
+   * <p>Method under test: {@link OfferDaoImpl#createFulfillmentGroupAdjustment()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FulfillmentGroupAdjustment OfferDaoImpl.createFulfillmentGroupAdjustment()"})
   public void testCreateFulfillmentGroupAdjustment() {
     // Arrange
-    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl =
+        new FulfillmentGroupAdjustmentImpl();
     fulfillmentGroupAdjustmentImpl.setFulfillmentGroup(new FulfillmentGroupImpl());
     fulfillmentGroupAdjustmentImpl.setFutureCredit(true);
     fulfillmentGroupAdjustmentImpl.setId(FulfillmentGroupAdjustmentImpl.serialVersionUID);
     fulfillmentGroupAdjustmentImpl.setReason("Just cause");
     fulfillmentGroupAdjustmentImpl.setValue(new Money());
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(fulfillmentGroupAdjustmentImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(fulfillmentGroupAdjustmentImpl);
 
     // Act
-    FulfillmentGroupAdjustment actualCreateFulfillmentGroupAdjustmentResult = offerDaoImpl
-        .createFulfillmentGroupAdjustment();
+    FulfillmentGroupAdjustment actualCreateFulfillmentGroupAdjustmentResult =
+        offerDaoImpl.createFulfillmentGroupAdjustment();
 
     // Assert
     verify(entityConfiguration)
-        .createEntityInstance(eq("org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment"));
+        .createEntityInstance("org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustment");
     assertSame(fulfillmentGroupAdjustmentImpl, actualCreateFulfillmentGroupAdjustmentResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferDaoImpl#setCurrentDateResolution(Long)}
    *   <li>{@link OfferDaoImpl#getCurrentDateResolution()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long OfferDaoImpl.getCurrentDateResolution()",
-      "void OfferDaoImpl.setCurrentDateResolution(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long OfferDaoImpl.getCurrentDateResolution()",
+    "void OfferDaoImpl.setCurrentDateResolution(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     OfferDaoImpl offerDaoImpl = new OfferDaoImpl();

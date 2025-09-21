@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.web.rulebuilder.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,15 +30,17 @@ import org.junit.experimental.categories.Category;
 public class FieldWrapperDiffblueTest {
   /**
    * Test {@link FieldWrapper#serialize()}.
+   *
    * <ul>
-   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code 42}.</li>
-   *   <li>Then return a string.</li>
+   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code 42}.
+   *   <li>Then return a string.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldWrapper#serialize()}
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
   public void testSerialize_givenFieldDTOIdIs42_thenReturnAString() throws IOException {
     // Arrange
@@ -65,15 +68,17 @@ public class FieldWrapperDiffblueTest {
 
   /**
    * Test {@link FieldWrapper#serialize()}.
+   *
    * <ul>
-   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code Id}.</li>
-   *   <li>Then return a string.</li>
+   *   <li>Given {@link FieldDTO} (default constructor) Id is {@code Id}.
+   *   <li>Then return a string.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldWrapper#serialize()}
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
   public void testSerialize_givenFieldDTOIdIsId_thenReturnAString() throws IOException {
     // Arrange
@@ -112,25 +117,52 @@ public class FieldWrapperDiffblueTest {
 
   /**
    * Test {@link FieldWrapper#serialize()}.
+   *
    * <ul>
-   *   <li>Given {@link FieldWrapper} (default constructor).</li>
-   *   <li>Then return {@code {"fields":[]}}.</li>
+   *   <li>Given {@link FieldWrapper} (default constructor) Fields is {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code {"fields":[]}}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldWrapper#serialize()}
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
+  public void testSerialize_givenFieldWrapperFieldsIsArrayList_thenReturnFields()
+      throws IOException {
+    // Arrange
+    FieldWrapper fieldWrapper = new FieldWrapper();
+    fieldWrapper.setFields(new ArrayList<>());
+
+    // Act and Assert
+    assertEquals("{\"fields\":[]}", fieldWrapper.serialize());
+  }
+
+  /**
+   * Test {@link FieldWrapper#serialize()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldWrapper} (default constructor).
+   *   <li>Then return {@code {"fields":[]}}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldWrapper#serialize()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String FieldWrapper.serialize()"})
   public void testSerialize_givenFieldWrapper_thenReturnFields() throws IOException {
     // Arrange, Act and Assert
-    assertEquals("{\"fields\":[]}", (new FieldWrapper()).serialize());
+    assertEquals("{\"fields\":[]}", new FieldWrapper().serialize());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldWrapper}
    *   <li>{@link FieldWrapper#setFields(ArrayList)}
@@ -138,9 +170,13 @@ public class FieldWrapperDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FieldWrapper.<init>()", "ArrayList FieldWrapper.getFields()",
-      "void FieldWrapper.setFields(ArrayList)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldWrapper.<init>()",
+    "ArrayList FieldWrapper.getFields()",
+    "void FieldWrapper.setFields(ArrayList)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldWrapper actualFieldWrapper = new FieldWrapper();

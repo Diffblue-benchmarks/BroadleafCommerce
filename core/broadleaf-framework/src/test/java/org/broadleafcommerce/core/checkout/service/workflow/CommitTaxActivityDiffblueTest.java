@@ -21,38 +21,35 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.pricing.service.TaxService;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommitTaxActivityDiffblueTest {
-  @InjectMocks
-  private CommitTaxActivity commitTaxActivity;
-
-  @Mock
-  private TaxService taxService;
+  @InjectMocks private CommitTaxActivity commitTaxActivity;
 
   /**
    * Test {@link CommitTaxActivity#execute(ProcessContext)}.
+   *
    * <ul>
-   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
+   *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CommitTaxActivity#execute(ProcessContext)}
+   *
+   * <p>Method under test: {@link CommitTaxActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ProcessContext CommitTaxActivity.execute(ProcessContext)"})
   public void testExecute_thenReturnDefaultProcessContextImpl() throws Exception {
     // Arrange

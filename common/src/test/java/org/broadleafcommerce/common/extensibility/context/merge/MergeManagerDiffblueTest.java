@@ -27,11 +27,11 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -45,114 +45,125 @@ import org.mockito.Mockito;
 public class MergeManagerDiffblueTest {
   /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
+   *
    * <ul>
-   *   <li>Given {@link UnsupportedEncodingException#UnsupportedEncodingException(String)} with {@code foo}.</li>
-   *   <li>Then calls {@link FilterInputStream#read()}.</li>
+   *   <li>Given {@link IOException#IOException()}.
+   *   <li>When {@link DataInputStream} {@link DataInputStream#read()} throw {@link
+   *       IOException#IOException()}.
+   *   <li>Then calls {@link DataInputStream#read()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   *
+   * <p>Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
-  public void testMerge_givenUnsupportedEncodingExceptionWithFoo_thenCallsRead()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"
+  })
+  public void testMerge_givenIOException_whenDataInputStreamReadThrowIOException_thenCallsRead()
       throws IOException, MergeException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
+
     DataInputStream is = mock(DataInputStream.class);
-    when(is.read()).thenThrow(new UnsupportedEncodingException("foo"));
+    when(is.read()).thenThrow(new IOException());
     ResourceInputStream stream1 = new ResourceInputStream(is, "Name");
 
     // Act and Assert
-    assertThrows(MergeException.class, () -> mergeManager.merge(stream1,
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
+    assertThrows(
+        MergeException.class,
+        () ->
+            mergeManager.merge(
+                stream1,
+                new ResourceInputStream(
+                    new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
     verify(is).read();
   }
 
   /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
+   *   <li>When {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   *
+   * <p>Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
-  public void testMerge_whenNull() throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"
+  })
+  public void testMerge_whenNull()
+      throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
 
     // Act and Assert
-    assertThrows(MergeException.class, () -> mergeManager.merge(null,
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
+    assertThrows(
+        MergeException.class,
+        () ->
+            mergeManager.merge(
+                null,
+                new ResourceInputStream(
+                    new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
   }
 
   /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
+   *
    * <ul>
-   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)} with is is {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and {@code Name}.</li>
+   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)} with is is
+   *       {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and {@code Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
+   *
+   * <p>Method under test: {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ResourceInputStream MergeManager.merge(ResourceInputStream, ResourceInputStream)"
+  })
   public void testMerge_whenResourceInputStreamWithIsIsByteArrayInputStreamAndName()
       throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
-    ResourceInputStream stream1 = new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")),
-        "Name");
+    ResourceInputStream stream1 =
+        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
 
     // Act and Assert
-    assertThrows(MergeException.class, () -> mergeManager.merge(stream1,
-        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
+    assertThrows(
+        MergeException.class,
+        () ->
+            mergeManager.merge(
+                stream1,
+                new ResourceInputStream(
+                    new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")));
   }
 
   /**
    * Test {@link MergeManager#serialize(InputStream)}.
-   * <p>
-   * Method under test: {@link MergeManager#serialize(InputStream)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
-  public void testSerialize() throws IOException, MergeManagerSetupException {
-    // Arrange
-    MergeManager mergeManager = new MergeManager();
-    ObjectInputStream in = mock(ObjectInputStream.class);
-    when(in.read(Mockito.<byte[]>any(), anyInt(), anyInt()))
-        .thenThrow(new UnsupportedEncodingException("Unable to merge source and patch locations"));
-    doThrow(new UnsupportedEncodingException("Unable to merge source and patch locations")).when(in).close();
-
-    // Act
-    String actualSerializeResult = mergeManager.serialize(in);
-
-    // Assert
-    verify(in).close();
-    verify(in).read(isA(byte[].class), eq(0), eq(8192));
-    assertEquals("", actualSerializeResult);
-  }
-
-  /**
-   * Test {@link MergeManager#serialize(InputStream)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link ObjectInputStream} {@link ObjectInputStream#read(byte[], int, int)} return zero.</li>
+   *   <li>Given zero.
+   *   <li>When {@link ObjectInputStream} {@link ObjectInputStream#read(byte[], int, int)} return
+   *       zero.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeManager#serialize(InputStream)}
+   *
+   * <p>Method under test: {@link MergeManager#serialize(InputStream)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
   public void testSerialize_givenZero_whenObjectInputStreamReadReturnZero()
       throws IOException, MergeManagerSetupException {
     // Arrange
     MergeManager mergeManager = new MergeManager();
+
     ObjectInputStream in = mock(ObjectInputStream.class);
     when(in.read(Mockito.<byte[]>any(), anyInt(), anyInt())).thenReturn(0);
     doNothing().when(in).close();
@@ -168,15 +179,18 @@ public class MergeManagerDiffblueTest {
 
   /**
    * Test {@link MergeManager#serialize(InputStream)}.
+   *
    * <ul>
-   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX} Bytes is {@code UTF-8}.</li>
-   *   <li>Then return {@code AXAXAXAX}.</li>
+   *   <li>When {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} with {@code AXAXAXAX}
+   *       Bytes is {@code UTF-8}.
+   *   <li>Then return {@code AXAXAXAX}.
    * </ul>
-   * <p>
-   * Method under test: {@link MergeManager#serialize(InputStream)}
+   *
+   * <p>Method under test: {@link MergeManager#serialize(InputStream)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
   public void testSerialize_whenByteArrayInputStreamWithAxaxaxaxBytesIsUtf8_thenReturnAxaxaxax()
       throws IOException, MergeManagerSetupException {
@@ -184,8 +198,45 @@ public class MergeManagerDiffblueTest {
     MergeManager mergeManager = new MergeManager();
     ByteArrayInputStream in = new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"));
 
-    // Act and Assert
-    assertEquals("AXAXAXAX", mergeManager.serialize(in));
-    assertEquals(-1, in.read(new byte[]{}));
+    // Act
+    String actualSerializeResult = mergeManager.serialize(in);
+
+    // Assert
+    assertEquals("AXAXAXAX", actualSerializeResult);
+    int actualReadResult = in.read(new byte[] {});
+    assertEquals(-1, actualReadResult);
+  }
+
+  /**
+   * Test {@link MergeManager#serialize(InputStream)}.
+   *
+   * <ul>
+   *   <li>When {@link ObjectInputStream} {@link ObjectInputStream#read(byte[], int, int)} throw
+   *       {@link IOException#IOException()}.
+   *   <li>Then return empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link MergeManager#serialize(InputStream)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MergeManager.serialize(InputStream)"})
+  public void testSerialize_whenObjectInputStreamReadThrowIOException_thenReturnEmptyString()
+      throws IOException, MergeManagerSetupException {
+    // Arrange
+    MergeManager mergeManager = new MergeManager();
+
+    ObjectInputStream in = mock(ObjectInputStream.class);
+    when(in.read(Mockito.<byte[]>any(), anyInt(), anyInt())).thenThrow(new IOException());
+    doThrow(new IOException()).when(in).close();
+
+    // Act
+    String actualSerializeResult = mergeManager.serialize(in);
+
+    // Assert
+    verify(in).close();
+    verify(in).read(isA(byte[].class), eq(0), eq(8192));
+    assertEquals("", actualSerializeResult);
   }
 }

@@ -23,23 +23,20 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import java.util.Currency;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -52,117 +49,116 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FixedPriceFulfillmentOptionImplDiffblueTest {
-  @Autowired
-  private FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
+  @Autowired private FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link FixedPriceFulfillmentOptionImpl} (default constructor) Currency is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link FixedPriceFulfillmentOptionImpl} Currency is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money FixedPriceFulfillmentOptionImpl.getPrice()"})
   public void testGetPrice_givenFixedPriceFulfillmentOptionImplCurrencyIsNull_thenReturnMoney() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
-    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    fixedPriceFulfillmentOptionImpl2.setId(1L);
-    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
-    fixedPriceFulfillmentOptionImpl2.setName("Name");
-    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
-    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
-    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
     Money price = new Money();
-    fixedPriceFulfillmentOptionImpl2.setPrice(price);
-    fixedPriceFulfillmentOptionImpl2.setCurrency(null);
+    fixedPriceFulfillmentOptionImpl.setPrice(price);
+    fixedPriceFulfillmentOptionImpl.setCurrency(null);
 
     // Act and Assert
-    assertEquals(price, fixedPriceFulfillmentOptionImpl2.getPrice());
+    assertEquals(price, fixedPriceFulfillmentOptionImpl.getPrice());
   }
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link FixedPriceFulfillmentOptionImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link FixedPriceFulfillmentOptionImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money FixedPriceFulfillmentOptionImpl.getPrice()"})
   public void testGetPrice_givenFixedPriceFulfillmentOptionImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new FixedPriceFulfillmentOptionImpl()).getPrice());
+    assertNull(fixedPriceFulfillmentOptionImpl.getPrice());
   }
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#getPrice()}.
+   *
    * <ul>
-   *   <li>Then calls {@link BroadleafCurrency#getCurrencyCode()}.</li>
+   *   <li>Then return Currency DisplayName is {@code British Pound}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money FixedPriceFulfillmentOptionImpl.getPrice()"})
-  public void testGetPrice_thenCallsGetCurrencyCode() {
+  public void testGetPrice_thenReturnCurrencyDisplayNameIsBritishPound() {
     // Arrange
     BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
-
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
-    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    fixedPriceFulfillmentOptionImpl2.setId(1L);
-    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
-    fixedPriceFulfillmentOptionImpl2.setName("Name");
-    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
-    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
-    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
-    Money price = new Money();
-    fixedPriceFulfillmentOptionImpl2.setPrice(price);
-    fixedPriceFulfillmentOptionImpl2.setCurrency(currency);
+    fixedPriceFulfillmentOptionImpl.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl.setCurrency(currency);
 
     // Act
-    Money actualPrice = fixedPriceFulfillmentOptionImpl2.getPrice();
+    Money actualPrice = fixedPriceFulfillmentOptionImpl.getPrice();
 
     // Assert
     verify(currency).getCurrencyCode();
-    assertEquals(price, actualPrice);
+    Currency currency2 = actualPrice.getCurrency();
+    assertEquals("British Pound", currency2.getDisplayName());
+    assertEquals("GBP", currency2.getCurrencyCode());
+    assertEquals("GBP", currency2.toString());
+    assertEquals("£", currency2.getSymbol());
+    assertEquals(826, currency2.getNumericCode());
+    Money actualAbsResult = actualPrice.abs();
+    assertEquals(actualPrice, actualAbsResult);
+    Money actualZeroResult = actualPrice.zero();
+    assertEquals(actualPrice, actualZeroResult);
   }
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link FixedPriceFulfillmentOptionImpl} (default constructor) {@link FixedPriceFulfillmentOptionImpl#price} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link FixedPriceFulfillmentOptionImpl} {@link
+   *       FixedPriceFulfillmentOptionImpl#price} is {@link BigDecimal#BigDecimal(String)} with
+   *       {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FixedPriceFulfillmentOptionImpl.setPrice(Money)"})
   public void testSetPrice_thenFixedPriceFulfillmentOptionImplPriceIsBigDecimalWith000() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
     Money price = new Money();
 
     // Act
-    fixedPriceFulfillmentOptionImpl2.setPrice(price);
+    fixedPriceFulfillmentOptionImpl.setPrice(price);
 
     // Assert
-    assertEquals(new BigDecimal("0.00"), fixedPriceFulfillmentOptionImpl2.price);
-    BigDecimal bigDecimal = fixedPriceFulfillmentOptionImpl2.price;
+    assertEquals(new BigDecimal("0.00"), fixedPriceFulfillmentOptionImpl.price);
+    BigDecimal bigDecimal = fixedPriceFulfillmentOptionImpl.price;
     Money absResult = price.abs();
     assertSame(bigDecimal, absResult.getAmount());
     Money absResult2 = absResult.abs();
@@ -187,52 +183,48 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link FixedPriceFulfillmentOptionImpl} (default constructor) {@link FixedPriceFulfillmentOptionImpl#price} is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link FixedPriceFulfillmentOptionImpl} {@link
+   *       FixedPriceFulfillmentOptionImpl#price} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FixedPriceFulfillmentOptionImpl.setPrice(Money)"})
-  public void testSetPrice_thenFixedPriceFulfillmentOptionImplPriceIsNull() {
-    // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
-    fixedPriceFulfillmentOptionImpl2.setCurrency(new BroadleafCurrencyImpl());
-    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
-    fixedPriceFulfillmentOptionImpl2.setId(1L);
-    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
-    fixedPriceFulfillmentOptionImpl2.setName("Name");
-    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
-    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
-    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
-    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+  public void testSetPrice_whenNull_thenFixedPriceFulfillmentOptionImplPriceIsNull() {
+    // Arrange and Act
+    fixedPriceFulfillmentOptionImpl.setPrice(null);
 
-    // Act
-    fixedPriceFulfillmentOptionImpl2.setPrice(null);
-
-    // Assert
-    assertNull(fixedPriceFulfillmentOptionImpl2.price);
-    assertNull(fixedPriceFulfillmentOptionImpl2.getPrice());
+    // Assert that nothing has changed
+    assertNull(fixedPriceFulfillmentOptionImpl.price);
   }
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
-      "int FixedPriceFulfillmentOptionImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
+    "int FixedPriceFulfillmentOptionImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
     fixedPriceFulfillmentOptionImpl.setCurrency(null);
     fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     fixedPriceFulfillmentOptionImpl.setId(1L);
@@ -242,10 +234,12 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
     fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
     fixedPriceFulfillmentOptionImpl.setTaxable(true);
     fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
     BroadleafCurrency currency = mock(BroadleafCurrency.class);
     when(currency.getCurrencyCode()).thenReturn("GBP");
 
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 =
+        new FixedPriceFulfillmentOptionImpl();
     fixedPriceFulfillmentOptionImpl2.setCurrency(currency);
     fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
     fixedPriceFulfillmentOptionImpl2.setId(1L);
@@ -262,20 +256,75 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
-      "int FixedPriceFulfillmentOptionImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
+    "int FixedPriceFulfillmentOptionImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl.setCurrency(null);
+    fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl.setId(1L);
+    fixedPriceFulfillmentOptionImpl.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl.setName("Name");
+    fixedPriceFulfillmentOptionImpl.setPrice(null);
+    fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
+    BroadleafCurrency currency = mock(BroadleafCurrency.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 =
+        new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl2.setCurrency(currency);
+    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl2.setId(1L);
+    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl2.setName("Name");
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+
+    // Act and Assert
+    assertNotEquals(fixedPriceFulfillmentOptionImpl, fixedPriceFulfillmentOptionImpl2);
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
+    "int FixedPriceFulfillmentOptionImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
     fixedPriceFulfillmentOptionImpl.setCurrency(new BroadleafCurrencyImpl());
     fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     fixedPriceFulfillmentOptionImpl.setId(1L);
@@ -292,20 +341,25 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
-      "int FixedPriceFulfillmentOptionImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
+    "int FixedPriceFulfillmentOptionImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
     fixedPriceFulfillmentOptionImpl.setCurrency(new BroadleafCurrencyImpl());
     fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     fixedPriceFulfillmentOptionImpl.setId(1L);
@@ -322,20 +376,25 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
-      "int FixedPriceFulfillmentOptionImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean FixedPriceFulfillmentOptionImpl.equals(Object)",
+    "int FixedPriceFulfillmentOptionImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
     fixedPriceFulfillmentOptionImpl.setCurrency(new BroadleafCurrencyImpl());
     fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
     fixedPriceFulfillmentOptionImpl.setId(1L);
@@ -347,29 +406,33 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
     fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
 
     // Act and Assert
-    assertNotEquals(fixedPriceFulfillmentOptionImpl, "Different type to FixedPriceFulfillmentOptionImpl");
+    assertNotEquals(
+        fixedPriceFulfillmentOptionImpl, "Different type to FixedPriceFulfillmentOptionImpl");
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse FixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse FixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new FixedPriceFulfillmentOptionImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FixedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = fixedPriceFulfillmentOptionImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<FixedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
+        fixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -377,49 +440,39 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link FixedPriceFulfillmentOptionImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse FixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnFixedPriceFulfillmentOptionImpl()
-      throws CloneNotSupportedException {
+    "CreateResponse FixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(fixedPriceFulfillmentOptionImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<FixedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult = fixedPriceFulfillmentOptionImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<FixedPriceFulfillmentOption> actualCreateOrRetrieveCopyInstanceResult =
+        fixedPriceFulfillmentOptionImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService)
-        .getCeilingImplClass(eq("org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    FixedPriceFulfillmentOption clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof FixedPriceFulfillmentOptionImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(fixedPriceFulfillmentOptionImpl2, clone);
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FixedPriceFulfillmentOptionImpl}
    *   <li>{@link FixedPriceFulfillmentOptionImpl#setCurrency(BroadleafCurrency)}
@@ -427,13 +480,17 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FixedPriceFulfillmentOptionImpl.<init>()",
-      "BroadleafCurrency FixedPriceFulfillmentOptionImpl.getCurrency()",
-      "void FixedPriceFulfillmentOptionImpl.setCurrency(BroadleafCurrency)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FixedPriceFulfillmentOptionImpl.<init>()",
+    "BroadleafCurrency FixedPriceFulfillmentOptionImpl.getCurrency()",
+    "void FixedPriceFulfillmentOptionImpl.setCurrency(BroadleafCurrency)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    FixedPriceFulfillmentOptionImpl actualFixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    FixedPriceFulfillmentOptionImpl actualFixedPriceFulfillmentOptionImpl =
+        new FixedPriceFulfillmentOptionImpl();
     BroadleafCurrencyImpl currency = new BroadleafCurrencyImpl();
     actualFixedPriceFulfillmentOptionImpl.setCurrency(currency);
     BroadleafCurrency actualCurrency = actualFixedPriceFulfillmentOptionImpl.getCurrency();

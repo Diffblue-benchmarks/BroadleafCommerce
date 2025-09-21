@@ -18,7 +18,8 @@
 package org.broadleafcommerce.openadmin.server.security.extension;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -43,14 +44,19 @@ public class DefaultAdminSecurityServiceExtensionHandlerDiffblueTest {
   private DefaultAdminSecurityServiceExtensionHandler defaultAdminSecurityServiceExtensionHandler;
 
   /**
-   * Test {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}.
-   * <p>
-   * Method under test: {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)}
+   * Test {@link DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser,
+   * PermissionType, ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * DefaultAdminSecurityServiceExtensionHandler#hasPrivilegesForOperation(AdminUser,
+   * PermissionType, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType DefaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)"})
+    "ExtensionResultStatusType DefaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(AdminUser, PermissionType, ExtensionResultHolder)"
+  })
   public void testHasPrivilegesForOperation() {
     // Arrange
     AdminUserImpl adminUser = new AdminUserImpl();
@@ -60,7 +66,9 @@ public class DefaultAdminSecurityServiceExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        defaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(adminUser, PermissionType.ALL, erh));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        defaultAdminSecurityServiceExtensionHandler.hasPrivilegesForOperation(
+            adminUser, PermissionType.ALL, erh));
   }
 }

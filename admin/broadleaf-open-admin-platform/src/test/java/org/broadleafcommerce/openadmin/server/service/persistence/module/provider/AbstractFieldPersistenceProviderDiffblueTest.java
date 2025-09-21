@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.provid
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.extension.BasicFieldPersistenceProviderExtensionManager;
 import org.junit.Test;
@@ -33,19 +34,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {BasicFieldPersistenceProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractFieldPersistenceProviderDiffblueTest {
-  @Autowired
-  private AbstractFieldPersistenceProvider abstractFieldPersistenceProvider;
+  @Autowired private AbstractFieldPersistenceProvider abstractFieldPersistenceProvider;
 
   @MockBean(name = "blBasicFieldPersistenceProviderExtensionManager")
-  private BasicFieldPersistenceProviderExtensionManager basicFieldPersistenceProviderExtensionManager;
+  private BasicFieldPersistenceProviderExtensionManager
+      basicFieldPersistenceProviderExtensionManager;
 
   /**
    * Test {@link AbstractFieldPersistenceProvider#alwaysRun()}.
-   * <p>
-   * Method under test: {@link AbstractFieldPersistenceProvider#alwaysRun()}
+   *
+   * <p>Method under test: {@link AbstractFieldPersistenceProvider#alwaysRun()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.alwaysRun()"})
   public void testAlwaysRun() {
     // Arrange, Act and Assert
@@ -54,31 +56,35 @@ public class AbstractFieldPersistenceProviderDiffblueTest {
 
   /**
    * Test {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}.
+   *
    * <ul>
-   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link MapFieldPersistenceProvider} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
+   *
+   * <p>Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.canHandlePopulateNull()"})
   public void testCanHandlePopulateNull_givenMapFieldPersistenceProvider_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new MapFieldPersistenceProvider()).canHandlePopulateNull());
+    assertTrue(new MapFieldPersistenceProvider().canHandlePopulateNull());
   }
 
   /**
    * Test {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
+   *
+   * <p>Method under test: {@link AbstractFieldPersistenceProvider#canHandlePopulateNull()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractFieldPersistenceProvider.canHandlePopulateNull()"})
   public void testCanHandlePopulateNull_thenReturnFalse() {
     // Arrange, Act and Assert

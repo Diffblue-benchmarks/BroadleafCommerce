@@ -20,7 +20,9 @@ package org.broadleafcommerce.cms.url.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.junit.Assert.assertSame;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.cms.url.type.URLRedirectType;
 import org.junit.Test;
@@ -33,16 +35,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NullURLHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullURLHandlerDiffblueTest {
-  @Autowired
-  private NullURLHandler nullURLHandler;
+  @Autowired private NullURLHandler nullURLHandler;
 
   /**
    * Test {@link NullURLHandler#NullURLHandler()}.
-   * <p>
-   * Method under test: {@link NullURLHandler#NullURLHandler()}
+   *
+   * <p>Method under test: {@link NullURLHandler#NullURLHandler()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void NullURLHandler.<init>()"})
   public void testNewNullURLHandler() {
     // Arrange and Act
@@ -59,15 +61,45 @@ public class NullURLHandlerDiffblueTest {
 
   /**
    * Test {@link NullURLHandler#NullURLHandler(String, URLRedirectType)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@link URLHandlerDTO#urlRedirectType} is {@code null}.</li>
+   *   <li>When {@link URLRedirectType#FORWARD}.
+   *   <li>Then return {@link URLHandlerDTO#urlRedirectType} is {@code FORWARD}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullURLHandler#NullURLHandler(String, URLRedirectType)}
+   *
+   * <p>Method under test: {@link NullURLHandler#NullURLHandler(String, URLRedirectType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void NullURLHandler.<init>(String, URLRedirectType)"})
+  public void testNewNullURLHandler_whenForward_thenReturnUrlRedirectTypeIsForward() {
+    // Arrange and Act
+    NullURLHandler actualNullURLHandler =
+        new NullURLHandler("https://example.org/example", URLRedirectType.FORWARD);
+
+    // Assert
+    assertEquals("", actualNullURLHandler.getIncomingURL());
+    assertEquals("FORWARD", actualNullURLHandler.urlRedirectType);
+    assertEquals("https://example.org/example", actualNullURLHandler.getNewURL());
+    assertNull(actualNullURLHandler.getId());
+    assertFalse(actualNullURLHandler.isRegexHandler());
+    assertSame(URLRedirectType.FORWARD, actualNullURLHandler.getUrlRedirectType());
+  }
+
+  /**
+   * Test {@link NullURLHandler#NullURLHandler(String, URLRedirectType)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then return {@link URLHandlerDTO#urlRedirectType} is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link NullURLHandler#NullURLHandler(String, URLRedirectType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void NullURLHandler.<init>(String, URLRedirectType)"})
   public void testNewNullURLHandler_whenNull_thenReturnUrlRedirectTypeIsNull() {
     // Arrange and Act

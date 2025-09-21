@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.web.request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +31,17 @@ import org.junit.experimental.categories.Category;
 public class ResourcesRequestDiffblueTest {
   /**
    * Test {@link ResourcesRequest#getBundle(String, String, List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
+   *
+   * <p>Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ResourcesRequestBundle ResourcesRequest.getBundle(String, String, List)"})
   public void testGetBundle_given42_whenArrayListAdd42() {
     // Arrange
@@ -54,15 +57,17 @@ public class ResourcesRequestDiffblueTest {
 
   /**
    * Test {@link ResourcesRequest#getBundle(String, String, List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
+   *
+   * <p>Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ResourcesRequestBundle ResourcesRequest.getBundle(String, String, List)"})
   public void testGetBundle_givenFoo_whenArrayListAddFoo() {
     // Arrange
@@ -77,14 +82,16 @@ public class ResourcesRequestDiffblueTest {
 
   /**
    * Test {@link ResourcesRequest#getBundle(String, String, List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
+   *
+   * <p>Method under test: {@link ResourcesRequest#getBundle(String, String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ResourcesRequestBundle ResourcesRequest.getBundle(String, String, List)"})
   public void testGetBundle_whenArrayList() {
     // Arrange
@@ -95,12 +102,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundlePath}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name},
+   * {@code mappingPrefix}, {@code files}, {@code bundlePath}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, String)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundlePath() {
     // Arrange
@@ -121,12 +130,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundlePath}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name},
+   * {@code mappingPrefix}, {@code files}, {@code bundlePath}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, String)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundlePath2() {
     // Arrange
@@ -150,16 +161,19 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundlePath}.
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, String)} with {@code name},
+   * {@code mappingPrefix}, {@code files}, {@code bundlePath}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, String)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundlePath_given42_whenArrayListAdd42() {
     // Arrange
@@ -184,12 +198,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundledFilePaths}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code
+   * mappingPrefix}, {@code files}, {@code bundledFilePaths}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, List)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundledFilePaths() {
     // Arrange
@@ -211,12 +227,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundledFilePaths}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code
+   * mappingPrefix}, {@code files}, {@code bundledFilePaths}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, List)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundledFilePaths2() {
     // Arrange
@@ -240,12 +258,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundledFilePaths}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code
+   * mappingPrefix}, {@code files}, {@code bundledFilePaths}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, List)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundledFilePaths3() {
     // Arrange
@@ -270,12 +290,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundledFilePaths}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code
+   * mappingPrefix}, {@code files}, {@code bundledFilePaths}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, List)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundledFilePaths4() {
     // Arrange
@@ -299,12 +321,14 @@ public class ResourcesRequestDiffblueTest {
   }
 
   /**
-   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code mappingPrefix}, {@code files}, {@code bundledFilePaths}.
-   * <p>
-   * Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
+   * Test {@link ResourcesRequest#saveBundle(String, String, List, List)} with {@code name}, {@code
+   * mappingPrefix}, {@code files}, {@code bundledFilePaths}.
+   *
+   * <p>Method under test: {@link ResourcesRequest#saveBundle(String, String, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ResourcesRequest.saveBundle(String, String, List, List)"})
   public void testSaveBundleWithNameMappingPrefixFilesBundledFilePaths5() {
     // Arrange

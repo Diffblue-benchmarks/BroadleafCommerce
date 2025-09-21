@@ -18,20 +18,583 @@
 package org.broadleafcommerce.cms.field.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumeration;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationImpl;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml"})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FieldDefinitionImplDiffblueTest {
+  @Autowired private FieldDefinitionImpl fieldDefinitionImpl;
+
+  /**
+   * Test {@link FieldDefinitionImpl#getName()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} Name is {@code foo}.
+   *   <li>Then return {@code foo}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getName()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String FieldDefinitionImpl.getName()"})
+  public void testGetName_givenFieldDefinitionImplNameIsFoo_thenReturnFoo() {
+    // Arrange
+    fieldDefinitionImpl.setName("foo");
+
+    // Act and Assert
+    assertEquals("foo", fieldDefinitionImpl.getName());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getName()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl}.
+   *   <li>Then return empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getName()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String FieldDefinitionImpl.getName()"})
+  public void testGetName_givenFieldDefinitionImpl_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals("", fieldDefinitionImpl.getName());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getFieldType()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
+   *   <li>Then return {@code UNKNOWN}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getFieldType()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SupportedFieldType FieldDefinitionImpl.getFieldType()"})
+  public void testGetFieldType_givenFieldDefinitionImplFieldTypeIsUnknown_thenReturnUnknown() {
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertEquals(SupportedFieldType.UNKNOWN, fieldDefinitionImpl.getFieldType());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getFieldType()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getFieldType()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SupportedFieldType FieldDefinitionImpl.getFieldType()"})
+  public void testGetFieldType_givenFieldDefinitionImpl_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(fieldDefinitionImpl.getFieldType());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String FieldDefinitionImpl.getAdditionalForeignKeyClass()"})
+  public void testGetAdditionalForeignKeyClass_givenFieldDefinitionImpl() {
+    // Arrange, Act and Assert
+    assertNull(fieldDefinitionImpl.getAdditionalForeignKeyClass());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getAdditionalForeignKeyClass()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String FieldDefinitionImpl.getAdditionalForeignKeyClass()"})
+  public void testGetAdditionalForeignKeyClass_givenFieldDefinitionImplFieldTypeIsUnknown() {
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertNull(fieldDefinitionImpl.getAdditionalForeignKeyClass());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
+  public void testSetAdditionalForeignKeyClass() {
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.ADDITIONAL_FOREIGN_KEY);
+
+    // Act
+    fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name");
+
+    // Assert
+    assertEquals("ADDITIONAL_FOREIGN_KEY|Class Name", fieldDefinitionImpl.getFieldTypeVal());
+    assertEquals("Class Name", fieldDefinitionImpl.getAdditionalForeignKeyClass());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
+  public void testSetAdditionalForeignKeyClass_givenFieldDefinitionImpl() {
+    // Arrange, Act and Assert
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name"));
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} (default constructor) FieldType is {@code UNKNOWN}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setAdditionalForeignKeyClass(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setAdditionalForeignKeyClass(String)"})
+  public void testSetAdditionalForeignKeyClass_givenFieldDefinitionImplFieldTypeIsUnknown() {
+    // Arrange
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Act and Assert
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> fieldDefinitionImpl.setAdditionalForeignKeyClass("Class Name"));
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)} with {@code
+   * SupportedFieldType}.
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldType(SupportedFieldType)"})
+  public void testSetFieldTypeWithSupportedFieldType() {
+    // Arrange and Act
+    fieldDefinitionImpl.setFieldType(SupportedFieldType.UNKNOWN);
+
+    // Assert
+    assertEquals("UNKNOWN", fieldDefinitionImpl.getFieldTypeVal());
+    assertEquals(SupportedFieldType.UNKNOWN, fieldDefinitionImpl.getFieldType());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)} with {@code
+   * SupportedFieldType}.
+   *
+   * <ul>
+   *   <li>Then {@link FieldDefinitionImpl} FieldTypeVal is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setFieldType(SupportedFieldType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldType(SupportedFieldType)"})
+  public void testSetFieldTypeWithSupportedFieldType_thenFieldDefinitionImplFieldTypeValIsNull() {
+    // Arrange and Act
+    fieldDefinitionImpl.setFieldType((SupportedFieldType) null);
+
+    // Assert that nothing has changed
+    assertNull(fieldDefinitionImpl.getFieldTypeVal());
+    assertNull(fieldDefinitionImpl.getFieldType());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} HiddenFlag is {@code null}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
+  public void testGetHiddenFlag_givenFieldDefinitionImplHiddenFlagIsNull_thenReturnFalse() {
+    // Arrange
+    fieldDefinitionImpl.setHiddenFlag(null);
+
+    // Act and Assert
+    assertFalse(fieldDefinitionImpl.getHiddenFlag());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl} HiddenFlag is {@code true}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
+  public void testGetHiddenFlag_givenFieldDefinitionImplHiddenFlagIsTrue_thenReturnTrue() {
+    // Arrange
+    fieldDefinitionImpl.setHiddenFlag(true);
+
+    // Act and Assert
+    assertTrue(fieldDefinitionImpl.getHiddenFlag());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getHiddenFlag()}.
+   *
+   * <ul>
+   *   <li>Given {@link FieldDefinitionImpl}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getHiddenFlag()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Boolean FieldDefinitionImpl.getHiddenFlag()"})
+  public void testGetHiddenFlag_givenFieldDefinitionImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(fieldDefinitionImpl.getHiddenFlag());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#getFieldOrder()}.
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#getFieldOrder()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"int FieldDefinitionImpl.getFieldOrder()"})
+  public void testGetFieldOrder() {
+    // Arrange, Act and Assert
+    assertEquals(0, fieldDefinitionImpl.getFieldOrder());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#setFieldOrder(int)}.
+   *
+   * <p>Method under test: {@link FieldDefinitionImpl#setFieldOrder(int)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void FieldDefinitionImpl.setFieldOrder(int)"})
+  public void testSetFieldOrder() {
+    // Arrange and Act
+    fieldDefinitionImpl.setFieldOrder(1);
+
+    // Assert
+    assertEquals(1, fieldDefinitionImpl.fieldOrder.intValue());
+    assertEquals(1, fieldDefinitionImpl.getFieldOrder());
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // Arrange
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(new FieldDefinitionImpl(), true);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult =
+        fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(fieldDefinitionImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<FieldDefinition> actualCreateOrRetrieveCopyInstanceResult =
+        fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
+    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new FieldGroupImpl(), true));
+
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldGroup(fieldGroup);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance4() throws CloneNotSupportedException {
+    // Arrange
+    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
+    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new IllegalArgumentException());
+
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setFieldGroup(fieldGroup);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> fieldDefinitionImpl.createOrRetrieveCopyInstance(context));
+    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance5() throws CloneNotSupportedException {
+    // Arrange
+    FieldGroupImpl fieldGroup = mock(FieldGroupImpl.class);
+    when(fieldGroup.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new FieldGroupImpl(), true));
+
+    DataDrivenEnumerationImpl dataDrivenEnumeration = mock(DataDrivenEnumerationImpl.class);
+    when(dataDrivenEnumeration.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new DataDrivenEnumerationImpl(), true));
+
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setDataDrivenEnumeration(dataDrivenEnumeration);
+    fieldDefinitionImpl.setFieldGroup(fieldGroup);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    fieldDefinitionImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(fieldGroup).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(dataDrivenEnumeration).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
+  /**
+   * Test {@link FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * FieldDefinitionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse FieldDefinitionImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance6() throws CloneNotSupportedException {
+    // Arrange
+    DataDrivenEnumerationImpl dataDrivenEnumeration = mock(DataDrivenEnumerationImpl.class);
+    when(dataDrivenEnumeration.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new IllegalArgumentException());
+
+    FieldDefinitionImpl fieldDefinitionImpl = new FieldDefinitionImpl();
+    fieldDefinitionImpl.setDataDrivenEnumeration(dataDrivenEnumeration);
+    fieldDefinitionImpl.setFieldGroup(mock(FieldGroupImpl.class));
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new FieldDefinitionImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> fieldDefinitionImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(dataDrivenEnumeration).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldDefinitionImpl}
    *   <li>{@link FieldDefinitionImpl#setAllowMultiples(Boolean)}
@@ -71,27 +634,45 @@ public class FieldDefinitionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FieldDefinitionImpl.<init>()", "Boolean FieldDefinitionImpl.getAllowMultiples()",
-      "String FieldDefinitionImpl.getColumnWidth()",
-      "DataDrivenEnumeration FieldDefinitionImpl.getDataDrivenEnumeration()",
-      "FieldGroup FieldDefinitionImpl.getFieldGroup()", "String FieldDefinitionImpl.getFieldTypeVal()",
-      "String FieldDefinitionImpl.getFriendlyName()", "String FieldDefinitionImpl.getHelpText()",
-      "String FieldDefinitionImpl.getHint()", "Long FieldDefinitionImpl.getId()",
-      "Integer FieldDefinitionImpl.getMaxLength()", "Boolean FieldDefinitionImpl.getRequiredFlag()",
-      "String FieldDefinitionImpl.getSecurityLevel()", "Boolean FieldDefinitionImpl.getTextAreaFlag()",
-      "String FieldDefinitionImpl.getTooltip()", "String FieldDefinitionImpl.getValidationErrorMesageKey()",
-      "String FieldDefinitionImpl.getValidationRegEx()", "void FieldDefinitionImpl.setAllowMultiples(Boolean)",
-      "void FieldDefinitionImpl.setColumnWidth(String)",
-      "void FieldDefinitionImpl.setDataDrivenEnumeration(DataDrivenEnumeration)",
-      "void FieldDefinitionImpl.setFieldGroup(FieldGroup)", "void FieldDefinitionImpl.setFieldType(String)",
-      "void FieldDefinitionImpl.setFriendlyName(String)", "void FieldDefinitionImpl.setHelpText(String)",
-      "void FieldDefinitionImpl.setHiddenFlag(Boolean)", "void FieldDefinitionImpl.setHint(String)",
-      "void FieldDefinitionImpl.setId(Long)", "void FieldDefinitionImpl.setMaxLength(Integer)",
-      "void FieldDefinitionImpl.setName(String)", "void FieldDefinitionImpl.setRequiredFlag(Boolean)",
-      "void FieldDefinitionImpl.setSecurityLevel(String)", "void FieldDefinitionImpl.setTextAreaFlag(Boolean)",
-      "void FieldDefinitionImpl.setTooltip(String)", "void FieldDefinitionImpl.setValidationErrorMesageKey(String)",
-      "void FieldDefinitionImpl.setValidationRegEx(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldDefinitionImpl.<init>()",
+    "Boolean FieldDefinitionImpl.getAllowMultiples()",
+    "String FieldDefinitionImpl.getColumnWidth()",
+    "DataDrivenEnumeration FieldDefinitionImpl.getDataDrivenEnumeration()",
+    "FieldGroup FieldDefinitionImpl.getFieldGroup()",
+    "String FieldDefinitionImpl.getFieldTypeVal()",
+    "String FieldDefinitionImpl.getFriendlyName()",
+    "String FieldDefinitionImpl.getHelpText()",
+    "String FieldDefinitionImpl.getHint()",
+    "Long FieldDefinitionImpl.getId()",
+    "Integer FieldDefinitionImpl.getMaxLength()",
+    "Boolean FieldDefinitionImpl.getRequiredFlag()",
+    "String FieldDefinitionImpl.getSecurityLevel()",
+    "Boolean FieldDefinitionImpl.getTextAreaFlag()",
+    "String FieldDefinitionImpl.getTooltip()",
+    "String FieldDefinitionImpl.getValidationErrorMesageKey()",
+    "String FieldDefinitionImpl.getValidationRegEx()",
+    "void FieldDefinitionImpl.setAllowMultiples(Boolean)",
+    "void FieldDefinitionImpl.setColumnWidth(String)",
+    "void FieldDefinitionImpl.setDataDrivenEnumeration(DataDrivenEnumeration)",
+    "void FieldDefinitionImpl.setFieldGroup(FieldGroup)",
+    "void FieldDefinitionImpl.setFieldType(String)",
+    "void FieldDefinitionImpl.setFriendlyName(String)",
+    "void FieldDefinitionImpl.setHelpText(String)",
+    "void FieldDefinitionImpl.setHiddenFlag(Boolean)",
+    "void FieldDefinitionImpl.setHint(String)",
+    "void FieldDefinitionImpl.setId(Long)",
+    "void FieldDefinitionImpl.setMaxLength(Integer)",
+    "void FieldDefinitionImpl.setName(String)",
+    "void FieldDefinitionImpl.setRequiredFlag(Boolean)",
+    "void FieldDefinitionImpl.setSecurityLevel(String)",
+    "void FieldDefinitionImpl.setTextAreaFlag(Boolean)",
+    "void FieldDefinitionImpl.setTooltip(String)",
+    "void FieldDefinitionImpl.setValidationErrorMesageKey(String)",
+    "void FieldDefinitionImpl.setValidationRegEx(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldDefinitionImpl actualFieldDefinitionImpl = new FieldDefinitionImpl();
@@ -117,7 +698,8 @@ public class FieldDefinitionImplDiffblueTest {
     actualFieldDefinitionImpl.setValidationRegEx(".*");
     Boolean actualAllowMultiples = actualFieldDefinitionImpl.getAllowMultiples();
     String actualColumnWidth = actualFieldDefinitionImpl.getColumnWidth();
-    DataDrivenEnumeration actualDataDrivenEnumeration = actualFieldDefinitionImpl.getDataDrivenEnumeration();
+    DataDrivenEnumeration actualDataDrivenEnumeration =
+        actualFieldDefinitionImpl.getDataDrivenEnumeration();
     FieldGroup actualFieldGroup = actualFieldDefinitionImpl.getFieldGroup();
     String actualFieldTypeVal = actualFieldDefinitionImpl.getFieldTypeVal();
     String actualFriendlyName = actualFieldDefinitionImpl.getFriendlyName();

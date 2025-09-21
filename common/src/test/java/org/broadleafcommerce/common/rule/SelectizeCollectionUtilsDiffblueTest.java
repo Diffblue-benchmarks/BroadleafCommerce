@@ -19,14 +19,11 @@ package org.broadleafcommerce.common.rule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import bsh.util.NameCompletionTable;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,46 +37,18 @@ import org.junit.experimental.categories.Category;
 public class SelectizeCollectionUtilsDiffblueTest {
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenFalse_whenArrayList_thenReturnArrayList() {
-    // Arrange
-    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
-    when(nameCompletionTable.isEmpty()).thenReturn(false);
-
-    ArrayList<Object> objectList = new ArrayList<>();
-    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
-
-    // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable, new ArrayList<>());
-
-    // Assert
-    verify(nameCompletionTable).isEmpty();
-    verify(nameCompletionTable, atLeast(1)).iterator();
-    assertEquals(objectList, actualIntersectionResult);
-  }
-
-  /**
-   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
-   * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_givenFoo_whenArrayListAddFoo_thenReturnEmpty() {
     // Arrange
@@ -87,7 +56,8 @@ public class SelectizeCollectionUtilsDiffblueTest {
     objectList.add("foo");
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, objectList);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, objectList);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);
@@ -96,87 +66,111 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then calls {@link ArrayList#get(int)}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenNull_field_thenCallsGet() {
+  public void testIntersection_givenNull_field_whenArrayListAddNull_field_thenReturnEmpty() {
     // Arrange
-    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
-    when(nameCompletionTable.get(anyInt())).thenReturn(BLCFieldUtils.NULL_FIELD);
-    when(nameCompletionTable.isEmpty()).thenReturn(false);
-
     ArrayList<Object> objectList = new ArrayList<>();
-    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+
+    // Act
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    assertTrue(actualIntersectionResult instanceof List);
+    assertTrue(actualIntersectionResult.isEmpty());
+  }
+
+  /**
+   * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
+   * <ul>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
+  public void testIntersection_givenNull_field_whenArrayListAddNull_field_thenReturnSizeIsOne() {
+    // Arrange
+    ArrayList<Object> objectList = new ArrayList<>();
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+    objectList.add(BLCFieldUtils.NULL_FIELD);
 
     ArrayList<Object> objectList2 = new ArrayList<>();
     objectList2.add(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable, objectList2);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, objectList2);
 
     // Assert
-    verify(nameCompletionTable).get(eq(0));
-    verify(nameCompletionTable).isEmpty();
-    verify(nameCompletionTable, atLeast(1)).iterator();
     assertTrue(actualIntersectionResult instanceof List);
-    assertTrue(actualIntersectionResult.isEmpty());
+    assertEquals(1, actualIntersectionResult.size());
   }
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then calls {@link ArrayList#get(int)}.</li>
+   *   <li>Given {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
-  public void testIntersection_givenNull_field_thenCallsGet2() {
+  public void testIntersection_givenNull_field_whenArrayList_thenReturnEmpty() {
     // Arrange
-    NameCompletionTable nameCompletionTable = mock(NameCompletionTable.class);
-    when(nameCompletionTable.get(anyInt())).thenReturn(BLCFieldUtils.NULL_FIELD);
-    when(nameCompletionTable.isEmpty()).thenReturn(false);
-
     ArrayList<Object> objectList = new ArrayList<>();
-    when(nameCompletionTable.iterator()).thenReturn(objectList.iterator());
-
-    ArrayList<Object> objectList2 = new ArrayList<>();
-    objectList2.add(BLCFieldUtils.NULL_FIELD);
-    objectList2.add(BLCFieldUtils.NULL_FIELD);
+    objectList.add(BLCFieldUtils.NULL_FIELD);
+    objectList.add(BLCFieldUtils.NULL_FIELD);
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(nameCompletionTable, objectList2);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, new ArrayList<>());
 
     // Assert
-    verify(nameCompletionTable).get(eq(0));
-    verify(nameCompletionTable).isEmpty();
-    verify(nameCompletionTable, atLeast(1)).iterator();
     assertTrue(actualIntersectionResult instanceof List);
     assertTrue(actualIntersectionResult.isEmpty());
   }
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Given two.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add two.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given two.
+   *   <li>When {@link ArrayList#ArrayList()} add two.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_givenTwo_whenArrayListAddTwo_thenReturnEmpty() {
     // Arrange
@@ -187,7 +181,8 @@ public class SelectizeCollectionUtilsDiffblueTest {
     objectList2.add(2);
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(objectList, objectList2);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, objectList2);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);
@@ -196,15 +191,17 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Given {@link ValueAssignable}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link ValueAssignable}.</li>
+   *   <li>Given {@link ValueAssignable}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@link ValueAssignable}.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_givenValueAssignable_whenArrayListAddValueAssignable() {
     // Arrange
@@ -212,7 +209,8 @@ public class SelectizeCollectionUtilsDiffblueTest {
     objectList.add(mock(ValueAssignable.class));
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);
@@ -221,14 +219,16 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>Then calls {@link ValueAssignable#getValue()}.</li>
+   *   <li>Then calls {@link ValueAssignable#getValue()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_thenCallsGetValue() {
     // Arrange
@@ -242,7 +242,8 @@ public class SelectizeCollectionUtilsDiffblueTest {
     objectList2.add("foo");
 
     // Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(objectList, objectList2);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, objectList2);
 
     // Assert
     verify(valueAssignable).getValue();
@@ -252,40 +253,48 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_whenArrayList_thenReturnArrayList() {
     // Arrange
     ArrayList<Object> objectList = new ArrayList<>();
 
-    // Act and Assert
-    assertEquals(objectList, SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD));
+    // Act
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(objectList, BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    assertEquals(objectList, actualIntersectionResult);
   }
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_whenNull_field_thenReturnSizeIsOne() {
     // Arrange and Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD,
-        BLCFieldUtils.NULL_FIELD);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);
@@ -294,15 +303,17 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_whenNull_thenReturnEmpty() {
     // Arrange and Act
@@ -315,19 +326,22 @@ public class SelectizeCollectionUtilsDiffblueTest {
 
   /**
    * Test {@link SelectizeCollectionUtils#intersection(Object, Object)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
+   *
+   * <p>Method under test: {@link SelectizeCollectionUtils#intersection(Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SelectizeCollectionUtils.intersection(Object, Object)"})
   public void testIntersection_whenNull_thenReturnEmpty2() {
     // Arrange and Act
-    Collection actualIntersectionResult = SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, null);
+    Collection actualIntersectionResult =
+        SelectizeCollectionUtils.intersection(BLCFieldUtils.NULL_FIELD, null);
 
     // Assert
     assertTrue(actualIntersectionResult instanceof List);

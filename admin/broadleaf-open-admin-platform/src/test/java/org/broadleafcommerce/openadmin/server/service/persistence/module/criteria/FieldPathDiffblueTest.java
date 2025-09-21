@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module.criter
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,23 +35,24 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {FieldPath.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FieldPathDiffblueTest {
-  @Autowired
-  private FieldPath fieldPath;
+  @Autowired private FieldPath fieldPath;
 
   /**
    * Test {@link FieldPath#withAssociationPath(List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_given42_whenArrayListAdd42() {
     // Arrange
@@ -68,15 +70,17 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withAssociationPath(List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_givenFoo_whenArrayListAddFoo() {
     // Arrange
@@ -93,14 +97,16 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withAssociationPath(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withAssociationPath(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withAssociationPath(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withAssociationPath(List)"})
   public void testWithAssociationPath_whenArrayList() {
     // Arrange
@@ -116,15 +122,17 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withTargetPropertyPieces(List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_given42_whenArrayListAdd42() {
     // Arrange
@@ -133,7 +141,8 @@ public class FieldPathDiffblueTest {
     targetPropertyPieces.add("foo");
 
     // Act
-    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
+    FieldPath actualWithTargetPropertyPiecesResult =
+        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
     assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
@@ -142,15 +151,17 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withTargetPropertyPieces(List)}.
+   *
    * <ul>
-   *   <li>Given {@code foo}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   *   <li>Given {@code foo}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_givenFoo_whenArrayListAddFoo() {
     // Arrange
@@ -158,7 +169,8 @@ public class FieldPathDiffblueTest {
     targetPropertyPieces.add("foo");
 
     // Act
-    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
+    FieldPath actualWithTargetPropertyPiecesResult =
+        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
     assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
@@ -167,21 +179,24 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withTargetPropertyPieces(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
+   *
+   * <p>Method under test: {@link FieldPath#withTargetPropertyPieces(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withTargetPropertyPieces(List)"})
   public void testWithTargetPropertyPieces_whenArrayList() {
     // Arrange
     ArrayList<String> targetPropertyPieces = new ArrayList<>();
 
     // Act
-    FieldPath actualWithTargetPropertyPiecesResult = fieldPath.withTargetPropertyPieces(targetPropertyPieces);
+    FieldPath actualWithTargetPropertyPiecesResult =
+        fieldPath.withTargetPropertyPieces(targetPropertyPieces);
 
     // Assert
     assertSame(targetPropertyPieces, fieldPath.getTargetPropertyPieces());
@@ -190,11 +205,12 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test {@link FieldPath#withTargetProperty(String)}.
-   * <p>
-   * Method under test: {@link FieldPath#withTargetProperty(String)}
+   *
+   * <p>Method under test: {@link FieldPath#withTargetProperty(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldPath FieldPath.withTargetProperty(String)"})
   public void testWithTargetProperty() {
     // Arrange and Act
@@ -207,8 +223,9 @@ public class FieldPathDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldPath}
    *   <li>{@link FieldPath#setAssociationPath(List)}
@@ -220,11 +237,17 @@ public class FieldPathDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FieldPath.<init>()", "List FieldPath.getAssociationPath()",
-      "String FieldPath.getTargetProperty()", "List FieldPath.getTargetPropertyPieces()",
-      "void FieldPath.setAssociationPath(List)", "void FieldPath.setTargetProperty(String)",
-      "void FieldPath.setTargetPropertyPieces(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldPath.<init>()",
+    "List FieldPath.getAssociationPath()",
+    "String FieldPath.getTargetProperty()",
+    "List FieldPath.getTargetPropertyPieces()",
+    "void FieldPath.setAssociationPath(List)",
+    "void FieldPath.setTargetProperty(String)",
+    "void FieldPath.setTargetPropertyPieces(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldPath actualFieldPath = new FieldPath();

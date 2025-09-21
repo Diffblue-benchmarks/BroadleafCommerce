@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,17 +46,24 @@ import org.springframework.util.MultiValueMap;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest {
   @Autowired
-  private AbstractAdminBasicOperationsControllerExtensionHandler abstractAdminBasicOperationsControllerExtensionHandler;
+  private AbstractAdminBasicOperationsControllerExtensionHandler
+      abstractAdminBasicOperationsControllerExtensionHandler;
 
   /**
-   * Test {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}.
-   * <p>
-   * Method under test: {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}
+   * Test {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"})
+    "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"
+  })
   public void testBuildLookupListGrid() {
     // Arrange
     PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
@@ -64,7 +72,7 @@ public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest 
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -84,22 +92,31 @@ public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest 
     ConcurrentModel model = new ConcurrentModel();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminBasicOperationsControllerExtensionHandler
-        .buildLookupListGrid(ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(
+            ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
   }
 
   /**
-   * Test {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}.
+   * Test {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}.
+   *
    * <ul>
-   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.</li>
+   *   <li>Given {@link SectionCrumb} (default constructor) OriginalSectionIdentifier is {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"})
+    "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"
+  })
   public void testBuildLookupListGrid_givenSectionCrumbOriginalSectionIdentifierIs42() {
     // Arrange
     PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
@@ -108,7 +125,7 @@ public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest 
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
 
@@ -122,22 +139,31 @@ public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest 
     ConcurrentModel model = new ConcurrentModel();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminBasicOperationsControllerExtensionHandler
-        .buildLookupListGrid(ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(
+            ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
   }
 
   /**
-   * Test {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}.
+   * Test {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)}
+   *
+   * <p>Method under test: {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler#buildLookupListGrid(PersistencePackageRequest,
+   * ClassMetadata, String, List, Model, MultiValueMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"})
+    "ExtensionResultStatusType AbstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(PersistencePackageRequest, ClassMetadata, String, List, Model, MultiValueMap)"
+  })
   public void testBuildLookupListGrid_whenArrayList() {
     // Arrange
     PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
@@ -146,28 +172,34 @@ public class AbstractAdminBasicOperationsControllerExtensionHandlerDiffblueTest 
     cmd.setCeilingType("Type");
     cmd.setCurrencyCode("GBP");
     cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
+    cmd.setProperties(new Property[] {new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
     ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
     ConcurrentModel model = new ConcurrentModel();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractAdminBasicOperationsControllerExtensionHandler
-        .buildLookupListGrid(ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractAdminBasicOperationsControllerExtensionHandler.buildLookupListGrid(
+            ppr, cmd, "Owning Class", sectionCrumbs, model, new HttpHeaders()));
   }
 
   /**
    * Test new {@link AbstractAdminBasicOperationsControllerExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractAdminBasicOperationsControllerExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractAdminBasicOperationsControllerExtensionHandler}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractAdminBasicOperationsControllerExtensionHandler.<init>()"})
   public void testNewAbstractAdminBasicOperationsControllerExtensionHandler() {
     // Arrange and Act
-    AbstractAdminBasicOperationsControllerExtensionHandler actualAbstractAdminBasicOperationsControllerExtensionHandler = new AbstractAdminBasicOperationsControllerExtensionHandler();
+    AbstractAdminBasicOperationsControllerExtensionHandler
+        actualAbstractAdminBasicOperationsControllerExtensionHandler =
+            new AbstractAdminBasicOperationsControllerExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractAdminBasicOperationsControllerExtensionHandler.getPriority());

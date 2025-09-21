@@ -20,14 +20,14 @@ package org.broadleafcommerce.core.order.service.legacy;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -38,17 +38,8 @@ import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.core.catalog.dao.CategoryDao;
-import org.broadleafcommerce.core.catalog.dao.ProductDao;
-import org.broadleafcommerce.core.catalog.dao.SkuDao;
-import org.broadleafcommerce.core.offer.dao.OfferDao;
-import org.broadleafcommerce.core.offer.service.OfferService;
-import org.broadleafcommerce.core.order.dao.FulfillmentGroupDao;
-import org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDao;
 import org.broadleafcommerce.core.order.dao.OrderDao;
-import org.broadleafcommerce.core.order.dao.OrderItemDao;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
-import org.broadleafcommerce.core.order.domain.NullOrderFactory;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
@@ -56,21 +47,16 @@ import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.FulfillmentGroupService;
 import org.broadleafcommerce.core.order.service.MergeCartService;
 import org.broadleafcommerce.core.order.service.OrderItemService;
-import org.broadleafcommerce.core.order.service.OrderMultishipOptionService;
 import org.broadleafcommerce.core.order.service.call.MergeCartResponse;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.call.ReconstructCartResponse;
 import org.broadleafcommerce.core.order.service.exception.AddToCartException;
 import org.broadleafcommerce.core.order.service.exception.RemoveFromCartException;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
-import org.broadleafcommerce.core.payment.dao.OrderPaymentDao;
-import org.broadleafcommerce.core.payment.service.SecureOrderPaymentService;
 import org.broadleafcommerce.core.pricing.service.PricingService;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
-import org.broadleafcommerce.core.workflow.Processor;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
-import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -78,90 +64,44 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LegacyCartServiceImplDiffblueTest {
-  @Mock
-  private CategoryDao categoryDao;
+  @Mock private FulfillmentGroupService fulfillmentGroupService;
 
-  @Mock
-  private CustomerService customerService;
+  @InjectMocks private LegacyCartServiceImpl legacyCartServiceImpl;
 
-  @Mock
-  private FulfillmentGroupDao fulfillmentGroupDao;
+  @Mock private MergeCartService mergeCartService;
 
-  @Mock
-  private FulfillmentGroupItemDao fulfillmentGroupItemDao;
+  @Mock private OrderDao orderDao;
 
-  @Mock
-  private FulfillmentGroupService fulfillmentGroupService;
+  @Mock private OrderItemService orderItemService;
 
-  @InjectMocks
-  private LegacyCartServiceImpl legacyCartServiceImpl;
-
-  @Mock
-  private MergeCartService mergeCartService;
-
-  @Mock
-  private NullOrderFactory nullOrderFactory;
-
-  @Mock
-  private OfferDao offerDao;
-
-  @Mock
-  private OfferService offerService;
-
-  @Mock
-  private OrderDao orderDao;
-
-  @Mock
-  private OrderItemDao orderItemDao;
-
-  @Mock
-  private OrderItemService orderItemService;
-
-  @Mock
-  private OrderMultishipOptionService orderMultishipOptionService;
-
-  @Mock
-  private OrderPaymentDao orderPaymentDao;
-
-  @Mock
-  private PlatformTransactionManager platformTransactionManager;
-
-  @Mock
-  private PricingService pricingService;
-
-  @Mock
-  private Processor processor;
-
-  @Mock
-  private ProductDao productDao;
-
-  @Mock
-  private SecureOrderPaymentService secureOrderPaymentService;
-
-  @Mock
-  private SkuDao skuDao;
+  @Mock private PricingService pricingService;
 
   /**
-   * Test {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order, boolean)} with {@code namedOrder}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order, boolean)}
+   * Test {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order, boolean)} with {@code
+   * namedOrder}, {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order,
+   * boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.addAllItemsToCartFromNamedOrder(Order, boolean)"})
-  public void testAddAllItemsToCartFromNamedOrderWithNamedOrderPriceOrder() throws PricingException {
+  public void testAddAllItemsToCartFromNamedOrderWithNamedOrderPriceOrder()
+      throws PricingException {
     // Arrange
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
     when(orderDao.readCartForCustomer(Mockito.<Customer>any())).thenReturn(nullOrderImpl);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl namedOrder = new OrderImpl();
@@ -182,15 +122,16 @@ public class LegacyCartServiceImplDiffblueTest {
     namedOrder.setPayments(new ArrayList<>());
     namedOrder.setStatus(OrderStatus.ARCHIVED);
     namedOrder.setSubTotal(new Money());
-    namedOrder.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    namedOrder.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     namedOrder.setTaxOverride(true);
     namedOrder.setTotal(new Money());
     namedOrder.setTotalFulfillmentCharges(new Money());
     namedOrder.setTotalTax(new Money());
 
     // Act
-    Order actualAddAllItemsToCartFromNamedOrderResult = legacyCartServiceImpl
-        .addAllItemsToCartFromNamedOrder(namedOrder, true);
+    Order actualAddAllItemsToCartFromNamedOrderResult =
+        legacyCartServiceImpl.addAllItemsToCartFromNamedOrder(namedOrder, true);
 
     // Assert
     verify(orderDao).readCartForCustomer(isA(Customer.class));
@@ -198,25 +139,31 @@ public class LegacyCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order)} with {@code namedOrder}.
+   * Test {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order)} with {@code
+   * namedOrder}.
+   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#addAllItemsToCartFromNamedOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.addAllItemsToCartFromNamedOrder(Order)"})
-  public void testAddAllItemsToCartFromNamedOrderWithNamedOrder_thenReturnNullOrderImpl() throws PricingException {
+  public void testAddAllItemsToCartFromNamedOrderWithNamedOrder_thenReturnNullOrderImpl()
+      throws PricingException {
     // Arrange
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
     when(orderDao.readCartForCustomer(Mockito.<Customer>any())).thenReturn(nullOrderImpl);
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl namedOrder = new OrderImpl();
@@ -237,15 +184,16 @@ public class LegacyCartServiceImplDiffblueTest {
     namedOrder.setPayments(new ArrayList<>());
     namedOrder.setStatus(OrderStatus.ARCHIVED);
     namedOrder.setSubTotal(new Money());
-    namedOrder.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    namedOrder.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     namedOrder.setTaxOverride(true);
     namedOrder.setTotal(new Money());
     namedOrder.setTotalFulfillmentCharges(new Money());
     namedOrder.setTotalTax(new Money());
 
     // Act
-    Order actualAddAllItemsToCartFromNamedOrderResult = legacyCartServiceImpl
-        .addAllItemsToCartFromNamedOrder(namedOrder);
+    Order actualAddAllItemsToCartFromNamedOrderResult =
+        legacyCartServiceImpl.addAllItemsToCartFromNamedOrder(namedOrder);
 
     // Assert
     verify(orderDao).readCartForCustomer(isA(Customer.class));
@@ -253,14 +201,20 @@ public class LegacyCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order, boolean)} with {@code namedOrder}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order, boolean)}
+   * Test {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order, boolean)} with {@code
+   * namedOrder}, {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order,
+   * boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Order LegacyCartServiceImpl.moveAllItemsToCartFromNamedOrder(Order, boolean)"})
-  public void testMoveAllItemsToCartFromNamedOrderWithNamedOrderPriceOrder() throws PricingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Order LegacyCartServiceImpl.moveAllItemsToCartFromNamedOrder(Order, boolean)"
+  })
+  public void testMoveAllItemsToCartFromNamedOrderWithNamedOrderPriceOrder()
+      throws PricingException {
     // Arrange
     doNothing().when(orderDao).delete(Mockito.<Order>any());
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
@@ -268,8 +222,10 @@ public class LegacyCartServiceImplDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl namedOrder = new OrderImpl();
@@ -290,15 +246,16 @@ public class LegacyCartServiceImplDiffblueTest {
     namedOrder.setPayments(new ArrayList<>());
     namedOrder.setStatus(OrderStatus.ARCHIVED);
     namedOrder.setSubTotal(new Money());
-    namedOrder.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    namedOrder.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     namedOrder.setTaxOverride(true);
     namedOrder.setTotal(new Money());
     namedOrder.setTotalFulfillmentCharges(new Money());
     namedOrder.setTotalTax(new Money());
 
     // Act
-    Order actualMoveAllItemsToCartFromNamedOrderResult = legacyCartServiceImpl
-        .moveAllItemsToCartFromNamedOrder(namedOrder, true);
+    Order actualMoveAllItemsToCartFromNamedOrderResult =
+        legacyCartServiceImpl.moveAllItemsToCartFromNamedOrder(namedOrder, true);
 
     // Assert
     verify(orderDao).delete(isA(Order.class));
@@ -307,17 +264,21 @@ public class LegacyCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order)} with {@code namedOrder}.
+   * Test {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order)} with {@code
+   * namedOrder}.
+   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#moveAllItemsToCartFromNamedOrder(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.moveAllItemsToCartFromNamedOrder(Order)"})
-  public void testMoveAllItemsToCartFromNamedOrderWithNamedOrder_thenReturnNullOrderImpl() throws PricingException {
+  public void testMoveAllItemsToCartFromNamedOrderWithNamedOrder_thenReturnNullOrderImpl()
+      throws PricingException {
     // Arrange
     doNothing().when(orderDao).delete(Mockito.<Order>any());
     NullOrderImpl nullOrderImpl = new NullOrderImpl();
@@ -325,8 +286,10 @@ public class LegacyCartServiceImplDiffblueTest {
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl namedOrder = new OrderImpl();
@@ -347,15 +310,16 @@ public class LegacyCartServiceImplDiffblueTest {
     namedOrder.setPayments(new ArrayList<>());
     namedOrder.setStatus(OrderStatus.ARCHIVED);
     namedOrder.setSubTotal(new Money());
-    namedOrder.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    namedOrder.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     namedOrder.setTaxOverride(true);
     namedOrder.setTotal(new Money());
     namedOrder.setTotalFulfillmentCharges(new Money());
     namedOrder.setTotalTax(new Money());
 
     // Act
-    Order actualMoveAllItemsToCartFromNamedOrderResult = legacyCartServiceImpl
-        .moveAllItemsToCartFromNamedOrder(namedOrder);
+    Order actualMoveAllItemsToCartFromNamedOrderResult =
+        legacyCartServiceImpl.moveAllItemsToCartFromNamedOrder(namedOrder);
 
     // Assert
     verify(orderDao).delete(isA(Order.class));
@@ -364,91 +328,114 @@ public class LegacyCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code anonymousCart}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code
+   * anonymousCart}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order)"})
-  public void testMergeCartWithCustomerAnonymousCart() throws RemoveFromCartException, PricingException {
+  public void testMergeCartWithCustomerAnonymousCart()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any(), anyBoolean()))
         .thenThrow(new RemoveFromCartException("An error occurred"));
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl()));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl()));
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code anonymousCart}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code
+   * anonymousCart}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order)"})
-  public void testMergeCartWithCustomerAnonymousCart2() throws RemoveFromCartException, PricingException {
+  public void testMergeCartWithCustomerAnonymousCart2()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any(), anyBoolean()))
         .thenThrow(new PricingException("An error occurred"));
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl()));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl()));
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer}, {@code anonymousCart}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer},
+   * {@code anonymousCart}, {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order, boolean)"})
-  public void testMergeCartWithCustomerAnonymousCartPriceOrder() throws RemoveFromCartException, PricingException {
+  public void testMergeCartWithCustomerAnonymousCartPriceOrder()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any(), anyBoolean()))
         .thenThrow(new RemoveFromCartException("An error occurred"));
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true));
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer}, {@code anonymousCart}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer},
+   * {@code anonymousCart}, {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order, boolean)"})
-  public void testMergeCartWithCustomerAnonymousCartPriceOrder2() throws RemoveFromCartException, PricingException {
+  public void testMergeCartWithCustomerAnonymousCartPriceOrder2()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.mergeCart(Mockito.<Customer>any(), Mockito.<Order>any(), anyBoolean()))
         .thenThrow(new PricingException("An error occurred"));
     CustomerImpl customer = new CustomerImpl();
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true));
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer}, {@code anonymousCart}, {@code priceOrder}.
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)} with {@code customer},
+   * {@code anonymousCart}, {@code priceOrder}.
+   *
    * <ul>
-   *   <li>Then return {@link MergeCartResponse} (default constructor).</li>
+   *   <li>Then return {@link MergeCartResponse} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order, boolean)"})
   public void testMergeCartWithCustomerAnonymousCartPriceOrder_thenReturnMergeCartResponse()
       throws RemoveFromCartException, PricingException {
@@ -463,7 +450,8 @@ public class LegacyCartServiceImplDiffblueTest {
     CustomerImpl customer = new CustomerImpl();
 
     // Act
-    MergeCartResponse actualMergeCartResult = legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true);
+    MergeCartResponse actualMergeCartResult =
+        legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true);
 
     // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
@@ -471,15 +459,18 @@ public class LegacyCartServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code anonymousCart}.
+   * Test {@link LegacyCartServiceImpl#mergeCart(Customer, Order)} with {@code customer}, {@code
+   * anonymousCart}.
+   *
    * <ul>
-   *   <li>Then return {@link MergeCartResponse} (default constructor).</li>
+   *   <li>Then return {@link MergeCartResponse} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#mergeCart(Customer, Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MergeCartResponse LegacyCartServiceImpl.mergeCart(Customer, Order)"})
   public void testMergeCartWithCustomerAnonymousCart_thenReturnMergeCartResponse()
       throws RemoveFromCartException, PricingException {
@@ -494,7 +485,8 @@ public class LegacyCartServiceImplDiffblueTest {
     CustomerImpl customer = new CustomerImpl();
 
     // Act
-    MergeCartResponse actualMergeCartResult = legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl());
+    MergeCartResponse actualMergeCartResult =
+        legacyCartServiceImpl.mergeCart(customer, new NullOrderImpl());
 
     // Assert
     verify(mergeCartService).mergeCart(isA(Customer.class), isA(Order.class), eq(true));
@@ -503,11 +495,12 @@ public class LegacyCartServiceImplDiffblueTest {
 
   /**
    * Test {@link LegacyCartServiceImpl#reconstructCart(Customer)} with {@code customer}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer)"})
   public void testReconstructCartWithCustomer() throws RemoveFromCartException, PricingException {
     // Arrange
@@ -515,17 +508,19 @@ public class LegacyCartServiceImplDiffblueTest {
         .thenThrow(new RemoveFromCartException("An error occurred"));
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl()));
+    assertThrows(
+        PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl()));
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
   }
 
   /**
    * Test {@link LegacyCartServiceImpl#reconstructCart(Customer)} with {@code customer}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer)"})
   public void testReconstructCartWithCustomer2() throws RemoveFromCartException, PricingException {
     // Arrange
@@ -533,68 +528,89 @@ public class LegacyCartServiceImplDiffblueTest {
         .thenThrow(new PricingException("An error occurred"));
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl()));
+    assertThrows(
+        PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl()));
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
+   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer},
+   * {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"})
-  public void testReconstructCartWithCustomerPriceOrder() throws RemoveFromCartException, PricingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"
+  })
+  public void testReconstructCartWithCustomerPriceOrder()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean()))
         .thenThrow(new RemoveFromCartException("An error occurred"));
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl(), true));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl(), true));
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer}, {@code priceOrder}.
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
+   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer},
+   * {@code priceOrder}.
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"})
-  public void testReconstructCartWithCustomerPriceOrder2() throws RemoveFromCartException, PricingException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"
+  })
+  public void testReconstructCartWithCustomerPriceOrder2()
+      throws RemoveFromCartException, PricingException {
     // Arrange
     when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean()))
         .thenThrow(new PricingException("An error occurred"));
 
     // Act and Assert
-    assertThrows(PricingException.class, () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl(), true));
+    assertThrows(
+        PricingException.class,
+        () -> legacyCartServiceImpl.reconstructCart(new CustomerImpl(), true));
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
   }
 
   /**
-   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer}, {@code priceOrder}.
+   * Test {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)} with {@code customer},
+   * {@code priceOrder}.
+   *
    * <ul>
-   *   <li>Then return {@link ReconstructCartResponse} (default constructor).</li>
+   *   <li>Then return {@link ReconstructCartResponse} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer, boolean)"
+  })
   public void testReconstructCartWithCustomerPriceOrder_thenReturnReconstructCartResponse()
       throws RemoveFromCartException, PricingException {
     // Arrange
     ReconstructCartResponse reconstructCartResponse = new ReconstructCartResponse();
     reconstructCartResponse.setOrder(new NullOrderImpl());
     reconstructCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean())).thenReturn(reconstructCartResponse);
+    when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean()))
+        .thenReturn(reconstructCartResponse);
 
     // Act
-    ReconstructCartResponse actualReconstructCartResult = legacyCartServiceImpl.reconstructCart(new CustomerImpl(),
-        true);
+    ReconstructCartResponse actualReconstructCartResult =
+        legacyCartServiceImpl.reconstructCart(new CustomerImpl(), true);
 
     // Assert
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
@@ -603,14 +619,16 @@ public class LegacyCartServiceImplDiffblueTest {
 
   /**
    * Test {@link LegacyCartServiceImpl#reconstructCart(Customer)} with {@code customer}.
+   *
    * <ul>
-   *   <li>Then return {@link ReconstructCartResponse} (default constructor).</li>
+   *   <li>Then return {@link ReconstructCartResponse} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#reconstructCart(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ReconstructCartResponse LegacyCartServiceImpl.reconstructCart(Customer)"})
   public void testReconstructCartWithCustomer_thenReturnReconstructCartResponse()
       throws RemoveFromCartException, PricingException {
@@ -618,10 +636,12 @@ public class LegacyCartServiceImplDiffblueTest {
     ReconstructCartResponse reconstructCartResponse = new ReconstructCartResponse();
     reconstructCartResponse.setOrder(new NullOrderImpl());
     reconstructCartResponse.setRemovedItems(new ArrayList<>());
-    when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean())).thenReturn(reconstructCartResponse);
+    when(mergeCartService.reconstructCart(Mockito.<Customer>any(), anyBoolean()))
+        .thenReturn(reconstructCartResponse);
 
     // Act
-    ReconstructCartResponse actualReconstructCartResult = legacyCartServiceImpl.reconstructCart(new CustomerImpl());
+    ReconstructCartResponse actualReconstructCartResult =
+        legacyCartServiceImpl.reconstructCart(new CustomerImpl());
 
     // Assert
     verify(mergeCartService).reconstructCart(isA(Customer.class), eq(true));
@@ -630,44 +650,51 @@ public class LegacyCartServiceImplDiffblueTest {
 
   /**
    * Test {@link LegacyCartServiceImpl#addItem(Long, OrderItemRequestDTO, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderDao}.</li>
-   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#addItem(Long, OrderItemRequestDTO, boolean)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#addItem(Long, OrderItemRequestDTO, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.addItem(Long, OrderItemRequestDTO, boolean)"})
-  public void testAddItem_givenOrderDao_whenOrderItemRequestDTO_thenReturnNull() throws AddToCartException {
+  public void testAddItem_whenOrderItemRequestDTO_thenReturnNull() throws AddToCartException {
     // Arrange, Act and Assert
     assertNull(legacyCartServiceImpl.addItem(1L, new OrderItemRequestDTO(), true));
   }
 
   /**
    * Test {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}.
+   *
    * <ul>
-   *   <li>Given {@link OrderDao} {@link OrderDao#save(Order)} return {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Given {@link OrderDao} {@link OrderDao#save(Order)} return {@link NullOrderImpl} (default
+   *       constructor).
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.removeItem(Long, Long, boolean)"})
   public void testRemoveItem_givenOrderDaoSaveReturnNullOrderImpl_thenReturnNullOrderImpl()
       throws RemoveFromCartException, PricingException {
     // Arrange
-    doNothing().when(fulfillmentGroupService)
+    doNothing()
+        .when(fulfillmentGroupService)
         .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItem> orderItems = new ArrayList<>();
@@ -691,7 +718,8 @@ public class LegacyCartServiceImplDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
@@ -700,42 +728,50 @@ public class LegacyCartServiceImplDiffblueTest {
     when(orderDao.save(Mockito.<Order>any())).thenReturn(nullOrderImpl);
     when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(orderImpl);
     doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
-    when(orderItemService.readOrderItemById(Mockito.<Long>any())).thenReturn(new BundleOrderItemImpl());
+    when(orderItemService.readOrderItemById(Mockito.<Long>any()))
+        .thenReturn(new BundleOrderItemImpl());
     when(pricingService.executePricing(Mockito.<Order>any())).thenReturn(new NullOrderImpl());
 
     // Act
     Order actualRemoveItemResult = legacyCartServiceImpl.removeItem(1L, 1L, true);
 
     // Assert
-    verify(orderDao).readOrderById(eq(1L));
+    verify(orderDao).readOrderById(1L);
     verify(orderDao).save(isA(Order.class));
-    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    verify(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
     verify(orderItemService).delete(isA(OrderItem.class));
-    verify(orderItemService).readOrderItemById(eq(1L));
+    verify(orderItemService).readOrderItemById(1L);
     verify(pricingService).executePricing(isA(Order.class));
     assertSame(nullOrderImpl, actualRemoveItemResult);
   }
 
   /**
    * Test {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RemoveFromCartException}.</li>
+   *   <li>Then throw {@link RemoveFromCartException}.
    * </ul>
-   * <p>
-   * Method under test: {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}
+   *
+   * <p>Method under test: {@link LegacyCartServiceImpl#removeItem(Long, Long, boolean)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order LegacyCartServiceImpl.removeItem(Long, Long, boolean)"})
-  public void testRemoveItem_thenThrowRemoveFromCartException() throws RemoveFromCartException, PricingException {
+  public void testRemoveItem_thenThrowRemoveFromCartException()
+      throws RemoveFromCartException, PricingException {
     // Arrange
-    doNothing().when(fulfillmentGroupService)
+    doNothing()
+        .when(fulfillmentGroupService)
         .removeOrderItemFromFullfillmentGroups(Mockito.<Order>any(), Mockito.<OrderItem>any());
 
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     ArrayList<OrderItem> orderItems = new ArrayList<>();
@@ -759,44 +795,27 @@ public class LegacyCartServiceImplDiffblueTest {
     orderImpl.setPayments(new ArrayList<>());
     orderImpl.setStatus(OrderStatus.ARCHIVED);
     orderImpl.setSubTotal(new Money());
-    orderImpl.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    orderImpl.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     orderImpl.setTaxOverride(true);
     orderImpl.setTotal(new Money());
     orderImpl.setTotalFulfillmentCharges(new Money());
     orderImpl.setTotalTax(new Money());
     when(orderDao.readOrderById(Mockito.<Long>any())).thenReturn(orderImpl);
     doNothing().when(orderItemService).delete(Mockito.<OrderItem>any());
-    when(orderItemService.readOrderItemById(Mockito.<Long>any())).thenReturn(new BundleOrderItemImpl());
-    when(pricingService.executePricing(Mockito.<Order>any())).thenThrow(new PricingException("An error occurred"));
+    when(orderItemService.readOrderItemById(Mockito.<Long>any()))
+        .thenReturn(new BundleOrderItemImpl());
+    when(pricingService.executePricing(Mockito.<Order>any()))
+        .thenThrow(new PricingException("An error occurred"));
 
     // Act and Assert
-    assertThrows(RemoveFromCartException.class, () -> legacyCartServiceImpl.removeItem(1L, 1L, true));
-    verify(orderDao).readOrderById(eq(1L));
-    verify(fulfillmentGroupService).removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
+    assertThrows(
+        RemoveFromCartException.class, () -> legacyCartServiceImpl.removeItem(1L, 1L, true));
+    verify(orderDao).readOrderById(1L);
+    verify(fulfillmentGroupService)
+        .removeOrderItemFromFullfillmentGroups(isA(Order.class), isA(OrderItem.class));
     verify(orderItemService).delete(isA(OrderItem.class));
-    verify(orderItemService).readOrderItemById(eq(1L));
+    verify(orderItemService).readOrderItemById(1L);
     verify(pricingService).executePricing(isA(Order.class));
-  }
-
-  /**
-   * Test new {@link LegacyCartServiceImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link LegacyCartServiceImpl}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void LegacyCartServiceImpl.<init>()"})
-  public void testNewLegacyCartServiceImpl() {
-    // Arrange and Act
-    LegacyCartServiceImpl actualLegacyCartServiceImpl = new LegacyCartServiceImpl();
-
-    // Assert
-    assertNull(actualLegacyCartServiceImpl.getFulfillmentGroupDao());
-    assertNull(actualLegacyCartServiceImpl.getFulfillmentGroupItemDao());
-    assertNull(actualLegacyCartServiceImpl.getOrderDao());
-    assertNull(actualLegacyCartServiceImpl.getOrderItemService());
-    assertNull(actualLegacyCartServiceImpl.getPaymentInfoDao());
-    assertTrue(actualLegacyCartServiceImpl.isDeleteEmptyNamedOrders());
-    assertTrue(actualLegacyCartServiceImpl.isMoveNamedOrderItems());
   }
 }

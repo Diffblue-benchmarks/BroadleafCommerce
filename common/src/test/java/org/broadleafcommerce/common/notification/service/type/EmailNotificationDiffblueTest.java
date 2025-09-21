@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,16 +39,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {EmailNotification.class, NotificationEventType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class EmailNotificationDiffblueTest {
-  @Autowired
-  private EmailNotification emailNotification;
+  @Autowired private EmailNotification emailNotification;
 
-  @Autowired
-  private NotificationEventType notificationEventType;
+  @Autowired private NotificationEventType notificationEventType;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailNotification#EmailNotification()}
    *   <li>{@link EmailNotification#setAttachments(List)}
@@ -57,10 +57,15 @@ public class EmailNotificationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void EmailNotification.<init>()", "List EmailNotification.getAttachments()",
-      "String EmailNotification.getEmailAddress()", "void EmailNotification.setAttachments(List)",
-      "void EmailNotification.setEmailAddress(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailNotification.<init>()",
+    "List EmailNotification.getAttachments()",
+    "String EmailNotification.getEmailAddress()",
+    "void EmailNotification.setAttachments(List)",
+    "void EmailNotification.setEmailAddress(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailNotification actualEmailNotification = new EmailNotification();
@@ -78,56 +83,54 @@ public class EmailNotificationDiffblueTest {
 
   /**
    * Test {@link EmailNotification#EmailNotification(String, NotificationEventType, Map)}.
+   *
    * <ul>
-   *   <li>Then return {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
+   *   <li>Then return {@link Notification#notificationType} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailNotification#EmailNotification(String, NotificationEventType, Map)}
+   *
+   * <p>Method under test: {@link EmailNotification#EmailNotification(String, NotificationEventType,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EmailNotification.<init>(String, NotificationEventType, Map)"})
-  public void testNewEmailNotification_thenReturnNotificationTypeIsAdminForgotPassword() {
-    // Arrange
-    NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;
-
-    // Act
-    EmailNotification actualEmailNotification = new EmailNotification("42 Main St", notificationEventType2,
-        new HashMap<>());
+  public void testNewEmailNotification_thenReturnNotificationTypeIsNull() {
+    // Arrange and Act
+    EmailNotification actualEmailNotification =
+        new EmailNotification("42 Main St", notificationEventType, new HashMap<>());
 
     // Assert
     assertEquals("42 Main St", actualEmailNotification.getEmailAddress());
-    assertEquals("ADMIN_FORGOT_PASSWORD", actualEmailNotification.notificationType);
+    assertNull(actualEmailNotification.notificationType);
+    assertNull(actualEmailNotification.getType());
     assertTrue(actualEmailNotification.getAttachments().isEmpty());
     assertTrue(actualEmailNotification.getContext().isEmpty());
-    NotificationEventType expectedType = notificationEventType2.ADMIN_FORGOT_PASSWORD;
-    assertSame(expectedType, actualEmailNotification.getType());
   }
 
   /**
    * Test {@link EmailNotification#EmailNotification(NotificationEventType, Map)}.
+   *
    * <ul>
-   *   <li>Then return {@link Notification#notificationType} is {@code ADMIN_FORGOT_PASSWORD}.</li>
+   *   <li>Then return {@link Notification#notificationType} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailNotification#EmailNotification(NotificationEventType, Map)}
+   *
+   * <p>Method under test: {@link EmailNotification#EmailNotification(NotificationEventType, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void EmailNotification.<init>(NotificationEventType, Map)"})
-  public void testNewEmailNotification_thenReturnNotificationTypeIsAdminForgotPassword2() {
-    // Arrange
-    NotificationEventType notificationEventType2 = NotificationEventType.ADMIN_FORGOT_PASSWORD;
-
-    // Act
-    EmailNotification actualEmailNotification = new EmailNotification(notificationEventType2, new HashMap<>());
+  public void testNewEmailNotification_thenReturnNotificationTypeIsNull2() {
+    // Arrange and Act
+    EmailNotification actualEmailNotification =
+        new EmailNotification(notificationEventType, new HashMap<>());
 
     // Assert
-    assertEquals("ADMIN_FORGOT_PASSWORD", actualEmailNotification.notificationType);
     assertNull(actualEmailNotification.getEmailAddress());
+    assertNull(actualEmailNotification.notificationType);
+    assertNull(actualEmailNotification.getType());
     assertTrue(actualEmailNotification.getAttachments().isEmpty());
     assertTrue(actualEmailNotification.getContext().isEmpty());
-    NotificationEventType expectedType = notificationEventType2.ADMIN_FORGOT_PASSWORD;
-    assertSame(expectedType, actualEmailNotification.getType());
   }
 }

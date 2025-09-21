@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 class CreditCardInfoFormDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CreditCardInfoForm}
    *   <li>{@link CreditCardInfoForm#setCreditCardCvvCode(String)}
@@ -48,15 +50,25 @@ class CreditCardInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void CreditCardInfoForm.<init>()", "String CreditCardInfoForm.getCreditCardCvvCode()",
-      "String CreditCardInfoForm.getCreditCardExpMonth()", "String CreditCardInfoForm.getCreditCardExpYear()",
-      "String CreditCardInfoForm.getCreditCardName()", "String CreditCardInfoForm.getCreditCardNumber()",
-      "String CreditCardInfoForm.getPaymentMethod()", "String CreditCardInfoForm.getSelectedCreditCardType()",
-      "void CreditCardInfoForm.setCreditCardCvvCode(String)", "void CreditCardInfoForm.setCreditCardExpMonth(String)",
-      "void CreditCardInfoForm.setCreditCardExpYear(String)", "void CreditCardInfoForm.setCreditCardName(String)",
-      "void CreditCardInfoForm.setCreditCardNumber(String)", "void CreditCardInfoForm.setPaymentMethod(String)",
-      "void CreditCardInfoForm.setSelectedCreditCardType(String)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CreditCardInfoForm.<init>()",
+    "String CreditCardInfoForm.getCreditCardCvvCode()",
+    "String CreditCardInfoForm.getCreditCardExpMonth()",
+    "String CreditCardInfoForm.getCreditCardExpYear()",
+    "String CreditCardInfoForm.getCreditCardName()",
+    "String CreditCardInfoForm.getCreditCardNumber()",
+    "String CreditCardInfoForm.getPaymentMethod()",
+    "String CreditCardInfoForm.getSelectedCreditCardType()",
+    "void CreditCardInfoForm.setCreditCardCvvCode(String)",
+    "void CreditCardInfoForm.setCreditCardExpMonth(String)",
+    "void CreditCardInfoForm.setCreditCardExpYear(String)",
+    "void CreditCardInfoForm.setCreditCardName(String)",
+    "void CreditCardInfoForm.setCreditCardNumber(String)",
+    "void CreditCardInfoForm.setPaymentMethod(String)",
+    "void CreditCardInfoForm.setSelectedCreditCardType(String)"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
     CreditCardInfoForm actualCreditCardInfoForm = new CreditCardInfoForm();

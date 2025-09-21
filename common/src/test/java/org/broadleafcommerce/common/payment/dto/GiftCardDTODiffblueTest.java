@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
@@ -35,16 +36,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {GiftCardDTO.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class GiftCardDTODiffblueTest {
-  @Autowired
-  private GiftCardDTO<Object> giftCardDTO;
+  @Autowired private GiftCardDTO<Object> giftCardDTO;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link GiftCardDTO#GiftCardDTO()}
    *   <li>{@link GiftCardDTO#giftCardMasked(String)}
@@ -52,13 +53,19 @@ public class GiftCardDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GiftCardDTO.<init>()", "void GiftCardDTO.<init>(Object)",
-      "GiftCardDTO GiftCardDTO.giftCardMasked(String)", "GiftCardDTO GiftCardDTO.giftCardNum(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GiftCardDTO.<init>()",
+    "void GiftCardDTO.<init>(Object)",
+    "GiftCardDTO GiftCardDTO.giftCardMasked(String)",
+    "GiftCardDTO GiftCardDTO.giftCardNum(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     GiftCardDTO<Object> actualGiftCardDTO = new GiftCardDTO<>();
-    GiftCardDTO<Object> actualGiftCardMaskedResult = actualGiftCardDTO.giftCardMasked("Gift Card Masked");
+    GiftCardDTO<Object> actualGiftCardMaskedResult =
+        actualGiftCardDTO.giftCardMasked("Gift Card Masked");
     GiftCardDTO<Object> actualGiftCardNumResult = actualGiftCardDTO.giftCardNum("Gift Card Num");
 
     // Assert
@@ -69,11 +76,13 @@ public class GiftCardDTODiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link GiftCardDTO#GiftCardDTO(Object)}
    *   <li>{@link GiftCardDTO#giftCardMasked(String)}
@@ -81,13 +90,19 @@ public class GiftCardDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void GiftCardDTO.<init>()", "void GiftCardDTO.<init>(Object)",
-      "GiftCardDTO GiftCardDTO.giftCardMasked(String)", "GiftCardDTO GiftCardDTO.giftCardNum(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void GiftCardDTO.<init>()",
+    "void GiftCardDTO.<init>(Object)",
+    "GiftCardDTO GiftCardDTO.giftCardMasked(String)",
+    "GiftCardDTO GiftCardDTO.giftCardNum(String)"
+  })
   public void testGettersAndSetters_whenNull_field() {
     // Arrange and Act
     GiftCardDTO<Object> actualGiftCardDTO = new GiftCardDTO<>(BLCFieldUtils.NULL_FIELD);
-    GiftCardDTO<Object> actualGiftCardMaskedResult = actualGiftCardDTO.giftCardMasked("Gift Card Masked");
+    GiftCardDTO<Object> actualGiftCardMaskedResult =
+        actualGiftCardDTO.giftCardMasked("Gift Card Masked");
     GiftCardDTO<Object> actualGiftCardNumResult = actualGiftCardDTO.giftCardNum("Gift Card Num");
 
     // Assert
@@ -98,11 +113,12 @@ public class GiftCardDTODiffblueTest {
 
   /**
    * Test {@link GiftCardDTO#done()}.
-   * <p>
-   * Method under test: {@link GiftCardDTO#done()}
+   *
+   * <p>Method under test: {@link GiftCardDTO#done()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object GiftCardDTO.done()"})
   public void testDone() {
     // Arrange
@@ -114,11 +130,12 @@ public class GiftCardDTODiffblueTest {
 
   /**
    * Test {@link GiftCardDTO#additionalFields(String, Object)}.
-   * <p>
-   * Method under test: {@link GiftCardDTO#additionalFields(String, Object)}
+   *
+   * <p>Method under test: {@link GiftCardDTO#additionalFields(String, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"GiftCardDTO GiftCardDTO.additionalFields(String, Object)"})
   public void testAdditionalFields() {
     // Arrange

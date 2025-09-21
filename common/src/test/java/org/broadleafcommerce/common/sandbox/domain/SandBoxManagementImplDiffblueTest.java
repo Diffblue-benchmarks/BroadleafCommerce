@@ -19,48 +19,43 @@ package org.broadleafcommerce.common.sandbox.domain;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class SandBoxManagementImplDiffblueTest {
-  @Autowired
-  private SandBoxManagementImpl sandBoxManagementImpl;
-
   /**
    * Test {@link SandBoxManagementImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxManagementImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link SandBoxManagementImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.String SandBoxManagementImpl.getMainEntityName()"})
   public void testGetMainEntityName_thenReturnNull() {
     // Arrange
-    SandBoxManagementImpl sandBoxManagementImpl2 = new SandBoxManagementImpl();
-    sandBoxManagementImpl2.setSandBox(new SandBoxImpl());
+    SandBoxManagementImpl sandBoxManagementImpl = new SandBoxManagementImpl();
+    sandBoxManagementImpl.setSandBox(new SandBoxImpl());
 
     // Act and Assert
-    assertNull(sandBoxManagementImpl2.getMainEntityName());
+    assertNull(sandBoxManagementImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SandBoxManagementImpl}
    *   <li>{@link SandBoxManagementImpl#setSandBox(SandBox)}
@@ -68,9 +63,13 @@ public class SandBoxManagementImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SandBoxManagementImpl.<init>()", "SandBox SandBoxManagementImpl.getSandBox()",
-      "void SandBoxManagementImpl.setSandBox(SandBox)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SandBoxManagementImpl.<init>()",
+    "SandBox SandBoxManagementImpl.getSandBox()",
+    "void SandBoxManagementImpl.setSandBox(SandBox)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SandBoxManagementImpl actualSandBoxManagementImpl = new SandBoxManagementImpl();

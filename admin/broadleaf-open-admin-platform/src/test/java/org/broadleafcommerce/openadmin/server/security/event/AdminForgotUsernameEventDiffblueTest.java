@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.security.event;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ import org.junit.experimental.categories.Category;
 public class AdminForgotUsernameEventDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AdminForgotUsernameEvent#setActiveUsernames(List)}
    *   <li>{@link AdminForgotUsernameEvent#setEmailAddress(String)}
@@ -42,15 +44,20 @@ public class AdminForgotUsernameEventDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List AdminForgotUsernameEvent.getActiveUsernames()",
-      "String AdminForgotUsernameEvent.getEmailAddress()", "String AdminForgotUsernameEvent.getPhoneNumber()",
-      "void AdminForgotUsernameEvent.setActiveUsernames(List)", "void AdminForgotUsernameEvent.setEmailAddress(String)",
-      "void AdminForgotUsernameEvent.setPhoneNumber(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List AdminForgotUsernameEvent.getActiveUsernames()",
+    "String AdminForgotUsernameEvent.getEmailAddress()",
+    "String AdminForgotUsernameEvent.getPhoneNumber()",
+    "void AdminForgotUsernameEvent.setActiveUsernames(List)",
+    "void AdminForgotUsernameEvent.setEmailAddress(String)",
+    "void AdminForgotUsernameEvent.setPhoneNumber(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
-    AdminForgotUsernameEvent adminForgotUsernameEvent = new AdminForgotUsernameEvent("Source", "42 Main St",
-        "6625550144", new ArrayList<>());
+    AdminForgotUsernameEvent adminForgotUsernameEvent =
+        new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>());
     ArrayList<String> activeUsernames = new ArrayList<>();
 
     // Act

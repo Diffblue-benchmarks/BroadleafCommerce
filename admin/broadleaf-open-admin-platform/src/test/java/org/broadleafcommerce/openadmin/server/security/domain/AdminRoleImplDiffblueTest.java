@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -36,59 +37,31 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminRoleImplDiffblueTest {
-  @Autowired
-  private AdminRoleImpl adminRoleImpl;
+  @Autowired private AdminRoleImpl adminRoleImpl;
 
   /**
    * Test {@link AdminRoleImpl#clone()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor) AllPermissions is {@code null}.</li>
-   *   <li>Then return AllPermissions Empty.</li>
+   *   <li>Given {@link AdminRoleImpl} AllPermissions is {@code null}.
+   *   <li>Then return AllPermissions Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminRoleImpl#clone()}
+   *
+   * <p>Method under test: {@link AdminRoleImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
   public void testClone_givenAdminRoleImplAllPermissionsIsNull_thenReturnAllPermissionsEmpty() {
     // Arrange
-    AdminRoleImpl adminRoleImpl2 = new AdminRoleImpl();
-    adminRoleImpl2.setDescription("The characteristics of someone or something");
-    adminRoleImpl2.setId(1L);
-    adminRoleImpl2.setName("Name");
-    adminRoleImpl2.setAllPermissions(null);
+    adminRoleImpl.setAllPermissions(null);
 
     // Act
-    AdminRole actualCloneResult = adminRoleImpl2.clone();
-
-    // Assert
-    assertTrue(actualCloneResult instanceof AdminRoleImpl);
-    assertEquals("Name", actualCloneResult.getName());
-    assertEquals("Name", ((AdminRoleImpl) actualCloneResult).getMainEntityName());
-    assertEquals("The characteristics of someone or something", actualCloneResult.getDescription());
-    assertEquals(1L, actualCloneResult.getId().longValue());
-    assertTrue(actualCloneResult.getAllPermissions().isEmpty());
-  }
-
-  /**
-   * Test {@link AdminRoleImpl#clone()}.
-   * <ul>
-   *   <li>Given {@link AdminRoleImpl} (default constructor).</li>
-   *   <li>Then return Id is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminRoleImpl#clone()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
-  public void testClone_givenAdminRoleImpl_thenReturnIdIsNull() {
-    // Arrange and Act
-    AdminRole actualCloneResult = (new AdminRoleImpl()).clone();
+    AdminRole actualCloneResult = adminRoleImpl.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminRoleImpl);
@@ -96,59 +69,89 @@ public class AdminRoleImplDiffblueTest {
     assertNull(actualCloneResult.getDescription());
     assertNull(actualCloneResult.getName());
     assertNull(((AdminRoleImpl) actualCloneResult).getMainEntityName());
+    assertTrue(actualCloneResult.getAllPermissions().isEmpty());
+    assertTrue(((AdminRoleImpl) actualCloneResult).getAllUsers().isEmpty());
   }
 
   /**
    * Test {@link AdminRoleImpl#clone()}.
+   *
    * <ul>
-   *   <li>Then return AllPermissions size is one.</li>
+   *   <li>Given {@link AdminRoleImpl}.
+   *   <li>Then return AllPermissions Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminRoleImpl#clone()}
+   *
+   * <p>Method under test: {@link AdminRoleImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
+  public void testClone_givenAdminRoleImpl_thenReturnAllPermissionsEmpty() {
+    // Arrange and Act
+    AdminRole actualCloneResult = adminRoleImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof AdminRoleImpl);
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.getDescription());
+    assertNull(actualCloneResult.getName());
+    assertNull(((AdminRoleImpl) actualCloneResult).getMainEntityName());
+    assertTrue(actualCloneResult.getAllPermissions().isEmpty());
+    assertTrue(((AdminRoleImpl) actualCloneResult).getAllUsers().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminRoleImpl#clone()}.
+   *
+   * <ul>
+   *   <li>Then return AllPermissions size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminRoleImpl#clone()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AdminRole AdminRoleImpl.clone()"})
   public void testClone_thenReturnAllPermissionsSizeIsOne() {
     // Arrange
     LinkedHashSet<AdminPermission> allPermissions = new LinkedHashSet<>();
     allPermissions.add(new AdminPermissionImpl());
-
-    AdminRoleImpl adminRoleImpl2 = new AdminRoleImpl();
-    adminRoleImpl2.setDescription("The characteristics of someone or something");
-    adminRoleImpl2.setId(1L);
-    adminRoleImpl2.setName("Name");
-    adminRoleImpl2.setAllPermissions(allPermissions);
+    adminRoleImpl.setAllPermissions(allPermissions);
 
     // Act
-    AdminRole actualCloneResult = adminRoleImpl2.clone();
+    AdminRole actualCloneResult = adminRoleImpl.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminRoleImpl);
-    assertEquals("Name", actualCloneResult.getName());
-    assertEquals("Name", ((AdminRoleImpl) actualCloneResult).getMainEntityName());
-    assertEquals("The characteristics of someone or something", actualCloneResult.getDescription());
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.getDescription());
+    assertNull(actualCloneResult.getName());
+    assertNull(((AdminRoleImpl) actualCloneResult).getMainEntityName());
     assertEquals(1, actualCloneResult.getAllPermissions().size());
-    assertEquals(1L, actualCloneResult.getId().longValue());
+    assertTrue(((AdminRoleImpl) actualCloneResult).getAllUsers().isEmpty());
   }
 
   /**
    * Test {@link AdminRoleImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link AdminRoleImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link AdminRoleImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String AdminRoleImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new AdminRoleImpl()).getMainEntityName());
+    assertNull(adminRoleImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminRoleImpl}
    *   <li>{@link AdminRoleImpl#setAllPermissions(Set)}
@@ -163,12 +166,20 @@ public class AdminRoleImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminRoleImpl.<init>()", "Set AdminRoleImpl.getAllPermissions()",
-      "Set AdminRoleImpl.getAllUsers()", "String AdminRoleImpl.getDescription()", "Long AdminRoleImpl.getId()",
-      "String AdminRoleImpl.getName()", "void AdminRoleImpl.setAllPermissions(Set)",
-      "void AdminRoleImpl.setDescription(String)", "void AdminRoleImpl.setId(Long)",
-      "void AdminRoleImpl.setName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminRoleImpl.<init>()",
+    "Set AdminRoleImpl.getAllPermissions()",
+    "Set AdminRoleImpl.getAllUsers()",
+    "String AdminRoleImpl.getDescription()",
+    "Long AdminRoleImpl.getId()",
+    "String AdminRoleImpl.getName()",
+    "void AdminRoleImpl.setAllPermissions(Set)",
+    "void AdminRoleImpl.setDescription(String)",
+    "void AdminRoleImpl.setId(Long)",
+    "void AdminRoleImpl.setName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminRoleImpl actualAdminRoleImpl = new AdminRoleImpl();

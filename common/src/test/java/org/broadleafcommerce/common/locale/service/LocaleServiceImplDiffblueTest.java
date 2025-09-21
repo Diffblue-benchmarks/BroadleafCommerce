@@ -19,11 +19,11 @@ package org.broadleafcommerce.common.locale.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +40,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LocaleServiceImplDiffblueTest {
-  @Mock
-  private LocaleDao localeDao;
+  @Mock private LocaleDao localeDao;
 
-  @InjectMocks
-  private LocaleServiceImpl localeServiceImpl;
+  @InjectMocks private LocaleServiceImpl localeServiceImpl;
 
   /**
    * Test {@link LocaleServiceImpl#findLocaleByCode(String)}.
-   * <p>
-   * Method under test: {@link LocaleServiceImpl#findLocaleByCode(String)}
+   *
+   * <p>Method under test: {@link LocaleServiceImpl#findLocaleByCode(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Locale LocaleServiceImpl.findLocaleByCode(String)"})
   public void testFindLocaleByCode() {
     // Arrange
@@ -63,17 +62,18 @@ public class LocaleServiceImplDiffblueTest {
     Locale actualFindLocaleByCodeResult = localeServiceImpl.findLocaleByCode("en");
 
     // Assert
-    verify(localeDao).findLocaleByCode(eq("en"));
+    verify(localeDao).findLocaleByCode("en");
     assertSame(localeImpl, actualFindLocaleByCodeResult);
   }
 
   /**
    * Test {@link LocaleServiceImpl#findDefaultLocale()}.
-   * <p>
-   * Method under test: {@link LocaleServiceImpl#findDefaultLocale()}
+   *
+   * <p>Method under test: {@link LocaleServiceImpl#findDefaultLocale()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Locale LocaleServiceImpl.findDefaultLocale()"})
   public void testFindDefaultLocale() {
     // Arrange
@@ -90,11 +90,12 @@ public class LocaleServiceImplDiffblueTest {
 
   /**
    * Test {@link LocaleServiceImpl#findAllLocales()}.
-   * <p>
-   * Method under test: {@link LocaleServiceImpl#findAllLocales()}
+   *
+   * <p>Method under test: {@link LocaleServiceImpl#findAllLocales()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List LocaleServiceImpl.findAllLocales()"})
   public void testFindAllLocales() {
     // Arrange
@@ -110,11 +111,12 @@ public class LocaleServiceImplDiffblueTest {
 
   /**
    * Test {@link LocaleServiceImpl#save(Locale)}.
-   * <p>
-   * Method under test: {@link LocaleServiceImpl#save(Locale)}
+   *
+   * <p>Method under test: {@link LocaleServiceImpl#save(Locale)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Locale LocaleServiceImpl.save(Locale)"})
   public void testSave() {
     // Arrange

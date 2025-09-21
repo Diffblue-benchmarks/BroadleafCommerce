@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +32,16 @@ import org.junit.experimental.categories.Category;
 public class AdminModuleImplDiffblueTest {
   /**
    * Test {@link AdminModuleImpl#getAdminModuleDTO()}.
-   * <p>
-   * Method under test: {@link AdminModuleImpl#getAdminModuleDTO()}
+   *
+   * <p>Method under test: {@link AdminModuleImpl#getAdminModuleDTO()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AdminModuleDTO AdminModuleImpl.getAdminModuleDTO()"})
   public void testGetAdminModuleDTO() {
     // Arrange and Act
-    AdminModuleDTO actualAdminModuleDTO = (new AdminModuleImpl()).getAdminModuleDTO();
+    AdminModuleDTO actualAdminModuleDTO = new AdminModuleImpl().getAdminModuleDTO();
 
     // Assert
     assertNull(actualAdminModuleDTO.getDisplayOrder());
@@ -52,8 +54,9 @@ public class AdminModuleImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminModuleImpl}
    *   <li>{@link AdminModuleImpl#setDisplayOrder(Integer)}
@@ -71,13 +74,23 @@ public class AdminModuleImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminModuleImpl.<init>()", "Integer AdminModuleImpl.getDisplayOrder()",
-      "String AdminModuleImpl.getIcon()", "Long AdminModuleImpl.getId()", "String AdminModuleImpl.getModuleKey()",
-      "String AdminModuleImpl.getName()", "List AdminModuleImpl.getSections()",
-      "void AdminModuleImpl.setDisplayOrder(Integer)", "void AdminModuleImpl.setIcon(String)",
-      "void AdminModuleImpl.setId(Long)", "void AdminModuleImpl.setModuleKey(String)",
-      "void AdminModuleImpl.setName(String)", "void AdminModuleImpl.setSections(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminModuleImpl.<init>()",
+    "Integer AdminModuleImpl.getDisplayOrder()",
+    "String AdminModuleImpl.getIcon()",
+    "Long AdminModuleImpl.getId()",
+    "String AdminModuleImpl.getModuleKey()",
+    "String AdminModuleImpl.getName()",
+    "List AdminModuleImpl.getSections()",
+    "void AdminModuleImpl.setDisplayOrder(Integer)",
+    "void AdminModuleImpl.setIcon(String)",
+    "void AdminModuleImpl.setId(Long)",
+    "void AdminModuleImpl.setModuleKey(String)",
+    "void AdminModuleImpl.setName(String)",
+    "void AdminModuleImpl.setSections(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminModuleImpl actualAdminModuleImpl = new AdminModuleImpl();

@@ -22,29 +22,31 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.money.Money;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class OrderPersistedEventDiffblueTest {
   /**
    * Test {@link OrderPersistedEvent#OrderPersistedEvent(Order)}.
+   *
    * <ul>
-   *   <li>Given {@link Money#Money()}.</li>
-   *   <li>Then Order return {@link OrderImpl}.</li>
+   *   <li>Given {@link OrderItemQualifierImpl#serialVersionUID}.
+   *   <li>Then Order return {@link OrderImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPersistedEvent#OrderPersistedEvent(Order)}
+   *
+   * <p>Method under test: {@link OrderPersistedEvent#OrderPersistedEvent(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderPersistedEvent.<init>(Order)"})
-  public void testNewOrderPersistedEvent_givenMoney_thenOrderReturnOrderImpl() {
+  public void testNewOrderPersistedEvent_givenSerialVersionUID_thenOrderReturnOrderImpl() {
     // Arrange
     OrderImpl order = new OrderImpl();
-    order.setSubTotal(new Money());
+    order.setId(OrderItemQualifierImpl.serialVersionUID);
 
     // Act
     OrderPersistedEvent actualOrderPersistedEvent = new OrderPersistedEvent(order);
@@ -58,17 +60,45 @@ public class OrderPersistedEventDiffblueTest {
 
   /**
    * Test {@link OrderPersistedEvent#OrderPersistedEvent(Order)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderFactoryImpl#NULL_ORDER}.</li>
-   *   <li>Then Order return {@link NullOrderImpl}.</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return Source is {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link OrderPersistedEvent#OrderPersistedEvent(Order)}
+   *
+   * <p>Method under test: {@link OrderPersistedEvent#OrderPersistedEvent(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OrderPersistedEvent.<init>(Order)"})
-  public void testNewOrderPersistedEvent_whenNull_order_thenOrderReturnNullOrderImpl() {
+  public void testNewOrderPersistedEvent_whenNullOrderImpl_thenReturnSourceIsNullOrderImpl() {
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    OrderPersistedEvent actualOrderPersistedEvent = new OrderPersistedEvent(order);
+
+    // Assert
+    assertSame(order, actualOrderPersistedEvent.getSource());
+    assertSame(order, actualOrderPersistedEvent.getOrder());
+  }
+
+  /**
+   * Test {@link OrderPersistedEvent#OrderPersistedEvent(Order)}.
+   *
+   * <ul>
+   *   <li>When {@link NullOrderFactoryImpl#NULL_ORDER}.
+   *   <li>Then return Source is {@link NullOrderFactoryImpl#NULL_ORDER}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OrderPersistedEvent#OrderPersistedEvent(Order)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void OrderPersistedEvent.<init>(Order)"})
+  public void testNewOrderPersistedEvent_whenNull_order_thenReturnSourceIsNull_order() {
     // Arrange
     Order order = NullOrderFactoryImpl.NULL_ORDER;
 
@@ -76,23 +106,22 @@ public class OrderPersistedEventDiffblueTest {
     OrderPersistedEvent actualOrderPersistedEvent = new OrderPersistedEvent(order);
 
     // Assert
-    Order order2 = actualOrderPersistedEvent.getOrder();
-    assertTrue(order2 instanceof NullOrderImpl);
     assertSame(order, actualOrderPersistedEvent.getSource());
-    assertSame(order, order2);
+    assertSame(order, actualOrderPersistedEvent.getOrder());
   }
 
   /**
    * Test {@link OrderPersistedEvent#getOrder()}.
-   * <p>
-   * Method under test: {@link OrderPersistedEvent#getOrder()}
+   *
+   * <p>Method under test: {@link OrderPersistedEvent#getOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order OrderPersistedEvent.getOrder()"})
   public void testGetOrder() {
     // Arrange and Act
-    Order actualOrder = (new OrderPersistedEvent(NullOrderFactoryImpl.NULL_ORDER)).getOrder();
+    Order actualOrder = new OrderPersistedEvent(NullOrderFactoryImpl.NULL_ORDER).getOrder();
 
     // Assert
     assertTrue(actualOrder instanceof NullOrderImpl);

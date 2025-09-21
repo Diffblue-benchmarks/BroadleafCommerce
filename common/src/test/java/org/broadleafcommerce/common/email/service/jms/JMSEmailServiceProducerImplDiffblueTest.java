@@ -24,7 +24,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,20 +40,25 @@ import org.springframework.jms.core.MessageCreator;
 public class JMSEmailServiceProducerImplDiffblueTest {
   /**
    * Test {@link JMSEmailServiceProducerImpl#send(Map)}.
+   *
    * <ul>
-   *   <li>Given {@link JmsTemplate} {@link JmsTemplate#send(Destination, MessageCreator)} does nothing.</li>
-   *   <li>Then calls {@link JmsTemplate#send(Destination, MessageCreator)}.</li>
+   *   <li>Given {@link JmsTemplate} {@link JmsTemplate#send(Destination, MessageCreator)} does
+   *       nothing.
+   *   <li>Then calls {@link JmsTemplate#send(Destination, MessageCreator)}.
    * </ul>
-   * <p>
-   * Method under test: {@link JMSEmailServiceProducerImpl#send(Map)}
+   *
+   * <p>Method under test: {@link JMSEmailServiceProducerImpl#send(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void JMSEmailServiceProducerImpl.send(Map)"})
   public void testSend_givenJmsTemplateSendDoesNothing_thenCallsSend() throws JmsException {
     // Arrange
     JmsTemplate emailServiceTemplate = mock(JmsTemplate.class);
-    doNothing().when(emailServiceTemplate).send(Mockito.<Destination>any(), Mockito.<MessageCreator>any());
+    doNothing()
+        .when(emailServiceTemplate)
+        .send(Mockito.<Destination>any(), Mockito.<MessageCreator>any());
 
     JMSEmailServiceProducerImpl jmsEmailServiceProducerImpl = new JMSEmailServiceProducerImpl();
     jmsEmailServiceProducerImpl.setEmailServiceTemplate(emailServiceTemplate);
@@ -66,8 +72,9 @@ public class JMSEmailServiceProducerImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link JMSEmailServiceProducerImpl}
    *   <li>{@link JMSEmailServiceProducerImpl#setEmailServiceDestination(Destination)}
@@ -77,19 +84,24 @@ public class JMSEmailServiceProducerImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JMSEmailServiceProducerImpl.<init>()",
-      "Destination JMSEmailServiceProducerImpl.getEmailServiceDestination()",
-      "JmsTemplate JMSEmailServiceProducerImpl.getEmailServiceTemplate()",
-      "void JMSEmailServiceProducerImpl.setEmailServiceDestination(Destination)",
-      "void JMSEmailServiceProducerImpl.setEmailServiceTemplate(JmsTemplate)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JMSEmailServiceProducerImpl.<init>()",
+    "Destination JMSEmailServiceProducerImpl.getEmailServiceDestination()",
+    "JmsTemplate JMSEmailServiceProducerImpl.getEmailServiceTemplate()",
+    "void JMSEmailServiceProducerImpl.setEmailServiceDestination(Destination)",
+    "void JMSEmailServiceProducerImpl.setEmailServiceTemplate(JmsTemplate)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    JMSEmailServiceProducerImpl actualJmsEmailServiceProducerImpl = new JMSEmailServiceProducerImpl();
+    JMSEmailServiceProducerImpl actualJmsEmailServiceProducerImpl =
+        new JMSEmailServiceProducerImpl();
     actualJmsEmailServiceProducerImpl.setEmailServiceDestination(null);
     JmsTemplate emailServiceTemplate = new JmsTemplate();
     actualJmsEmailServiceProducerImpl.setEmailServiceTemplate(emailServiceTemplate);
-    Destination actualEmailServiceDestination = actualJmsEmailServiceProducerImpl.getEmailServiceDestination();
+    Destination actualEmailServiceDestination =
+        actualJmsEmailServiceProducerImpl.getEmailServiceDestination();
 
     // Assert
     assertNull(actualEmailServiceDestination);

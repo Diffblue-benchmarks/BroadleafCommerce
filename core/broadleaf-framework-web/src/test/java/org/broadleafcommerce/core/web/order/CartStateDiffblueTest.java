@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,12 +27,13 @@ import org.junit.jupiter.api.Test;
 class CartStateDiffblueTest {
   /**
    * Test {@link CartState#getCart()}.
-   * <p>
-   * Method under test: {@link CartState#getCart()}
+   *
+   * <p>Method under test: {@link CartState#getCart()}
    */
   @Test
   @DisplayName("Test getCart()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"org.broadleafcommerce.core.order.domain.Order CartState.getCart()"})
   void testGetCart() {
     // Arrange, Act and Assert

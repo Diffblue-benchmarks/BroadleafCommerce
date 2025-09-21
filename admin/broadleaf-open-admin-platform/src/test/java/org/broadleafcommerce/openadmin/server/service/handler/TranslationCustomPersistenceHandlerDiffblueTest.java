@@ -22,14 +22,13 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.config.service.SystemPropertiesService;
 import org.broadleafcommerce.common.exception.ServiceException;
-import org.broadleafcommerce.common.i18n.service.TranslationService;
-import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
+import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
@@ -38,35 +37,29 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TranslationCustomPersistenceHandlerDiffblueTest {
-  @Mock
-  private SandBoxHelper sandBoxHelper;
-
-  @Mock
-  private SystemPropertiesService systemPropertiesService;
-
-  @InjectMocks
-  private TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
-
-  @Mock
-  private TranslationService translationService;
+  @InjectMocks private TranslationCustomPersistenceHandler translationCustomPersistenceHandler;
 
   /**
    * Test {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * TranslationCustomPersistenceHandler#classMatches(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.classMatches(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean TranslationCustomPersistenceHandler.classMatches(PersistencePackage)"
+  })
   public void testClassMatches_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.classMatches(new PersistencePackage()));
@@ -74,16 +67,21 @@ public class TranslationCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * TranslationCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.canHandleAdd(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean TranslationCustomPersistenceHandler.canHandleAdd(PersistencePackage)"
+  })
   public void testCanHandleAdd_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
@@ -91,128 +89,174 @@ public class TranslationCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * TranslationCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean TranslationCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean TranslationCustomPersistenceHandler.canHandleUpdate(PersistencePackage)"
+  })
   public void testCanHandleUpdate_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(translationCustomPersistenceHandler.canHandleUpdate(new PersistencePackage()));
   }
 
   /**
-   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
+   * RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code java.util.List}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
+   *       java.util.List}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage,
+   * DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
-  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList() throws ServiceException {
+    "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
+  })
+  public void testAdd_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList()
+      throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[]{"java.util.List"});
+    when(entity.getType()).thenReturn(new String[] {"java.util.List"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> translationCustomPersistenceHandler.add(persistencePackage,
-        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(
+        ServiceException.class,
+        () ->
+            translationCustomPersistenceHandler.add(
+                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).getType();
   }
 
   /**
-   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao,
+   * RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code
+   *       Type}.
+   *   <li>Then throw {@link ServiceException}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link TranslationCustomPersistenceHandler#add(PersistencePackage,
+   * DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"})
+    "Entity TranslationCustomPersistenceHandler.add(PersistencePackage, DynamicEntityDao, RecordHelper)"
+  })
   public void testAdd_givenEntityGetTypeReturnArrayOfStringWithType_thenThrowServiceException()
       throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.getType()).thenReturn(new String[] {"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> translationCustomPersistenceHandler.add(persistencePackage,
-        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(
+        ServiceException.class,
+        () ->
+            translationCustomPersistenceHandler.add(
+                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).getType();
   }
 
   /**
-   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
+   * RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code java.util.List}.</li>
+   *   <li>Given array of {@link String} with {@code java.util.List}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage,
+   * DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
-  public void testUpdate_givenEntityGetTypeReturnArrayOfStringWithJavaUtilList() throws ServiceException {
+    "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
+  })
+  public void testUpdate_givenArrayOfStringWithJavaUtilList() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[]{"java.util.List"});
+    when(entity.getType()).thenReturn(new String[] {"java.util.List"});
+    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    persistencePackage.setRequestingEntityName("");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> translationCustomPersistenceHandler.update(persistencePackage,
-        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(
+        ServiceException.class,
+        () ->
+            translationCustomPersistenceHandler.update(
+                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).getType();
   }
 
   /**
-   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao,
+   * RecordHelper)}.
+   *
    * <ul>
-   *   <li>Given {@link Entity} {@link Entity#getType()} return array of {@link String} with {@code Type}.</li>
+   *   <li>Given array of {@link String} with {@code Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link TranslationCustomPersistenceHandler#update(PersistencePackage,
+   * DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"})
-  public void testUpdate_givenEntityGetTypeReturnArrayOfStringWithType() throws ServiceException {
+    "Entity TranslationCustomPersistenceHandler.update(PersistencePackage, DynamicEntityDao, RecordHelper)"
+  })
+  public void testUpdate_givenArrayOfStringWithType() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.getType()).thenReturn(new String[] {"Type"});
+    String[] customCriteria = new String[] {"Custom Criteria"};
 
-    PersistencePackage persistencePackage = new PersistencePackage();
-    persistencePackage.setEntity(entity);
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
+    persistencePackage.setRequestingEntityName("");
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> translationCustomPersistenceHandler.update(persistencePackage,
-        dynamicEntityDao, new AdornedTargetListPersistenceModule()));
+    assertThrows(
+        ServiceException.class,
+        () ->
+            translationCustomPersistenceHandler.update(
+                persistencePackage, dynamicEntityDao, new AdornedTargetListPersistenceModule()));
     verify(entity).getType();
   }
 }

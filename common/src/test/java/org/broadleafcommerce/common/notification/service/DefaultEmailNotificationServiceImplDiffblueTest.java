@@ -24,7 +24,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
@@ -47,28 +48,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DefaultEmailNotificationServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultEmailNotificationServiceImplDiffblueTest {
-  @Autowired
-  private DefaultEmailNotificationServiceImpl defaultEmailNotificationServiceImpl;
+  @Autowired private DefaultEmailNotificationServiceImpl defaultEmailNotificationServiceImpl;
 
-  @MockBean
-  private EmailInfo emailInfo;
+  @MockBean private EmailInfo emailInfo;
 
   @MockBean(name = "blEmailService")
   private EmailService emailService;
 
-  @Autowired
-  private List<EmailInfo> list;
+  @Autowired private List<EmailInfo> list;
 
   /**
    * Test {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}
+   *
+   * <p>Method under test: {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DefaultEmailNotificationServiceImpl.canHandle(Class)"})
   public void testCanHandle_thenReturnFalse() {
     // Arrange
@@ -80,14 +80,16 @@ public class DefaultEmailNotificationServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}
+   *
+   * <p>Method under test: {@link DefaultEmailNotificationServiceImpl#canHandle(Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DefaultEmailNotificationServiceImpl.canHandle(Class)"})
   public void testCanHandle_thenReturnTrue() {
     // Arrange
@@ -99,19 +101,22 @@ public class DefaultEmailNotificationServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}.
-   * <p>
-   * Method under test: {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
+   *
+   * <p>Method under test: {@link
+   * DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DefaultEmailNotificationServiceImpl.sendNotification(Notification)"})
   public void testSendNotification() {
     // Arrange
     when(emailInfo.getEmailType()).thenReturn("jane.doe@example.org");
+    EmailNotification notification =
+        new EmailNotification(NotificationEventType.ADMIN_FORGOT_PASSWORD, new HashMap<>());
 
     // Act
-    defaultEmailNotificationServiceImpl
-        .sendNotification(new EmailNotification(NotificationEventType.ADMIN_FORGOT_PASSWORD, new HashMap<>()));
+    defaultEmailNotificationServiceImpl.sendNotification(notification);
 
     // Assert
     verify(emailInfo).getEmailType();
@@ -119,27 +124,35 @@ public class DefaultEmailNotificationServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}.
+   *
    * <ul>
-   *   <li>Given {@link EmailInfo} {@link EmailInfo#clone()} return {@link EmailInfo} (default constructor).</li>
+   *   <li>Given {@link EmailInfo} {@link EmailInfo#clone()} return {@link EmailInfo} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
+   *
+   * <p>Method under test: {@link
+   * DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DefaultEmailNotificationServiceImpl.sendNotification(Notification)"})
   public void testSendNotification_givenEmailInfoCloneReturnEmailInfo() {
     // Arrange
     when(emailInfo.clone()).thenReturn(new EmailInfo());
-    when(emailInfo.getEmailType()).thenReturn("Unable to find an EmailInfo that matched a notification of type ");
-    when(emailService.sendTemplateEmail(Mockito.<String>any(), Mockito.<EmailInfo>any(),
-        Mockito.<Map<String, Object>>any())).thenReturn(true);
-    NotificationEventType notificationEventType = new NotificationEventType(
-        "Unable to find an EmailInfo that matched a notification of type ",
-        "Unable to find an EmailInfo that matched a notification of type ");
+    when(emailInfo.getEmailType())
+        .thenReturn("Unable to find an EmailInfo that matched a notification of type ");
+    when(emailService.sendTemplateEmail(
+            Mockito.<String>any(), Mockito.<EmailInfo>any(), Mockito.<Map<String, Object>>any()))
+        .thenReturn(true);
+    NotificationEventType notificationEventType =
+        new NotificationEventType(
+            "Unable to find an EmailInfo that matched a notification of type ",
+            "Unable to find an EmailInfo that matched a notification of type ");
+    EmailNotification notification = new EmailNotification(notificationEventType, new HashMap<>());
 
     // Act
-    defaultEmailNotificationServiceImpl.sendNotification(new EmailNotification(notificationEventType, new HashMap<>()));
+    defaultEmailNotificationServiceImpl.sendNotification(notification);
 
     // Assert
     verify(emailService).sendTemplateEmail((String) isNull(), isA(EmailInfo.class), isA(Map.class));
@@ -149,28 +162,35 @@ public class DefaultEmailNotificationServiceImplDiffblueTest {
 
   /**
    * Test {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}.
+   *
    * <ul>
-   *   <li>Then calls {@link EmailInfo#setAttachments(List)}.</li>
+   *   <li>Then calls {@link EmailInfo#setAttachments(List)}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
+   *
+   * <p>Method under test: {@link
+   * DefaultEmailNotificationServiceImpl#sendNotification(Notification)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DefaultEmailNotificationServiceImpl.sendNotification(Notification)"})
   public void testSendNotification_thenCallsSetAttachments() {
     // Arrange
     doNothing().when(emailInfo).setAttachments(Mockito.<List<Attachment>>any());
     when(emailInfo.clone()).thenReturn(emailInfo);
-    when(emailInfo.getEmailType()).thenReturn("Unable to find an EmailInfo that matched a notification of type ");
-    when(emailService.sendTemplateEmail(Mockito.<String>any(), Mockito.<EmailInfo>any(),
-        Mockito.<Map<String, Object>>any())).thenReturn(true);
-    NotificationEventType notificationEventType = new NotificationEventType(
-        "Unable to find an EmailInfo that matched a notification of type ",
-        "Unable to find an EmailInfo that matched a notification of type ");
+    when(emailInfo.getEmailType())
+        .thenReturn("Unable to find an EmailInfo that matched a notification of type ");
+    when(emailService.sendTemplateEmail(
+            Mockito.<String>any(), Mockito.<EmailInfo>any(), Mockito.<Map<String, Object>>any()))
+        .thenReturn(true);
+    NotificationEventType notificationEventType =
+        new NotificationEventType(
+            "Unable to find an EmailInfo that matched a notification of type ",
+            "Unable to find an EmailInfo that matched a notification of type ");
+    EmailNotification notification = new EmailNotification(notificationEventType, new HashMap<>());
 
     // Act
-    defaultEmailNotificationServiceImpl.sendNotification(new EmailNotification(notificationEventType, new HashMap<>()));
+    defaultEmailNotificationServiceImpl.sendNotification(notification);
 
     // Assert
     verify(emailService).sendTemplateEmail((String) isNull(), isA(EmailInfo.class), isA(Map.class));

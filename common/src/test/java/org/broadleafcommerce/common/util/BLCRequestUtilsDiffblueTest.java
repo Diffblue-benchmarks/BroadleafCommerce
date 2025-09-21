@@ -30,16 +30,18 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
@@ -47,63 +49,84 @@ import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequ
 public class BLCRequestUtilsDiffblueTest {
   /**
    * Test {@link BLCRequestUtils#isOKtoUseSession(WebRequest)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#isOKtoUseSession(WebRequest)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#isOKtoUseSession(WebRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BLCRequestUtils.isOKtoUseSession(WebRequest)"})
   public void testIsOKtoUseSession_thenReturnTrue() {
-    // Arrange, Act and Assert
-    assertTrue(BLCRequestUtils.isOKtoUseSession(
-        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+    // Arrange
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act and Assert
+    assertTrue(BLCRequestUtils.isOKtoUseSession(new ServletWebRequest(request)));
   }
 
   /**
    * Test {@link BLCRequestUtils#isFilteringIgnoredForUri(WebRequest)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#isFilteringIgnoredForUri(WebRequest)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#isFilteringIgnoredForUri(WebRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BLCRequestUtils.isFilteringIgnoredForUri(WebRequest)"})
   public void testIsFilteringIgnoredForUri_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse(BLCRequestUtils.isFilteringIgnoredForUri(
-        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
+    // Arrange
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act and Assert
+    assertFalse(BLCRequestUtils.isFilteringIgnoredForUri(new ServletWebRequest(request)));
   }
 
   /**
    * Test {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}.
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object BLCRequestUtils.getSessionAttributeIfOk(WebRequest, String)"})
   public void testGetSessionAttributeIfOk() {
-    // Arrange, Act and Assert
-    assertNull(BLCRequestUtils.getSessionAttributeIfOk(
-        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())), "Attribute"));
+    // Arrange
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+
+    // Act and Assert
+    assertNull(
+        BLCRequestUtils.getSessionAttributeIfOk(new ServletWebRequest(request), "Attribute"));
   }
 
   /**
    * Test {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}.
+   *
    * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>When {@link WebRequest} {@link RequestAttributes#getAttribute(String, int)} return {@code false}.</li>
+   *   <li>Given {@code false}.
+   *   <li>When {@link WebRequest} {@link WebRequest#getAttribute(String, int)} return {@code
+   *       false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object BLCRequestUtils.getSessionAttributeIfOk(WebRequest, String)"})
   public void testGetSessionAttributeIfOk_givenFalse_whenWebRequestGetAttributeReturnFalse() {
     // Arrange
@@ -111,24 +134,27 @@ public class BLCRequestUtilsDiffblueTest {
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
 
     // Act
-    Object actualSessionAttributeIfOk = BLCRequestUtils.getSessionAttributeIfOk(request, "Attribute");
+    Object actualSessionAttributeIfOk =
+        BLCRequestUtils.getSessionAttributeIfOk(request, "Attribute");
 
     // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    verify(request).getAttribute("blOkToUseSession", 0);
     assertNull(actualSessionAttributeIfOk);
   }
 
   /**
    * Test {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}.
+   *
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getSessionAttributeIfOk(WebRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object BLCRequestUtils.getSessionAttributeIfOk(WebRequest, String)"})
   public void testGetSessionAttributeIfOk_givenTrue_thenReturnTrue() {
     // Arrange
@@ -136,7 +162,8 @@ public class BLCRequestUtilsDiffblueTest {
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(true);
 
     // Act
-    Object actualSessionAttributeIfOk = BLCRequestUtils.getSessionAttributeIfOk(request, "Attribute");
+    Object actualSessionAttributeIfOk =
+        BLCRequestUtils.getSessionAttributeIfOk(request, "Attribute");
 
     // Assert
     verify(request, atLeast(1)).getAttribute(Mockito.<String>any(), anyInt());
@@ -145,38 +172,44 @@ public class BLCRequestUtilsDiffblueTest {
 
   /**
    * Test {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}.
-   * <p>
-   * Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BLCRequestUtils.setSessionAttributeIfOk(WebRequest, String, Object)"})
   public void testSetSessionAttributeIfOk() {
     // Arrange
-    ServletWebRequest request = new ServletWebRequest(new MockHttpServletRequest());
+    ServletWebRequest request =
+        new ServletWebRequest(new HttpServletRequestWrapper(new MockHttpServletRequest()));
 
     // Act
-    boolean actualSetSessionAttributeIfOkResult = BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute",
-        BLCFieldUtils.NULL_FIELD);
+    boolean actualSetSessionAttributeIfOkResult =
+        BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute", BLCFieldUtils.NULL_FIELD);
 
     // Assert
     Object sessionMutex = request.getSessionMutex();
     assertTrue(sessionMutex instanceof MockHttpSession);
     assertTrue(actualSetSessionAttributeIfOkResult);
-    assertArrayEquals(new String[]{"Attribute"}, ((MockHttpSession) sessionMutex).getValueNames());
+    assertArrayEquals(new String[] {"Attribute"}, ((MockHttpSession) sessionMutex).getValueNames());
   }
 
   /**
    * Test {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}.
+   *
    * <ul>
-   *   <li>Given {@code false}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code false}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BLCRequestUtils.setSessionAttributeIfOk(WebRequest, String, Object)"})
   public void testSetSessionAttributeIfOk_givenFalse_thenReturnFalse() {
     // Arrange
@@ -184,25 +217,28 @@ public class BLCRequestUtilsDiffblueTest {
     when(request.getAttribute(Mockito.<String>any(), anyInt())).thenReturn(false);
 
     // Act
-    boolean actualSetSessionAttributeIfOkResult = BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute",
-        BLCFieldUtils.NULL_FIELD);
+    boolean actualSetSessionAttributeIfOkResult =
+        BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute", BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    verify(request).getAttribute("blOkToUseSession", 0);
     assertFalse(actualSetSessionAttributeIfOkResult);
   }
 
   /**
    * Test {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}.
+   *
    * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then calls {@link RequestAttributes#setAttribute(String, Object, int)}.</li>
+   *   <li>Given {@code true}.
+   *   <li>Then calls {@link WebRequest#setAttribute(String, Object, int)}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String, Object)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#setSessionAttributeIfOk(WebRequest, String,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean BLCRequestUtils.setSessionAttributeIfOk(WebRequest, String, Object)"})
   public void testSetSessionAttributeIfOk_givenTrue_thenCallsSetAttribute() {
     // Arrange
@@ -211,132 +247,101 @@ public class BLCRequestUtilsDiffblueTest {
     doNothing().when(request).setAttribute(Mockito.<String>any(), Mockito.<Object>any(), anyInt());
 
     // Act
-    boolean actualSetSessionAttributeIfOkResult = BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute",
-        BLCFieldUtils.NULL_FIELD);
+    boolean actualSetSessionAttributeIfOkResult =
+        BLCRequestUtils.setSessionAttributeIfOk(request, "Attribute", BLCFieldUtils.NULL_FIELD);
 
     // Assert
-    verify(request).getAttribute(eq("blOkToUseSession"), eq(0));
+    verify(request).getAttribute("blOkToUseSession", 0);
     verify(request).setAttribute(eq("Attribute"), isA(Object.class), eq(1));
     assertTrue(actualSetSessionAttributeIfOkResult);
   }
 
   /**
    * Test {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}.
+   *
    * <ul>
-   *   <li>Then return {@code https://example.org/example}.</li>
+   *   <li>Then return {@code https://example.org/example}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BLCRequestUtils.getURLorHeaderParameter(WebRequest, String)"})
   public void testGetURLorHeaderParameter_thenReturnHttpsExampleOrgExample() {
     // Arrange
     DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
     when(request.getHeader(Mockito.<String>any())).thenReturn("https://example.org/example");
+    SessionlessHttpServletRequestWrapper request2 =
+        new SessionlessHttpServletRequestWrapper(request);
+    HttpServletRequestWrapper request3 = new HttpServletRequestWrapper(request2);
 
     // Act
-    String actualURLorHeaderParameter = BLCRequestUtils.getURLorHeaderParameter(
-        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(request)), "https://example.org/example");
+    String actualURLorHeaderParameter =
+        BLCRequestUtils.getURLorHeaderParameter(
+            new ServletWebRequest(request3), "https://example.org/example");
 
     // Assert
-    verify(request).getHeader(eq("https://example.org/example"));
+    verify(request).getHeader("https://example.org/example");
     assertEquals("https://example.org/example", actualURLorHeaderParameter);
   }
 
   /**
    * Test {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}.
+   *
    * <ul>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getURLorHeaderParameter(WebRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BLCRequestUtils.getURLorHeaderParameter(WebRequest, String)"})
   public void testGetURLorHeaderParameter_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull(BLCRequestUtils.getURLorHeaderParameter(
-        new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
-        "https://example.org/example"));
-  }
-
-  /**
-   * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
-   * <ul>
-   *   <li>Given {@code Request}.</li>
-   *   <li>Then return {@code Request}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
-  public void testGetRequestURIWithoutContext_givenRequest_thenReturnRequest() {
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setRequestURI("Request");
-    request.setContextPath(null);
+    HttpServletRequestWrapper request =
+        new HttpServletRequestWrapper(
+            new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
 
     // Act and Assert
-    assertEquals("Request", BLCRequestUtils.getRequestURIWithoutContext(request));
+    assertNull(
+        BLCRequestUtils.getURLorHeaderParameter(
+            new ServletWebRequest(request), "https://example.org/example"));
   }
 
   /**
    * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
-   * <ul>
-   *   <li>Given {@code ;}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
-  public void testGetRequestURIWithoutContext_givenSemicolon() {
-    // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
-    request.setRequestURI(";");
-    request.setContextPath(null);
-
-    // Act and Assert
-    assertEquals("", BLCRequestUtils.getRequestURIWithoutContext(request));
-  }
-
-  /**
-   * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
-   * <ul>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
-  public void testGetRequestURIWithoutContext_thenReturnEmptyString() {
+  public void testGetRequestURIWithoutContext() {
     // Arrange, Act and Assert
-    assertEquals("", BLCRequestUtils
-        .getRequestURIWithoutContext(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())));
+    assertEquals(
+        "",
+        BLCRequestUtils.getRequestURIWithoutContext(
+            new HttpServletRequestWrapper(
+                new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()))));
   }
 
   /**
    * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
-   * <ul>
-   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()} RequestURI is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
-  public void testGetRequestURIWithoutContext_whenMockHttpServletRequestRequestURIIsNull() {
+  public void testGetRequestURIWithoutContext2() {
     // Arrange
-    MockHttpServletRequest request = new MockHttpServletRequest();
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
     request.setRequestURI(null);
     request.setContextPath(null);
 
@@ -346,15 +351,41 @@ public class BLCRequestUtilsDiffblueTest {
 
   /**
    * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@code ;}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
+  public void testGetRequestURIWithoutContext_givenSemicolon_thenReturnEmptyString() {
+    // Arrange
+    MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext());
+    request.setRequestURI(";");
+    request.setContextPath(null);
+
+    // Act and Assert
+    assertEquals("", BLCRequestUtils.getRequestURIWithoutContext(request));
+  }
+
+  /**
+   * Test {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCRequestUtils#getRequestURIWithoutContext(HttpServletRequest)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BLCRequestUtils.getRequestURIWithoutContext(HttpServletRequest)"})
   public void testGetRequestURIWithoutContext_whenNull_thenReturnNull() {
     // Arrange, Act and Assert

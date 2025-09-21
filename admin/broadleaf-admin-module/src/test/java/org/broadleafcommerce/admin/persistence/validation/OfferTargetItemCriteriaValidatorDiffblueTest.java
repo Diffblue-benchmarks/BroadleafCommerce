@@ -21,13 +21,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -55,25 +54,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {OfferTargetItemCriteriaValidator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class OfferTargetItemCriteriaValidatorDiffblueTest {
-  @Autowired
-  private OfferTargetItemCriteriaValidator offerTargetItemCriteriaValidator;
+  @Autowired private OfferTargetItemCriteriaValidator offerTargetItemCriteriaValidator;
 
   @MockBean(name = "blRuleFieldExtractionUtility")
   private RuleFieldExtractionUtility ruleFieldExtractionUtility;
 
   /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
    * <ul>
-   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code type}.</li>
-   *   <li>Then calls {@link DataWrapper#getData()}.</li>
+   *   <li>Given {@link DataDTO} (default constructor) Condition is {@code type}.
+   *   <li>Then calls {@link DataWrapper#getData()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_givenDataDTOConditionIsType_thenCallsGetData() {
     // Arrange
     DataDTO dataDTO = new DataDTO();
@@ -88,27 +91,32 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
 
     ArrayList<DataDTO> dataDTOList = new ArrayList<>();
     dataDTOList.add(dataDTO);
+
     DataWrapper dataWrapper = mock(DataWrapper.class);
     when(dataWrapper.getData()).thenReturn(dataDTOList);
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any())).thenReturn(dataWrapper);
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getValue()).thenReturn("ORDER_ITEM");
+    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
+        .thenReturn(dataWrapper);
+
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "ORDER_ITEM"));
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getUnHtmlEncodedValue();
-    verify(property, atLeast(1)).getValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper(eq("secret"));
+    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("ORDER_ITEM");
     verify(dataWrapper).getData();
     assertNull(actualValidateResult.getErrorMessage());
     assertFalse(actualValidateResult.isNotValid());
@@ -117,42 +125,51 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
    * <ul>
-   *   <li>Given {@link DataWrapper} {@link DataWrapper#getRawMvel()} return {@code Raw Mvel}.</li>
-   *   <li>Then calls {@link DataWrapper#getRawMvel()}.</li>
+   *   <li>Given {@link DataWrapper} {@link DataWrapper#getRawMvel()} return {@code Raw Mvel}.
+   *   <li>Then calls {@link DataWrapper#getRawMvel()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_givenDataWrapperGetRawMvelReturnRawMvel_thenCallsGetRawMvel() {
     // Arrange
     DataWrapper dataWrapper = mock(DataWrapper.class);
     when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
     when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any())).thenReturn(dataWrapper);
-    Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
-    when(property.getValue()).thenReturn("ORDER_ITEM");
+    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
+        .thenReturn(dataWrapper);
+
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "ORDER_ITEM"));
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getUnHtmlEncodedValue();
-    verify(property, atLeast(1)).getValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper(eq("secret"));
+    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("ORDER_ITEM");
     verify(dataWrapper).getData();
     verify(dataWrapper).getRawMvel();
     assertNull(actualValidateResult.getErrorMessage());
@@ -162,27 +179,28 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
    * <ul>
-   *   <li>Given {@link Property} {@link Property#getUnHtmlEncodedValue()} return {@code null}.</li>
-   *   <li>Then calls {@link DataWrapper#getRawMvel()}.</li>
+   *   <li>Given {@link Property} {@link Property#getValue()} return {@link Boolean#TRUE} toString.
+   *   <li>Then calls {@link Property#getValue()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
-  public void testValidate_givenPropertyGetUnHtmlEncodedValueReturnNull_thenCallsGetRawMvel() {
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
+  public void testValidate_givenPropertyGetValueReturnTrueToString_thenCallsGetValue() {
     // Arrange
-    DataWrapper dataWrapper = mock(DataWrapper.class);
-    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
-    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any())).thenReturn(dataWrapper);
     Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn(null);
-    when(property.getValue()).thenReturn("ORDER_ITEM");
+    when(property.getValue()).thenReturn(Boolean.TRUE.toString());
+
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
@@ -190,48 +208,15 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
-
-    // Assert
-    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property, atLeast(1)).getUnHtmlEncodedValue();
-    verify(property, atLeast(1)).getValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper(isNull());
-    verify(dataWrapper).getData();
-    verify(dataWrapper).getRawMvel();
-    assertNull(actualValidateResult.getErrorMessage());
-    assertFalse(actualValidateResult.isNotValid());
-    assertTrue(actualValidateResult.getErrorMessages().isEmpty());
-    assertTrue(actualValidateResult.isValid());
-  }
-
-  /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
-   * <ul>
-   *   <li>Given {@link Property} {@link Property#getValue()} return {@code 42}.</li>
-   *   <li>Then return ErrorMessage is {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
-  public void testValidate_givenPropertyGetValueReturn42_thenReturnErrorMessageIsNull() {
-    // Arrange
-    Property property = mock(Property.class);
-    when(property.getValue()).thenReturn("42");
-    Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
-    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
-    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
-    HashMap<String, String> validationConfiguration = new HashMap<>();
-
-    // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
@@ -243,29 +228,42 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
    * <ul>
-   *   <li>Given {@link Property#Property()}.</li>
-   *   <li>When {@link Entity} {@link Entity#findProperty(String)} return {@link Property#Property()}.</li>
+   *   <li>Given {@link Property#Property(String, String)} with {@code Name} and value is {@link
+   *       Boolean#TRUE} toString.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
-  public void testValidate_givenProperty_whenEntityFindPropertyReturnProperty() {
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
+  public void testValidate_givenPropertyWithNameAndValueIsTrueToString() {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+    Property property = new Property("Name", Boolean.TRUE.toString());
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
     HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
@@ -276,23 +274,34 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
    * <ul>
-   *   <li>Then return ErrorMessages size is one.</li>
+   *   <li>Then calls {@link Property#getUnHtmlEncodedValue()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
-  public void testValidate_thenReturnErrorMessagesSizeIsOne() {
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
+  public void testValidate_thenCallsGetUnHtmlEncodedValue() {
     // Arrange
-    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any())).thenReturn(new DataWrapper());
+    DataWrapper dataWrapper = mock(DataWrapper.class);
+    when(dataWrapper.getRawMvel()).thenReturn("Raw Mvel");
+    when(dataWrapper.getData()).thenReturn(new ArrayList<>());
+    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
+        .thenReturn(dataWrapper);
+
     Property property = mock(Property.class);
-    when(property.getUnHtmlEncodedValue()).thenReturn("secret");
+    when(property.getUnHtmlEncodedValue()).thenReturn(null);
     when(property.getValue()).thenReturn("ORDER_ITEM");
+
     Entity entity = mock(Entity.class);
     when(entity.findProperty(Mockito.<String>any())).thenReturn(property);
     SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
@@ -300,14 +309,71 @@ public class OfferTargetItemCriteriaValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = offerTargetItemCriteriaValidator.validate(entity, instance,
-        entityFieldMetadata, validationConfiguration, new BasicFieldMetadata(), "Property Name", "42");
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
-    verify(property).getUnHtmlEncodedValue();
+    verify(property, atLeast(1)).getUnHtmlEncodedValue();
     verify(property, atLeast(1)).getValue();
-    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper(eq("secret"));
+    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper(null);
+    verify(dataWrapper).getData();
+    verify(dataWrapper).getRawMvel();
+    assertNull(actualValidateResult.getErrorMessage());
+    assertFalse(actualValidateResult.isNotValid());
+    assertTrue(actualValidateResult.getErrorMessages().isEmpty());
+    assertTrue(actualValidateResult.isValid());
+  }
+
+  /**
+   * Test {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}.
+   *
+   * <ul>
+   *   <li>Then return ErrorMessages size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferTargetItemCriteriaValidator#validate(Entity, Serializable,
+   * Map, Map, BasicFieldMetadata, String, String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PropertyValidationResult OfferTargetItemCriteriaValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
+  public void testValidate_thenReturnErrorMessagesSizeIsOne() {
+    // Arrange
+    when(ruleFieldExtractionUtility.convertJsonToDataWrapper(Mockito.<String>any()))
+        .thenReturn(new DataWrapper());
+
+    Entity entity = mock(Entity.class);
+    when(entity.findProperty(Mockito.<String>any())).thenReturn(new Property("Name", "ORDER_ITEM"));
+    SimpleDateFormat instance = new SimpleDateFormat("yyyy/mm/dd");
+    HashMap<String, FieldMetadata> entityFieldMetadata = new HashMap<>();
+    HashMap<String, String> validationConfiguration = new HashMap<>();
+
+    // Act
+    PropertyValidationResult actualValidateResult =
+        offerTargetItemCriteriaValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            "42");
+
+    // Assert
+    verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+    verify(ruleFieldExtractionUtility).convertJsonToDataWrapper("ORDER_ITEM");
     List<String> errorMessages = actualValidateResult.getErrorMessages();
     assertEquals(1, errorMessages.size());
     assertEquals("requiredValidationFailure", errorMessages.get(0));

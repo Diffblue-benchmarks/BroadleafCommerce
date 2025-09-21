@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.email.service.message;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.UnsupportedEncodingException;
 import org.junit.Test;
@@ -29,8 +30,9 @@ import org.junit.experimental.categories.Category;
 public class AttachmentDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link Attachment}
    *   <li>{@link Attachment#setData(byte[])}
@@ -42,23 +44,30 @@ public class AttachmentDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Attachment.<init>()", "byte[] Attachment.getData()", "String Attachment.getFilename()",
-      "String Attachment.getMimeType()", "void Attachment.setData(byte[])", "void Attachment.setFilename(String)",
-      "void Attachment.setMimeType(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void Attachment.<init>()",
+    "byte[] Attachment.getData()",
+    "String Attachment.getFilename()",
+    "String Attachment.getMimeType()",
+    "void Attachment.setData(byte[])",
+    "void Attachment.setFilename(String)",
+    "void Attachment.setMimeType(String)"
+  })
   public void testGettersAndSetters() throws UnsupportedEncodingException {
     // Arrange and Act
     Attachment actualAttachment = new Attachment();
     byte[] data = "AXAXAXAX".getBytes("UTF-8");
     actualAttachment.setData(data);
     actualAttachment.setFilename("foo.txt");
-    actualAttachment.setMimeType("Mime Type");
+    actualAttachment.setMimeType("text/plain");
     byte[] actualData = actualAttachment.getData();
     String actualFilename = actualAttachment.getFilename();
 
     // Assert
-    assertEquals("Mime Type", actualAttachment.getMimeType());
     assertEquals("foo.txt", actualFilename);
+    assertEquals("text/plain", actualAttachment.getMimeType());
     assertSame(data, actualData);
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), actualData);
   }

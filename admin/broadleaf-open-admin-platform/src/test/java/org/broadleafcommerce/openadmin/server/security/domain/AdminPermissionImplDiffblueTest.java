@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,172 +40,99 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminPermissionImplDiffblueTest {
-  @Autowired
-  private AdminPermissionImpl adminPermissionImpl;
+  @Autowired private AdminPermissionImpl adminPermissionImpl;
 
   /**
    * Test {@link AdminPermissionImpl#getType()}.
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#getType()}
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#getType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PermissionType AdminPermissionImpl.getType()"})
   public void testGetType() {
     // Arrange, Act and Assert
-    assertNull((new AdminPermissionImpl()).getType());
+    assertNull(adminPermissionImpl.getType());
   }
 
   /**
    * Test {@link AdminPermissionImpl#setType(PermissionType)}.
+   *
    * <ul>
-   *   <li>Given {@link AdminPermissionImpl} (default constructor).</li>
-   *   <li>When {@link PermissionType#ALL}.</li>
-   *   <li>Then {@link AdminPermissionImpl} (default constructor) Type is {@link PermissionType#ALL} {@link PermissionType#ALL}.</li>
+   *   <li>When {@link PermissionType#ALL}.
+   *   <li>Then {@link AdminPermissionImpl} {@link AdminPermissionImpl#type} is {@code ALL}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#setType(PermissionType)}
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#setType(PermissionType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminPermissionImpl.setType(PermissionType)"})
-  public void testSetType_givenAdminPermissionImpl_whenAll_thenAdminPermissionImplTypeIsAllAll() {
-    // Arrange
-    AdminPermissionImpl adminPermissionImpl2 = new AdminPermissionImpl();
-    PermissionType type = PermissionType.ALL;
-
-    // Act
-    adminPermissionImpl2.setType(type);
+  public void testSetType_whenAll_thenAdminPermissionImplTypeIsAll() {
+    // Arrange and Act
+    adminPermissionImpl.setType(PermissionType.ALL);
 
     // Assert
-    assertEquals("ALL", adminPermissionImpl2.type);
-    PermissionType expectedType = type.ALL;
-    assertSame(expectedType, adminPermissionImpl2.getType());
+    assertEquals("ALL", adminPermissionImpl.type);
+    assertSame(PermissionType.ALL, adminPermissionImpl.getType());
   }
 
   /**
    * Test {@link AdminPermissionImpl#setType(PermissionType)}.
+   *
    * <ul>
-   *   <li>Then {@link AdminPermissionImpl} (default constructor) Type Type is {@code ALL}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link AdminPermissionImpl} {@link AdminPermissionImpl#type} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#setType(PermissionType)}
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#setType(PermissionType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminPermissionImpl.setType(PermissionType)"})
-  public void testSetType_thenAdminPermissionImplTypeTypeIsAll() {
-    // Arrange
-    AdminPermissionImpl adminPermissionImpl2 = new AdminPermissionImpl();
-    adminPermissionImpl2.setAllRoles(new HashSet<>());
-    adminPermissionImpl2.setAllUsers(new HashSet<>());
-    adminPermissionImpl2.setDescription("The characteristics of someone or something");
-    adminPermissionImpl2.setId(1L);
-    adminPermissionImpl2.setName("Name");
-    adminPermissionImpl2.setQualifiedEntities(new ArrayList<>());
-    adminPermissionImpl2.setType(PermissionType.ALL);
-
-    // Act
-    adminPermissionImpl2.setType(null);
+  public void testSetType_whenNull_thenAdminPermissionImplTypeIsNull() {
+    // Arrange and Act
+    adminPermissionImpl.setType(null);
 
     // Assert that nothing has changed
-    PermissionType type = adminPermissionImpl2.getType();
-    assertEquals("ALL", type.getType());
-    assertEquals("ALL", adminPermissionImpl2.type);
-    assertEquals("All", type.getFriendlyType());
+    assertNull(adminPermissionImpl.type);
+    assertNull(adminPermissionImpl.getType());
   }
 
   /**
    * Test {@link AdminPermissionImpl#clone()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminPermissionImpl} (default constructor).</li>
-   *   <li>Then return Id is {@code null}.</li>
+   *   <li>Given {@link AdminPermissionImpl} (default constructor) AllRoles is {@link
+   *       HashSet#HashSet()}.
+   *   <li>Then return Type Type is {@code ALL}.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#clone()}
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
-  public void testClone_givenAdminPermissionImpl_thenReturnIdIsNull() {
-    // Arrange and Act
-    AdminPermission actualCloneResult = (new AdminPermissionImpl()).clone();
-
-    // Assert
-    assertTrue(actualCloneResult instanceof AdminPermissionImpl);
-    assertNull(actualCloneResult.getId());
-    assertNull(actualCloneResult.getDescription());
-    assertNull(actualCloneResult.getName());
-    assertNull(((AdminPermissionImpl) actualCloneResult).type);
-    assertNull(actualCloneResult.getType());
-  }
-
-  /**
-   * Test {@link AdminPermissionImpl#clone()}.
-   * <ul>
-   *   <li>Then return QualifiedEntities size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#clone()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
-  public void testClone_thenReturnQualifiedEntitiesSizeIsOne() {
+  public void testClone_givenAdminPermissionImplAllRolesIsHashSet_thenReturnTypeTypeIsAll() {
     // Arrange
-    ArrayList<AdminPermissionQualifiedEntity> qualifiedEntities = new ArrayList<>();
-    qualifiedEntities.add(new AdminPermissionQualifiedEntityImpl());
-
-    AdminPermissionImpl adminPermissionImpl2 = new AdminPermissionImpl();
-    adminPermissionImpl2.setAllRoles(new HashSet<>());
-    adminPermissionImpl2.setAllUsers(new HashSet<>());
-    adminPermissionImpl2.setDescription("The characteristics of someone or something");
-    adminPermissionImpl2.setId(1L);
-    adminPermissionImpl2.setName("Name");
-    adminPermissionImpl2.setType(PermissionType.ALL);
-    adminPermissionImpl2.setQualifiedEntities(qualifiedEntities);
+    AdminPermissionImpl adminPermissionImpl = new AdminPermissionImpl();
+    adminPermissionImpl.setAllRoles(new HashSet<>());
+    adminPermissionImpl.setAllUsers(new HashSet<>());
+    adminPermissionImpl.setDescription("The characteristics of someone or something");
+    adminPermissionImpl.setId(1L);
+    adminPermissionImpl.setName("Name");
+    adminPermissionImpl.setType(PermissionType.ALL);
+    adminPermissionImpl.setQualifiedEntities(null);
 
     // Act
-    AdminPermission actualCloneResult = adminPermissionImpl2.clone();
-
-    // Assert
-    assertTrue(actualCloneResult instanceof AdminPermissionImpl);
-    List<AdminPermissionQualifiedEntity> qualifiedEntities2 = actualCloneResult.getQualifiedEntities();
-    assertEquals(1, qualifiedEntities2.size());
-    AdminPermissionQualifiedEntity getResult = qualifiedEntities2.get(0);
-    assertTrue(getResult instanceof AdminPermissionQualifiedEntityImpl);
-    assertNull(getResult.getId());
-    assertNull(getResult.getCeilingEntityFullyQualifiedName());
-    assertSame(actualCloneResult, getResult.getAdminPermission());
-  }
-
-  /**
-   * Test {@link AdminPermissionImpl#clone()}.
-   * <ul>
-   *   <li>Then return Type Type is {@code ALL}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#clone()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
-  public void testClone_thenReturnTypeTypeIsAll() {
-    // Arrange
-    AdminPermissionImpl adminPermissionImpl2 = new AdminPermissionImpl();
-    adminPermissionImpl2.setAllRoles(new HashSet<>());
-    adminPermissionImpl2.setAllUsers(new HashSet<>());
-    adminPermissionImpl2.setDescription("The characteristics of someone or something");
-    adminPermissionImpl2.setId(1L);
-    adminPermissionImpl2.setName("Name");
-    adminPermissionImpl2.setType(PermissionType.ALL);
-    adminPermissionImpl2.setQualifiedEntities(null);
-
-    // Act
-    AdminPermission actualCloneResult = adminPermissionImpl2.clone();
+    AdminPermission actualCloneResult = adminPermissionImpl.clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminPermissionImpl);
@@ -219,22 +147,129 @@ public class AdminPermissionImplDiffblueTest {
   }
 
   /**
-   * Test {@link AdminPermissionImpl#getAllChildPermissions()}.
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#getAllChildPermissions()}
+   * Test {@link AdminPermissionImpl#clone()}.
+   *
+   * <ul>
+   *   <li>Given {@link AdminPermissionImpl} QualifiedEntities is {@code null}.
+   *   <li>Then return Id is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
+  public void testClone_givenAdminPermissionImplQualifiedEntitiesIsNull_thenReturnIdIsNull() {
+    // Arrange
+    adminPermissionImpl.setQualifiedEntities(null);
+
+    // Act
+    AdminPermission actualCloneResult = adminPermissionImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof AdminPermissionImpl);
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.getDescription());
+    assertNull(actualCloneResult.getName());
+    assertNull(((AdminPermissionImpl) actualCloneResult).type);
+    assertNull(actualCloneResult.getType());
+    assertFalse(((AdminPermissionImpl) actualCloneResult).isFriendly);
+    assertTrue(actualCloneResult.getAllChildPermissions().isEmpty());
+    assertTrue(actualCloneResult.getAllParentPermissions().isEmpty());
+    assertTrue(actualCloneResult.getQualifiedEntities().isEmpty());
+    assertTrue(((AdminPermissionImpl) actualCloneResult).allChildPermissions.isEmpty());
+    assertTrue(actualCloneResult.getAllRoles().isEmpty());
+    assertTrue(actualCloneResult.getAllUsers().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminPermissionImpl#clone()}.
+   *
+   * <ul>
+   *   <li>Given {@link AdminPermissionImpl}.
+   *   <li>Then return Id is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#clone()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
+  public void testClone_givenAdminPermissionImpl_thenReturnIdIsNull() {
+    // Arrange and Act
+    AdminPermission actualCloneResult = adminPermissionImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof AdminPermissionImpl);
+    assertNull(actualCloneResult.getId());
+    assertNull(actualCloneResult.getDescription());
+    assertNull(actualCloneResult.getName());
+    assertNull(((AdminPermissionImpl) actualCloneResult).type);
+    assertNull(actualCloneResult.getType());
+    assertFalse(((AdminPermissionImpl) actualCloneResult).isFriendly);
+    assertTrue(actualCloneResult.getAllChildPermissions().isEmpty());
+    assertTrue(actualCloneResult.getAllParentPermissions().isEmpty());
+    assertTrue(actualCloneResult.getQualifiedEntities().isEmpty());
+    assertTrue(((AdminPermissionImpl) actualCloneResult).allChildPermissions.isEmpty());
+    assertTrue(actualCloneResult.getAllRoles().isEmpty());
+    assertTrue(actualCloneResult.getAllUsers().isEmpty());
+  }
+
+  /**
+   * Test {@link AdminPermissionImpl#clone()}.
+   *
+   * <ul>
+   *   <li>Then return QualifiedEntities size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#clone()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"AdminPermission AdminPermissionImpl.clone()"})
+  public void testClone_thenReturnQualifiedEntitiesSizeIsOne() {
+    // Arrange
+    ArrayList<AdminPermissionQualifiedEntity> qualifiedEntities = new ArrayList<>();
+    qualifiedEntities.add(new AdminPermissionQualifiedEntityImpl());
+    adminPermissionImpl.setQualifiedEntities(qualifiedEntities);
+
+    // Act
+    AdminPermission actualCloneResult = adminPermissionImpl.clone();
+
+    // Assert
+    assertTrue(actualCloneResult instanceof AdminPermissionImpl);
+    List<AdminPermissionQualifiedEntity> qualifiedEntities2 =
+        actualCloneResult.getQualifiedEntities();
+    assertEquals(1, qualifiedEntities2.size());
+    AdminPermissionQualifiedEntity getResult = qualifiedEntities2.get(0);
+    assertTrue(getResult instanceof AdminPermissionQualifiedEntityImpl);
+    assertNull(getResult.getId());
+    assertNull(getResult.getCeilingEntityFullyQualifiedName());
+    assertSame(actualCloneResult, getResult.getAdminPermission());
+  }
+
+  /**
+   * Test {@link AdminPermissionImpl#getAllChildPermissions()}.
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#getAllChildPermissions()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List AdminPermissionImpl.getAllChildPermissions()"})
   public void testGetAllChildPermissions() {
     // Arrange, Act and Assert
-    assertTrue((new AdminPermissionImpl()).getAllChildPermissions().isEmpty());
+    assertTrue(adminPermissionImpl.getAllChildPermissions().isEmpty());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AdminPermissionImpl#setAllRoles(Set)}
    *   <li>{@link AdminPermissionImpl#setAllUsers(Set)}
@@ -252,14 +287,23 @@ public class AdminPermissionImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"List AdminPermissionImpl.getAllParentPermissions()", "Set AdminPermissionImpl.getAllRoles()",
-      "Set AdminPermissionImpl.getAllUsers()", "String AdminPermissionImpl.getDescription()",
-      "Long AdminPermissionImpl.getId()", "String AdminPermissionImpl.getName()",
-      "List AdminPermissionImpl.getQualifiedEntities()", "void AdminPermissionImpl.setAllRoles(Set)",
-      "void AdminPermissionImpl.setAllUsers(Set)", "void AdminPermissionImpl.setDescription(String)",
-      "void AdminPermissionImpl.setId(Long)", "void AdminPermissionImpl.setName(String)",
-      "void AdminPermissionImpl.setQualifiedEntities(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "List AdminPermissionImpl.getAllParentPermissions()",
+    "Set AdminPermissionImpl.getAllRoles()",
+    "Set AdminPermissionImpl.getAllUsers()",
+    "String AdminPermissionImpl.getDescription()",
+    "Long AdminPermissionImpl.getId()",
+    "String AdminPermissionImpl.getName()",
+    "List AdminPermissionImpl.getQualifiedEntities()",
+    "void AdminPermissionImpl.setAllRoles(Set)",
+    "void AdminPermissionImpl.setAllUsers(Set)",
+    "void AdminPermissionImpl.setDescription(String)",
+    "void AdminPermissionImpl.setId(Long)",
+    "void AdminPermissionImpl.setName(String)",
+    "void AdminPermissionImpl.setQualifiedEntities(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     AdminPermissionImpl adminPermissionImpl = new AdminPermissionImpl();
@@ -274,13 +318,15 @@ public class AdminPermissionImplDiffblueTest {
     adminPermissionImpl.setName("Name");
     ArrayList<AdminPermissionQualifiedEntity> qualifiedEntities = new ArrayList<>();
     adminPermissionImpl.setQualifiedEntities(qualifiedEntities);
-    List<AdminPermission> actualAllParentPermissions = adminPermissionImpl.getAllParentPermissions();
+    List<AdminPermission> actualAllParentPermissions =
+        adminPermissionImpl.getAllParentPermissions();
     Set<AdminRole> actualAllRoles = adminPermissionImpl.getAllRoles();
     Set<AdminUser> actualAllUsers = adminPermissionImpl.getAllUsers();
     String actualDescription = adminPermissionImpl.getDescription();
     Long actualId = adminPermissionImpl.getId();
     String actualName = adminPermissionImpl.getName();
-    List<AdminPermissionQualifiedEntity> actualQualifiedEntities = adminPermissionImpl.getQualifiedEntities();
+    List<AdminPermissionQualifiedEntity> actualQualifiedEntities =
+        adminPermissionImpl.getQualifiedEntities();
 
     // Assert
     assertEquals("Name", actualName);
@@ -297,24 +343,26 @@ public class AdminPermissionImplDiffblueTest {
 
   /**
    * Test {@link AdminPermissionImpl#isFriendly()}.
-   * <p>
-   * Method under test: {@link AdminPermissionImpl#isFriendly()}
+   *
+   * <p>Method under test: {@link AdminPermissionImpl#isFriendly()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Boolean AdminPermissionImpl.isFriendly()"})
   public void testIsFriendly() {
     // Arrange, Act and Assert
-    assertFalse((new AdminPermissionImpl()).isFriendly());
+    assertFalse(adminPermissionImpl.isFriendly());
   }
 
   /**
    * Test new {@link AdminPermissionImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AdminPermissionImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link AdminPermissionImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AdminPermissionImpl.<init>()"})
   public void testNewAdminPermissionImpl() {
     // Arrange and Act

@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.ch
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,16 +29,22 @@ import org.junit.experimental.categories.Category;
 public class ConversionExceptionDiffblueTest {
   /**
    * Test {@link ConversionException#ConversionException(String)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConversionException#ConversionException(String)}
+   *
+   * <p>Method under test: {@link ConversionException#ConversionException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ConversionException.<init>()", "void ConversionException.<init>(String)",
-      "void ConversionException.<init>(String, Throwable)", "void ConversionException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ConversionException.<init>()",
+    "void ConversionException.<init>(String)",
+    "void ConversionException.<init>(String, Throwable)",
+    "void ConversionException.<init>(Throwable)"
+  })
   public void testNewConversionException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     ConversionException actualConversionException = new ConversionException("An error occurred");
@@ -50,22 +57,29 @@ public class ConversionExceptionDiffblueTest {
 
   /**
    * Test {@link ConversionException#ConversionException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConversionException#ConversionException(String, Throwable)}
+   *
+   * <p>Method under test: {@link ConversionException#ConversionException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ConversionException.<init>()", "void ConversionException.<init>(String)",
-      "void ConversionException.<init>(String, Throwable)", "void ConversionException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ConversionException.<init>()",
+    "void ConversionException.<init>(String)",
+    "void ConversionException.<init>(String, Throwable)",
+    "void ConversionException.<init>(Throwable)"
+  })
   public void testNewConversionException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    ConversionException actualConversionException = new ConversionException("An error occurred", cause);
+    ConversionException actualConversionException =
+        new ConversionException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualConversionException.getMessage());
@@ -75,16 +89,22 @@ public class ConversionExceptionDiffblueTest {
 
   /**
    * Test {@link ConversionException#ConversionException()}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConversionException#ConversionException()}
+   *
+   * <p>Method under test: {@link ConversionException#ConversionException()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ConversionException.<init>()", "void ConversionException.<init>(String)",
-      "void ConversionException.<init>(String, Throwable)", "void ConversionException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ConversionException.<init>()",
+    "void ConversionException.<init>(String)",
+    "void ConversionException.<init>(String, Throwable)",
+    "void ConversionException.<init>(Throwable)"
+  })
   public void testNewConversionException_thenReturnMessageIsNull() {
     // Arrange and Act
     ConversionException actualConversionException = new ConversionException();
@@ -97,17 +117,23 @@ public class ConversionExceptionDiffblueTest {
 
   /**
    * Test {@link ConversionException#ConversionException(Throwable)}.
+   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code Throwable}.</li>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Message is {@code Throwable}.
    * </ul>
-   * <p>
-   * Method under test: {@link ConversionException#ConversionException(Throwable)}
+   *
+   * <p>Method under test: {@link ConversionException#ConversionException(Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ConversionException.<init>()", "void ConversionException.<init>(String)",
-      "void ConversionException.<init>(String, Throwable)", "void ConversionException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ConversionException.<init>()",
+    "void ConversionException.<init>(String)",
+    "void ConversionException.<init>(String, Throwable)",
+    "void ConversionException.<init>(Throwable)"
+  })
   public void testNewConversionException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

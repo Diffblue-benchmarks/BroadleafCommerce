@@ -25,7 +25,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,22 +51,23 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {PageCartRuleProcessor.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractCartRuleProcessorDiffblueTest {
-  @Autowired
-  private AbstractCartRuleProcessor<PageDTO> abstractCartRuleProcessor;
+  @Autowired private AbstractCartRuleProcessor<PageDTO> abstractCartRuleProcessor;
 
   /**
    * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
+   *
    * <ul>
-   *   <li>Then return {@link NullOrderImpl} (default constructor).</li>
+   *   <li>Then return {@link NullOrderImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order AbstractCartRuleProcessor.lookupOrderForCustomer(Customer)"})
   public void testLookupOrderForCustomer_thenReturnNullOrderImpl() {
     // Arrange
@@ -77,7 +79,8 @@ public class AbstractCartRuleProcessorDiffblueTest {
     pageCartRuleProcessor.setOrderDao(orderDao);
 
     // Act
-    Order actualLookupOrderForCustomerResult = pageCartRuleProcessor.lookupOrderForCustomer(new CustomerImpl());
+    Order actualLookupOrderForCustomerResult =
+        pageCartRuleProcessor.lookupOrderForCustomer(new CustomerImpl());
 
     // Assert
     verify(orderDao).readCartForCustomer(isA(Customer.class));
@@ -86,15 +89,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Order AbstractCartRuleProcessor.lookupOrderForCustomer(Customer)"})
   public void testLookupOrderForCustomer_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -103,16 +108,19 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code 42}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_given42_whenItemCriteriaDTOMatchRuleIs42_thenReturnFalse() {
     // Arrange
@@ -129,14 +137,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code discreteOrderItem}.</li>
+   *   <li>Given {@code discreteOrderItem}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenDiscreteOrderItem() {
     // Arrange
@@ -153,15 +164,18 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given empty string.</li>
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is empty string.</li>
+   *   <li>Given empty string.
+   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenEmptyString_whenItemCriteriaDTOMatchRuleIsEmptyString() {
     // Arrange
@@ -178,14 +192,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getAdditionalAttributes()[UU]}.</li>
+   *   <li>Given {@code getAdditionalAttributes()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetAdditionalAttributesUu() {
     // Arrange
@@ -202,14 +219,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getAdditionalFields()[UU]}.</li>
+   *   <li>Given {@code getAdditionalFields()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetAdditionalFieldsUu() {
     // Arrange
@@ -226,14 +246,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getCategoryAttributesMap()[UU]}.</li>
+   *   <li>Given {@code getCategoryAttributesMap()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetCategoryAttributesMapUu() {
     // Arrange
@@ -250,14 +273,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getCustomerAttributes()[UU]}.</li>
+   *   <li>Given {@code getCustomerAttributes()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetCustomerAttributesUu() {
     // Arrange
@@ -274,14 +300,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getOrderItemAttributes()[UU]}.</li>
+   *   <li>Given {@code getOrderItemAttributes()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetOrderItemAttributesUu() {
     // Arrange
@@ -298,14 +327,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getProductAttributes()[UU]}.</li>
+   *   <li>Given {@code getProductAttributes()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetProductAttributesUu() {
     // Arrange
@@ -322,14 +354,17 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code getSkuAttributes()[UU]}.</li>
+   *   <li>Given {@code getSkuAttributes()[UU]}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenGetSkuAttributesUu() {
     // Arrange
@@ -346,16 +381,19 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given {@code Match Rule}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code Match Rule}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenMatchRule_whenArrayList_thenReturnFalse() {
     // Arrange
@@ -369,16 +407,47 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given seven.</li>
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is seven.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code null}.
+   *   <li>When {@link ItemCriteriaDTO} (default constructor) MatchRule is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
+  public void testCheckItemCriteria_givenNull_whenItemCriteriaDTOMatchRuleIsNull() {
+    // Arrange
+    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
+    itemCriteria.setMatchRule(null);
+    itemCriteria.setQty(1);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    // Act and Assert
+    assertFalse(abstractCartRuleProcessor.checkItemCriteria(itemCriteria, orderItems));
+  }
+
+  /**
+   * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
+   * <ul>
+   *   <li>Given seven.
+   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is seven.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenSeven_whenItemCriteriaDTOQtyIsSeven_thenReturnFalse() {
     // Arrange
@@ -395,16 +464,19 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   *
    * <ul>
-   *   <li>Given zero.</li>
-   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is zero.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given zero.
+   *   <li>When {@link ItemCriteriaDTO} (default constructor) Qty is zero.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AbstractCartRuleProcessor.checkItemCriteria(ItemCriteriaDTO, List)"})
   public void testCheckItemCriteria_givenZero_whenItemCriteriaDTOQtyIsZero_thenReturnTrue() {
     // Arrange
@@ -421,11 +493,12 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}.
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractCartRuleProcessor.setOrderDao(OrderDao)"})
   public void testSetOrderDao() {
     // Arrange
@@ -441,11 +514,12 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#getOrderDao()}.
-   * <p>
-   * Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
+   *
+   * <p>Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OrderDao AbstractCartRuleProcessor.getOrderDao()"})
   public void testGetOrderDao() {
     // Arrange, Act and Assert

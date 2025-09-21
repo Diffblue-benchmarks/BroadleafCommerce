@@ -23,7 +23,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +39,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RatingSummaryImplDiffblueTest {
-  @Autowired
-  private RatingSummaryImpl ratingSummaryImpl;
+  @Autowired private RatingSummaryImpl ratingSummaryImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link RatingSummaryImpl#setId(Long)}
    *   <li>{@link RatingSummaryImpl#setItemId(String)}
@@ -59,11 +60,17 @@ public class RatingSummaryImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Double RatingSummaryImpl.getAverageRating()", "Long RatingSummaryImpl.getId()",
-      "String RatingSummaryImpl.getItemId()", "void RatingSummaryImpl.setId(Long)",
-      "void RatingSummaryImpl.setItemId(String)", "void RatingSummaryImpl.setRatings(List)",
-      "void RatingSummaryImpl.setReviews(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Double RatingSummaryImpl.getAverageRating()",
+    "Long RatingSummaryImpl.getId()",
+    "String RatingSummaryImpl.getItemId()",
+    "void RatingSummaryImpl.setId(Long)",
+    "void RatingSummaryImpl.setItemId(String)",
+    "void RatingSummaryImpl.setRatings(List)",
+    "void RatingSummaryImpl.setReviews(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     RatingSummaryImpl ratingSummaryImpl = new RatingSummaryImpl();
@@ -84,178 +91,169 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
+   *   <li>Given {@link RatingSummaryImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_givenRatingSummaryImpl() {
-    // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-
-    // Act
-    ratingSummaryImpl2.resetAverageRating();
+    // Arrange and Act
+    ratingSummaryImpl.resetAverageRating();
 
     // Assert that nothing has changed
-    assertEquals(0.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
+    assertEquals(0.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Ratings is {@code null}.</li>
+   *   <li>Given {@link RatingSummaryImpl} Ratings is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_givenRatingSummaryImplRatingsIsNull() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setReviews(new ArrayList<>());
-    ratingSummaryImpl2.setRatings(null);
+    ratingSummaryImpl.setRatings(null);
 
     // Act
-    ratingSummaryImpl2.resetAverageRating();
+    ratingSummaryImpl.resetAverageRating();
 
     // Assert that nothing has changed
-    assertEquals(0.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
+    assertEquals(0.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
    * Test {@link RatingSummaryImpl#resetAverageRating()}.
+   *
    * <ul>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) AverageRating doubleValue is ten.</li>
+   *   <li>Then {@link RatingSummaryImpl} AverageRating doubleValue is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#resetAverageRating()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.resetAverageRating()"})
   public void testResetAverageRating_thenRatingSummaryImplAverageRatingDoubleValueIsTen() {
     // Arrange
-    RatingDetailImpl ratingDetailImpl = mock(RatingDetailImpl.class);
-    when(ratingDetailImpl.getRating()).thenReturn(10.0d);
+    RatingDetail ratingDetail = mock(RatingDetail.class);
+    when(ratingDetail.getRating()).thenReturn(10.0d);
 
     ArrayList<RatingDetail> ratings = new ArrayList<>();
-    ratings.add(ratingDetailImpl);
-
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setReviews(new ArrayList<>());
-    ratingSummaryImpl2.setRatings(ratings);
+    ratings.add(ratingDetail);
+    ratingSummaryImpl.setRatings(ratings);
 
     // Act
-    ratingSummaryImpl2.resetAverageRating();
+    ratingSummaryImpl.resetAverageRating();
 
     // Assert
-    verify(ratingDetailImpl).getRating();
-    assertEquals(10.0d, ratingSummaryImpl2.getAverageRating().doubleValue(), 0.0);
+    verify(ratingDetail).getRating();
+    assertEquals(10.0d, ratingSummaryImpl.getAverageRating().doubleValue(), 0.0);
   }
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
+   *   <li>Given {@link RatingSummaryImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfRatings()"})
   public void testGetNumberOfRatings_givenRatingSummaryImpl() {
     // Arrange, Act and Assert
-    assertEquals(0, (new RatingSummaryImpl()).getNumberOfRatings().intValue());
+    assertEquals(0, ratingSummaryImpl.getNumberOfRatings().intValue());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link RatingSummaryImpl} Ratings is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfRatings()"})
-  public void testGetNumberOfRatings_givenRatingSummaryImplIdIsOne() {
+  public void testGetNumberOfRatings_givenRatingSummaryImplRatingsIsNull() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setReviews(new ArrayList<>());
-    ratingSummaryImpl2.setRatings(null);
+    ratingSummaryImpl.setRatings(null);
 
     // Act and Assert
-    assertEquals(0, ratingSummaryImpl2.getNumberOfRatings().intValue());
+    assertEquals(0, ratingSummaryImpl.getNumberOfRatings().intValue());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
+   *   <li>Given {@link RatingSummaryImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfReviews()"})
   public void testGetNumberOfReviews_givenRatingSummaryImpl() {
     // Arrange, Act and Assert
-    assertEquals(0, (new RatingSummaryImpl()).getNumberOfReviews().intValue());
+    assertEquals(0, ratingSummaryImpl.getNumberOfReviews().intValue());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link RatingSummaryImpl} Reviews is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Integer RatingSummaryImpl.getNumberOfReviews()"})
-  public void testGetNumberOfReviews_givenRatingSummaryImplIdIsOne() {
+  public void testGetNumberOfReviews_givenRatingSummaryImplReviewsIsNull() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setRatings(new ArrayList<>());
-    ratingSummaryImpl2.setReviews(null);
+    ratingSummaryImpl.setReviews(null);
 
     // Act and Assert
-    assertEquals(0, ratingSummaryImpl2.getNumberOfReviews().intValue());
+    assertEquals(0, ratingSummaryImpl.getNumberOfReviews().intValue());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getRatingType()}.
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatingType()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getRatingType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"RatingType RatingSummaryImpl.getRatingType()"})
   public void testGetRatingType() {
     // Arrange and Act
-    RatingType actualRatingType = (new RatingSummaryImpl()).getRatingType();
+    RatingType actualRatingType = ratingSummaryImpl.getRatingType();
 
     // Assert
     assertNull(actualRatingType.getFriendlyType());
@@ -264,176 +262,169 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
+   *
    * <ul>
-   *   <li>Given {@code Type}.</li>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType FriendlyType is {@code Type}.</li>
+   *   <li>Given {@code Type}.
+   *   <li>Then {@link RatingSummaryImpl} RatingType FriendlyType is {@code Type}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
   public void testSetRatingType_givenType_thenRatingSummaryImplRatingTypeFriendlyTypeIsType() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
     RatingType type = mock(RatingType.class);
     when(type.getType()).thenReturn("Type");
 
     // Act
-    ratingSummaryImpl2.setRatingType(type);
+    ratingSummaryImpl.setRatingType(type);
 
     // Assert
     verify(type).getType();
-    RatingType ratingType = ratingSummaryImpl2.getRatingType();
+    RatingType ratingType = ratingSummaryImpl.getRatingType();
     assertEquals("Type", ratingType.getFriendlyType());
     assertEquals("Type", ratingType.getType());
-    assertEquals("Type", ratingSummaryImpl2.ratingTypeStr);
+    assertEquals("Type", ratingSummaryImpl.ratingTypeStr);
   }
 
   /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
+   *
    * <ul>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) RatingType FriendlyType is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link RatingSummaryImpl} RatingType FriendlyType is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
-  public void testSetRatingType_thenRatingSummaryImplRatingTypeFriendlyTypeIsNull() {
-    // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setRatings(new ArrayList<>());
-    ratingSummaryImpl2.setReviews(new ArrayList<>());
+  public void testSetRatingType_whenNull_thenRatingSummaryImplRatingTypeFriendlyTypeIsNull() {
+    // Arrange and Act
+    ratingSummaryImpl.setRatingType(null);
 
-    // Act
-    ratingSummaryImpl2.setRatingType(null);
-
-    // Assert
-    RatingType ratingType = ratingSummaryImpl2.getRatingType();
+    // Assert that nothing has changed
+    RatingType ratingType = ratingSummaryImpl.getRatingType();
     assertNull(ratingType.getFriendlyType());
     assertNull(ratingType.getType());
-    assertNull(ratingSummaryImpl2.ratingTypeStr);
+    assertNull(ratingSummaryImpl.ratingTypeStr);
   }
 
   /**
    * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
+   *
    * <ul>
-   *   <li>When {@link RatingType#PRODUCT}.</li>
-   *   <li>Then {@link RatingSummaryImpl} (default constructor) {@link RatingSummaryImpl#ratingTypeStr} is {@code PRODUCT}.</li>
+   *   <li>When {@link RatingType#PRODUCT}.
+   *   <li>Then {@link RatingSummaryImpl} {@link RatingSummaryImpl#ratingTypeStr} is {@code
+   *       PRODUCT}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.setRatingType(RatingType)"})
   public void testSetRatingType_whenProduct_thenRatingSummaryImplRatingTypeStrIsProduct() {
-    // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    RatingType type = RatingType.PRODUCT;
-
-    // Act
-    ratingSummaryImpl2.setRatingType(type);
+    // Arrange and Act
+    ratingSummaryImpl.setRatingType(RatingType.PRODUCT);
 
     // Assert
-    assertEquals("PRODUCT", ratingSummaryImpl2.ratingTypeStr);
-    RatingType expectedRatingType = type.PRODUCT;
-    assertEquals(expectedRatingType, ratingSummaryImpl2.getRatingType());
+    assertEquals("PRODUCT", ratingSummaryImpl.ratingTypeStr);
+    assertEquals(RatingType.PRODUCT, ratingSummaryImpl.getRatingType());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getRatings()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
+   *   <li>Given {@link RatingSummaryImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatings()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getRatings()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RatingSummaryImpl.getRatings()"})
   public void testGetRatings_givenRatingSummaryImpl() {
     // Arrange, Act and Assert
-    assertTrue((new RatingSummaryImpl()).getRatings().isEmpty());
+    assertTrue(ratingSummaryImpl.getRatings().isEmpty());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getRatings()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link RatingSummaryImpl} Ratings is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getRatings()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getRatings()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RatingSummaryImpl.getRatings()"})
-  public void testGetRatings_givenRatingSummaryImplIdIsOne() {
+  public void testGetRatings_givenRatingSummaryImplRatingsIsNull() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setReviews(new ArrayList<>());
-    ratingSummaryImpl2.setRatings(null);
+    ratingSummaryImpl.setRatings(null);
 
     // Act and Assert
-    assertTrue(ratingSummaryImpl2.getRatings().isEmpty());
+    assertTrue(ratingSummaryImpl.getRatings().isEmpty());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getReviews()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
+   *   <li>Given {@link RatingSummaryImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getReviews()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getReviews()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RatingSummaryImpl.getReviews()"})
   public void testGetReviews_givenRatingSummaryImpl() {
     // Arrange, Act and Assert
-    assertTrue((new RatingSummaryImpl()).getReviews().isEmpty());
+    assertTrue(ratingSummaryImpl.getReviews().isEmpty());
   }
 
   /**
    * Test {@link RatingSummaryImpl#getReviews()}.
+   *
    * <ul>
-   *   <li>Given {@link RatingSummaryImpl} (default constructor) Id is one.</li>
+   *   <li>Given {@link RatingSummaryImpl} Reviews is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link RatingSummaryImpl#getReviews()}
+   *
+   * <p>Method under test: {@link RatingSummaryImpl#getReviews()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List RatingSummaryImpl.getReviews()"})
-  public void testGetReviews_givenRatingSummaryImplIdIsOne() {
+  public void testGetReviews_givenRatingSummaryImplReviewsIsNull() {
     // Arrange
-    RatingSummaryImpl ratingSummaryImpl2 = new RatingSummaryImpl();
-    ratingSummaryImpl2.setId(1L);
-    ratingSummaryImpl2.setItemId("42");
-    ratingSummaryImpl2.setRatingType(RatingType.PRODUCT);
-    ratingSummaryImpl2.setRatings(new ArrayList<>());
-    ratingSummaryImpl2.setReviews(null);
+    ratingSummaryImpl.setReviews(null);
 
     // Act and Assert
-    assertTrue(ratingSummaryImpl2.getReviews().isEmpty());
+    assertTrue(ratingSummaryImpl.getReviews().isEmpty());
   }
 
   /**
    * Test new {@link RatingSummaryImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link RatingSummaryImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link RatingSummaryImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void RatingSummaryImpl.<init>()"})
   public void testNewRatingSummaryImpl() {
     // Arrange and Act

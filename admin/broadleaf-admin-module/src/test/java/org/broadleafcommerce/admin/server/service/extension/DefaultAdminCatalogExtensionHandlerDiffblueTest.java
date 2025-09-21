@@ -23,11 +23,11 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.broadleafcommerce.common.extension.ExtensionManager;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.domain.Product;
@@ -47,54 +47,60 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class DefaultAdminCatalogExtensionHandlerDiffblueTest {
-  @Mock
-  private AdminCatalogServiceExtensionManager adminCatalogServiceExtensionManager;
+  @Mock private AdminCatalogServiceExtensionManager adminCatalogServiceExtensionManager;
 
-  @Mock
-  private CatalogService catalogService;
+  @Mock private CatalogService catalogService;
 
-  @InjectMocks
-  private DefaultAdminCatalogExtensionHandler defaultAdminCatalogExtensionHandler;
+  @InjectMocks private DefaultAdminCatalogExtensionHandler defaultAdminCatalogExtensionHandler;
 
   /**
    * Test {@link DefaultAdminCatalogExtensionHandler#init()}.
+   *
    * <ul>
-   *   <li>Then calls {@link ExtensionManager#registerHandler(ExtensionHandler)}.</li>
+   *   <li>Then calls {@link AdminCatalogServiceExtensionManager#registerHandler(ExtensionHandler)}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultAdminCatalogExtensionHandler#init()}
+   *
+   * <p>Method under test: {@link DefaultAdminCatalogExtensionHandler#init()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DefaultAdminCatalogExtensionHandler.init()"})
   public void testInit_thenCallsRegisterHandler() {
     // Arrange
-    when(adminCatalogServiceExtensionManager.registerHandler(Mockito.<AdminCatalogServiceExtensionHandler>any()))
+    when(adminCatalogServiceExtensionManager.registerHandler(
+            Mockito.<AdminCatalogServiceExtensionHandler>any()))
         .thenReturn(true);
 
     // Act
     defaultAdminCatalogExtensionHandler.init();
 
     // Assert
-    verify(adminCatalogServiceExtensionManager).registerHandler(isA(AdminCatalogServiceExtensionHandler.class));
+    verify(adminCatalogServiceExtensionManager)
+        .registerHandler(isA(AdminCatalogServiceExtensionHandler.class));
   }
 
   /**
-   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}.
+   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List,
+   * ExtensionResultHolder)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code HANDLED}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}
+   *
+   * <p>Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product,
+   * List, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"})
+    "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"
+  })
   public void testPersistSkuPermutation_givenArrayList_thenReturnHandled() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -107,52 +113,30 @@ public class DefaultAdminCatalogExtensionHandlerDiffblueTest {
     erh.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.HANDLED,
-        defaultAdminCatalogExtensionHandler.persistSkuPermutation(product, permutationsToGenerate, erh));
+    assertEquals(
+        ExtensionResultStatusType.HANDLED,
+        defaultAdminCatalogExtensionHandler.persistSkuPermutation(
+            product, permutationsToGenerate, erh));
     assertTrue(product.getAdditionalSkus().isEmpty());
   }
 
   /**
-   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}.
+   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List,
+   * ExtensionResultHolder)}.
+   *
    * <ul>
-   *   <li>Given {@link CatalogService}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code HANDLED}.</li>
+   *   <li>Then {@link ProductBundleImpl} (default constructor) AdditionalSkus size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}
+   *
+   * <p>Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product,
+   * List, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"})
-  public void testPersistSkuPermutation_givenCatalogService_whenArrayList_thenReturnHandled() {
-    // Arrange
-    ProductBundleImpl product = new ProductBundleImpl();
-    ArrayList<List<ProductOptionValue>> permutationsToGenerate = new ArrayList<>();
-
-    ExtensionResultHolder<Integer> erh = new ExtensionResultHolder<>();
-    erh.setResult(1);
-    erh.setThrowable(new Throwable());
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.HANDLED,
-        defaultAdminCatalogExtensionHandler.persistSkuPermutation(product, permutationsToGenerate, erh));
-    assertTrue(product.getAdditionalSkus().isEmpty());
-  }
-
-  /**
-   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}.
-   * <ul>
-   *   <li>Then {@link ProductBundleImpl} (default constructor) AdditionalSkus size is one.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List, ExtensionResultHolder)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"})
+    "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"
+  })
   public void testPersistSkuPermutation_thenProductBundleImplAdditionalSkusSizeIsOne() {
     // Arrange
     when(catalogService.saveProduct(Mockito.<Product>any())).thenReturn(new ProductBundleImpl());
@@ -186,16 +170,53 @@ public class DefaultAdminCatalogExtensionHandlerDiffblueTest {
   }
 
   /**
-   * Test {@link DefaultAdminCatalogExtensionHandler#getPriority()}.
-   * <p>
-   * Method under test: {@link DefaultAdminCatalogExtensionHandler#getPriority()}
+   * Test {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product, List,
+   * ExtensionResultHolder)}.
+   *
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code HANDLED}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DefaultAdminCatalogExtensionHandler#persistSkuPermutation(Product,
+   * List, ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType DefaultAdminCatalogExtensionHandler.persistSkuPermutation(Product, List, ExtensionResultHolder)"
+  })
+  public void testPersistSkuPermutation_whenArrayList_thenReturnHandled() {
+    // Arrange
+    ProductBundleImpl product = new ProductBundleImpl();
+    ArrayList<List<ProductOptionValue>> permutationsToGenerate = new ArrayList<>();
+
+    ExtensionResultHolder<Integer> erh = new ExtensionResultHolder<>();
+    erh.setResult(1);
+    erh.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.HANDLED,
+        defaultAdminCatalogExtensionHandler.persistSkuPermutation(
+            product, permutationsToGenerate, erh));
+    assertTrue(product.getAdditionalSkus().isEmpty());
+  }
+
+  /**
+   * Test {@link DefaultAdminCatalogExtensionHandler#getPriority()}.
+   *
+   * <p>Method under test: {@link DefaultAdminCatalogExtensionHandler#getPriority()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int DefaultAdminCatalogExtensionHandler.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
-    assertEquals(AdminCatalogServiceExtensionHandler.DEFAULT_PRIORITY,
+    assertEquals(
+        AdminCatalogServiceExtensionHandler.DEFAULT_PRIORITY,
         defaultAdminCatalogExtensionHandler.getPriority());
   }
 }

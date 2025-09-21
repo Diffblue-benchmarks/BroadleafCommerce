@@ -20,20 +20,15 @@ package org.broadleafcommerce.core.search.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -46,70 +41,69 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class IndexFieldTypeImplDiffblueTest {
-  @Autowired
-  private IndexFieldTypeImpl indexFieldTypeImpl;
+  @Autowired private IndexFieldTypeImpl indexFieldTypeImpl;
 
   /**
    * Test {@link IndexFieldTypeImpl#getFieldType()}.
-   * <p>
-   * Method under test: {@link IndexFieldTypeImpl#getFieldType()}
+   *
+   * <p>Method under test: {@link IndexFieldTypeImpl#getFieldType()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"FieldType IndexFieldTypeImpl.getFieldType()"})
   public void testGetFieldType() {
     // Arrange, Act and Assert
-    assertNull((new IndexFieldTypeImpl()).getFieldType());
+    assertNull(indexFieldTypeImpl.getFieldType());
   }
 
   /**
    * Test {@link IndexFieldTypeImpl#setFieldType(FieldType)}.
+   *
    * <ul>
-   *   <li>When {@link FieldType#BOOLEAN}.</li>
-   *   <li>Then {@link IndexFieldTypeImpl} (default constructor) {@link IndexFieldTypeImpl#fieldType} is {@code b}.</li>
+   *   <li>When {@link FieldType#BOOLEAN}.
+   *   <li>Then {@link IndexFieldTypeImpl} {@link IndexFieldTypeImpl#fieldType} is {@code b}.
    * </ul>
-   * <p>
-   * Method under test: {@link IndexFieldTypeImpl#setFieldType(FieldType)}
+   *
+   * <p>Method under test: {@link IndexFieldTypeImpl#setFieldType(FieldType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void IndexFieldTypeImpl.setFieldType(FieldType)"})
   public void testSetFieldType_whenBoolean_thenIndexFieldTypeImplFieldTypeIsB() {
-    // Arrange
-    IndexFieldTypeImpl indexFieldTypeImpl2 = new IndexFieldTypeImpl();
-    FieldType fieldType = FieldType.BOOLEAN;
-
-    // Act
-    indexFieldTypeImpl2.setFieldType(fieldType);
+    // Arrange and Act
+    indexFieldTypeImpl.setFieldType(FieldType.BOOLEAN);
 
     // Assert
-    assertEquals("b", indexFieldTypeImpl2.fieldType);
-    FieldType expectedFieldType = fieldType.BOOLEAN;
-    assertSame(expectedFieldType, indexFieldTypeImpl2.getFieldType());
+    assertEquals("b", indexFieldTypeImpl.fieldType);
+    assertSame(FieldType.BOOLEAN, indexFieldTypeImpl.getFieldType());
   }
 
   /**
    * Test {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    IndexFieldTypeImpl indexFieldTypeImpl2 = new IndexFieldTypeImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new IndexFieldTypeImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult = indexFieldTypeImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult =
+        indexFieldTypeImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -118,47 +112,116 @@ public class IndexFieldTypeImplDiffblueTest {
 
   /**
    * Test {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link IndexFieldTypeImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnIndexFieldTypeImpl() throws CloneNotSupportedException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    IndexFieldTypeImpl indexFieldTypeImpl2 = new IndexFieldTypeImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(indexFieldTypeImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult = indexFieldTypeImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult =
+        indexFieldTypeImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.core.search.domain.IndexFieldTypeImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    IndexFieldType clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof IndexFieldTypeImpl);
-    assertNull(clone.getId());
-    assertNull(((IndexFieldTypeImpl) clone).fieldType);
-    assertNull(clone.getIndexField());
-    assertNull(clone.getFieldType());
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    IndexFieldTypeImpl indexFieldTypeImpl = new IndexFieldTypeImpl();
+    indexFieldTypeImpl.setFieldType(FieldType.BOOLEAN);
+
+    IndexFieldTypeImpl indexFieldTypeImpl2 = new IndexFieldTypeImpl();
+    indexFieldTypeImpl2.setFieldType(FieldType.BOOLEAN);
+    indexFieldTypeImpl2.setId(1L);
+    indexFieldTypeImpl2.setIndexField(new IndexFieldImpl());
+    CreateResponse<Object> createResponse = new CreateResponse<>(indexFieldTypeImpl2, false);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult =
+        indexFieldTypeImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link IndexFieldImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * IndexFieldTypeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse IndexFieldTypeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_thenCallsCreateOrRetrieveCopyInstance()
+      throws CloneNotSupportedException {
+    // Arrange
+    IndexFieldImpl indexField = mock(IndexFieldImpl.class);
+    when(indexField.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new IndexFieldImpl(), true));
+
+    IndexFieldTypeImpl indexFieldTypeImpl = new IndexFieldTypeImpl();
+    indexFieldTypeImpl.setIndexField(indexField);
+
+    IndexFieldTypeImpl indexFieldTypeImpl2 = new IndexFieldTypeImpl();
+    indexFieldTypeImpl2.setFieldType(FieldType.BOOLEAN);
+    indexFieldTypeImpl2.setId(1L);
+    indexFieldTypeImpl2.setIndexField(new IndexFieldImpl());
+    CreateResponse<Object> createResponse = new CreateResponse<>(indexFieldTypeImpl2, false);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<IndexFieldType> actualCreateOrRetrieveCopyInstanceResult =
+        indexFieldTypeImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(indexField).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link IndexFieldTypeImpl}
    *   <li>{@link IndexFieldTypeImpl#setId(Long)}
@@ -168,10 +231,15 @@ public class IndexFieldTypeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void IndexFieldTypeImpl.<init>()", "Long IndexFieldTypeImpl.getId()",
-      "IndexField IndexFieldTypeImpl.getIndexField()", "void IndexFieldTypeImpl.setId(Long)",
-      "void IndexFieldTypeImpl.setIndexField(IndexField)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void IndexFieldTypeImpl.<init>()",
+    "Long IndexFieldTypeImpl.getId()",
+    "IndexField IndexFieldTypeImpl.getIndexField()",
+    "void IndexFieldTypeImpl.setId(Long)",
+    "void IndexFieldTypeImpl.setIndexField(IndexField)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     IndexFieldTypeImpl actualIndexFieldTypeImpl = new IndexFieldTypeImpl();

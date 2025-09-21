@@ -17,12 +17,11 @@
  */
 package org.broadleafcommerce.common.cache;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -38,133 +37,23 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractCacheMissAwareDiffblueTest {
-  @Mock
-  private CacheManager cacheManager;
+  @Mock private CacheManager cacheManager;
 
-  @Mock
-  private StatisticsService statisticsService;
-
-  @InjectMocks
-  private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", (new SystemPropertiesDaoImpl()).buildKey());
-  }
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>Then return {@code ThreadLocalManager.notify.orphans_true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_thenReturnThreadLocalManagerNotifyOrphansTrue() {
-    // Arrange
-    SystemPropertiesDaoImpl systemPropertiesDaoImpl = new SystemPropertiesDaoImpl();
-
-    // Act and Assert
-    assertEquals("ThreadLocalManager.notify.orphans_true",
-        systemPropertiesDaoImpl.buildKey("ThreadLocalManager.notify.orphans", Boolean.TRUE.toString()));
-  }
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>When {@code 42} and {@link Boolean#TRUE} toString.</li>
-   *   <li>Then return {@code 42_true}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_when42AndTrueToString_thenReturn42True() {
-    // Arrange
-    SystemPropertiesDaoImpl systemPropertiesDaoImpl = new SystemPropertiesDaoImpl();
-
-    // Act and Assert
-    assertEquals("42_true", systemPropertiesDaoImpl.buildKey("42", Boolean.TRUE.toString()));
-  }
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_whenEmptyString_thenReturnEmptyString() {
-    // Arrange, Act and Assert
-    assertEquals("", (new SystemPropertiesDaoImpl()).buildKey(""));
-  }
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_whenNull_thenReturnNull() {
-    // Arrange, Act and Assert
-    assertNull((new SystemPropertiesDaoImpl()).buildKey(null));
-  }
-
-  /**
-   * Test {@link AbstractCacheMissAware#buildKey(String[])}.
-   * <ul>
-   *   <li>When {@code Params}.</li>
-   *   <li>Then return {@code Params}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#buildKey(String[])}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AbstractCacheMissAware.buildKey(String[])"})
-  public void testBuildKey_whenParams_thenReturnParams() {
-    // Arrange, Act and Assert
-    assertEquals("Params", (new SystemPropertiesDaoImpl()).buildKey("Params"));
-  }
+  @InjectMocks private SystemPropertiesDaoImpl systemPropertiesDaoImpl;
 
   /**
    * Test {@link AbstractCacheMissAware#getCache(String)}.
+   *
    * <ul>
-   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractCacheMissAware#getCache(String)}
+   *
+   * <p>Method under test: {@link AbstractCacheMissAware#getCache(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Cache AbstractCacheMissAware.getCache(String)"})
   public void testGetCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
     // Arrange
@@ -174,7 +63,7 @@ public class AbstractCacheMissAwareDiffblueTest {
     Cache<String, SystemProperty> actualCache = systemPropertiesDaoImpl.getCache("Cache Name");
 
     // Assert
-    verify(cacheManager).getCache(eq("Cache Name"));
+    verify(cacheManager).getCache("Cache Name");
     assertNull(actualCache);
   }
 }

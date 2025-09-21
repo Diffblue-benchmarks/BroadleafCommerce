@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.junit.Test;
@@ -28,11 +29,12 @@ import org.junit.experimental.categories.Category;
 public class OperationTypesDiffblueTest {
   /**
    * Test {@link OperationTypes#OperationTypes()}.
-   * <p>
-   * Method under test: {@link OperationTypes#OperationTypes()}
+   *
+   * <p>Method under test: {@link OperationTypes#OperationTypes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OperationTypes.<init>()"})
   public void testNewOperationTypes() {
     // Arrange and Act
@@ -47,19 +49,27 @@ public class OperationTypesDiffblueTest {
   }
 
   /**
-   * Test {@link OperationTypes#OperationTypes(OperationType, OperationType, OperationType, OperationType, OperationType)}.
-   * <p>
-   * Method under test: {@link OperationTypes#OperationTypes(OperationType, OperationType, OperationType, OperationType, OperationType)}
+   * Test {@link OperationTypes#OperationTypes(OperationType, OperationType, OperationType,
+   * OperationType, OperationType)}.
+   *
+   * <p>Method under test: {@link OperationTypes#OperationTypes(OperationType, OperationType,
+   * OperationType, OperationType, OperationType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void OperationTypes.<init>(OperationType, OperationType, OperationType, OperationType, OperationType)"})
+    "void OperationTypes.<init>(OperationType, OperationType, OperationType, OperationType, OperationType)"
+  })
   public void testNewOperationTypes2() {
     // Arrange and Act
-    OperationTypes actualOperationTypes = new OperationTypes(OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE);
+    OperationTypes actualOperationTypes =
+        new OperationTypes(
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE);
 
     // Assert
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualOperationTypes.getAddType());
@@ -71,8 +81,9 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OperationTypes#setAddType(OperationType)}
    *   <li>{@link OperationTypes#setFetchType(OperationType)}
@@ -87,12 +98,20 @@ public class OperationTypesDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"OperationType OperationTypes.getAddType()", "OperationType OperationTypes.getFetchType()",
-      "OperationType OperationTypes.getInspectType()", "OperationType OperationTypes.getRemoveType()",
-      "OperationType OperationTypes.getUpdateType()", "void OperationTypes.setAddType(OperationType)",
-      "void OperationTypes.setFetchType(OperationType)", "void OperationTypes.setInspectType(OperationType)",
-      "void OperationTypes.setRemoveType(OperationType)", "void OperationTypes.setUpdateType(OperationType)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "OperationType OperationTypes.getAddType()",
+    "OperationType OperationTypes.getFetchType()",
+    "OperationType OperationTypes.getInspectType()",
+    "OperationType OperationTypes.getRemoveType()",
+    "OperationType OperationTypes.getUpdateType()",
+    "void OperationTypes.setAddType(OperationType)",
+    "void OperationTypes.setFetchType(OperationType)",
+    "void OperationTypes.setInspectType(OperationType)",
+    "void OperationTypes.setRemoveType(OperationType)",
+    "void OperationTypes.setUpdateType(OperationType)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
@@ -118,35 +137,42 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#cloneOperationTypes()}.
-   * <p>
-   * Method under test: {@link OperationTypes#cloneOperationTypes()}
+   *
+   * <p>Method under test: {@link OperationTypes#cloneOperationTypes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"OperationTypes OperationTypes.cloneOperationTypes()"})
   public void testCloneOperationTypes() {
     // Arrange
     OperationTypes operationTypes = new OperationTypes();
 
-    // Act and Assert
-    assertEquals(operationTypes, operationTypes.cloneOperationTypes());
+    // Act
+    OperationTypes actualCloneOperationTypesResult = operationTypes.cloneOperationTypes();
+
+    // Assert
+    assertEquals(operationTypes, actualCloneOperationTypesResult);
   }
 
   /**
    * Test {@link OperationTypes#equals(Object)}, and {@link OperationTypes#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OperationTypes#equals(Object)}
    *   <li>{@link OperationTypes#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -155,25 +181,27 @@ public class OperationTypesDiffblueTest {
 
     // Act and Assert
     assertEquals(operationTypes, operationTypes2);
-    int expectedHashCodeResult = operationTypes.hashCode();
-    assertEquals(expectedHashCodeResult, operationTypes2.hashCode());
+    assertEquals(operationTypes.hashCode(), operationTypes2.hashCode());
   }
 
   /**
    * Test {@link OperationTypes#equals(Object)}, and {@link OperationTypes#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OperationTypes#equals(Object)}
    *   <li>{@link OperationTypes#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -187,21 +215,27 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OperationTypes operationTypes = new OperationTypes(OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE, OperationType.NONDESTRUCTIVEREMOVE,
-        OperationType.NONDESTRUCTIVEREMOVE);
+    OperationTypes operationTypes =
+        new OperationTypes(
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE,
+            OperationType.NONDESTRUCTIVEREMOVE);
 
     // Act and Assert
     assertNotEquals(operationTypes, new OperationTypes());
@@ -209,15 +243,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -230,15 +266,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -251,15 +289,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -272,15 +312,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -293,15 +335,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -310,15 +354,17 @@ public class OperationTypesDiffblueTest {
 
   /**
    * Test {@link OperationTypes#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OperationTypes#equals(Object)}
+   *
+   * <p>Method under test: {@link OperationTypes#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean OperationTypes.equals(Object)", "int OperationTypes.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

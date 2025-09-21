@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.service.persistence.module;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,35 +35,23 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class FetchExtractionRequestDiffblueTest {
-  @Mock
-  private CriteriaTransferObject criteriaTransferObject;
-
-  @InjectMocks
-  private FetchExtractionRequest fetchExtractionRequest;
-
-  @Mock
-  private List<? extends Serializable> list;
-
-  @Mock
-  private Map<String, FieldMetadata> map;
-
-  @Mock
-  private PersistencePackage persistencePackage;
+  @InjectMocks private FetchExtractionRequest fetchExtractionRequest;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link FetchExtractionRequest#FetchExtractionRequest(PersistencePackage, CriteriaTransferObject, String, Map, List)}
+   *   <li>{@link FetchExtractionRequest#FetchExtractionRequest(PersistencePackage,
+   *       CriteriaTransferObject, String, Map, List)}
    *   <li>{@link FetchExtractionRequest#setAlternateUnfilteredMergedProperties(Map)}
    *   <li>{@link FetchExtractionRequest#setCeilingEntity(String)}
    *   <li>{@link FetchExtractionRequest#setCto(CriteriaTransferObject)}
@@ -80,21 +69,25 @@ public class FetchExtractionRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void FetchExtractionRequest.<init>(PersistencePackage, CriteriaTransferObject, String, Map, List)",
-      "Map FetchExtractionRequest.getAlternateUnfilteredMergedProperties()",
-      "String FetchExtractionRequest.getCeilingEntity()", "CriteriaTransferObject FetchExtractionRequest.getCto()",
-      "String FetchExtractionRequest.getPathToTargetObject()",
-      "PersistencePackage FetchExtractionRequest.getPersistencePackage()",
-      "Map FetchExtractionRequest.getPrimaryUnfilteredMergedProperties()", "List FetchExtractionRequest.getRecords()",
-      "void FetchExtractionRequest.setAlternateUnfilteredMergedProperties(Map)",
-      "void FetchExtractionRequest.setCeilingEntity(String)",
-      "void FetchExtractionRequest.setCto(CriteriaTransferObject)",
-      "void FetchExtractionRequest.setPathToTargetObject(String)",
-      "void FetchExtractionRequest.setPersistencePackage(PersistencePackage)",
-      "void FetchExtractionRequest.setPrimaryUnfilteredMergedProperties(Map)",
-      "void FetchExtractionRequest.setRecords(List)"})
+    "void FetchExtractionRequest.<init>(PersistencePackage, CriteriaTransferObject, String, Map, List)",
+    "Map FetchExtractionRequest.getAlternateUnfilteredMergedProperties()",
+    "String FetchExtractionRequest.getCeilingEntity()",
+    "CriteriaTransferObject FetchExtractionRequest.getCto()",
+    "String FetchExtractionRequest.getPathToTargetObject()",
+    "PersistencePackage FetchExtractionRequest.getPersistencePackage()",
+    "Map FetchExtractionRequest.getPrimaryUnfilteredMergedProperties()",
+    "List FetchExtractionRequest.getRecords()",
+    "void FetchExtractionRequest.setAlternateUnfilteredMergedProperties(Map)",
+    "void FetchExtractionRequest.setCeilingEntity(String)",
+    "void FetchExtractionRequest.setCto(CriteriaTransferObject)",
+    "void FetchExtractionRequest.setPathToTargetObject(String)",
+    "void FetchExtractionRequest.setPersistencePackage(PersistencePackage)",
+    "void FetchExtractionRequest.setPrimaryUnfilteredMergedProperties(Map)",
+    "void FetchExtractionRequest.setRecords(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
@@ -102,10 +95,16 @@ public class FetchExtractionRequestDiffblueTest {
     HashMap<String, FieldMetadata> primaryUnfilteredMergedProperties = new HashMap<>();
 
     // Act
-    FetchExtractionRequest actualFetchExtractionRequest = new FetchExtractionRequest(persistencePackage, cto,
-        "0123456789ABCDEF", primaryUnfilteredMergedProperties, new ArrayList<>());
+    FetchExtractionRequest actualFetchExtractionRequest =
+        new FetchExtractionRequest(
+            persistencePackage,
+            cto,
+            "0123456789ABCDEF",
+            primaryUnfilteredMergedProperties,
+            new ArrayList<>());
     HashMap<String, FieldMetadata> alternateUnfilteredMergedProperties = new HashMap<>();
-    actualFetchExtractionRequest.setAlternateUnfilteredMergedProperties(alternateUnfilteredMergedProperties);
+    actualFetchExtractionRequest.setAlternateUnfilteredMergedProperties(
+        alternateUnfilteredMergedProperties);
     actualFetchExtractionRequest.setCeilingEntity("0123456789ABCDEF");
     CriteriaTransferObject cto2 = new CriteriaTransferObject();
     actualFetchExtractionRequest.setCto(cto2);
@@ -113,17 +112,19 @@ public class FetchExtractionRequestDiffblueTest {
     PersistencePackage persistencePackage2 = new PersistencePackage();
     actualFetchExtractionRequest.setPersistencePackage(persistencePackage2);
     HashMap<String, FieldMetadata> primaryUnfilteredMergedProperties2 = new HashMap<>();
-    actualFetchExtractionRequest.setPrimaryUnfilteredMergedProperties(primaryUnfilteredMergedProperties2);
+    actualFetchExtractionRequest.setPrimaryUnfilteredMergedProperties(
+        primaryUnfilteredMergedProperties2);
     ArrayList<Serializable> records = new ArrayList<>();
     actualFetchExtractionRequest.setRecords(records);
-    Map<String, FieldMetadata> actualAlternateUnfilteredMergedProperties = actualFetchExtractionRequest
-        .getAlternateUnfilteredMergedProperties();
+    Map<String, FieldMetadata> actualAlternateUnfilteredMergedProperties =
+        actualFetchExtractionRequest.getAlternateUnfilteredMergedProperties();
     String actualCeilingEntity = actualFetchExtractionRequest.getCeilingEntity();
     CriteriaTransferObject actualCto = actualFetchExtractionRequest.getCto();
     String actualPathToTargetObject = actualFetchExtractionRequest.getPathToTargetObject();
-    PersistencePackage actualPersistencePackage = actualFetchExtractionRequest.getPersistencePackage();
-    Map<String, FieldMetadata> actualPrimaryUnfilteredMergedProperties = actualFetchExtractionRequest
-        .getPrimaryUnfilteredMergedProperties();
+    PersistencePackage actualPersistencePackage =
+        actualFetchExtractionRequest.getPersistencePackage();
+    Map<String, FieldMetadata> actualPrimaryUnfilteredMergedProperties =
+        actualFetchExtractionRequest.getPrimaryUnfilteredMergedProperties();
     List<? extends Serializable> actualRecords = actualFetchExtractionRequest.getRecords();
 
     // Assert
@@ -141,42 +142,56 @@ public class FetchExtractionRequestDiffblueTest {
 
   /**
    * Test {@link FetchExtractionRequest#withAlternateMergedProperties(Map)}.
-   * <p>
-   * Method under test: {@link FetchExtractionRequest#withAlternateMergedProperties(Map)}
+   *
+   * <p>Method under test: {@link FetchExtractionRequest#withAlternateMergedProperties(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FetchExtractionRequest FetchExtractionRequest.withAlternateMergedProperties(Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "FetchExtractionRequest FetchExtractionRequest.withAlternateMergedProperties(Map)"
+  })
   public void testWithAlternateMergedProperties() {
     // Arrange
     PersistencePackage persistencePackage = new PersistencePackage();
     CriteriaTransferObject cto = new CriteriaTransferObject();
     HashMap<String, FieldMetadata> primaryUnfilteredMergedProperties = new HashMap<>();
-    FetchExtractionRequest fetchExtractionRequest = new FetchExtractionRequest(persistencePackage, cto,
-        "0123456789ABCDEF", primaryUnfilteredMergedProperties, new ArrayList<>());
+
+    FetchExtractionRequest fetchExtractionRequest =
+        new FetchExtractionRequest(
+            persistencePackage,
+            cto,
+            "0123456789ABCDEF",
+            primaryUnfilteredMergedProperties,
+            new ArrayList<>());
     HashMap<String, FieldMetadata> alternateUnfilteredMergedProperties = new HashMap<>();
 
     // Act
-    FetchExtractionRequest actualWithAlternateMergedPropertiesResult = fetchExtractionRequest
-        .withAlternateMergedProperties(alternateUnfilteredMergedProperties);
+    FetchExtractionRequest actualWithAlternateMergedPropertiesResult =
+        fetchExtractionRequest.withAlternateMergedProperties(alternateUnfilteredMergedProperties);
 
     // Assert
-    assertSame(alternateUnfilteredMergedProperties, fetchExtractionRequest.getAlternateUnfilteredMergedProperties());
+    assertSame(
+        alternateUnfilteredMergedProperties,
+        fetchExtractionRequest.getAlternateUnfilteredMergedProperties());
     assertSame(fetchExtractionRequest, actualWithAlternateMergedPropertiesResult);
   }
 
   /**
    * Test {@link FetchExtractionRequest#withPathToTargetObject(String)}.
-   * <p>
-   * Method under test: {@link FetchExtractionRequest#withPathToTargetObject(String)}
+   *
+   * <p>Method under test: {@link FetchExtractionRequest#withPathToTargetObject(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"FetchExtractionRequest FetchExtractionRequest.withPathToTargetObject(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "FetchExtractionRequest FetchExtractionRequest.withPathToTargetObject(String)"
+  })
   public void testWithPathToTargetObject() {
     // Arrange and Act
-    FetchExtractionRequest actualWithPathToTargetObjectResult = fetchExtractionRequest
-        .withPathToTargetObject("0123456789ABCDEF");
+    FetchExtractionRequest actualWithPathToTargetObjectResult =
+        fetchExtractionRequest.withPathToTargetObject("0123456789ABCDEF");
 
     // Assert
     assertEquals("0123456789ABCDEF", fetchExtractionRequest.getPathToTargetObject());

@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.service.artifact.image.effects.ch
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,8 +28,9 @@ import org.junit.experimental.categories.Category;
 public class UnmarshalledParameterDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link UnmarshalledParameter}
    *   <li>{@link UnmarshalledParameter#setApplyFactor(boolean)}
@@ -42,12 +44,19 @@ public class UnmarshalledParameterDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void UnmarshalledParameter.<init>()", "String UnmarshalledParameter.getName()",
-      "String UnmarshalledParameter.getType()", "String UnmarshalledParameter.getValue()",
-      "boolean UnmarshalledParameter.isApplyFactor()", "void UnmarshalledParameter.setApplyFactor(boolean)",
-      "void UnmarshalledParameter.setName(String)", "void UnmarshalledParameter.setType(String)",
-      "void UnmarshalledParameter.setValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void UnmarshalledParameter.<init>()",
+    "String UnmarshalledParameter.getName()",
+    "String UnmarshalledParameter.getType()",
+    "String UnmarshalledParameter.getValue()",
+    "boolean UnmarshalledParameter.isApplyFactor()",
+    "void UnmarshalledParameter.setApplyFactor(boolean)",
+    "void UnmarshalledParameter.setName(String)",
+    "void UnmarshalledParameter.setType(String)",
+    "void UnmarshalledParameter.setValue(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     UnmarshalledParameter actualUnmarshalledParameter = new UnmarshalledParameter();

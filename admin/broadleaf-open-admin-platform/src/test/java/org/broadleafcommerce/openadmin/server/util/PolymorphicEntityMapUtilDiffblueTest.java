@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.LinkedHashMap;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
@@ -29,25 +30,27 @@ import org.junit.experimental.categories.Category;
 public class PolymorphicEntityMapUtilDiffblueTest {
   /**
    * Test {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}.
+   *
    * <ul>
-   *   <li>Given array of {@link ClassTree} with {@link ClassTree#ClassTree()}.</li>
+   *   <li>Given array of {@link ClassTree} with {@link ClassTree#ClassTree()}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"LinkedHashMap PolymorphicEntityMapUtil.convertClassTreeToMap(ClassTree)"})
   public void testConvertClassTreeToMap_givenArrayOfClassTreeWithClassTree() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();
 
     ClassTree polymorphicEntityTree = new ClassTree();
-    polymorphicEntityTree.setChildren(new ClassTree[]{new ClassTree()});
+    polymorphicEntityTree.setChildren(new ClassTree[] {new ClassTree()});
 
     // Act
-    LinkedHashMap<String, String> actualConvertClassTreeToMapResult = polymorphicEntityMapUtil
-        .convertClassTreeToMap(polymorphicEntityTree);
+    LinkedHashMap<String, String> actualConvertClassTreeToMapResult =
+        polymorphicEntityMapUtil.convertClassTreeToMap(polymorphicEntityTree);
 
     // Assert
     assertEquals(1, actualConvertClassTreeToMapResult.size());
@@ -56,52 +59,51 @@ public class PolymorphicEntityMapUtilDiffblueTest {
 
   /**
    * Test {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}.
+   *
    * <ul>
-   *   <li>Given empty string.</li>
-   *   <li>Then return {@code null} is empty string.</li>
+   *   <li>Then return {@code Dr Jane Doe}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"LinkedHashMap PolymorphicEntityMapUtil.convertClassTreeToMap(ClassTree)"})
-  public void testConvertClassTreeToMap_givenEmptyString_thenReturnNullIsEmptyString() {
+  public void testConvertClassTreeToMap_thenReturnDrJaneDoe() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();
 
-    ClassTree polymorphicEntityTree = new ClassTree();
-    polymorphicEntityTree.setFriendlyName(null);
-    polymorphicEntityTree.setName("");
-
     // Act
-    LinkedHashMap<String, String> actualConvertClassTreeToMapResult = polymorphicEntityMapUtil
-        .convertClassTreeToMap(polymorphicEntityTree);
+    LinkedHashMap<String, String> actualConvertClassTreeToMapResult =
+        polymorphicEntityMapUtil.convertClassTreeToMap(new ClassTree("Dr Jane Doe"));
 
     // Assert
     assertEquals(1, actualConvertClassTreeToMapResult.size());
-    assertEquals("", actualConvertClassTreeToMapResult.get(null));
+    assertEquals("Dr Jane Doe", actualConvertClassTreeToMapResult.get("Dr Jane Doe"));
   }
 
   /**
    * Test {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}.
+   *
    * <ul>
-   *   <li>When {@link ClassTree#ClassTree()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link ClassTree#ClassTree()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#convertClassTreeToMap(ClassTree)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"LinkedHashMap PolymorphicEntityMapUtil.convertClassTreeToMap(ClassTree)"})
   public void testConvertClassTreeToMap_whenClassTree_thenReturnNull() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();
 
     // Act
-    LinkedHashMap<String, String> actualConvertClassTreeToMapResult = polymorphicEntityMapUtil
-        .convertClassTreeToMap(new ClassTree());
+    LinkedHashMap<String, String> actualConvertClassTreeToMapResult =
+        polymorphicEntityMapUtil.convertClassTreeToMap(new ClassTree());
 
     // Assert
     assertEquals(1, actualConvertClassTreeToMapResult.size());
@@ -110,21 +112,26 @@ public class PolymorphicEntityMapUtilDiffblueTest {
 
   /**
    * Test {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}.
+   *
    * <ul>
-   *   <li>Given array of {@link ClassTree} with {@link ClassTree#ClassTree()}.</li>
+   *   <li>Given array of {@link ClassTree} with {@link ClassTree#ClassTree()}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree,
+   * LinkedHashMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"
+  })
   public void testBuildPolymorphicEntityMap_givenArrayOfClassTreeWithClassTree() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();
 
     ClassTree entity = new ClassTree();
-    entity.setChildren(new ClassTree[]{new ClassTree()});
+    entity.setChildren(new ClassTree[] {new ClassTree()});
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
     // Act
@@ -137,22 +144,24 @@ public class PolymorphicEntityMapUtilDiffblueTest {
 
   /**
    * Test {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}.
+   *
    * <ul>
-   *   <li>Then {@link LinkedHashMap#LinkedHashMap()} {@code null} is empty string.</li>
+   *   <li>Then {@link LinkedHashMap#LinkedHashMap()} {@code Dr Jane Doe} is {@code Dr Jane Doe}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree,
+   * LinkedHashMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"})
-  public void testBuildPolymorphicEntityMap_thenLinkedHashMapNullIsEmptyString() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"
+  })
+  public void testBuildPolymorphicEntityMap_thenLinkedHashMapDrJaneDoeIsDrJaneDoe() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();
-
-    ClassTree entity = new ClassTree();
-    entity.setFriendlyName(null);
-    entity.setName("");
+    ClassTree entity = new ClassTree("Dr Jane Doe");
     LinkedHashMap<String, String> map = new LinkedHashMap<>();
 
     // Act
@@ -160,21 +169,26 @@ public class PolymorphicEntityMapUtilDiffblueTest {
 
     // Assert
     assertEquals(1, map.size());
-    assertEquals("", map.get(null));
+    assertEquals("Dr Jane Doe", map.get("Dr Jane Doe"));
   }
 
   /**
    * Test {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}.
+   *
    * <ul>
-   *   <li>When {@link ClassTree#ClassTree()}.</li>
-   *   <li>Then {@link LinkedHashMap#LinkedHashMap()} {@code null} is {@code null}.</li>
+   *   <li>When {@link ClassTree#ClassTree()}.
+   *   <li>Then {@link LinkedHashMap#LinkedHashMap()} {@code null} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree, LinkedHashMap)}
+   *
+   * <p>Method under test: {@link PolymorphicEntityMapUtil#buildPolymorphicEntityMap(ClassTree,
+   * LinkedHashMap)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PolymorphicEntityMapUtil.buildPolymorphicEntityMap(ClassTree, LinkedHashMap)"
+  })
   public void testBuildPolymorphicEntityMap_whenClassTree_thenLinkedHashMapNullIsNull() {
     // Arrange
     PolymorphicEntityMapUtil polymorphicEntityMapUtil = new PolymorphicEntityMapUtil();

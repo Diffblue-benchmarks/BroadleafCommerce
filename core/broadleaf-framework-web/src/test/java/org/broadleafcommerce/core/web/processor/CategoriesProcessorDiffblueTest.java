@@ -25,6 +25,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,37 +48,36 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CategoriesProcessorDiffblueTest {
-  @Mock
-  private CatalogService catalogService;
+  @Mock private CatalogService catalogService;
 
-  @InjectMocks
-  private CategoriesProcessor categoriesProcessor;
+  @InjectMocks private CategoriesProcessor categoriesProcessor;
 
-  @Mock
-  private CategoriesProcessorExtensionManager categoriesProcessorExtensionManager;
+  @Mock private CategoriesProcessorExtensionManager categoriesProcessorExtensionManager;
 
   /**
    * Test {@link CategoriesProcessor#getName()}.
-   * <p>
-   * Method under test: {@link CategoriesProcessor#getName()}
+   *
+   * <p>Method under test: {@link CategoriesProcessor#getName()}
    */
   @Test
   @DisplayName("Test getName()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CategoriesProcessor.getName()"})
   void testGetName() {
     // Arrange, Act and Assert
-    assertEquals("categories", (new CategoriesProcessor()).getName());
+    assertEquals("categories", new CategoriesProcessor().getName());
   }
 
   /**
    * Test {@link CategoriesProcessor#getPrecedence()}.
-   * <p>
-   * Method under test: {@link CategoriesProcessor#getPrecedence()}
+   *
+   * <p>Method under test: {@link CategoriesProcessor#getPrecedence()}
    */
   @Test
   @DisplayName("Test getPrecedence()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"int CategoriesProcessor.getPrecedence()"})
   void testGetPrecedence() {
     // Arrange, Act and Assert
@@ -86,37 +86,49 @@ class CategoriesProcessorDiffblueTest {
 
   /**
    * Test {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).</li>
-   *   <li>Then {@code null} return {@link List}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryImpl} (default constructor).
+   *   <li>Then {@code null} return {@link List}.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); given ArrayList() add CategoryImpl (default constructor); then 'null' return List")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
+  @DisplayName(
+      "Test populateModelVariables(String, Map, BroadleafTemplateContext); given ArrayList() add CategoryImpl (default constructor); then 'null' return List")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
+  })
   void testPopulateModelVariables_givenArrayListAddCategoryImpl_thenNullReturnList() {
     // Arrange
     ArrayList<Category> categoryList = new ArrayList<>();
     categoryList.add(new CategoryImpl());
     when(catalogService.findCategoriesByName(Mockito.<String>any())).thenReturn(categoryList);
-    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler = mock(
-        CategoriesProcessorExtensionHandler.class);
-    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(Mockito.<String>any(),
-        Mockito.<String>any(), Mockito.<ExtensionResultHolder<List<Category>>>any())).thenReturn(null);
-    when(categoriesProcessorExtensionManager.getProxy()).thenReturn(categoriesProcessorExtensionHandler);
+
+    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler =
+        mock(CategoriesProcessorExtensionHandler.class);
+    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(
+            Mockito.<String>any(),
+            Mockito.<String>any(),
+            Mockito.<ExtensionResultHolder<List<Category>>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(categoriesProcessorExtensionManager.getProxy())
+        .thenReturn(categoriesProcessorExtensionHandler);
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult = categoriesProcessor.populateModelVariables("Tag Name",
-        new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult =
+        categoriesProcessor.populateModelVariables(
+            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
 
     // Assert
     verify(categoriesProcessorExtensionManager).getProxy();
-    verify(catalogService).findCategoriesByName(isNull());
-    verify(categoriesProcessorExtensionHandler).findAllPossibleChildCategories(isNull(), isNull(),
-        isA(ExtensionResultHolder.class));
+    verify(catalogService).findCategoriesByName(null);
+    verify(categoriesProcessorExtensionHandler)
+        .findAllPossibleChildCategories(isNull(), isNull(), isA(ExtensionResultHolder.class));
     assertEquals(1, actualPopulateModelVariablesResult.size());
     Object getResult = actualPopulateModelVariablesResult.get(null);
     assertTrue(getResult instanceof List);
@@ -125,68 +137,89 @@ class CategoriesProcessorDiffblueTest {
 
   /**
    * Test {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Given {@link CatalogService}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); given CatalogService; then return 'null'")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
-  void testPopulateModelVariables_givenCatalogService_thenReturnNull() {
+  @DisplayName(
+      "Test populateModelVariables(String, Map, BroadleafTemplateContext); then return Empty")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
+  })
+  void testPopulateModelVariables_thenReturnEmpty() {
     // Arrange
-    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler = mock(
-        CategoriesProcessorExtensionHandler.class);
-    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(Mockito.<String>any(),
-        Mockito.<String>any(), Mockito.<ExtensionResultHolder<List<Category>>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(categoriesProcessorExtensionManager.getProxy()).thenReturn(categoriesProcessorExtensionHandler);
+    when(catalogService.findCategoriesByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
+
+    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler =
+        mock(CategoriesProcessorExtensionHandler.class);
+    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(
+            Mockito.<String>any(),
+            Mockito.<String>any(),
+            Mockito.<ExtensionResultHolder<List<Category>>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
+    when(categoriesProcessorExtensionManager.getProxy())
+        .thenReturn(categoriesProcessorExtensionHandler);
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult = categoriesProcessor.populateModelVariables("Tag Name",
-        new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult =
+        categoriesProcessor.populateModelVariables(
+            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
 
     // Assert
     verify(categoriesProcessorExtensionManager).getProxy();
-    verify(categoriesProcessorExtensionHandler).findAllPossibleChildCategories(isNull(), isNull(),
-        isA(ExtensionResultHolder.class));
-    assertEquals(1, actualPopulateModelVariablesResult.size());
-    assertNull(actualPopulateModelVariablesResult.get(null));
+    verify(catalogService).findCategoriesByName(null);
+    verify(categoriesProcessorExtensionHandler)
+        .findAllPossibleChildCategories(isNull(), isNull(), isA(ExtensionResultHolder.class));
+    assertTrue(actualPopulateModelVariablesResult.isEmpty());
   }
 
   /**
    * Test {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   *
+   * <p>Method under test: {@link CategoriesProcessor#populateModelVariables(String, Map,
+   * BroadleafTemplateContext)}
    */
   @Test
-  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext); then return Empty")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"})
-  void testPopulateModelVariables_thenReturnEmpty() {
+  @DisplayName(
+      "Test populateModelVariables(String, Map, BroadleafTemplateContext); then return 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map CategoriesProcessor.populateModelVariables(String, Map, BroadleafTemplateContext)"
+  })
+  void testPopulateModelVariables_thenReturnNull() {
     // Arrange
-    when(catalogService.findCategoriesByName(Mockito.<String>any())).thenReturn(new ArrayList<>());
-    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler = mock(
-        CategoriesProcessorExtensionHandler.class);
-    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(Mockito.<String>any(),
-        Mockito.<String>any(), Mockito.<ExtensionResultHolder<List<Category>>>any())).thenReturn(null);
-    when(categoriesProcessorExtensionManager.getProxy()).thenReturn(categoriesProcessorExtensionHandler);
+    CategoriesProcessorExtensionHandler categoriesProcessorExtensionHandler =
+        mock(CategoriesProcessorExtensionHandler.class);
+    when(categoriesProcessorExtensionHandler.findAllPossibleChildCategories(
+            Mockito.<String>any(),
+            Mockito.<String>any(),
+            Mockito.<ExtensionResultHolder<List<Category>>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(categoriesProcessorExtensionManager.getProxy())
+        .thenReturn(categoriesProcessorExtensionHandler);
 
     // Act
-    Map<String, Object> actualPopulateModelVariablesResult = categoriesProcessor.populateModelVariables("Tag Name",
-        new HashMap<>(), mock(BroadleafTemplateContext.class));
+    Map<String, Object> actualPopulateModelVariablesResult =
+        categoriesProcessor.populateModelVariables(
+            "Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
 
     // Assert
     verify(categoriesProcessorExtensionManager).getProxy();
-    verify(catalogService).findCategoriesByName(isNull());
-    verify(categoriesProcessorExtensionHandler).findAllPossibleChildCategories(isNull(), isNull(),
-        isA(ExtensionResultHolder.class));
-    assertTrue(actualPopulateModelVariablesResult.isEmpty());
+    verify(categoriesProcessorExtensionHandler)
+        .findAllPossibleChildCategories(isNull(), isNull(), isA(ExtensionResultHolder.class));
+    assertEquals(1, actualPopulateModelVariablesResult.size());
+    assertNull(actualPopulateModelVariablesResult.get(null));
   }
 }

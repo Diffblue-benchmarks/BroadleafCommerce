@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.security;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,9 @@ import org.junit.experimental.categories.Category;
 public class SecurityConfigDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SecurityConfig}
    *   <li>{@link SecurityConfig#setCeilingEntityFullyQualifiedName(String)}
@@ -46,12 +48,19 @@ public class SecurityConfigDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SecurityConfig.<init>()", "String SecurityConfig.getCeilingEntityFullyQualifiedName()",
-      "List SecurityConfig.getPermissions()", "List SecurityConfig.getRequiredTypes()",
-      "List SecurityConfig.getRoles()", "void SecurityConfig.setCeilingEntityFullyQualifiedName(String)",
-      "void SecurityConfig.setPermissions(List)", "void SecurityConfig.setRequiredTypes(List)",
-      "void SecurityConfig.setRoles(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SecurityConfig.<init>()",
+    "String SecurityConfig.getCeilingEntityFullyQualifiedName()",
+    "List SecurityConfig.getPermissions()",
+    "List SecurityConfig.getRequiredTypes()",
+    "List SecurityConfig.getRoles()",
+    "void SecurityConfig.setCeilingEntityFullyQualifiedName(String)",
+    "void SecurityConfig.setPermissions(List)",
+    "void SecurityConfig.setRequiredTypes(List)",
+    "void SecurityConfig.setRoles(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SecurityConfig actualSecurityConfig = new SecurityConfig();
@@ -62,7 +71,8 @@ public class SecurityConfigDiffblueTest {
     actualSecurityConfig.setRequiredTypes(requiredTypes);
     ArrayList<String> roles = new ArrayList<>();
     actualSecurityConfig.setRoles(roles);
-    String actualCeilingEntityFullyQualifiedName = actualSecurityConfig.getCeilingEntityFullyQualifiedName();
+    String actualCeilingEntityFullyQualifiedName =
+        actualSecurityConfig.getCeilingEntityFullyQualifiedName();
     List<String> actualPermissions = actualSecurityConfig.getPermissions();
     List<EntityOperationType> actualRequiredTypes = actualSecurityConfig.getRequiredTypes();
     List<String> actualRoles = actualSecurityConfig.getRoles();

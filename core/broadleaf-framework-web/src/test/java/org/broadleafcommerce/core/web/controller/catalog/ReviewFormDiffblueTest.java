@@ -19,6 +19,7 @@ package org.broadleafcommerce.core.web.controller.catalog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
@@ -29,8 +30,9 @@ import org.junit.jupiter.api.Test;
 class ReviewFormDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ReviewForm}
    *   <li>{@link ReviewForm#setProduct(Product)}
@@ -43,10 +45,17 @@ class ReviewFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void ReviewForm.<init>()", "Product ReviewForm.getProduct()", "Double ReviewForm.getRating()",
-      "String ReviewForm.getReviewText()", "void ReviewForm.setProduct(Product)", "void ReviewForm.setRating(Double)",
-      "void ReviewForm.setReviewText(String)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ReviewForm.<init>()",
+    "Product ReviewForm.getProduct()",
+    "Double ReviewForm.getRating()",
+    "String ReviewForm.getReviewText()",
+    "void ReviewForm.setProduct(Product)",
+    "void ReviewForm.setRating(Double)",
+    "void ReviewForm.setReviewText(String)"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
     ReviewForm actualReviewForm = new ReviewForm();

@@ -24,7 +24,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -36,16 +37,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SiteCatalogXrefImplDiffblueTest {
-  @Autowired
-  private SiteCatalogXrefImpl siteCatalogXrefImpl;
+  @Autowired private SiteCatalogXrefImpl siteCatalogXrefImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SiteCatalogXrefImpl#setCatalog(Catalog)}
    *   <li>{@link SiteCatalogXrefImpl#setId(Long)}
@@ -56,10 +57,16 @@ public class SiteCatalogXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Catalog SiteCatalogXrefImpl.getCatalog()", "Long SiteCatalogXrefImpl.getId()",
-      "Site SiteCatalogXrefImpl.getSite()", "void SiteCatalogXrefImpl.setCatalog(Catalog)",
-      "void SiteCatalogXrefImpl.setId(Long)", "void SiteCatalogXrefImpl.setSite(Site)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Catalog SiteCatalogXrefImpl.getCatalog()",
+    "Long SiteCatalogXrefImpl.getId()",
+    "Site SiteCatalogXrefImpl.getSite()",
+    "void SiteCatalogXrefImpl.setCatalog(Catalog)",
+    "void SiteCatalogXrefImpl.setId(Long)",
+    "void SiteCatalogXrefImpl.setSite(Site)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     SiteCatalogXrefImpl siteCatalogXrefImpl = new SiteCatalogXrefImpl();
@@ -82,26 +89,28 @@ public class SiteCatalogXrefImplDiffblueTest {
 
   /**
    * Test {@link SiteCatalogXrefImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link CatalogImpl} {@link CatalogImpl#getName()} return {@code Name}.</li>
-   *   <li>Then return {@code Name}.</li>
+   *   <li>Given {@link CatalogImpl} {@link CatalogImpl#getName()} return {@code Name}.
+   *   <li>Then return {@code Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SiteCatalogXrefImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenCatalogImplGetNameReturnName_thenReturnName() {
     // Arrange
     CatalogImpl catalog = mock(CatalogImpl.class);
     when(catalog.getName()).thenReturn("Name");
 
-    SiteCatalogXrefImpl siteCatalogXrefImpl2 = new SiteCatalogXrefImpl();
-    siteCatalogXrefImpl2.setCatalog(catalog);
+    SiteCatalogXrefImpl siteCatalogXrefImpl = new SiteCatalogXrefImpl();
+    siteCatalogXrefImpl.setCatalog(catalog);
 
     // Act
-    String actualMainEntityName = siteCatalogXrefImpl2.getMainEntityName();
+    String actualMainEntityName = siteCatalogXrefImpl.getMainEntityName();
 
     // Assert
     verify(catalog).getName();
@@ -110,28 +119,31 @@ public class SiteCatalogXrefImplDiffblueTest {
 
   /**
    * Test {@link SiteCatalogXrefImpl#getMainEntityName()}.
+   *
    * <ul>
-   *   <li>Given {@link SiteCatalogXrefImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link SiteCatalogXrefImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link SiteCatalogXrefImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SiteCatalogXrefImpl.getMainEntityName()"})
   public void testGetMainEntityName_givenSiteCatalogXrefImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new SiteCatalogXrefImpl()).getMainEntityName());
+    assertNull(siteCatalogXrefImpl.getMainEntityName());
   }
 
   /**
    * Test new {@link SiteCatalogXrefImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link SiteCatalogXrefImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link SiteCatalogXrefImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SiteCatalogXrefImpl.<init>()"})
   public void testNewSiteCatalogXrefImpl() {
     // Arrange and Act

@@ -19,10 +19,10 @@ package org.broadleafcommerce.profile.core.dao;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import javax.persistence.NoResultException;
@@ -43,22 +43,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerPaymentDaoImplDiffblueTest {
-  @InjectMocks
-  private CustomerPaymentDaoImpl customerPaymentDaoImpl;
+  @InjectMocks private CustomerPaymentDaoImpl customerPaymentDaoImpl;
 
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link CustomerPaymentDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Then return {@link CustomerPaymentImpl} (default constructor).</li>
+   *   <li>Then return {@link CustomerPaymentImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentDaoImpl#create()}
+   *
+   * <p>Method under test: {@link CustomerPaymentDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CustomerPayment CustomerPaymentDaoImpl.create()"})
   public void testCreate_thenReturnCustomerPaymentImpl() {
     // Arrange
@@ -71,26 +71,30 @@ public class CustomerPaymentDaoImplDiffblueTest {
     customerPaymentImpl.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
     customerPaymentImpl.setPaymentToken("ABC123");
     customerPaymentImpl.setPaymentType(new PaymentType("Type", "Friendly Type"));
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(customerPaymentImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(customerPaymentImpl);
 
     // Act
     CustomerPayment actualCreateResult = customerPaymentDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.profile.core.domain.CustomerPayment");
     assertSame(customerPaymentImpl, actualCreateResult);
   }
 
   /**
    * Test {@link CustomerPaymentDaoImpl#create()}.
+   *
    * <ul>
-   *   <li>Then throw {@link NoResultException}.</li>
+   *   <li>Then throw {@link NoResultException}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerPaymentDaoImpl#create()}
+   *
+   * <p>Method under test: {@link CustomerPaymentDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"CustomerPayment CustomerPaymentDaoImpl.create()"})
   public void testCreate_thenThrowNoResultException() {
     // Arrange
@@ -99,6 +103,7 @@ public class CustomerPaymentDaoImplDiffblueTest {
 
     // Act and Assert
     assertThrows(NoResultException.class, () -> customerPaymentDaoImpl.create());
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.CustomerPayment"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.profile.core.domain.CustomerPayment");
   }
 }

@@ -22,13 +22,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,7 +48,6 @@ import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -58,115 +55,85 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {FixedPriceFulfillmentPricingProvider.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FixedPriceFulfillmentPricingProviderDiffblueTest {
-  @Autowired
-  private FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
+  @Autowired private FixedPriceFulfillmentPricingProvider fixedPriceFulfillmentPricingProvider;
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
+   * FulfillmentOption)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
+   * FulfillmentOption)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
+    "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"
+  })
   public void testCanCalculateCostForFulfillmentGroup_thenReturnFalse() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertFalse(fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FulfillmentOptionImpl()));
+    assertFalse(
+        fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(
+            fulfillmentGroup, new FulfillmentOptionImpl()));
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
+   * FulfillmentOption)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup,
+   * FulfillmentOption)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"})
+    "boolean FixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)"
+  })
   public void testCanCalculateCostForFulfillmentGroup_thenReturnTrue() {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertTrue(fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup,
-        new FixedPriceFulfillmentOptionImpl()));
+    assertTrue(
+        fixedPriceFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(
+            fulfillmentGroup, new FixedPriceFulfillmentOptionImpl()));
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   *
    * <ul>
-   *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
+   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
-  public void testCalculateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
-    // Arrange
-    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
-    when(fulfillmentGroup.getFulfillmentOption()).thenReturn(new FulfillmentOptionImpl());
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
-    verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
-  }
-
-  /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   * <ul>
-   *   <li>Then calls {@link FulfillmentGroup#setRetailShippingPrice(Money)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
-  public void testCalculateCostForFulfillmentGroup_thenCallsSetRetailShippingPrice() throws FulfillmentPriceException {
-    // Arrange
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = mock(FixedPriceFulfillmentOptionImpl.class);
-    when(fixedPriceFulfillmentOptionImpl.getPrice()).thenReturn(new Money());
-    FulfillmentGroup fulfillmentGroup = mock(FulfillmentGroup.class);
-    doThrow(new IllegalArgumentException("foo")).when(fulfillmentGroup).setRetailShippingPrice(Mockito.<Money>any());
-    when(fulfillmentGroup.getFulfillmentOption()).thenReturn(fixedPriceFulfillmentOptionImpl);
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
-    verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
-    verify(fulfillmentGroup).setRetailShippingPrice(isA(Money.class));
-    verify(fixedPriceFulfillmentOptionImpl).getPrice();
-  }
-
-  /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
-   * <ul>
-   *   <li>Then return {@link FulfillmentGroupImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"})
-  public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl() throws FulfillmentPriceException {
+    "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
+  })
+  public void testCalculateCostForFulfillmentGroup_thenReturnFulfillmentGroupImpl()
+      throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
     fulfillmentGroup.setAddress(new AddressImpl());
@@ -200,24 +167,64 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
     fulfillmentGroup.setType(FulfillmentType.DIGITAL);
     fulfillmentGroup.setFulfillmentOption(new FixedPriceFulfillmentOptionImpl());
 
-    // Act and Assert
-    assertSame(fulfillmentGroup,
-        fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
+    // Act
+    FulfillmentGroup actualCalculateCostForFulfillmentGroupResult =
+        fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup);
+
+    // Assert
+    assertSame(fulfillmentGroup, actualCalculateCostForFulfillmentGroupResult);
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   *
    * <ul>
-   *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
+   *   <li>Then throw {@link IllegalArgumentException}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
-  public void testEstimateCostForFulfillmentGroup_givenFulfillmentOptionImpl() throws FulfillmentPriceException {
+    "FulfillmentGroup FixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(FulfillmentGroup)"
+  })
+  public void testCalculateCostForFulfillmentGroup_thenThrowIllegalArgumentException()
+      throws FulfillmentPriceException {
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    fulfillmentGroup.setFulfillmentOption(new FulfillmentOptionImpl());
+
+    // Act and Assert
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            fixedPriceFulfillmentPricingProvider.calculateCostForFulfillmentGroup(
+                fulfillmentGroup));
+  }
+
+  /**
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   *
+   * <ul>
+   *   <li>Given {@link FulfillmentOptionImpl} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
+  })
+  public void testEstimateCostForFulfillmentGroup_givenFulfillmentOptionImpl()
+      throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
@@ -225,23 +232,30 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
     options.add(new FulfillmentOptionImpl());
 
     // Act and Assert
-    assertTrue(fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options)
-        .getFulfillmentOptionPrices()
-        .isEmpty());
+    assertTrue(
+        fixedPriceFulfillmentPricingProvider
+            .estimateCostForFulfillmentGroup(fulfillmentGroup, options)
+            .getFulfillmentOptionPrices()
+            .isEmpty());
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   *
    * <ul>
-   *   <li>Then return FulfillmentOptionPrices size is one.</li>
+   *   <li>Then return FulfillmentOptionPrices size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
+  })
   public void testEstimateCostForFulfillmentGroup_thenReturnFulfillmentOptionPricesSizeIsOne()
       throws FulfillmentPriceException {
     // Arrange
@@ -251,58 +265,78 @@ public class FixedPriceFulfillmentPricingProviderDiffblueTest {
     options.add(new FixedPriceFulfillmentOptionImpl());
 
     // Act and Assert
-    assertEquals(1,
-        fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options)
+    assertEquals(
+        1,
+        fixedPriceFulfillmentPricingProvider
+            .estimateCostForFulfillmentGroup(fulfillmentGroup, options)
             .getFulfillmentOptionPrices()
             .size());
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   *   <li>Then throw {@link IllegalArgumentException}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
-  public void testEstimateCostForFulfillmentGroup_thenThrowIllegalArgumentException() throws FulfillmentPriceException {
+    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
+  })
+  public void testEstimateCostForFulfillmentGroup_thenThrowIllegalArgumentException()
+      throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
-    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = mock(FixedPriceFulfillmentOptionImpl.class);
-    when(fixedPriceFulfillmentOptionImpl.getPrice()).thenThrow(new IllegalArgumentException("foo"));
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl =
+        mock(FixedPriceFulfillmentOptionImpl.class);
+    when(fixedPriceFulfillmentOptionImpl.getPrice()).thenThrow(new IllegalArgumentException());
 
     LinkedHashSet<FulfillmentOption> options = new LinkedHashSet<>();
     options.add(fixedPriceFulfillmentOptionImpl);
 
     // Act and Assert
-    assertThrows(IllegalArgumentException.class,
-        () -> fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, options));
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(
+                fulfillmentGroup, options));
     verify(fixedPriceFulfillmentOptionImpl).getPrice();
   }
 
   /**
-   * Test {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * Test {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   *
    * <ul>
-   *   <li>When {@link HashSet#HashSet()}.</li>
+   *   <li>When {@link HashSet#HashSet()}.
    * </ul>
-   * <p>
-   * Method under test: {@link FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   *
+   * <p>Method under test: {@link
+   * FixedPriceFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"})
+    "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FulfillmentEstimationResponse FixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(FulfillmentGroup, Set)"
+  })
   public void testEstimateCostForFulfillmentGroup_whenHashSet() throws FulfillmentPriceException {
     // Arrange
     FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
 
     // Act and Assert
-    assertTrue(fixedPriceFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
-        .getFulfillmentOptionPrices()
-        .isEmpty());
+    assertTrue(
+        fixedPriceFulfillmentPricingProvider
+            .estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>())
+            .getFulfillmentOptionPrices()
+            .isEmpty());
   }
 }

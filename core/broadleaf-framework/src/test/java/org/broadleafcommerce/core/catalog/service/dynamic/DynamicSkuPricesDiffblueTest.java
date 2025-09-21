@@ -21,7 +21,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.money.Money;
 import org.junit.Test;
@@ -30,15 +31,17 @@ import org.junit.experimental.categories.Category;
 public class DynamicSkuPricesDiffblueTest {
   /**
    * Test {@link DynamicSkuPrices#getPriceForQuantity(long)}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) RetailPrice is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) RetailPrice is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPriceForQuantity(long)"})
   public void testGetPriceForQuantity_givenDynamicSkuPricesRetailPriceIsNull_thenReturnMoney() {
     // Arrange
@@ -55,14 +58,17 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPriceForQuantity(long)}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link
+   *       Money#Money(double)} with amount is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPriceForQuantity(long)"})
   public void testGetPriceForQuantity_givenDynamicSkuPricesSalePriceIsMoneyWithAmountIsTen() {
     // Arrange
@@ -79,15 +85,17 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPriceForQuantity(long)}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money()}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPriceForQuantity(long)"})
   public void testGetPriceForQuantity_givenDynamicSkuPricesSalePriceIsMoney_thenReturnMoney() {
     // Arrange
@@ -104,32 +112,36 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPriceForQuantity(long)}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPriceForQuantity(long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPriceForQuantity(long)"})
   public void testGetPriceForQuantity_givenDynamicSkuPrices_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new DynamicSkuPrices()).getPriceForQuantity(1L));
+    assertNull(new DynamicSkuPrices().getPriceForQuantity(1L));
   }
 
   /**
    * Test {@link DynamicSkuPrices#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) RetailPrice is {@code null}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) RetailPrice is {@code null}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPrice()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPrice()"})
   public void testGetPrice_givenDynamicSkuPricesRetailPriceIsNull_thenReturnMoney() {
     // Arrange
@@ -146,14 +158,17 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money(double)} with amount is ten.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link
+   *       Money#Money(double)} with amount is ten.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPrice()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPrice()"})
   public void testGetPrice_givenDynamicSkuPricesSalePriceIsMoneyWithAmountIsTen() {
     // Arrange
@@ -170,15 +185,17 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money()}.</li>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) SalePrice is {@link Money#Money()}.
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPrice()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPrice()"})
   public void testGetPrice_givenDynamicSkuPricesSalePriceIsMoney_thenReturnMoney() {
     // Arrange
@@ -195,32 +212,37 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getPrice()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getPrice()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getPrice()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DynamicSkuPrices.getPrice()"})
   public void testGetPrice_givenDynamicSkuPrices_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new DynamicSkuPrices()).getPrice());
+    assertNull(new DynamicSkuPrices().getPrice());
   }
 
   /**
    * Test {@link DynamicSkuPrices#getDidOverride()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor) PriceAdjustment is {@link Money#Money()}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor) PriceAdjustment is {@link
+   *       Money#Money()}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getDidOverride()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getDidOverride()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean DynamicSkuPrices.getDidOverride()"})
   public void testGetDidOverride_givenDynamicSkuPricesPriceAdjustmentIsMoney_thenReturnTrue() {
     // Arrange
@@ -236,25 +258,28 @@ public class DynamicSkuPricesDiffblueTest {
 
   /**
    * Test {@link DynamicSkuPrices#getDidOverride()}.
+   *
    * <ul>
-   *   <li>Given {@link DynamicSkuPrices} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link DynamicSkuPrices} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DynamicSkuPrices#getDidOverride()}
+   *
+   * <p>Method under test: {@link DynamicSkuPrices#getDidOverride()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean DynamicSkuPrices.getDidOverride()"})
   public void testGetDidOverride_givenDynamicSkuPrices_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new DynamicSkuPrices()).getDidOverride());
+    assertFalse(new DynamicSkuPrices().getDidOverride());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link DynamicSkuPrices}
    *   <li>{@link DynamicSkuPrices#setDidOverride(Boolean)}
@@ -267,11 +292,18 @@ public class DynamicSkuPricesDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void DynamicSkuPrices.<init>()", "Money DynamicSkuPrices.getPriceAdjustment()",
-      "Money DynamicSkuPrices.getRetailPrice()", "Money DynamicSkuPrices.getSalePrice()",
-      "void DynamicSkuPrices.setDidOverride(Boolean)", "void DynamicSkuPrices.setPriceAdjustment(Money)",
-      "void DynamicSkuPrices.setRetailPrice(Money)", "void DynamicSkuPrices.setSalePrice(Money)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DynamicSkuPrices.<init>()",
+    "Money DynamicSkuPrices.getPriceAdjustment()",
+    "Money DynamicSkuPrices.getRetailPrice()",
+    "Money DynamicSkuPrices.getSalePrice()",
+    "void DynamicSkuPrices.setDidOverride(Boolean)",
+    "void DynamicSkuPrices.setPriceAdjustment(Money)",
+    "void DynamicSkuPrices.setRetailPrice(Money)",
+    "void DynamicSkuPrices.setSalePrice(Money)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     DynamicSkuPrices actualDynamicSkuPrices = new DynamicSkuPrices();

@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.search.service.solr.index;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -32,51 +33,48 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.http.impl.client.AutoRetryHttpClient;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.SSLConfig;
-import org.apache.solr.client.solrj.impl.BinaryResponseParser;
 import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.apache.solr.client.solrj.impl.Http2SolrClient.Builder;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.impl.LBHttp2SolrClient;
-import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.locale.service.LocaleService;
 import org.broadleafcommerce.common.sandbox.SandBoxHelper;
-import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.broadleafcommerce.core.catalog.dao.ProductDao;
 import org.broadleafcommerce.core.catalog.domain.Indexable;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.search.dao.CatalogStructure;
-import org.broadleafcommerce.core.search.dao.FieldDao;
 import org.broadleafcommerce.core.search.dao.IndexFieldDao;
-import org.broadleafcommerce.core.search.dao.SearchFacetDao;
 import org.broadleafcommerce.core.search.dao.SolrIndexDao;
 import org.broadleafcommerce.core.search.domain.Field;
 import org.broadleafcommerce.core.search.domain.FieldEntity;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexField;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
+import org.broadleafcommerce.core.search.domain.IndexFieldType;
+import org.broadleafcommerce.core.search.domain.IndexFieldTypeImpl;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
-import org.broadleafcommerce.core.search.service.solr.DelegatingHttpSolrClient;
 import org.broadleafcommerce.core.search.service.solr.SolrConfiguration;
 import org.broadleafcommerce.core.search.service.solr.SolrHelperService;
 import org.broadleafcommerce.core.search.service.solr.index.SolrIndexCachedOperation.CacheOperation;
@@ -87,87 +85,75 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mvel2.util.InternalNumber;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionExecution;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.SimpleTransactionStatus;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SolrIndexServiceImplDiffblueTest {
-  @Mock
-  private CatalogService catalogService;
+  @Mock private IndexFieldDao indexFieldDao;
 
-  @Mock
-  private FieldDao fieldDao;
+  @Mock private LocaleService localeService;
 
-  @Mock
-  private IndexFieldDao indexFieldDao;
+  @Mock private PlatformTransactionManager platformTransactionManager;
 
-  @Mock
-  private LocaleService localeService;
+  @Mock private ProductDao productDao;
 
-  @Mock
-  private PlatformTransactionManager platformTransactionManager;
+  @Mock private SandBoxHelper sandBoxHelper;
 
-  @Mock
-  private ProductDao productDao;
+  @Mock private SolrConfiguration solrConfiguration;
 
-  @Mock
-  private SandBoxHelper sandBoxHelper;
+  @Mock private SolrHelperService solrHelperService;
 
-  @Mock
-  private SearchFacetDao searchFacetDao;
+  @Mock private SolrIndexDao solrIndexDao;
 
-  @Mock
-  private SolrConfiguration solrConfiguration;
+  @Mock private SolrIndexServiceExtensionManager solrIndexServiceExtensionManager;
 
-  @Mock
-  private SolrHelperService solrHelperService;
-
-  @Mock
-  private SolrIndexDao solrIndexDao;
-
-  @Mock
-  private SolrIndexServiceExtensionManager solrIndexServiceExtensionManager;
-
-  @InjectMocks
-  private SolrIndexServiceImpl solrIndexServiceImpl;
+  @InjectMocks private SolrIndexServiceImpl solrIndexServiceImpl;
 
   /**
    * Test {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.performCachedOperation(CacheOperation)"})
   public void testPerformCachedOperation_thenThrowIllegalStateException() throws ServiceException {
     // Arrange
     CacheOperation cacheOperation = mock(CacheOperation.class);
-    doThrow(new IllegalStateException("ThreadLocalManager.notify.orphans")).when(cacheOperation).execute();
+    doThrow(new IllegalStateException()).when(cacheOperation).execute();
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.performCachedOperation(cacheOperation));
+    assertThrows(
+        IllegalStateException.class,
+        () -> solrIndexServiceImpl.performCachedOperation(cacheOperation));
     verify(cacheOperation).execute();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}.
+   *
    * <ul>
-   *   <li>When {@link CacheOperation} {@link CacheOperation#execute()} does nothing.</li>
+   *   <li>When {@link CacheOperation} {@link CacheOperation#execute()} does nothing.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#performCachedOperation(CacheOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.performCachedOperation(CacheOperation)"})
-  public void testPerformCachedOperation_whenCacheOperationExecuteDoesNothing() throws ServiceException {
+  public void testPerformCachedOperation_whenCacheOperationExecuteDoesNothing()
+      throws ServiceException {
     // Arrange
     CacheOperation cacheOperation = mock(CacheOperation.class);
     doNothing().when(cacheOperation).execute();
@@ -181,269 +167,56 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#rebuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#rebuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#rebuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.rebuildIndex()"})
   public void testRebuildIndex() throws IOException, ServiceException {
     // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    when(solrConfiguration.getReindexServer())
-        .thenReturn(new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    when(solrConfiguration.getReindexCollectionName()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.rebuildIndex());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#rebuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#rebuildIndex()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.rebuildIndex()"})
-  public void testRebuildIndex2() throws IOException, ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-    when(solrConfiguration.getReindexServer()).thenReturn(new DelegatingHttpSolrClient(delegate));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.rebuildIndex());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#rebuildIndex()}.
-   * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#rebuildIndex()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.rebuildIndex()"})
-  public void testRebuildIndex_givenSolrHelperService_thenThrowRuntimeException() throws IOException, ServiceException {
-    // Arrange
-    when(solrConfiguration.getReindexCollectionName())
-        .thenThrow(new RuntimeException("Rebuilding the entire Solr index..."));
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.rebuildIndex());
+    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.rebuildIndex());
     verify(solrConfiguration).getReindexCollectionName();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#preBuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#preBuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#preBuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.preBuildIndex()"})
   public void testPreBuildIndex() throws ServiceException {
     // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    when(solrConfiguration.getReindexServer())
-        .thenReturn(new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    when(solrConfiguration.getReindexCollectionName()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.preBuildIndex());
-    verify(solrConfiguration).getNamespace();
+    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.preBuildIndex());
     verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#preBuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#preBuildIndex()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.preBuildIndex()"})
-  public void testPreBuildIndex2() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-    when(solrConfiguration.getReindexServer()).thenReturn(new DelegatingHttpSolrClient(delegate));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.preBuildIndex());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#preBuildIndex()}.
-   * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#preBuildIndex()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.preBuildIndex()"})
-  public void testPreBuildIndex_givenSolrHelperService_thenThrowRuntimeException() throws ServiceException {
-    // Arrange
-    when(solrConfiguration.getReindexCollectionName()).thenThrow(new RuntimeException("NULL"));
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.preBuildIndex());
-    verify(solrConfiguration).getReindexCollectionName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#preBuildIndex()}.
-   * <ul>
-   *   <li>Then calls {@link SolrClient#commit(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#preBuildIndex()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.preBuildIndex()"})
-  public void testPreBuildIndex_thenCallsCommit() throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.commit(Mockito.<String>any())).thenReturn(new UpdateResponse());
-    when(lbHttp2SolrClient.deleteByQuery(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    when(solrConfiguration.getReindexServer()).thenReturn(lbHttp2SolrClient);
-
-    // Act
-    solrIndexServiceImpl.preBuildIndex();
-
-    // Assert
-    verify(lbHttp2SolrClient).commit(eq("Reindex Collection Name"));
-    verify(lbHttp2SolrClient).deleteByQuery(eq("Reindex Collection Name"), eq("Namespace Field Name:(\"Namespace\")"));
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#buildIndex()}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.buildIndex()"})
   public void testBuildIndex_thenThrowIllegalStateException() throws IOException, ServiceException {
     // Arrange
-    when(productDao.readCountAllActiveProducts()).thenThrow(new IllegalStateException("Executing Indexing operation"));
+    when(productDao.readCountAllActiveProducts()).thenThrow(new IllegalStateException());
 
     // Act and Assert
     assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildIndex());
@@ -452,11 +225,12 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#postBuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.postBuildIndex()"})
   public void testPostBuildIndex() throws IOException, ServiceException {
     // Arrange
@@ -471,15 +245,16 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#postBuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.postBuildIndex()"})
   public void testPostBuildIndex2() throws IOException, ServiceException {
     // Arrange
-    when(solrConfiguration.isSingleCoreMode()).thenThrow(new IllegalStateException("foo"));
+    when(solrConfiguration.isSingleCoreMode()).thenThrow(new IllegalStateException());
 
     // Act and Assert
     assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.postBuildIndex());
@@ -488,15 +263,18 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#postBuildIndex()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.postBuildIndex()"})
   public void testPostBuildIndex3() throws IOException, ServiceException {
     // Arrange
-    doThrow(new IllegalStateException("foo")).when(solrHelperService).swapActiveCores(Mockito.<SolrConfiguration>any());
+    doThrow(new IllegalStateException())
+        .when(solrHelperService)
+        .swapActiveCores(Mockito.<SolrConfiguration>any());
     when(solrConfiguration.isSingleCoreMode()).thenReturn(false);
 
     // Act and Assert
@@ -507,14 +285,17 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#postBuildIndex()}.
+   *
    * <ul>
-   *   <li>Given {@link SolrHelperService} {@link SolrHelperService#swapActiveCores(SolrConfiguration)} does nothing.</li>
+   *   <li>Given {@link SolrHelperService} {@link
+   *       SolrHelperService#swapActiveCores(SolrConfiguration)} does nothing.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#postBuildIndex()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.postBuildIndex()"})
   public void testPostBuildIndex_givenSolrHelperServiceSwapActiveCoresDoesNothing()
       throws IOException, ServiceException {
@@ -532,35 +313,43 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#executeSolrIndexOperation(SolrIndexOperation)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#executeSolrIndexOperation(SolrIndexOperation)}
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#executeSolrIndexOperation(SolrIndexOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.executeSolrIndexOperation(SolrIndexOperation)"})
-  public void testExecuteSolrIndexOperation_thenThrowRuntimeException() throws IOException, ServiceException {
+  public void testExecuteSolrIndexOperation_thenThrowIllegalStateException()
+      throws IOException, ServiceException {
     // Arrange
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    when(operation.obtainLock()).thenThrow(new RuntimeException("Executing Indexing operation"));
+    when(operation.obtainLock()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.executeSolrIndexOperation(operation));
+    assertThrows(
+        IllegalStateException.class,
+        () -> solrIndexServiceImpl.executeSolrIndexOperation(operation));
     verify(operation).obtainLock();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#countIndexableItems()}.
+   *
    * <ul>
-   *   <li>Then return longValue is three.</li>
+   *   <li>Then return longValue is three.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#countIndexableItems()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#countIndexableItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SolrIndexServiceImpl.countIndexableItems()"})
   public void testCountIndexableItems_thenReturnLongValueIsThree() {
     // Arrange
@@ -576,18 +365,20 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#countIndexableItems()}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#countIndexableItems()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#countIndexableItems()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long SolrIndexServiceImpl.countIndexableItems()"})
   public void testCountIndexableItems_thenThrowIllegalStateException() {
     // Arrange
-    when(productDao.readCountAllActiveProducts()).thenThrow(new IllegalStateException("foo"));
+    when(productDao.readCountAllActiveProducts()).thenThrow(new IllegalStateException());
 
     // Act and Assert
     assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.countIndexableItems());
@@ -596,351 +387,30 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#deleteAllDocuments()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments()"})
   public void testDeleteAllDocuments() throws ServiceException {
     // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    when(solrConfiguration.getReindexServer())
-        .thenReturn(new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    when(solrConfiguration.getReindexCollectionName()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllDocuments());
-    verify(solrConfiguration).getNamespace();
+    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.deleteAllDocuments());
     verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments()"})
-  public void testDeleteAllDocuments2() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-    when(solrConfiguration.getReindexServer()).thenReturn(new DelegatingHttpSolrClient(delegate));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllDocuments());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)} with {@code collection}, {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(String, SolrClient)"})
-  public void testDeleteAllDocumentsWithCollectionServer() throws ServiceException {
-    // Arrange
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllDocuments("Collection",
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)} with {@code collection}, {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(String, SolrClient)"})
-  public void testDeleteAllDocumentsWithCollectionServer2() throws ServiceException {
-    // Arrange
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> solrIndexServiceImpl.deleteAllDocuments("Collection", new DelegatingHttpSolrClient(delegate)));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)} with {@code collection}, {@code server}.
-   * <ul>
-   *   <li>Given {@link UpdateResponse} (default constructor).</li>
-   *   <li>Then calls {@link SolrClient#commit(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(String, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(String, SolrClient)"})
-  public void testDeleteAllDocumentsWithCollectionServer_givenUpdateResponse_thenCallsCommit()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any())).thenReturn(new UpdateResponse());
-    when(server.deleteByQuery(Mockito.<String>any(), Mockito.<String>any())).thenReturn(new UpdateResponse());
-
-    // Act
-    solrIndexServiceImpl.deleteAllDocuments("Collection", server);
-
-    // Assert
-    verify(server).commit(eq("Collection"));
-    verify(server).deleteByQuery(eq("Collection"), eq("*:*"));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)} with {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(SolrClient)"})
-  public void testDeleteAllDocumentsWithServer() throws ServiceException {
-    // Arrange
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl
-        .deleteAllDocuments(new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)} with {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(SolrClient)"})
-  public void testDeleteAllDocumentsWithServer2() throws ServiceException {
-    // Arrange
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> solrIndexServiceImpl.deleteAllDocuments(new DelegatingHttpSolrClient(delegate)));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)} with {@code server}.
-   * <ul>
-   *   <li>Given {@link UpdateResponse} (default constructor).</li>
-   *   <li>Then calls {@link SolrClient#commit(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments(SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments(SolrClient)"})
-  public void testDeleteAllDocumentsWithServer_givenUpdateResponse_thenCallsCommit()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any())).thenReturn(new UpdateResponse());
-    when(server.deleteByQuery(Mockito.<String>any(), Mockito.<String>any())).thenReturn(new UpdateResponse());
-
-    // Act
-    solrIndexServiceImpl.deleteAllDocuments(server);
-
-    // Assert
-    verify(server).commit(isNull());
-    verify(server).deleteByQuery((String) isNull(), eq("*:*"));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments()}.
-   * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments()"})
-  public void testDeleteAllDocuments_givenSolrHelperService_thenThrowRuntimeException() throws ServiceException {
-    // Arrange
-    when(solrConfiguration.getReindexCollectionName()).thenThrow(new RuntimeException("NULL"));
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.deleteAllDocuments());
-    verify(solrConfiguration).getReindexCollectionName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllDocuments()}.
-   * <ul>
-   *   <li>Then calls {@link SolrClient#commit(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllDocuments()"})
-  public void testDeleteAllDocuments_thenCallsCommit() throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.commit(Mockito.<String>any())).thenReturn(new UpdateResponse());
-    when(lbHttp2SolrClient.deleteByQuery(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    when(solrConfiguration.getReindexServer()).thenReturn(lbHttp2SolrClient);
-
-    // Act
-    solrIndexServiceImpl.deleteAllDocuments();
-
-    // Assert
-    verify(lbHttp2SolrClient).commit(eq("Reindex Collection Name"));
-    verify(lbHttp2SolrClient).deleteByQuery(eq("Reindex Collection Name"), eq("Namespace Field Name:(\"Namespace\")"));
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#useLegacyIndexer()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#useLegacyIndexer()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#useLegacyIndexer()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SolrIndexServiceImpl.useLegacyIndexer()"})
   public void testUseLegacyIndexer() {
     // Arrange, Act and Assert
@@ -949,501 +419,312 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllReindexCoreDocuments()"})
   public void testDeleteAllReindexCoreDocuments() throws ServiceException {
     // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    when(solrConfiguration.getReindexServer())
-        .thenReturn(new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    when(solrConfiguration.getReindexCollectionName()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllReindexCoreDocuments());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllReindexCoreDocuments()"})
-  public void testDeleteAllReindexCoreDocuments2() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    HttpSolrClient.Builder withConnectionTimeoutResult = (new HttpSolrClient.Builder())
-        .withBaseSolrUrl("https://example.org/example")
-        .allowCompression(true)
-        .withConnectionTimeout(10);
-    HttpSolrClient.Builder withHttpClientResult = withConnectionTimeoutResult.withHttpClient(new AutoRetryHttpClient());
-    HttpSolrClient delegate = withHttpClientResult.withResponseParser(new BinaryResponseParser())
-        .withSocketTimeout(10)
-        .build();
-    when(solrConfiguration.getReindexServer()).thenReturn(new DelegatingHttpSolrClient(delegate));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllReindexCoreDocuments());
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}.
-   * <ul>
-   *   <li>Then calls {@link SolrClient#commit(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllReindexCoreDocuments()"})
-  public void testDeleteAllReindexCoreDocuments_thenCallsCommit()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.commit(Mockito.<String>any())).thenReturn(new UpdateResponse());
-    when(lbHttp2SolrClient.deleteByQuery(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    when(solrConfiguration.getReindexCollectionName()).thenReturn("Reindex Collection Name");
-    when(solrConfiguration.getReindexServer()).thenReturn(lbHttp2SolrClient);
-
-    // Act
-    solrIndexServiceImpl.deleteAllReindexCoreDocuments();
-
-    // Assert
-    verify(lbHttp2SolrClient).commit(eq("Reindex Collection Name"));
-    verify(lbHttp2SolrClient).deleteByQuery(eq("Reindex Collection Name"), eq("Namespace Field Name:(\"Namespace\")"));
-    verify(solrConfiguration).getNamespace();
-    verify(solrConfiguration).getReindexCollectionName();
-    verify(solrConfiguration).getReindexServer();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllReindexCoreDocuments()}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllReindexCoreDocuments()"})
-  public void testDeleteAllReindexCoreDocuments_thenThrowRuntimeException() throws ServiceException {
-    // Arrange
-    when(solrConfiguration.getReindexCollectionName()).thenThrow(new RuntimeException("NULL"));
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.deleteAllReindexCoreDocuments());
+    assertThrows(
+        IllegalStateException.class, () -> solrIndexServiceImpl.deleteAllReindexCoreDocuments());
     verify(solrConfiguration).getReindexCollectionName();
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(String, SolrClient)} with {@code collection}, {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(String, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllNamespaceDocuments(String, SolrClient)"})
-  public void testDeleteAllNamespaceDocumentsWithCollectionServer() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllNamespaceDocuments("Collection",
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrConfiguration).getNamespace();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(String, SolrClient)} with {@code collection}, {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(String, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllNamespaceDocuments(String, SolrClient)"})
-  public void testDeleteAllNamespaceDocumentsWithCollectionServer2() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenThrow(new IllegalStateException("NULL"));
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.deleteAllNamespaceDocuments("Collection",
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrConfiguration).getNamespace();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(SolrClient)} with {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllNamespaceDocuments(SolrClient)"})
-  public void testDeleteAllNamespaceDocumentsWithServer() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenReturn("Namespace");
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl
-        .deleteAllNamespaceDocuments(new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrConfiguration).getNamespace();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(SolrClient)} with {@code server}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteAllNamespaceDocuments(SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.deleteAllNamespaceDocuments(SolrClient)"})
-  public void testDeleteAllNamespaceDocumentsWithServer2() throws ServiceException {
-    // Arrange
-    when(solrHelperService.getNamespaceFieldName()).thenReturn("Namespace Field Name");
-    when(solrConfiguration.getNamespace()).thenThrow(new IllegalStateException("NULL"));
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl
-        .deleteAllNamespaceDocuments(new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrConfiguration).getNamespace();
-    verify(solrHelperService).getNamespaceFieldName();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code collection}, {@code indexables}, {@code solrServer}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
   public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(localeService.findAllLocales()).thenThrow(new IllegalStateException());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
 
-    // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(
-        "Collection", indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
 
-    // Assert
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                "Collection",
+                indexables,
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(localeService).findAllLocales();
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
+  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer2()
+      throws ServiceException, TransactionException {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    doThrow(new IllegalStateException())
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    ArrayList<Indexable> indexables = new ArrayList<>();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                "Collection",
+                indexables,
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(platformTransactionManager).rollback(isNull());
-    assertTrue(actualBuildIncrementalIndexResult instanceof List);
-    assertTrue(actualBuildIncrementalIndexResult.isEmpty());
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code collection}, {@code indexables}, {@code solrServer}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"})
-  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer2()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
+  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer3()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any())).thenReturn(new ArrayList<>());
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
     ArrayList<Indexable> indexables = new ArrayList<>();
     indexables.add(new ProductBundleImpl());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", indexables,
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                "Collection",
+                indexables,
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
@@ -1458,73 +739,100 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code collection}, {@code indexables}, {@code solrServer}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"})
-  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer3()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
+  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer4()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any())).thenReturn(new ArrayList<>());
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenReturn(new ArrayList<>());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
     when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
     ArrayList<Indexable> indexables = new ArrayList<>();
     indexables.add(new ProductBundleImpl());
     indexables.add(new ProductBundleImpl());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildIncrementalIndex("Collection", indexables,
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                "Collection",
+                indexables,
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
@@ -1539,166 +847,217 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code collection}, {@code indexables}, {@code solrServer}.
-   * <ul>
-   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"})
-  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer_thenCallsCommit()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
+  public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer5()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenThrow(new IllegalStateException());
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
     when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(new SimpleTransactionStatus(true));
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
     ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+    indexables.add(new ProductBundleImpl());
 
-    // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(
-        "Collection", indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
 
-    // Assert
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                "Collection",
+                indexables,
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
+    verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
-    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    assertTrue(actualBuildIncrementalIndexResult instanceof List);
-    assertTrue(actualBuildIncrementalIndexResult.isEmpty());
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code collection}, {@code indexables}, {@code solrServer}.
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)} with {@code
+   * collection}, {@code indexables}, {@code solrServer}.
+   *
    * <ul>
-   *   <li>Then return {@link List}.</li>
+   *   <li>Then return {@link List}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List, SolrClient)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(String, List,
+   * SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection SolrIndexServiceImpl.buildIncrementalIndex(String, List, SolrClient)"
+  })
   public void testBuildIncrementalIndexWithCollectionIndexablesSolrServer_thenReturnList()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            Mockito.<Collection<SolrInputDocument>>any(),
+            Mockito.<List<Indexable>>any(),
+            Mockito.<List<IndexField>>any(),
+            Mockito.<List<Locale>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(
-        "Collection", indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    Collection<SolrInputDocument> actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(
+            "Collection",
+            indexables,
+            new LBHttp2SolrClient(httpClient, "https://example.org/example"));
 
     // Assert
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(), isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
@@ -1709,245 +1068,597 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code indexables}, {@code solrServer}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
-  public void testBuildIncrementalIndexWithIndexablesSolrServer() throws ServiceException, TransactionException {
-    // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
-    ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl
-        .buildIncrementalIndex(indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
-
-    // Assert
-    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
-    verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
-    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
-    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
-    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
-    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(platformTransactionManager).rollback(isNull());
-    assertTrue(actualBuildIncrementalIndexResult instanceof List);
-    assertTrue(actualBuildIncrementalIndexResult.isEmpty());
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code indexables}, {@code solrServer}.
-   * <ul>
-   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
-  public void testBuildIncrementalIndexWithIndexablesSolrServer_thenCallsCommit()
+  public void testBuildIncrementalIndexWithIndexablesSolrServer()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(localeService.findAllLocales()).thenThrow(new IllegalStateException());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+    ArrayList<Indexable> indexables = new ArrayList<>();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(localeService).findAllLocales();
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
+  public void testBuildIncrementalIndexWithIndexablesSolrServer2()
+      throws ServiceException, TransactionException {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
+    doThrow(new IllegalStateException())
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
     when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(new SimpleTransactionStatus(true));
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
 
-    // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl
-        .buildIncrementalIndex(indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
 
-    // Assert
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example")));
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
-    verify(platformTransactionManager).commit(isA(TransactionStatus.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    assertTrue(actualBuildIncrementalIndexResult instanceof List);
-    assertTrue(actualBuildIncrementalIndexResult.isEmpty());
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code indexables}, {@code solrServer}.
-   * <ul>
-   *   <li>Then return {@link List}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
+  public void testBuildIncrementalIndexWithIndexablesSolrServer3()
+      throws ServiceException, TransactionException {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenReturn(new ArrayList<>());
+    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    ArrayList<Indexable> indexables = new ArrayList<>();
+    indexables.add(new ProductBundleImpl());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(localeService).findAllLocales();
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
+    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
+    verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
+    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
+  public void testBuildIncrementalIndexWithIndexablesSolrServer4()
+      throws ServiceException, TransactionException {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenReturn(new ArrayList<>());
+    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    ArrayList<Indexable> indexables = new ArrayList<>();
+    indexables.add(new ProductBundleImpl());
+    indexables.add(new ProductBundleImpl());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(localeService).findAllLocales();
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
+    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
+    verify(solrHelperService, atLeast(1)).getCurrentProductId(isA(Indexable.class));
+    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
+  public void testBuildIncrementalIndexWithIndexablesSolrServer5()
+      throws ServiceException, TransactionException {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any()))
+        .thenThrow(new IllegalStateException());
+    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
+    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
+    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    ArrayList<Indexable> indexables = new ArrayList<>();
+    indexables.add(new ProductBundleImpl());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.buildIncrementalIndex(
+                indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(localeService).findAllLocales();
+    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
+    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
+    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
+    verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
+    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code
+   * indexables}, {@code solrServer}.
+   *
+   * <ul>
+   *   <li>Then return {@link List}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
   public void testBuildIncrementalIndexWithIndexablesSolrServer_thenReturnList()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Mockito.<Collection<SolrInputDocument>>any(),
-        Mockito.<List<Indexable>>any(), Mockito.<List<IndexField>>any(), Mockito.<List<Locale>>any()))
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            Mockito.<Collection<SolrInputDocument>>any(),
+            Mockito.<List<Indexable>>any(),
+            Mockito.<List<IndexField>>any(),
+            Mockito.<List<Locale>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
     when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
     doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+    doNothing()
+        .when(solrIndexDao)
+        .populateProductCatalogStructure(
+            Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
+
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     ArrayList<Indexable> indexables = new ArrayList<>();
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act
-    Collection<SolrInputDocument> actualBuildIncrementalIndexResult = solrIndexServiceImpl
-        .buildIncrementalIndex(indexables, new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    Collection<SolrInputDocument> actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(
+            indexables, new LBHttp2SolrClient(httpClient, "https://example.org/example"));
 
     // Assert
     verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
     verify(localeService).findAllLocales();
     verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
     verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(i18nSolrIndexServiceExtensionHandler).modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(),
-        isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .modifyBuiltDocuments(isA(Collection.class), isA(List.class), isNull(), isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
     verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
@@ -1958,187 +1669,28 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code indexables}, {@code solrServer}.
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with
+   * {@code pageSize}, {@code lastId}, {@code operation}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long,
+   * SolrIndexOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
-  public void testBuildIncrementalIndexWithIndexablesSolrServer_thenThrowIllegalStateException()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"
+  })
+  public void testBuildIncrementalIndexWithPageSizeLastIdOperation()
       throws ServiceException, TransactionException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any())).thenReturn(new ArrayList<>());
-    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    TransactionStatus transactionStatus = mock(TransactionStatus.class);
-    when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(null);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
-    ArrayList<Indexable> indexables = new ArrayList<>();
-    indexables.add(new ProductBundleImpl());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildIncrementalIndex(indexables,
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
-    verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
-    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
-    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(solrHelperService).getCurrentProductId(isA(Indexable.class));
-    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
-    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
-    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
-    verify(transactionStatus).isRollbackOnly();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)} with {@code indexables}, {@code solrServer}.
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(List, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection SolrIndexServiceImpl.buildIncrementalIndex(List, SolrClient)"})
-  public void testBuildIncrementalIndexWithIndexablesSolrServer_thenThrowIllegalStateException2()
-      throws ServiceException, TransactionException {
-    // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.endBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(i18nSolrIndexServiceExtensionHandler.startBatchEvent(Mockito.<List<Indexable>>any()))
-        .thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
-    when(indexFieldDao.readFieldsByEntityType(Mockito.<FieldEntity>any())).thenReturn(new ArrayList<>());
-    when(localeService.findAllLocales()).thenReturn(new ArrayList<>());
-    doNothing().when(sandBoxHelper).ignoreCloneCache(anyBoolean());
-    when(solrHelperService.getCurrentProductId(Mockito.<Indexable>any())).thenReturn(1L);
-    doNothing().when(solrIndexDao)
-        .populateProductCatalogStructure(Mockito.<List<Long>>any(), Mockito.<CatalogStructure>any());
-    TransactionStatus transactionStatus = mock(TransactionStatus.class);
-    when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
-    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
-
-    ArrayList<Indexable> indexables = new ArrayList<>();
-    indexables.add(new ProductBundleImpl());
-    indexables.add(new ProductBundleImpl());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildIncrementalIndex(indexables,
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
-    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
-    verify(localeService).findAllLocales();
-    verify(sandBoxHelper, atLeast(1)).ignoreCloneCache(anyBoolean());
-    verify(indexFieldDao).readFieldsByEntityType(isA(FieldEntity.class));
-    verify(solrIndexDao).populateProductCatalogStructure(isA(List.class), isNull());
-    verify(solrHelperService, atLeast(1)).getCurrentProductId(isA(Indexable.class));
-    verify(i18nSolrIndexServiceExtensionHandler).endBatchEvent(isA(List.class));
-    verify(i18nSolrIndexServiceExtensionHandler).startBatchEvent(isA(List.class));
-    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
-    verify(transactionStatus).isRollbackOnly();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with {@code pageSize}, {@code lastId}, {@code operation}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"})
-  public void testBuildIncrementalIndexWithPageSizeLastIdOperation() throws ServiceException, TransactionException {
-    // Arrange
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(null);
-    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
     Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+        .thenReturn(null);
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
     doNothing().when(operation).beforeBuildPage();
@@ -2146,37 +1698,46 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(operation).buildPage(Mockito.<List<Indexable>>any());
 
     // Act
-    Long actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
+    Long actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
 
     // Assert
     verify(operation).afterBuildPage();
     verify(operation).afterReadIndexables();
     verify(operation).beforeBuildPage();
     verify(operation).beforeReadIndexables();
-    verify(operation).buildPage(isA(List.class));
-    verify(operation).readIndexables(eq(3), eq(1L));
+    verify(operation).buildPage(isNull());
+    verify(operation).readIndexables(3, 1L);
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
     verify(platformTransactionManager).rollback(isNull());
     assertNull(actualBuildIncrementalIndexResult);
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with {@code pageSize}, {@code lastId}, {@code operation}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)}
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with
+   * {@code pageSize}, {@code lastId}, {@code operation}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long,
+   * SolrIndexOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"})
-  public void testBuildIncrementalIndexWithPageSizeLastIdOperation2() throws ServiceException, TransactionException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"
+  })
+  public void testBuildIncrementalIndexWithPageSizeLastIdOperation2()
+      throws ServiceException, TransactionException {
     // Arrange
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
 
     ArrayList<Indexable> indexableList = new ArrayList<>();
     indexableList.add(new ProductBundleImpl());
+
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
     Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
         .thenReturn(indexableList);
@@ -2187,7 +1748,8 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(operation).buildPage(Mockito.<List<Indexable>>any());
 
     // Act
-    Long actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
+    Long actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
 
     // Assert
     verify(operation).afterBuildPage();
@@ -2195,7 +1757,7 @@ public class SolrIndexServiceImplDiffblueTest {
     verify(operation).beforeBuildPage();
     verify(operation).beforeReadIndexables();
     verify(operation).buildPage(isA(List.class));
-    verify(operation).readIndexables(eq(3), eq(1L));
+    verify(operation).readIndexables(3, 1L);
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
     verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
     verify(transactionStatus).isRollbackOnly();
@@ -2203,25 +1765,84 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with {@code pageSize}, {@code lastId}, {@code operation}.
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with
+   * {@code pageSize}, {@code lastId}, {@code operation}.
+   *
    * <ul>
-   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.</li>
+   *   <li>Given {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long,
+   * SolrIndexOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"
+  })
+  public void testBuildIncrementalIndexWithPageSizeLastIdOperation_givenArrayList()
+      throws ServiceException, TransactionException {
+    // Arrange
+    TransactionStatus transactionStatus = mock(TransactionStatus.class);
+    when(transactionStatus.isRollbackOnly()).thenReturn(true);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
+    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
+    SolrIndexOperation operation = mock(SolrIndexOperation.class);
+    Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
+    doNothing().when(operation).afterBuildPage();
+    doNothing().when(operation).afterReadIndexables();
+    doNothing().when(operation).beforeBuildPage();
+    doNothing().when(operation).beforeReadIndexables();
+    doNothing().when(operation).buildPage(Mockito.<List<Indexable>>any());
+
+    // Act
+    Long actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
+
+    // Assert
+    verify(operation).afterBuildPage();
+    verify(operation).afterReadIndexables();
+    verify(operation).beforeBuildPage();
+    verify(operation).beforeReadIndexables();
+    verify(operation).buildPage(isA(List.class));
+    verify(operation).readIndexables(3, 1L);
+    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
+    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
+    verify(transactionStatus).isRollbackOnly();
+    assertNull(actualBuildIncrementalIndexResult);
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with
+   * {@code pageSize}, {@code lastId}, {@code operation}.
+   *
+   * <ul>
+   *   <li>Then calls {@link PlatformTransactionManager#commit(TransactionStatus)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long,
+   * SolrIndexOperation)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"
+  })
   public void testBuildIncrementalIndexWithPageSizeLastIdOperation_thenCallsCommit()
       throws ServiceException, TransactionException {
     // Arrange
     doNothing().when(platformTransactionManager).commit(Mockito.<TransactionStatus>any());
     when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
         .thenReturn(new SimpleTransactionStatus(true));
+
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
     Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+        .thenReturn(null);
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
     doNothing().when(operation).beforeBuildPage();
@@ -2229,41 +1850,50 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(operation).buildPage(Mockito.<List<Indexable>>any());
 
     // Act
-    Long actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
+    Long actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
 
     // Assert
     verify(operation).afterBuildPage();
     verify(operation).afterReadIndexables();
     verify(operation).beforeBuildPage();
     verify(operation).beforeReadIndexables();
-    verify(operation).buildPage(isA(List.class));
-    verify(operation).readIndexables(eq(3), eq(1L));
+    verify(operation).buildPage(isNull());
+    verify(operation).readIndexables(3, 1L);
     verify(platformTransactionManager).commit(isA(TransactionStatus.class));
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
     assertNull(actualBuildIncrementalIndexResult);
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with {@code pageSize}, {@code lastId}, {@code operation}.
+   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with
+   * {@code pageSize}, {@code lastId}, {@code operation}.
+   *
    * <ul>
-   *   <li>Then calls {@link TransactionExecution#isRollbackOnly()}.</li>
+   *   <li>Then calls {@link TransactionStatus#isRollbackOnly()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long,
+   * SolrIndexOperation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"
+  })
   public void testBuildIncrementalIndexWithPageSizeLastIdOperation_thenCallsIsRollbackOnly()
       throws ServiceException, TransactionException {
     // Arrange
     TransactionStatus transactionStatus = mock(TransactionStatus.class);
     when(transactionStatus.isRollbackOnly()).thenReturn(true);
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any())).thenReturn(transactionStatus);
+    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
+        .thenReturn(transactionStatus);
     doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
+
     SolrIndexOperation operation = mock(SolrIndexOperation.class);
     Mockito.<List<? extends Indexable>>when(operation.readIndexables(anyInt(), Mockito.<Long>any()))
-        .thenReturn(new ArrayList<>());
+        .thenReturn(null);
     doNothing().when(operation).afterBuildPage();
     doNothing().when(operation).afterReadIndexables();
     doNothing().when(operation).beforeBuildPage();
@@ -2271,15 +1901,16 @@ public class SolrIndexServiceImplDiffblueTest {
     doNothing().when(operation).buildPage(Mockito.<List<Indexable>>any());
 
     // Act
-    Long actualBuildIncrementalIndexResult = solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
+    Long actualBuildIncrementalIndexResult =
+        solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation);
 
     // Assert
     verify(operation).afterBuildPage();
     verify(operation).afterReadIndexables();
     verify(operation).beforeBuildPage();
     verify(operation).beforeReadIndexables();
-    verify(operation).buildPage(isA(List.class));
-    verify(operation).readIndexables(eq(3), eq(1L));
+    verify(operation).buildPage(isNull());
+    verify(operation).readIndexables(3, 1L);
     verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
     verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
     verify(transactionStatus).isRollbackOnly();
@@ -2287,118 +1918,100 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)} with {@code pageSize}, {@code lastId}, {@code operation}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildIncrementalIndex(int, Long, SolrIndexOperation)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.buildIncrementalIndex(int, Long, SolrIndexOperation)"})
-  public void testBuildIncrementalIndexWithPageSizeLastIdOperation_thenThrowRuntimeException()
-      throws ServiceException, TransactionException {
-    // Arrange
-    when(platformTransactionManager.getTransaction(Mockito.<TransactionDefinition>any()))
-        .thenReturn(new SimpleTransactionStatus(true));
-    doNothing().when(platformTransactionManager).rollback(Mockito.<TransactionStatus>any());
-    SolrIndexOperation operation = mock(SolrIndexOperation.class);
-    doThrow(new RuntimeException("readItemsToIndex")).when(operation).afterReadIndexables();
-    doThrow(new RuntimeException("readItemsToIndex")).when(operation).beforeReadIndexables();
-
-    // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.buildIncrementalIndex(3, 1L, operation));
-    verify(operation).afterReadIndexables();
-    verify(operation).beforeReadIndexables();
-    verify(platformTransactionManager).getTransaction(isA(TransactionDefinition.class));
-    verify(platformTransactionManager).rollback(isA(TransactionStatus.class));
-  }
-
-  /**
    * Test {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SolrIndexServiceImpl.readAllActiveIndexables(int, Long)"})
   public void testReadAllActiveIndexables_thenReturnEmpty() {
     // Arrange
-    when(productDao.readAllActiveProducts(Mockito.<Integer>any(), Mockito.<Long>any())).thenReturn(new ArrayList<>());
+    when(productDao.readAllActiveProducts(Mockito.<Integer>any(), Mockito.<Long>any()))
+        .thenReturn(new ArrayList<>());
 
     // Act
-    List<? extends Indexable> actualReadAllActiveIndexablesResult = solrIndexServiceImpl.readAllActiveIndexables(3, 1L);
+    List<? extends Indexable> actualReadAllActiveIndexablesResult =
+        solrIndexServiceImpl.readAllActiveIndexables(3, 1L);
 
     // Assert
-    verify(productDao).readAllActiveProducts(eq(3), eq(1L));
+    verify(productDao).readAllActiveProducts(3, 1L);
     assertTrue(actualReadAllActiveIndexablesResult.isEmpty());
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#readAllActiveIndexables(int, Long)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SolrIndexServiceImpl.readAllActiveIndexables(int, Long)"})
   public void testReadAllActiveIndexables_thenThrowIllegalStateException() {
     // Arrange
     when(productDao.readAllActiveProducts(Mockito.<Integer>any(), Mockito.<Long>any()))
-        .thenThrow(new IllegalStateException("foo"));
+        .thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.readAllActiveIndexables(3, 1L));
-    verify(productDao).readAllActiveProducts(eq(3), eq(1L));
+    assertThrows(
+        IllegalStateException.class, () -> solrIndexServiceImpl.readAllActiveIndexables(3, 1L));
+    verify(productDao).readAllActiveProducts(3, 1L);
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getAllLocales()}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} {@link LocaleImpl#getLocaleCode()} return {@code en}.</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link Locale} {@link Locale#getLocaleCode()} return {@code en}.
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SolrIndexServiceImpl.getAllLocales()"})
-  public void testGetAllLocales_givenLocaleImplGetLocaleCodeReturnEn_thenReturnSizeIsOne() {
+  public void testGetAllLocales_givenLocaleGetLocaleCodeReturnEn_thenReturnSizeIsOne() {
     // Arrange
-    LocaleImpl localeImpl = mock(LocaleImpl.class);
-    when(localeImpl.getLocaleCode()).thenReturn("en");
+    Locale locale = mock(Locale.class);
+    when(locale.getLocaleCode()).thenReturn("en");
 
     ArrayList<Locale> localeList = new ArrayList<>();
-    localeList.add(localeImpl);
+    localeList.add(locale);
     when(localeService.findAllLocales()).thenReturn(localeList);
 
     // Act
     List<Locale> actualAllLocales = solrIndexServiceImpl.getAllLocales();
 
     // Assert
-    verify(localeImpl, atLeast(1)).getLocaleCode();
+    verify(locale, atLeast(1)).getLocaleCode();
     verify(localeService).findAllLocales();
     assertEquals(1, actualAllLocales.size());
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getAllLocales()}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SolrIndexServiceImpl.getAllLocales()"})
   public void testGetAllLocales_thenReturnEmpty() {
     // Arrange
@@ -2414,18 +2027,20 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#getAllLocales()}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getAllLocales()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List SolrIndexServiceImpl.getAllLocales()"})
   public void testGetAllLocales_thenThrowIllegalStateException() {
     // Arrange
-    when(localeService.findAllLocales()).thenThrow(new IllegalStateException("foo"));
+    when(localeService.findAllLocales()).thenThrow(new IllegalStateException());
 
     // Act and Assert
     assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.getAllLocales());
@@ -2434,15 +2049,17 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SolrInputDocument SolrIndexServiceImpl.buildDocument(Indexable, List, List)"})
   public void testBuildDocument_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl() {
     // Arrange
@@ -2452,21 +2069,24 @@ public class SolrIndexServiceImplDiffblueTest {
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.buildDocument(indexable, fields, new ArrayList<>()));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SolrInputDocument SolrIndexServiceImpl.buildDocument(Indexable, List, List)"})
   public void testBuildDocument_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl2() {
     // Arrange
@@ -2477,21 +2097,24 @@ public class SolrIndexServiceImplDiffblueTest {
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.buildDocument(indexable, fields, new ArrayList<>()));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SolrInputDocument SolrIndexServiceImpl.buildDocument(Indexable, List, List)"})
   public void testBuildDocument_givenLocaleImpl_whenArrayListAddLocaleImpl() {
     // Arrange
@@ -2502,20 +2125,24 @@ public class SolrIndexServiceImplDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildDocument(indexable, fields, locales));
+    assertThrows(
+        IllegalStateException.class,
+        () -> solrIndexServiceImpl.buildDocument(indexable, fields, locales));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SolrInputDocument SolrIndexServiceImpl.buildDocument(Indexable, List, List)"})
   public void testBuildDocument_givenLocaleImpl_whenArrayListAddLocaleImpl2() {
     // Arrange
@@ -2527,19 +2154,23 @@ public class SolrIndexServiceImplDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class, () -> solrIndexServiceImpl.buildDocument(indexable, fields, locales));
+    assertThrows(
+        IllegalStateException.class,
+        () -> solrIndexServiceImpl.buildDocument(indexable, fields, locales));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}.
+   *
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>When {@link ProductBundleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildDocument(Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SolrInputDocument SolrIndexServiceImpl.buildDocument(Indexable, List, List)"})
   public void testBuildDocument_whenProductBundleImpl() {
     // Arrange
@@ -2547,79 +2178,297 @@ public class SolrIndexServiceImplDiffblueTest {
     ArrayList<IndexField> fields = new ArrayList<>();
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.buildDocument(indexable, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"})
-  public void testAttachIndexableDocumentFields() {
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_givenIndexFieldImpl() {
     // Arrange
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
     ProductBundleImpl indexable = new ProductBundleImpl();
+
+    ArrayList<IndexField> fields = new ArrayList<>();
+    fields.add(new IndexFieldImpl());
+
+    // Act
+    solrIndexServiceImpl.attachIndexableDocumentFields(
+        document, indexable, fields, new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertTrue(document.isEmpty());
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
+   * <ul>
+   *   <li>Given {@code null}.
+   *   <li>When {@link ArrayList#ArrayList()} add {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_givenNull_whenArrayListAddNull() {
+    // Arrange
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+    ProductBundleImpl indexable = new ProductBundleImpl();
+
+    ArrayList<IndexField> fields = new ArrayList<>();
+    fields.add(null);
+
+    // Act
+    solrIndexServiceImpl.attachIndexableDocumentFields(
+        document, indexable, fields, new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertTrue(document.isEmpty());
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link IndexFieldImpl#getField()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_thenCallsGetField() {
+    // Arrange
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+    ProductBundleImpl indexable = new ProductBundleImpl();
+
     IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
-    when(indexFieldImpl.getField()).thenThrow(new IllegalStateException("Could not get value for property["));
-    when(indexFieldImpl.getFieldTypes()).thenThrow(new IllegalStateException("foo"));
+    when(indexFieldImpl.getField()).thenThrow(new IllegalStateException());
+    when(indexFieldImpl.getFieldTypes()).thenThrow(new IllegalStateException());
 
     ArrayList<IndexField> fields = new ArrayList<>();
     fields.add(indexFieldImpl);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> solrIndexServiceImpl.attachIndexableDocumentFields(null, indexable, fields, new ArrayList<>()));
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.attachIndexableDocumentFields(
+                document, indexable, fields, new ArrayList<>()));
     verify(indexFieldImpl).getField();
     verify(indexFieldImpl).getFieldTypes();
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}.
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Then calls {@link FieldImpl#getQualifiedFieldName()}.</li>
+   *   <li>Then calls {@link FieldImpl#getPropertyName()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"})
-  public void testAttachIndexableDocumentFields_thenCallsGetQualifiedFieldName() {
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_thenCallsGetPropertyName()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.populateDocumentForIndexField(
+            Mockito.<SolrInputDocument>any(),
+            Mockito.<IndexField>any(),
+            Mockito.<FieldType>any(),
+            Mockito.<Map<String, Object>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(
+            Mockito.<Indexable>any(),
+            Mockito.<Field>any(),
+            Mockito.<FieldType>any(),
+            Mockito.<Map<String, Object>>any(),
+            Mockito.<String>any(),
+            Mockito.<List<Locale>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
     ProductBundleImpl indexable = new ProductBundleImpl();
-    FieldImpl fieldImpl = mock(FieldImpl.class);
-    when(fieldImpl.getQualifiedFieldName()).thenReturn("Qualified Field Name");
-    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
-    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
-    when(indexFieldImpl.getFieldTypes()).thenThrow(new IllegalStateException("foo"));
+
+    FieldImpl field = mock(FieldImpl.class);
+    when(field.getPropertyName()).thenReturn("Property Name");
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenThrow(new IllegalStateException());
+
+    ArrayList<IndexFieldType> fieldTypes = new ArrayList<>();
+    fieldTypes.add(new IndexFieldTypeImpl());
+    fieldTypes.add(indexFieldTypeImpl);
+
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(field);
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+    indexFieldImpl.setFieldTypes(fieldTypes);
 
     ArrayList<IndexField> fields = new ArrayList<>();
     fields.add(indexFieldImpl);
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> solrIndexServiceImpl.attachIndexableDocumentFields(null, indexable, fields, new ArrayList<>()));
-    verify(fieldImpl).getQualifiedFieldName();
-    verify(indexFieldImpl).getField();
-    verify(indexFieldImpl).getFieldTypes();
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.attachIndexableDocumentFields(
+                document, indexable, fields, new ArrayList<>()));
+    verify(solrIndexServiceExtensionManager, atLeast(1)).getProxy();
+    verify(field).getPropertyName();
+    verify(field).getQualifiedFieldName();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .populateDocumentForIndexField(
+            isA(SolrInputDocument.class), isA(IndexField.class), isNull(), isA(Map.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .addPropertyValues(
+            isA(Indexable.class),
+            isA(Field.class),
+            (FieldType) isNull(),
+            isA(Map.class),
+            eq("Property Name"),
+            isA(List.class));
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
+   * <ul>
+   *   <li>Then calls {@link FieldImpl#getQualifiedFieldName()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_thenCallsGetQualifiedFieldName() {
+    // Arrange
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+    ProductBundleImpl indexable = new ProductBundleImpl();
+
+    FieldImpl field = mock(FieldImpl.class);
+    when(field.getQualifiedFieldName()).thenReturn("Qualified Field Name");
+
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenThrow(new IllegalStateException());
+
+    ArrayList<IndexFieldType> fieldTypes = new ArrayList<>();
+    fieldTypes.add(indexFieldTypeImpl);
+
+    IndexFieldImpl indexFieldImpl = new IndexFieldImpl();
+    indexFieldImpl.setField(field);
+    indexFieldImpl.setId(1L);
+    indexFieldImpl.setSearchable(true);
+    indexFieldImpl.setFieldTypes(fieldTypes);
+
+    ArrayList<IndexField> fields = new ArrayList<>();
+    fields.add(indexFieldImpl);
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.attachIndexableDocumentFields(
+                document, indexable, fields, new ArrayList<>()));
+    verify(field).getQualifiedFieldName();
+    verify(indexFieldTypeImpl).getFieldType();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable,
+   * List, List)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * SolrIndexServiceImpl#attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachIndexableDocumentFields(SolrInputDocument, Indexable, List, List)"
+  })
+  public void testAttachIndexableDocumentFields_whenNull_thenNull() {
+    // Arrange
+    ProductBundleImpl indexable = new ProductBundleImpl();
+    ArrayList<IndexField> fields = new ArrayList<>();
+
+    // Act
+    solrIndexServiceImpl.attachIndexableDocumentFields(null, indexable, fields, new ArrayList<>());
+
+    // Assert that nothing has changed
+    assertNull(null);
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable,
+   * SolrInputDocument)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"
+  })
   public void testAttachAdditionalDocumentFields() {
     // Arrange
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(new I18nSolrIndexServiceExtensionHandler());
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(new I18nSolrIndexServiceExtensionHandler());
 
     // Act
     solrIndexServiceImpl.attachAdditionalDocumentFields(new ProductBundleImpl(), null);
@@ -2630,54 +2479,218 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}.
+   *
    * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#attachAdditionalDocumentFields(Indexable,
+   * SolrInputDocument)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"
+  })
   public void testAttachAdditionalDocumentFields_thenThrowIllegalStateException() {
     // Arrange
-    when(solrIndexServiceExtensionManager.getProxy()).thenThrow(new IllegalStateException("foo"));
+    when(solrIndexServiceExtensionManager.getProxy()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(IllegalStateException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.attachAdditionalDocumentFields(new ProductBundleImpl(), null));
     verify(solrIndexServiceExtensionManager).getProxy();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#attachBasicDocumentFields(Indexable, SolrInputDocument)}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#attachBasicDocumentFields(Indexable, SolrInputDocument)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#attachBasicDocumentFields(Indexable,
+   * SolrInputDocument)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.attachBasicDocumentFields(Indexable, SolrInputDocument)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.attachBasicDocumentFields(Indexable, SolrInputDocument)"
+  })
   public void testAttachBasicDocumentFields() {
     // Arrange, Act and Assert
-    assertThrows(IllegalStateException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.attachBasicDocumentFields(new ProductBundleImpl(), null));
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)}.
-   * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)}
+   * Test {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SolrIndexServiceImpl.buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)"})
-  public void testBuildFullCategoryHierarchy_thenThrowRuntimeException() {
+    "void SolrIndexServiceImpl.buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)"
+  })
+  public void testBuildFullCategoryHierarchy() {
     // Arrange
-    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenThrow(new RuntimeException("foo"));
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getCategoryFieldName()).thenReturn("Category Field Name");
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+
+    HashMap<Long, Set<Long>> parentCategoriesByCategory = new HashMap<>();
+    HashSet<Long> resultLongSet = new HashSet<>();
+    parentCategoriesByCategory.put(1L, resultLongSet);
+
+    CatalogStructure cache = new CatalogStructure();
+    cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
+    cache.setParentCategoriesByCategory(parentCategoriesByCategory);
+    cache.setParentCategoriesByProduct(new HashMap<>());
+    HashSet<Long> indexedParents = new HashSet<>();
+
+    // Act
+    solrIndexServiceImpl.buildFullCategoryHierarchy(document, cache, 1L, indexedParents);
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryFieldName();
+    verify(solrHelperService).getCategoryId(1L);
+    assertEquals(1, document.size());
+    SolrInputField getResult = document.get("Category Field Name");
+    Collection<Object> values = getResult.getValues();
+    assertEquals(1, values.size());
+    assertTrue(values instanceof List);
+    assertEquals(1, getResult.getValueCount());
+    Iterator<Object> iteratorResult = getResult.iterator();
+    assertEquals(1L, ((Long) iteratorResult.next()).longValue());
+    assertEquals(1L, ((Long) ((List<Object>) values).get(0)).longValue());
+    assertEquals(1L, ((Long) getResult.getFirstValue()).longValue());
+    assertEquals(1L, ((Long) getResult.getValue()).longValue());
+    assertFalse(iteratorResult.hasNext());
+    assertEquals(resultLongSet, indexedParents);
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)"
+  })
+  public void testBuildFullCategoryHierarchy2() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getCategoryFieldName()).thenReturn("Category Field Name");
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+
+    HashSet<Long> resultLongSet = new HashSet<>();
+    resultLongSet.add(1L);
+
+    HashMap<Long, Set<Long>> parentCategoriesByCategory = new HashMap<>();
+    parentCategoriesByCategory.put(1L, resultLongSet);
+
+    CatalogStructure cache = new CatalogStructure();
+    cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
+    cache.setParentCategoriesByCategory(parentCategoriesByCategory);
+    cache.setParentCategoriesByProduct(new HashMap<>());
+    HashSet<Long> indexedParents = new HashSet<>();
+
+    // Act
+    solrIndexServiceImpl.buildFullCategoryHierarchy(document, cache, 1L, indexedParents);
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryFieldName();
+    verify(solrHelperService, atLeast(1)).getCategoryId(1L);
+    assertEquals(1, document.size());
+    SolrInputField getResult = document.get("Category Field Name");
+    Collection<Object> values = getResult.getValues();
+    assertEquals(1, values.size());
+    assertTrue(values instanceof List);
+    assertEquals(1, getResult.getValueCount());
+    Iterator<Object> iteratorResult = getResult.iterator();
+    assertEquals(1L, ((Long) iteratorResult.next()).longValue());
+    assertEquals(1L, ((Long) ((List<Object>) values).get(0)).longValue());
+    assertEquals(1L, ((Long) getResult.getFirstValue()).longValue());
+    assertEquals(1L, ((Long) getResult.getValue()).longValue());
+    assertFalse(iteratorResult.hasNext());
+    assertEquals(resultLongSet, indexedParents);
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)"
+  })
+  public void testBuildFullCategoryHierarchy3() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(null);
+    when(solrHelperService.getCategoryFieldName()).thenReturn("Category Field Name");
+    SolrInputDocument document = new SolrInputDocument(new HashMap<>());
+
+    HashSet<Long> resultLongSet = new HashSet<>();
+    resultLongSet.add(1L);
+
+    HashMap<Long, Set<Long>> parentCategoriesByCategory = new HashMap<>();
+    parentCategoriesByCategory.put(1L, resultLongSet);
+
+    CatalogStructure cache = new CatalogStructure();
+    cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
+    cache.setParentCategoriesByCategory(parentCategoriesByCategory);
+    cache.setParentCategoriesByProduct(new HashMap<>());
+
+    // Act
+    solrIndexServiceImpl.buildFullCategoryHierarchy(document, cache, 1L, new HashSet<>());
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryFieldName();
+    verify(solrHelperService, atLeast(1)).getCategoryId(1L);
+    assertEquals(1, document.size());
+    SolrInputField getResult = document.get("Category Field Name");
+    assertNull(getResult.getFirstValue());
+    assertNull(getResult.getValue());
+    assertNull(getResult.getValues());
+    assertEquals(0, getResult.getValueCount());
+    assertFalse(getResult.iterator().hasNext());
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#buildFullCategoryHierarchy(SolrInputDocument,
+   * CatalogStructure, Long, Set)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SolrIndexServiceImpl.buildFullCategoryHierarchy(SolrInputDocument, CatalogStructure, Long, Set)"
+  })
+  public void testBuildFullCategoryHierarchy_thenThrowIllegalStateException() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any()))
+        .thenThrow(new IllegalStateException());
 
     CatalogStructure cache = new CatalogStructure();
     cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
@@ -2685,33 +2698,105 @@ public class SolrIndexServiceImplDiffblueTest {
     cache.setParentCategoriesByProduct(new HashMap<>());
 
     // Act and Assert
-    assertThrows(RuntimeException.class,
+    assertThrows(
+        IllegalStateException.class,
         () -> solrIndexServiceImpl.buildFullCategoryHierarchy(null, cache, 1L, new HashSet<>()));
-    verify(solrHelperService).getCategoryId(eq(1L));
+    verify(solrHelperService).getCategoryId(1L);
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
-   * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
+  public void testGetPropertyValues()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // Arrange
+    when(solrIndexServiceExtensionManager.getProxy()).thenThrow(new IllegalStateException());
+    ProductBundleImpl indexedItem = new ProductBundleImpl();
+    FieldImpl field = new FieldImpl();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.getPropertyValues(
+                indexedItem, field, FieldType.BOOLEAN, new ArrayList<>()));
+    verify(solrIndexServiceExtensionManager).getProxy();
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
+  public void testGetPropertyValues2()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // Arrange
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(new I18nSolrIndexServiceExtensionHandler());
+    when(solrHelperService.getPropertyValue(Mockito.<Object>any(), Mockito.<Field>any()))
+        .thenThrow(new IllegalStateException());
+    ProductBundleImpl indexedItem = new ProductBundleImpl();
+    FieldImpl field = new FieldImpl();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.getPropertyValues(
+                indexedItem, field, FieldType.BOOLEAN, new ArrayList<>()));
+    verify(solrIndexServiceExtensionManager).getProxy();
+    verify(solrHelperService).getPropertyValue(isA(Object.class), isA(Field.class));
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
+   *
+   * <ul>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
   public void testGetPropertyValues_givenLocaleImpl_whenArrayListAddLocaleImpl_thenReturnEmpty()
       throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(Mockito.<Indexable>any(), Mockito.<Field>any(),
-        Mockito.<FieldType>any(), Mockito.<Map<String, Object>>any(), Mockito.<String>any(),
-        Mockito.<List<Locale>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(
+            Mockito.<Indexable>any(),
+            Mockito.<Field>any(),
+            Mockito.<FieldType>any(),
+            Mockito.<Map<String, Object>>any(),
+            Mockito.<String>any(),
+            Mockito.<List<Locale>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     ProductBundleImpl indexedItem = new ProductBundleImpl();
     FieldImpl field = new FieldImpl();
 
@@ -2719,38 +2804,55 @@ public class SolrIndexServiceImplDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act
-    Map<String, Object> actualPropertyValues = solrIndexServiceImpl.getPropertyValues(indexedItem, field,
-        FieldType.BOOLEAN, locales);
+    Map<String, Object> actualPropertyValues =
+        solrIndexServiceImpl.getPropertyValues(indexedItem, field, FieldType.BOOLEAN, locales);
 
     // Assert
     verify(solrIndexServiceExtensionManager).getProxy();
-    verify(i18nSolrIndexServiceExtensionHandler).addPropertyValues(isA(Indexable.class), isA(Field.class),
-        isA(FieldType.class), isA(Map.class), (String) isNull(), isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .addPropertyValues(
+            isA(Indexable.class),
+            isA(Field.class),
+            isA(FieldType.class),
+            isA(Map.class),
+            (String) isNull(),
+            isA(List.class));
     assertTrue(actualPropertyValues.isEmpty());
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
   public void testGetPropertyValues_givenLocaleImpl_whenArrayListAddLocaleImpl_thenReturnEmpty2()
       throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(Mockito.<Indexable>any(), Mockito.<Field>any(),
-        Mockito.<FieldType>any(), Mockito.<Map<String, Object>>any(), Mockito.<String>any(),
-        Mockito.<List<Locale>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(
+            Mockito.<Indexable>any(),
+            Mockito.<Field>any(),
+            Mockito.<FieldType>any(),
+            Mockito.<Map<String, Object>>any(),
+            Mockito.<String>any(),
+            Mockito.<List<Locale>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     ProductBundleImpl indexedItem = new ProductBundleImpl();
     FieldImpl field = new FieldImpl();
 
@@ -2759,75 +2861,104 @@ public class SolrIndexServiceImplDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act
-    Map<String, Object> actualPropertyValues = solrIndexServiceImpl.getPropertyValues(indexedItem, field,
-        FieldType.BOOLEAN, locales);
+    Map<String, Object> actualPropertyValues =
+        solrIndexServiceImpl.getPropertyValues(indexedItem, field, FieldType.BOOLEAN, locales);
 
     // Assert
     verify(solrIndexServiceExtensionManager).getProxy();
-    verify(i18nSolrIndexServiceExtensionHandler).addPropertyValues(isA(Indexable.class), isA(Field.class),
-        isA(FieldType.class), isA(Map.class), (String) isNull(), isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .addPropertyValues(
+            isA(Indexable.class),
+            isA(Field.class),
+            isA(FieldType.class),
+            isA(Map.class),
+            (String) isNull(),
+            isA(List.class));
     assertTrue(actualPropertyValues.isEmpty());
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
+   *
    * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"})
-  public void testGetPropertyValues_givenSolrHelperService_whenArrayList_thenReturnEmpty()
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
+  public void testGetPropertyValues_thenReturnEmpty()
       throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = mock(
-        I18nSolrIndexServiceExtensionHandler.class);
-    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(Mockito.<Indexable>any(), Mockito.<Field>any(),
-        Mockito.<FieldType>any(), Mockito.<Map<String, Object>>any(), Mockito.<String>any(),
-        Mockito.<List<Locale>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(i18nSolrIndexServiceExtensionHandler);
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        mock(I18nSolrIndexServiceExtensionHandler.class);
+    when(i18nSolrIndexServiceExtensionHandler.addPropertyValues(
+            Mockito.<Indexable>any(),
+            Mockito.<Field>any(),
+            Mockito.<FieldType>any(),
+            Mockito.<Map<String, Object>>any(),
+            Mockito.<String>any(),
+            Mockito.<List<Locale>>any()))
+        .thenReturn(ExtensionResultStatusType.HANDLED);
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(i18nSolrIndexServiceExtensionHandler);
     ProductBundleImpl indexedItem = new ProductBundleImpl();
     FieldImpl field = new FieldImpl();
 
     // Act
-    Map<String, Object> actualPropertyValues = solrIndexServiceImpl.getPropertyValues(indexedItem, field,
-        FieldType.BOOLEAN, new ArrayList<>());
+    Map<String, Object> actualPropertyValues =
+        solrIndexServiceImpl.getPropertyValues(
+            indexedItem, field, FieldType.BOOLEAN, new ArrayList<>());
 
     // Assert
     verify(solrIndexServiceExtensionManager).getProxy();
-    verify(i18nSolrIndexServiceExtensionHandler).addPropertyValues(isA(Indexable.class), isA(Field.class),
-        isA(FieldType.class), isA(Map.class), (String) isNull(), isA(List.class));
+    verify(i18nSolrIndexServiceExtensionHandler)
+        .addPropertyValues(
+            isA(Indexable.class),
+            isA(Field.class),
+            isA(FieldType.class),
+            isA(Map.class),
+            (String) isNull(),
+            isA(List.class));
     assertTrue(actualPropertyValues.isEmpty());
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field,
+   * FieldType, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"
+  })
   public void testGetPropertyValues_thenReturnSizeIsOne()
       throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(new I18nSolrIndexServiceExtensionHandler());
+    when(solrIndexServiceExtensionManager.getProxy())
+        .thenReturn(new I18nSolrIndexServiceExtensionHandler());
     when(solrHelperService.getPropertyValue(Mockito.<Object>any(), Mockito.<Field>any()))
         .thenReturn(GlobalSolrFullReIndexOperation.LOCK_OBJECT);
     ProductBundleImpl indexedItem = new ProductBundleImpl();
     FieldImpl field = new FieldImpl();
 
     // Act
-    Map<String, Object> actualPropertyValues = solrIndexServiceImpl.getPropertyValues(indexedItem, field,
-        FieldType.BOOLEAN, new ArrayList<>());
+    Map<String, Object> actualPropertyValues =
+        solrIndexServiceImpl.getPropertyValues(
+            indexedItem, field, FieldType.BOOLEAN, new ArrayList<>());
 
     // Assert
     verify(solrIndexServiceExtensionManager).getProxy();
@@ -2837,440 +2968,488 @@ public class SolrIndexServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}.
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#getPropertyValues(Indexable, Field, FieldType, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map SolrIndexServiceImpl.getPropertyValues(Indexable, Field, FieldType, List)"})
-  public void testGetPropertyValues_thenThrowIllegalStateException()
-      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-    // Arrange
-    when(solrIndexServiceExtensionManager.getProxy()).thenReturn(new I18nSolrIndexServiceExtensionHandler());
-    when(solrHelperService.getPropertyValue(Mockito.<Object>any(), Mockito.<Field>any()))
-        .thenThrow(new IllegalStateException("foo"));
-    ProductBundleImpl indexedItem = new ProductBundleImpl();
-    FieldImpl field = new FieldImpl();
-
-    // Act and Assert
-    assertThrows(IllegalStateException.class,
-        () -> solrIndexServiceImpl.getPropertyValues(indexedItem, field, FieldType.BOOLEAN, new ArrayList<>()));
-    verify(solrIndexServiceExtensionManager).getProxy();
-    verify(solrHelperService).getPropertyValue(isA(Object.class), isA(Field.class));
-  }
-
-  /**
    * Test {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}.
+   *
    * <ul>
-   *   <li>When {@code \.}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code \.}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SolrIndexServiceImpl.convertToMappedProperty(String, String, String)"})
   public void testConvertToMappedProperty_whenBackslashDot_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", solrIndexServiceImpl.convertToMappedProperty("\\.", "List Property Name", "Map Property Name"));
+    assertEquals(
+        "",
+        solrIndexServiceImpl.convertToMappedProperty(
+            "\\.", "List Property Name", "Map Property Name"));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When empty string.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SolrIndexServiceImpl.convertToMappedProperty(String, String, String)"})
   public void testConvertToMappedProperty_whenEmptyString_thenReturnEmptyString() {
     // Arrange, Act and Assert
-    assertEquals("", solrIndexServiceImpl.convertToMappedProperty("", "List Property Name", "Map Property Name"));
+    assertEquals(
+        "",
+        solrIndexServiceImpl.convertToMappedProperty(
+            "", "List Property Name", "Map Property Name"));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}.
+   *
    * <ul>
-   *   <li>When {@code Long}.</li>
-   *   <li>Then return {@code Long}.</li>
+   *   <li>When {@code Long}.
+   *   <li>Then return {@code Long}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SolrIndexServiceImpl.convertToMappedProperty(String, String, String)"})
   public void testConvertToMappedProperty_whenJavaLangLong_thenReturnJavaLangLong() {
     // Arrange, Act and Assert
-    assertEquals("java.lang.Long",
-        solrIndexServiceImpl.convertToMappedProperty("java.lang.Long", "List Property Name", "Map Property Name"));
+    assertEquals(
+        "java.lang.Long",
+        solrIndexServiceImpl.convertToMappedProperty(
+            "java.lang.Long", "List Property Name", "Map Property Name"));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}.
+   *
    * <ul>
-   *   <li>When {@code java}.</li>
-   *   <li>Then return {@code Map Property Name(lang).value.Long}.</li>
+   *   <li>When {@code java}.
+   *   <li>Then return {@code Map Property Name(lang).value.Long}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SolrIndexServiceImpl.convertToMappedProperty(String, String, String)"})
   public void testConvertToMappedProperty_whenJava_thenReturnMapPropertyNameLangValueLong() {
     // Arrange, Act and Assert
-    assertEquals("Map Property Name(lang).value.Long",
-        solrIndexServiceImpl.convertToMappedProperty("java.lang.Long", "java", "Map Property Name"));
+    assertEquals(
+        "Map Property Name(lang).value.Long",
+        solrIndexServiceImpl.convertToMappedProperty(
+            "java.lang.Long", "java", "Map Property Name"));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}.
+   *
    * <ul>
-   *   <li>When {@code Property Name}.</li>
-   *   <li>Then return {@code Property Name}.</li>
+   *   <li>When {@code Property Name}.
+   *   <li>Then return {@code Property Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String, String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertToMappedProperty(String, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String SolrIndexServiceImpl.convertToMappedProperty(String, String, String)"})
   public void testConvertToMappedProperty_whenPropertyName_thenReturnPropertyName() {
     // Arrange, Act and Assert
-    assertEquals("Property Name",
-        solrIndexServiceImpl.convertToMappedProperty("Property Name", "List Property Name", "Map Property Name"));
+    assertEquals(
+        "Property Name",
+        solrIndexServiceImpl.convertToMappedProperty(
+            "Property Name", "List Property Name", "Map Property Name"));
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#saveState()}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#saveState()}
+   * Test {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)} with {@code collection},
+   * {@code server}.
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object[] SolrIndexServiceImpl.saveState()"})
-  public void testSaveState() {
-    // Arrange and Act
-    Object[] actualSaveStateResult = solrIndexServiceImpl.saveState();
-
-    // Assert
-    assertTrue(actualSaveStateResult[0] instanceof BroadleafRequestContext);
-    assertNull(actualSaveStateResult[1]);
-    assertNull(actualSaveStateResult[2]);
-    assertNull(actualSaveStateResult[3]);
-    assertEquals(4, actualSaveStateResult.length);
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)} with {@code collection}, {@code server}.
-   * <ul>
-   *   <li>Then calls {@link SolrHelperService#optimizeIndex(String, SolrClient)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.optimizeIndex(String, SolrClient)"})
-  public void testOptimizeIndexWithCollectionServer_thenCallsOptimizeIndex() throws IOException, ServiceException {
+  public void testOptimizeIndexWithCollectionServer() throws IOException, ServiceException {
     // Arrange
-    doNothing().when(solrHelperService).optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+    doNothing()
+        .when(solrHelperService)
+        .optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act
-    solrIndexServiceImpl.optimizeIndex("Collection", new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    solrIndexServiceImpl.optimizeIndex(
+        "Collection", new LBHttp2SolrClient(httpClient, "https://example.org/example"));
 
     // Assert
     verify(solrHelperService).optimizeIndex(eq("Collection"), isA(SolrClient.class));
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)} with {@code server}.
+   * Test {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)} with {@code collection},
+   * {@code server}.
+   *
    * <ul>
-   *   <li>Then calls {@link SolrHelperService#optimizeIndex(String, SolrClient)}.</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#optimizeIndex(String, SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.optimizeIndex(SolrClient)"})
-  public void testOptimizeIndexWithServer_thenCallsOptimizeIndex() throws IOException, ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SolrIndexServiceImpl.optimizeIndex(String, SolrClient)"})
+  public void testOptimizeIndexWithCollectionServer_thenThrowIllegalStateException()
+      throws IOException, ServiceException {
     // Arrange
-    doNothing().when(solrHelperService).optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+    doThrow(new IllegalStateException())
+        .when(solrHelperService)
+        .optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.optimizeIndex(
+                "Collection", new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrHelperService).optimizeIndex(eq("Collection"), isA(SolrClient.class));
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)} with {@code server}.
+   *
+   * <ul>
+   *   <li>Given {@link SolrHelperService} {@link SolrHelperService#optimizeIndex(String,
+   *       SolrClient)} does nothing.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SolrIndexServiceImpl.optimizeIndex(SolrClient)"})
+  public void testOptimizeIndexWithServer_givenSolrHelperServiceOptimizeIndexDoesNothing()
+      throws IOException, ServiceException {
+    // Arrange
+    doNothing()
+        .when(solrHelperService)
+        .optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
+
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
 
     // Act
-    solrIndexServiceImpl.optimizeIndex(new LBHttp2SolrClient(httpClient5, "https://example.org/example"));
+    solrIndexServiceImpl.optimizeIndex(
+        new LBHttp2SolrClient(httpClient, "https://example.org/example"));
 
     // Assert
     verify(solrHelperService).optimizeIndex(isNull(), isA(SolrClient.class));
   }
 
   /**
-   * Test {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)} with {@code collection}, {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(String, SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithCollectionServerSoftCommitWaitSearcherWaitFlush() throws IOException, ServiceException {
-    // Arrange
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.commit("Collection",
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example"), true, true, true));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)} with {@code collection}, {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(String, SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithCollectionServerSoftCommitWaitSearcherWaitFlush2()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any(), anyBoolean(), anyBoolean(), anyBoolean()))
-        .thenReturn(new UpdateResponse());
-
-    // Act
-    solrIndexServiceImpl.commit("Collection", server, true, true, true);
-
-    // Assert
-    verify(server).commit(eq("Collection"), eq(true), eq(true), eq(true));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)} with {@code collection}, {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(String, SolrClient, boolean, boolean, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(String, SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithCollectionServerSoftCommitWaitSearcherWaitFlush3()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any(), anyBoolean(), anyBoolean(), anyBoolean()))
-        .thenThrow(new SolrServerException("An error occurred"));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.commit("Collection", server, true, true, true));
-    verify(server).commit(eq("Collection"), eq(true), eq(true), eq(true));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)} with {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithServerSoftCommitWaitSearcherWaitFlush() throws IOException, ServiceException {
-    // Arrange
-    Builder connectionTimeoutResult = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult2 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult3 = (new Builder()).connectionTimeout(1);
-    Builder connectionTimeoutResult4 = (new Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl
-        .commit(new LBHttp2SolrClient(httpClient5, "https://example.org/example"), true, true, true));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)} with {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithServerSoftCommitWaitSearcherWaitFlush2()
-      throws IOException, SolrServerException, ServiceException {
-    // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any(), anyBoolean(), anyBoolean(), anyBoolean()))
-        .thenThrow(new SolrServerException("An error occurred"));
-
-    // Act and Assert
-    assertThrows(ServiceException.class, () -> solrIndexServiceImpl.commit(server, true, true, true));
-    verify(server).commit(isNull(), eq(true), eq(true), eq(true));
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)} with {@code server}, {@code softCommit}, {@code waitSearcher}, {@code waitFlush}.
+   * Test {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)} with {@code server}.
+   *
    * <ul>
-   *   <li>Given {@link UpdateResponse} (default constructor).</li>
+   *   <li>Then throw {@link IllegalStateException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#commit(SolrClient, boolean, boolean, boolean)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#optimizeIndex(SolrClient)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.commit(SolrClient, boolean, boolean, boolean)"})
-  public void testCommitWithServerSoftCommitWaitSearcherWaitFlush_givenUpdateResponse()
-      throws IOException, SolrServerException, ServiceException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void SolrIndexServiceImpl.optimizeIndex(SolrClient)"})
+  public void testOptimizeIndexWithServer_thenThrowIllegalStateException()
+      throws IOException, ServiceException {
     // Arrange
-    LBHttp2SolrClient server = mock(LBHttp2SolrClient.class);
-    when(server.commit(Mockito.<String>any(), anyBoolean(), anyBoolean(), anyBoolean()))
-        .thenReturn(new UpdateResponse());
+    doThrow(new IllegalStateException())
+        .when(solrHelperService)
+        .optimizeIndex(Mockito.<String>any(), Mockito.<SolrClient>any());
 
-    // Act
-    solrIndexServiceImpl.commit(server, true, true, true);
+    Builder connectionTimeoutResult = new Builder().connectionTimeout(1);
 
-    // Assert
-    verify(server).commit(isNull(), eq(true), eq(true), eq(true));
+    Builder connectionTimeoutResult2 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult3 = new Builder().connectionTimeout(1);
+
+    Builder connectionTimeoutResult4 = new Builder().connectionTimeout(1);
+
+    Builder maxConnectionsPerHostResult =
+        connectionTimeoutResult3
+            .withHttpClient(
+                connectionTimeoutResult4
+                    .withHttpClient(new Builder().build())
+                    .idleTimeout(1)
+                    .maxConnectionsPerHost(3)
+                    .withSSLConfig(null)
+                    .useHttp1_1(true)
+                    .build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult2 =
+        connectionTimeoutResult2
+            .withHttpClient(
+                maxConnectionsPerHostResult.withSSLConfig(sslConfig).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig2 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+
+    Builder maxConnectionsPerHostResult3 =
+        connectionTimeoutResult
+            .withHttpClient(
+                maxConnectionsPerHostResult2.withSSLConfig(sslConfig2).useHttp1_1(true).build())
+            .idleTimeout(1)
+            .maxConnectionsPerHost(3);
+    SSLConfig sslConfig3 =
+        new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou");
+    Http2SolrClient httpClient =
+        maxConnectionsPerHostResult3.withSSLConfig(sslConfig3).useHttp1_1(true).build();
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            solrIndexServiceImpl.optimizeIndex(
+                new LBHttp2SolrClient(httpClient, "https://example.org/example")));
+    verify(solrHelperService).optimizeIndex(isNull(), isA(SolrClient.class));
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure, String)}.
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure, String)}
+   *
+   * <ul>
+   *   <li>Then return longValue is {@code 2300000}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long SolrIndexServiceImpl.convertDisplayOrderToLong(CatalogStructure, String)"})
-  public void testConvertDisplayOrderToLong() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.convertDisplayOrderToLong(CatalogStructure, String)"
+  })
+  public void testConvertDisplayOrderToLong_thenReturnLongValueIs2300000() {
+    // Arrange
+    HashMap<String, BigDecimal> displayOrdersByCategoryProduct = new HashMap<>();
+    displayOrdersByCategoryProduct.put("42", new BigDecimal("2.3"));
+
+    CatalogStructure cache = new CatalogStructure();
+    cache.setDisplayOrdersByCategoryProduct(displayOrdersByCategoryProduct);
+    cache.setParentCategoriesByCategory(new HashMap<>());
+    cache.setParentCategoriesByProduct(new HashMap<>());
+
+    // Act and Assert
+    assertEquals(2300000L, solrIndexServiceImpl.convertDisplayOrderToLong(cache, "42").longValue());
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure, String)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link IllegalStateException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure,
+   * String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.convertDisplayOrderToLong(CatalogStructure, String)"
+  })
+  public void testConvertDisplayOrderToLong_thenThrowIllegalStateException() {
+    // Arrange
+    InternalNumber internalNumber = mock(InternalNumber.class);
+    when(internalNumber.multiply(Mockito.<BigDecimal>any())).thenThrow(new IllegalStateException());
+
+    HashMap<String, BigDecimal> displayOrdersByCategoryProduct = new HashMap<>();
+    displayOrdersByCategoryProduct.put("42", internalNumber);
+
+    CatalogStructure cache = new CatalogStructure();
+    cache.setDisplayOrdersByCategoryProduct(displayOrdersByCategoryProduct);
+    cache.setParentCategoriesByCategory(new HashMap<>());
+    cache.setParentCategoriesByProduct(new HashMap<>());
+
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class,
+        () -> solrIndexServiceImpl.convertDisplayOrderToLong(cache, "42"));
+    verify(internalNumber).multiply(isA(BigDecimal.class));
+  }
+
+  /**
+   * Test {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure, String)}.
+   *
+   * <ul>
+   *   <li>When {@code Display Order Key}.
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#convertDisplayOrderToLong(CatalogStructure,
+   * String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long SolrIndexServiceImpl.convertDisplayOrderToLong(CatalogStructure, String)"
+  })
+  public void testConvertDisplayOrderToLong_whenDisplayOrderKey_thenReturnNull() {
     // Arrange
     CatalogStructure cache = new CatalogStructure();
     cache.setDisplayOrdersByCategoryProduct(new HashMap<>());
@@ -3283,55 +3462,45 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#deleteByQuery(String)}.
-   * <ul>
-   *   <li>Then calls {@link SolrClient#deleteByQuery(String, String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteByQuery(String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#deleteByQuery(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.deleteByQuery(String)"})
-  public void testDeleteByQuery_thenCallsDeleteByQuery() throws IOException, SolrServerException {
+  public void testDeleteByQuery() throws IOException, SolrServerException {
     // Arrange
-    when(solrHelperService.getPrimaryDocumentType()).thenReturn("Primary Document Type");
-    when(solrHelperService.getTypeFieldName()).thenReturn("Type Field Name");
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.deleteByQuery(Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getQueryCollectionName()).thenReturn("Query Collection Name");
-    when(solrConfiguration.getServer()).thenReturn(lbHttp2SolrClient);
+    when(solrHelperService.getTypeFieldName()).thenThrow(new IllegalStateException());
 
-    // Act
-    solrIndexServiceImpl.deleteByQuery("Delete Query");
-
-    // Assert
-    verify(lbHttp2SolrClient, atLeast(1)).deleteByQuery(eq("Query Collection Name"), Mockito.<String>any());
-    verify(solrConfiguration, atLeast(1)).getQueryCollectionName();
-    verify(solrConfiguration, atLeast(1)).getServer();
-    verify(solrHelperService).getPrimaryDocumentType();
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class, () -> solrIndexServiceImpl.deleteByQuery("Delete Query"));
     verify(solrHelperService).getTypeFieldName();
   }
 
   /**
    * Test {@link SolrIndexServiceImpl#deleteByQuery(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>Then calls {@link SolrConfiguration#getServer()}.
    * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#deleteByQuery(String)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#deleteByQuery(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.deleteByQuery(String)"})
-  public void testDeleteByQuery_thenThrowRuntimeException() throws IOException, SolrServerException {
+  public void testDeleteByQuery_thenCallsGetServer() throws IOException, SolrServerException {
     // Arrange
     when(solrHelperService.getPrimaryDocumentType()).thenReturn("Primary Document Type");
     when(solrHelperService.getTypeFieldName()).thenReturn("Type Field Name");
-    when(solrConfiguration.getServer()).thenThrow(new RuntimeException(":"));
+    when(solrConfiguration.getServer()).thenThrow(new IllegalStateException());
 
     // Act and Assert
-    assertThrows(RuntimeException.class, () -> solrIndexServiceImpl.deleteByQuery("Delete Query"));
+    assertThrows(
+        IllegalStateException.class, () -> solrIndexServiceImpl.deleteByQuery("Delete Query"));
     verify(solrConfiguration).getServer();
     verify(solrHelperService).getPrimaryDocumentType();
     verify(solrHelperService).getTypeFieldName();
@@ -3339,98 +3508,20 @@ public class SolrIndexServiceImplDiffblueTest {
 
   /**
    * Test {@link SolrIndexServiceImpl#addDocuments(Collection)}.
-   * <ul>
-   *   <li>Given {@link LBHttp2SolrClient} {@link SolrClient#add(String, Collection)} return {@link UpdateResponse} (default constructor).</li>
-   *   <li>Then calls {@link SolrClient#add(String, Collection)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#addDocuments(Collection)}
+   *
+   * <p>Method under test: {@link SolrIndexServiceImpl#addDocuments(Collection)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void SolrIndexServiceImpl.addDocuments(Collection)"})
-  public void testAddDocuments_givenLBHttp2SolrClientAddReturnUpdateResponse_thenCallsAdd()
-      throws IOException, SolrServerException {
+  public void testAddDocuments() throws IOException, SolrServerException {
     // Arrange
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.add(Mockito.<String>any(), Mockito.<Collection<SolrInputDocument>>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getQueryCollectionName()).thenReturn("Query Collection Name");
-    when(solrConfiguration.getServer()).thenReturn(lbHttp2SolrClient);
+    when(solrConfiguration.getServer()).thenThrow(new IllegalStateException());
 
-    // Act
-    solrIndexServiceImpl.addDocuments(new ArrayList<>());
-
-    // Assert
-    verify(lbHttp2SolrClient).add(eq("Query Collection Name"), isA(Collection.class));
-    verify(solrConfiguration).getQueryCollectionName();
-    verify(solrConfiguration).getServer();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#addDocuments(Collection)}.
-   * <ul>
-   *   <li>Given {@link SolrInputDocument}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SolrInputDocument}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#addDocuments(Collection)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.addDocuments(Collection)"})
-  public void testAddDocuments_givenSolrInputDocument_whenArrayListAddSolrInputDocument()
-      throws IOException, SolrServerException {
-    // Arrange
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.add(Mockito.<String>any(), Mockito.<Collection<SolrInputDocument>>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getQueryCollectionName()).thenReturn("Query Collection Name");
-    when(solrConfiguration.getServer()).thenReturn(lbHttp2SolrClient);
-
-    ArrayList<SolrInputDocument> documents = new ArrayList<>();
-    documents.add(mock(SolrInputDocument.class));
-
-    // Act
-    solrIndexServiceImpl.addDocuments(documents);
-
-    // Assert
-    verify(lbHttp2SolrClient).add(eq("Query Collection Name"), isA(Collection.class));
-    verify(solrConfiguration).getQueryCollectionName();
-    verify(solrConfiguration).getServer();
-  }
-
-  /**
-   * Test {@link SolrIndexServiceImpl#addDocuments(Collection)}.
-   * <ul>
-   *   <li>Given {@link SolrInputDocument}.</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link SolrInputDocument}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrIndexServiceImpl#addDocuments(Collection)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SolrIndexServiceImpl.addDocuments(Collection)"})
-  public void testAddDocuments_givenSolrInputDocument_whenArrayListAddSolrInputDocument2()
-      throws IOException, SolrServerException {
-    // Arrange
-    LBHttp2SolrClient lbHttp2SolrClient = mock(LBHttp2SolrClient.class);
-    when(lbHttp2SolrClient.add(Mockito.<String>any(), Mockito.<Collection<SolrInputDocument>>any()))
-        .thenReturn(new UpdateResponse());
-    when(solrConfiguration.getQueryCollectionName()).thenReturn("Query Collection Name");
-    when(solrConfiguration.getServer()).thenReturn(lbHttp2SolrClient);
-
-    ArrayList<SolrInputDocument> documents = new ArrayList<>();
-    documents.add(mock(SolrInputDocument.class));
-    documents.add(mock(SolrInputDocument.class));
-
-    // Act
-    solrIndexServiceImpl.addDocuments(documents);
-
-    // Assert
-    verify(lbHttp2SolrClient).add(eq("Query Collection Name"), isA(Collection.class));
-    verify(solrConfiguration).getQueryCollectionName();
+    // Act and Assert
+    assertThrows(
+        IllegalStateException.class, () -> solrIndexServiceImpl.addDocuments(new ArrayList<>()));
     verify(solrConfiguration).getServer();
   }
 }

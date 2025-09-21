@@ -19,7 +19,8 @@ package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,39 +32,41 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CountrySubdivisionCategoryImplDiffblueTest {
-  @Autowired
-  private CountrySubdivisionCategoryImpl countrySubdivisionCategoryImpl;
+  @Autowired private CountrySubdivisionCategoryImpl countrySubdivisionCategoryImpl;
 
   /**
    * Test {@link CountrySubdivisionCategoryImpl#getName()}.
-   * <p>
-   * Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
+   *
+   * <p>Method under test: {@link CountrySubdivisionCategoryImpl#getName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertNull((new CountrySubdivisionCategoryImpl()).getName());
+    assertNull(countrySubdivisionCategoryImpl.getName());
   }
 
   /**
    * Test {@link CountrySubdivisionCategoryImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link CountrySubdivisionCategoryImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CountrySubdivisionCategoryImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new CountrySubdivisionCategoryImpl()).getMainEntityName());
+    assertNull(countrySubdivisionCategoryImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CountrySubdivisionCategoryImpl}
    *   <li>{@link CountrySubdivisionCategoryImpl#setId(Long)}
@@ -72,12 +75,18 @@ public class CountrySubdivisionCategoryImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CountrySubdivisionCategoryImpl.<init>()", "Long CountrySubdivisionCategoryImpl.getId()",
-      "void CountrySubdivisionCategoryImpl.setId(Long)", "void CountrySubdivisionCategoryImpl.setName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CountrySubdivisionCategoryImpl.<init>()",
+    "Long CountrySubdivisionCategoryImpl.getId()",
+    "void CountrySubdivisionCategoryImpl.setId(Long)",
+    "void CountrySubdivisionCategoryImpl.setName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    CountrySubdivisionCategoryImpl actualCountrySubdivisionCategoryImpl = new CountrySubdivisionCategoryImpl();
+    CountrySubdivisionCategoryImpl actualCountrySubdivisionCategoryImpl =
+        new CountrySubdivisionCategoryImpl();
     actualCountrySubdivisionCategoryImpl.setId(1L);
     actualCountrySubdivisionCategoryImpl.setName("Name");
 

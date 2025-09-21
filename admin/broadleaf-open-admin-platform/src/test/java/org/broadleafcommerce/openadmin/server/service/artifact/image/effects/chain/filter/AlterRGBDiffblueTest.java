@@ -21,7 +21,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -44,17 +45,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {AlterRGB.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AlterRGBDiffblueTest {
-  @Autowired
-  private AlterRGB alterRGB;
+  @Autowired private AlterRGB alterRGB;
 
   /**
    * Test {@link AlterRGB#AlterRGB()}.
-   * <p>
-   * Method under test: {@link AlterRGB#AlterRGB()}
+   *
+   * <p>Method under test: {@link AlterRGB#AlterRGB()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AlterRGB.<init>()", "void AlterRGB.<init>(int, int, int, RenderingHints)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AlterRGB.<init>()",
+    "void AlterRGB.<init>(int, int, int, RenderingHints)"
+  })
   public void testNewAlterRGB() {
     // Arrange and Act
     AlterRGB actualAlterRGB = new AlterRGB();
@@ -66,15 +70,20 @@ public class AlterRGBDiffblueTest {
 
   /**
    * Test {@link AlterRGB#AlterRGB(int, int, int, RenderingHints)}.
+   *
    * <ul>
-   *   <li>When one.</li>
+   *   <li>When one.
    * </ul>
-   * <p>
-   * Method under test: {@link AlterRGB#AlterRGB(int, int, int, RenderingHints)}
+   *
+   * <p>Method under test: {@link AlterRGB#AlterRGB(int, int, int, RenderingHints)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AlterRGB.<init>()", "void AlterRGB.<init>(int, int, int, RenderingHints)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AlterRGB.<init>()",
+    "void AlterRGB.<init>(int, int, int, RenderingHints)"
+  })
   public void testNewAlterRGB_whenOne() {
     // Arrange and Act
     AlterRGB actualAlterRGB = new AlterRGB(1, 1, 1, null);
@@ -86,29 +95,33 @@ public class AlterRGBDiffblueTest {
 
   /**
    * Test {@link AlterRGB#buildOperation(Map, InputStream, String)}.
-   * <p>
-   * Method under test: {@link AlterRGB#buildOperation(Map, InputStream, String)}
+   *
+   * <p>Method under test: {@link AlterRGB#buildOperation(Map, InputStream, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation AlterRGB.buildOperation(Map, InputStream, String)"})
+    "org.broadleafcommerce.openadmin.server.service.artifact.image.Operation AlterRGB.buildOperation(Map, InputStream, String)"
+  })
   public void testBuildOperation() throws UnsupportedEncodingException {
     // Arrange
     HashMap<String, String> parameterMap = new HashMap<>();
 
     // Act and Assert
     assertNull(
-        alterRGB.buildOperation(parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Mime Type"));
+        alterRGB.buildOperation(
+            parameterMap, new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "text/plain"));
   }
 
   /**
    * Test {@link AlterRGB#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage AlterRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter() {
     // Arrange
@@ -125,21 +138,25 @@ public class AlterRGBDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link AlterRGB#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage AlterRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter2() {
     // Arrange
@@ -156,21 +173,25 @@ public class AlterRGBDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link AlterRGB#filter(BufferedImage, BufferedImage)}.
-   * <p>
-   * Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage AlterRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter3() {
     // Arrange
@@ -187,25 +208,30 @@ public class AlterRGBDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link AlterRGB#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>Given {@link AlterRGB#AlterRGB()}.</li>
-   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
+   *   <li>Given {@link AlterRGB#AlterRGB()}.
+   *   <li>Then ColorModel return {@link DirectColorModel}.
    * </ul>
-   * <p>
-   * Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage AlterRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter_givenAlterRGB_thenColorModelReturnDirectColorModel() {
     // Arrange
@@ -222,26 +248,31 @@ public class AlterRGBDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 
   /**
    * Test {@link AlterRGB#filter(BufferedImage, BufferedImage)}.
+   *
    * <ul>
-   *   <li>Given {@link AlterRGB#AlterRGB()}.</li>
-   *   <li>When {@code null}.</li>
-   *   <li>Then ColorModel return {@link DirectColorModel}.</li>
+   *   <li>Given {@link AlterRGB#AlterRGB()}.
+   *   <li>When {@code null}.
+   *   <li>Then ColorModel return {@link DirectColorModel}.
    * </ul>
-   * <p>
-   * Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
+   *
+   * <p>Method under test: {@link AlterRGB#filter(BufferedImage, BufferedImage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BufferedImage AlterRGB.filter(BufferedImage, BufferedImage)"})
   public void testFilter_givenAlterRGB_whenNull_thenColorModelReturnDirectColorModel() {
     // Arrange
@@ -257,11 +288,14 @@ public class AlterRGBDiffblueTest {
     assertTrue(sampleModel instanceof SinglePixelPackedSampleModel);
     assertSame(sampleModel, actualFilterResult.getData().getSampleModel());
     assertSame(sampleModel, actualFilterResult.getRaster().getSampleModel());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
-    assertArrayEquals(new int[]{16711680, 65280, 255}, ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
-    assertArrayEquals(new int[]{8, 8, 8}, colorModel.getComponentSize());
-    assertArrayEquals(new int[]{8, 8, 8}, sampleModel.getSampleSize());
-    assertArrayEquals(new int[]{GaussianBlur.NUM_KERNELS, 8, 0},
+    assertArrayEquals(new int[] {16711680, 65280, 255}, ((DirectColorModel) colorModel).getMasks());
+    assertArrayEquals(
+        new int[] {16711680, 65280, 255},
+        ((SinglePixelPackedSampleModel) sampleModel).getBitMasks());
+    assertArrayEquals(new int[] {8, 8, 8}, colorModel.getComponentSize());
+    assertArrayEquals(new int[] {8, 8, 8}, sampleModel.getSampleSize());
+    assertArrayEquals(
+        new int[] {GaussianBlur.NUM_KERNELS, 8, 0},
         ((SinglePixelPackedSampleModel) sampleModel).getBitOffsets());
   }
 }

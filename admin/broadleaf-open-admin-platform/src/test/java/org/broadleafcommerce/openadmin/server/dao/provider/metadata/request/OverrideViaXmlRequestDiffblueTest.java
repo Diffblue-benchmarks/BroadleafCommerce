@@ -20,7 +20,8 @@ package org.broadleafcommerce.openadmin.server.dao.provider.metadata.request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
@@ -30,10 +31,12 @@ import org.junit.experimental.categories.Category;
 public class OverrideViaXmlRequestDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link OverrideViaXmlRequest#OverrideViaXmlRequest(String, String, String, Boolean, DynamicEntityDao)}
+   *   <li>{@link OverrideViaXmlRequest#OverrideViaXmlRequest(String, String, String, Boolean,
+   *       DynamicEntityDao)}
    *   <li>{@link OverrideViaXmlRequest#getDynamicEntityDao()}
    *   <li>{@link OverrideViaXmlRequest#getParentExcluded()}
    *   <li>{@link OverrideViaXmlRequest#getPrefix()}
@@ -42,19 +45,24 @@ public class OverrideViaXmlRequestDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OverrideViaXmlRequest.<init>(String, String, String, Boolean, DynamicEntityDao)",
-      "DynamicEntityDao OverrideViaXmlRequest.getDynamicEntityDao()",
-      "Boolean OverrideViaXmlRequest.getParentExcluded()", "String OverrideViaXmlRequest.getPrefix()",
-      "String OverrideViaXmlRequest.getRequestedCeilingEntity()",
-      "String OverrideViaXmlRequest.getRequestedConfigKey()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OverrideViaXmlRequest.<init>(String, String, String, Boolean, DynamicEntityDao)",
+    "DynamicEntityDao OverrideViaXmlRequest.getDynamicEntityDao()",
+    "Boolean OverrideViaXmlRequest.getParentExcluded()",
+    "String OverrideViaXmlRequest.getPrefix()",
+    "String OverrideViaXmlRequest.getRequestedCeilingEntity()",
+    "String OverrideViaXmlRequest.getRequestedConfigKey()"
+  })
   public void testGettersAndSetters() {
     // Arrange
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
 
     // Act
-    OverrideViaXmlRequest actualOverrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, dynamicEntityDao);
+    OverrideViaXmlRequest actualOverrideViaXmlRequest =
+        new OverrideViaXmlRequest(
+            "Requested Config Key", "Requested Ceiling Entity", "Prefix", true, dynamicEntityDao);
     DynamicEntityDao actualDynamicEntityDao = actualOverrideViaXmlRequest.getDynamicEntityDao();
     Boolean actualParentExcluded = actualOverrideViaXmlRequest.getParentExcluded();
     String actualPrefix = actualOverrideViaXmlRequest.getPrefix();

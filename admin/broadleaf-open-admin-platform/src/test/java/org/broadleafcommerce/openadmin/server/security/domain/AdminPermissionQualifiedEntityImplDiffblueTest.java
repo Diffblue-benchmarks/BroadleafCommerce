@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -29,15 +30,17 @@ import org.junit.experimental.categories.Category;
 public class AdminPermissionQualifiedEntityImplDiffblueTest {
   /**
    * Test {@link AdminPermissionQualifiedEntityImpl#clone()}.
-   * <p>
-   * Method under test: {@link AdminPermissionQualifiedEntityImpl#clone()}
+   *
+   * <p>Method under test: {@link AdminPermissionQualifiedEntityImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"AdminPermissionQualifiedEntity AdminPermissionQualifiedEntityImpl.clone()"})
   public void testClone() {
     // Arrange and Act
-    AdminPermissionQualifiedEntity actualCloneResult = (new AdminPermissionQualifiedEntityImpl()).clone();
+    AdminPermissionQualifiedEntity actualCloneResult =
+        new AdminPermissionQualifiedEntityImpl().clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminPermissionQualifiedEntityImpl);
@@ -48,8 +51,9 @@ public class AdminPermissionQualifiedEntityImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminPermissionQualifiedEntityImpl}
    *   <li>{@link AdminPermissionQualifiedEntityImpl#setAdminPermission(AdminPermission)}
@@ -61,24 +65,29 @@ public class AdminPermissionQualifiedEntityImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminPermissionQualifiedEntityImpl.<init>()",
-      "AdminPermission AdminPermissionQualifiedEntityImpl.getAdminPermission()",
-      "String AdminPermissionQualifiedEntityImpl.getCeilingEntityFullyQualifiedName()",
-      "Long AdminPermissionQualifiedEntityImpl.getId()",
-      "void AdminPermissionQualifiedEntityImpl.setAdminPermission(AdminPermission)",
-      "void AdminPermissionQualifiedEntityImpl.setCeilingEntityFullyQualifiedName(String)",
-      "void AdminPermissionQualifiedEntityImpl.setId(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminPermissionQualifiedEntityImpl.<init>()",
+    "AdminPermission AdminPermissionQualifiedEntityImpl.getAdminPermission()",
+    "String AdminPermissionQualifiedEntityImpl.getCeilingEntityFullyQualifiedName()",
+    "Long AdminPermissionQualifiedEntityImpl.getId()",
+    "void AdminPermissionQualifiedEntityImpl.setAdminPermission(AdminPermission)",
+    "void AdminPermissionQualifiedEntityImpl.setCeilingEntityFullyQualifiedName(String)",
+    "void AdminPermissionQualifiedEntityImpl.setId(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    AdminPermissionQualifiedEntityImpl actualAdminPermissionQualifiedEntityImpl = new AdminPermissionQualifiedEntityImpl();
+    AdminPermissionQualifiedEntityImpl actualAdminPermissionQualifiedEntityImpl =
+        new AdminPermissionQualifiedEntityImpl();
     AdminPermissionImpl adminPermission = new AdminPermissionImpl();
     actualAdminPermissionQualifiedEntityImpl.setAdminPermission(adminPermission);
     actualAdminPermissionQualifiedEntityImpl.setCeilingEntityFullyQualifiedName("Dr Jane Doe");
     actualAdminPermissionQualifiedEntityImpl.setId(1L);
-    AdminPermission actualAdminPermission = actualAdminPermissionQualifiedEntityImpl.getAdminPermission();
-    String actualCeilingEntityFullyQualifiedName = actualAdminPermissionQualifiedEntityImpl
-        .getCeilingEntityFullyQualifiedName();
+    AdminPermission actualAdminPermission =
+        actualAdminPermissionQualifiedEntityImpl.getAdminPermission();
+    String actualCeilingEntityFullyQualifiedName =
+        actualAdminPermissionQualifiedEntityImpl.getCeilingEntityFullyQualifiedName();
 
     // Assert
     assertEquals("Dr Jane Doe", actualCeilingEntityFullyQualifiedName);

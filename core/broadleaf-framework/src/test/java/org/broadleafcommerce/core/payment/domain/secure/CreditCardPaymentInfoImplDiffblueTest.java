@@ -21,33 +21,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.encryption.EncryptionModule;
 import org.broadleafcommerce.common.encryption.PassthroughEncryptionModule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CreditCardPaymentInfoImplDiffblueTest {
-  @Autowired
-  private CreditCardPaymentInfoImpl creditCardPaymentInfoImpl;
-
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CreditCardPaymentInfoImpl}
    *   <li>{@link CreditCardPaymentInfoImpl#setCvvCode(String)}
@@ -67,17 +57,25 @@ public class CreditCardPaymentInfoImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CreditCardPaymentInfoImpl.<init>()", "String CreditCardPaymentInfoImpl.getCvvCode()",
-      "EncryptionModule CreditCardPaymentInfoImpl.getEncryptionModule()",
-      "Integer CreditCardPaymentInfoImpl.getExpirationMonth()", "Integer CreditCardPaymentInfoImpl.getExpirationYear()",
-      "Long CreditCardPaymentInfoImpl.getId()", "String CreditCardPaymentInfoImpl.getNameOnCard()",
-      "String CreditCardPaymentInfoImpl.getReferenceNumber()", "void CreditCardPaymentInfoImpl.setCvvCode(String)",
-      "void CreditCardPaymentInfoImpl.setEncryptionModule(EncryptionModule)",
-      "void CreditCardPaymentInfoImpl.setExpirationMonth(Integer)",
-      "void CreditCardPaymentInfoImpl.setExpirationYear(Integer)", "void CreditCardPaymentInfoImpl.setId(Long)",
-      "void CreditCardPaymentInfoImpl.setNameOnCard(String)",
-      "void CreditCardPaymentInfoImpl.setReferenceNumber(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CreditCardPaymentInfoImpl.<init>()",
+    "String CreditCardPaymentInfoImpl.getCvvCode()",
+    "EncryptionModule CreditCardPaymentInfoImpl.getEncryptionModule()",
+    "Integer CreditCardPaymentInfoImpl.getExpirationMonth()",
+    "Integer CreditCardPaymentInfoImpl.getExpirationYear()",
+    "Long CreditCardPaymentInfoImpl.getId()",
+    "String CreditCardPaymentInfoImpl.getNameOnCard()",
+    "String CreditCardPaymentInfoImpl.getReferenceNumber()",
+    "void CreditCardPaymentInfoImpl.setCvvCode(String)",
+    "void CreditCardPaymentInfoImpl.setEncryptionModule(EncryptionModule)",
+    "void CreditCardPaymentInfoImpl.setExpirationMonth(Integer)",
+    "void CreditCardPaymentInfoImpl.setExpirationYear(Integer)",
+    "void CreditCardPaymentInfoImpl.setId(Long)",
+    "void CreditCardPaymentInfoImpl.setNameOnCard(String)",
+    "void CreditCardPaymentInfoImpl.setReferenceNumber(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CreditCardPaymentInfoImpl actualCreditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -109,48 +107,58 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#getPan()}.
+   *
    * <ul>
-   *   <li>Given {@link CreditCardPaymentInfoImpl#CreditCardPaymentInfoImpl()} CvvCode is {@code Cvv Code}.</li>
-   *   <li>Then return {@code Pan}.</li>
+   *   <li>Given {@link CreditCardPaymentInfoImpl#CreditCardPaymentInfoImpl()} CvvCode is {@code Cvv
+   *       Code}.
+   *   <li>Then return {@code Pan}.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#getPan()}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#getPan()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CreditCardPaymentInfoImpl.getPan()"})
   public void testGetPan_givenCreditCardPaymentInfoImplCvvCodeIsCvvCode_thenReturnPan() {
     // Arrange
-    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
-    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    creditCardPaymentInfoImpl2.setExpirationMonth(1);
-    creditCardPaymentInfoImpl2.setExpirationYear(1);
-    creditCardPaymentInfoImpl2.setId(1L);
-    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
-    creditCardPaymentInfoImpl2.setPan("Pan");
-    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(1L);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
 
     // Act and Assert
-    assertEquals("Pan", creditCardPaymentInfoImpl2.getPan());
+    assertEquals("Pan", creditCardPaymentInfoImpl.getPan());
   }
 
   /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link CreditCardPaymentInfoImpl#hashCode()}.
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
    *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -175,26 +183,32 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
-    int expectedHashCodeResult = creditCardPaymentInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, creditCardPaymentInfoImpl2.hashCode());
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
   }
 
   /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link CreditCardPaymentInfoImpl#hashCode()}.
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
    *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -219,26 +233,32 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
-    int expectedHashCodeResult = creditCardPaymentInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, creditCardPaymentInfoImpl2.hashCode());
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
   }
 
   /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link CreditCardPaymentInfoImpl#hashCode()}.
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
    *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -263,26 +283,232 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
-    int expectedHashCodeResult = creditCardPaymentInfoImpl.hashCode();
-    assertEquals(expectedHashCodeResult, creditCardPaymentInfoImpl2.hashCode());
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
   }
 
   /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link CreditCardPaymentInfoImpl#hashCode()}.
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
    *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(null);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(null);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
+   *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(null);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(null);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
+   *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan(null);
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan(null);
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
+   *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber(null);
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber(null);
+
+    // Act and Assert
+    assertEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+    assertEquals(creditCardPaymentInfoImpl.hashCode(), creditCardPaymentInfoImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}, and {@link
+   * CreditCardPaymentInfoImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CreditCardPaymentInfoImpl#equals(Object)}
+   *   <li>{@link CreditCardPaymentInfoImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -303,16 +529,21 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -341,106 +572,26 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
-
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
     creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
-    creditCardPaymentInfoImpl.setExpirationMonth(1);
-    creditCardPaymentInfoImpl.setExpirationYear(1);
-    creditCardPaymentInfoImpl.setId(null);
-    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
-    creditCardPaymentInfoImpl.setPan("Pan");
-    creditCardPaymentInfoImpl.setReferenceNumber("42");
-
-    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
-    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    creditCardPaymentInfoImpl2.setExpirationMonth(1);
-    creditCardPaymentInfoImpl2.setExpirationYear(1);
-    creditCardPaymentInfoImpl2.setId(1L);
-    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
-    creditCardPaymentInfoImpl2.setPan("Pan");
-    creditCardPaymentInfoImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
-  }
-
-  /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
-    // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn(null);
-
-    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
-    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
-    creditCardPaymentInfoImpl.setExpirationMonth(1);
-    creditCardPaymentInfoImpl.setExpirationYear(1);
-    creditCardPaymentInfoImpl.setId(null);
-    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
-    creditCardPaymentInfoImpl.setPan("Pan");
-    creditCardPaymentInfoImpl.setReferenceNumber("42");
-
-    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
-    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
-    creditCardPaymentInfoImpl2.setExpirationMonth(1);
-    creditCardPaymentInfoImpl2.setExpirationYear(1);
-    creditCardPaymentInfoImpl2.setId(1L);
-    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
-    creditCardPaymentInfoImpl2.setPan("Pan");
-    creditCardPaymentInfoImpl2.setReferenceNumber("42");
-
-    // Act and Assert
-    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
-  }
-
-  /**
-   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
-    // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
-
-    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
-    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
     creditCardPaymentInfoImpl.setExpirationMonth(0);
     creditCardPaymentInfoImpl.setExpirationYear(1);
     creditCardPaymentInfoImpl.setId(null);
@@ -464,24 +615,26 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
-
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
     creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
     creditCardPaymentInfoImpl.setExpirationMonth(null);
     creditCardPaymentInfoImpl.setExpirationYear(1);
     creditCardPaymentInfoImpl.setId(null);
@@ -505,24 +658,26 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
-
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
     creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
     creditCardPaymentInfoImpl.setExpirationMonth(1);
     creditCardPaymentInfoImpl.setExpirationYear(0);
     creditCardPaymentInfoImpl.setId(null);
@@ -546,24 +701,26 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    EncryptionModule encryptionModule = mock(EncryptionModule.class);
-    when(encryptionModule.encrypt(Mockito.<String>any())).thenReturn("Encrypt");
-
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
     creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
-    creditCardPaymentInfoImpl.setEncryptionModule(encryptionModule);
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
     creditCardPaymentInfoImpl.setExpirationMonth(1);
     creditCardPaymentInfoImpl.setExpirationYear(null);
     creditCardPaymentInfoImpl.setId(null);
@@ -587,16 +744,193 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("42");
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan(null);
+    creditCardPaymentInfoImpl.setReferenceNumber("42");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber("Pan");
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+    // Arrange
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl.setExpirationMonth(1);
+    creditCardPaymentInfoImpl.setExpirationYear(1);
+    creditCardPaymentInfoImpl.setId(null);
+    creditCardPaymentInfoImpl.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl.setPan("Pan");
+    creditCardPaymentInfoImpl.setReferenceNumber(null);
+
+    CreditCardPaymentInfoImpl creditCardPaymentInfoImpl2 = new CreditCardPaymentInfoImpl();
+    creditCardPaymentInfoImpl2.setCvvCode("Cvv Code");
+    creditCardPaymentInfoImpl2.setEncryptionModule(new PassthroughEncryptionModule());
+    creditCardPaymentInfoImpl2.setExpirationMonth(1);
+    creditCardPaymentInfoImpl2.setExpirationYear(1);
+    creditCardPaymentInfoImpl2.setId(1L);
+    creditCardPaymentInfoImpl2.setNameOnCard("Name On Card");
+    creditCardPaymentInfoImpl2.setPan("Pan");
+    creditCardPaymentInfoImpl2.setReferenceNumber("42");
+
+    // Act and Assert
+    assertNotEquals(creditCardPaymentInfoImpl, creditCardPaymentInfoImpl2);
+  }
+
+  /**
+   * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();
@@ -615,16 +949,21 @@ public class CreditCardPaymentInfoImplDiffblueTest {
 
   /**
    * Test {@link CreditCardPaymentInfoImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CreditCardPaymentInfoImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CreditCardPaymentInfoImpl.equals(Object)", "int CreditCardPaymentInfoImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CreditCardPaymentInfoImpl.equals(Object)",
+    "int CreditCardPaymentInfoImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CreditCardPaymentInfoImpl creditCardPaymentInfoImpl = new CreditCardPaymentInfoImpl();

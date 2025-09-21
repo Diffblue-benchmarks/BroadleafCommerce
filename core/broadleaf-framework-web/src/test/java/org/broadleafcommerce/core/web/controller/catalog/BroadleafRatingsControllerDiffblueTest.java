@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.controller.catalog;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 class BroadleafRatingsControllerDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link BroadleafRatingsController}
    *   <li>{@link BroadleafRatingsController#getFormView()}
@@ -36,9 +38,13 @@ class BroadleafRatingsControllerDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void BroadleafRatingsController.<init>()", "String BroadleafRatingsController.getFormView()",
-      "String BroadleafRatingsController.getSuccessView()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void BroadleafRatingsController.<init>()",
+    "String BroadleafRatingsController.getFormView()",
+    "String BroadleafRatingsController.getSuccessView()"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
     BroadleafRatingsController actualBroadleafRatingsController = new BroadleafRatingsController();
@@ -46,6 +52,7 @@ class BroadleafRatingsControllerDiffblueTest {
 
     // Assert
     assertEquals("catalog/partials/review", actualFormView);
-    assertEquals("catalog/partials/reviewSuccessful", actualBroadleafRatingsController.getSuccessView());
+    assertEquals(
+        "catalog/partials/reviewSuccessful", actualBroadleafRatingsController.getSuccessView());
   }
 }

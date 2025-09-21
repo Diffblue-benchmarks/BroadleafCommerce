@@ -21,15 +21,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.HashMap;
@@ -55,138 +54,171 @@ import org.springframework.mail.MailException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class EmailServiceImplDiffblueTest {
-  @Mock
-  private EmailReportingDao emailReportingDao;
+  @Mock private EmailReportingDao emailReportingDao;
 
-  @InjectMocks
-  private EmailServiceImpl emailServiceImpl;
+  @InjectMocks private EmailServiceImpl emailServiceImpl;
 
-  @Mock
-  private EmailServiceProducer emailServiceProducer;
+  @Mock private EmailServiceProducer emailServiceProducer;
 
-  @Mock
-  private EmailTrackingManager emailTrackingManager;
+  @Mock private EmailTrackingManager emailTrackingManager;
 
-  @Mock
-  private MessageCreator messageCreator;
-
-  @Mock
-  private ServerInfo serverInfo;
+  @Mock private MessageCreator messageCreator;
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailAddressEmailInfoProps() throws MailException {
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps() {
+    // Arrange
+    when(emailReportingDao.createTarget()).thenThrow(new EmailException("Arg0"));
+    EmailInfo emailInfo = new EmailInfo();
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>()));
+    verify(emailReportingDao).createTarget();
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps2() throws MailException {
     // Arrange
     when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
     EmailInfo emailInfo = new EmailInfo();
 
     // Act
-    boolean actualSendTemplateEmailResult = emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo,
-        new HashMap<>());
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>());
 
     // Assert
     verify(emailReportingDao).createTarget();
-    verify(emailTrackingManager).createTrackedEmail(eq("42 Main St"), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
     verify(messageCreator).sendMessage(isA(Map.class));
     assertTrue(actualSendTemplateEmailResult);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailAddressEmailInfoProps2() throws MailException {
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps3() {
     // Arrange
     when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(1L);
-    doThrow(new EmailException("emailTrackingId")).when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenThrow(new EmailException("emailTrackingId"));
     EmailInfo emailInfo = new EmailInfo();
 
     // Act and Assert
-    assertThrows(EmailException.class,
+    assertThrows(
+        EmailException.class,
         () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>()));
     verify(emailReportingDao).createTarget();
-    verify(emailTrackingManager).createTrackedEmail(eq("42 Main St"), isNull(), isNull());
-    verify(messageCreator).sendMessage(isA(Map.class));
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailAddressEmailInfoProps3() throws MailException {
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps4() throws MailException {
     // Arrange
     when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
     emailServiceImpl.setEmailServiceProducer(null);
 
     // Act
-    boolean actualSendTemplateEmailResult = emailServiceImpl.sendTemplateEmail("42 Main St", null, null);
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail("42 Main St", null, null);
 
     // Assert
     verify(emailReportingDao).createTarget();
-    verify(emailTrackingManager).createTrackedEmail(eq("42 Main St"), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
     verify(messageCreator).sendMessage(isA(Map.class));
     assertTrue(actualSendTemplateEmailResult);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <ul>
-   *   <li>Given {@link EmailReportingDao}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailAddressEmailInfoProps_givenEmailReportingDao() throws IOException {
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps5() throws MailException {
     // Arrange
-    NullEmailInfo emailInfo = new NullEmailInfo();
+    when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+    doThrow(new EmailException("emailTrackingId"))
+        .when(messageCreator)
+        .sendMessage(Mockito.<Map<String, Object>>any());
+    emailServiceImpl.setEmailServiceProducer(null);
 
     // Act and Assert
-    assertTrue(emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>()));
+    assertThrows(
+        EmailException.class, () -> emailServiceImpl.sendTemplateEmail("42 Main St", null, null));
+    verify(emailReportingDao).createTarget();
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
+    verify(messageCreator).sendMessage(isA(Map.class));
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <ul>
-   *   <li>Given {@link Boolean#TRUE} toString.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailAddressEmailInfoProps_givenTrueToString() {
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps6() {
     // Arrange
     when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     emailServiceImpl.setEmailServiceProducer(null);
 
@@ -194,21 +226,96 @@ public class EmailServiceImplDiffblueTest {
     emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
 
     // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, null));
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, null));
     verify(emailReportingDao).createTarget();
-    verify(emailTrackingManager).createTrackedEmail(eq("42 Main St"), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <ul>
-   *   <li>Then calls {@link EmailTarget#setEmailAddress(String)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps7() {
+    // Arrange
+    when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+
+    EmailServiceProducer emailServiceProducer = mock(EmailServiceProducer.class);
+    doNothing().when(emailServiceProducer).send(Mockito.<Map<Object, Object>>any());
+    emailServiceImpl.setEmailServiceProducer(emailServiceProducer);
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+
+    // Act
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, null);
+
+    // Assert
+    verify(emailReportingDao).createTarget();
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
+    verify(emailServiceProducer).send(isA(Map.class));
+    assertTrue(actualSendTemplateEmailResult);
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps8() {
+    // Arrange
+    when(emailReportingDao.createTarget()).thenReturn(new EmailTargetImpl());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+
+    EmailServiceProducer emailServiceProducer = mock(EmailServiceProducer.class);
+    doThrow(new EmailException("emailTrackingId"))
+        .when(emailServiceProducer)
+        .send(Mockito.<Map<Object, Object>>any());
+    emailServiceImpl.setEmailServiceProducer(emailServiceProducer);
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, null));
+    verify(emailReportingDao).createTarget();
+    verify(emailTrackingManager).createTrackedEmail("42 Main St", null, null);
+    verify(emailServiceProducer).send(isA(Map.class));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <ul>
+   *   <li>Then calls {@link EmailTarget#setEmailAddress(String)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
   public void testSendTemplateEmailWithEmailAddressEmailInfoProps_thenCallsSetEmailAddress() {
     // Arrange
@@ -218,73 +325,199 @@ public class EmailServiceImplDiffblueTest {
     EmailInfo emailInfo = new EmailInfo();
 
     // Act and Assert
-    assertThrows(EmailException.class,
+    assertThrows(
+        EmailException.class,
         () -> emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>()));
     verify(emailReportingDao).createTarget();
-    verify(emailTarget).setEmailAddress(eq("42 Main St"));
+    verify(emailTarget).setEmailAddress("42 Main St");
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <ul>
+   *   <li>When {@link NullEmailInfo#NullEmailInfo()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailTargetEmailInfoProps() throws MailException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailAddressEmailInfoProps_whenNullEmailInfo()
+      throws IOException {
     // Arrange
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
-        .thenReturn(1L);
-    doThrow(new EmailException("emailTrackingId")).when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
+    NullEmailInfo emailInfo = new NullEmailInfo();
+
+    // Act and Assert
+    assertTrue(emailServiceImpl.sendTemplateEmail("42 Main St", emailInfo, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps() {
+    // Arrange
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenThrow(new EmailException("emailTrackingId"));
     EmailTargetImpl emailTarget = new EmailTargetImpl();
     EmailInfo emailInfo = new EmailInfo();
 
     // Act and Assert
-    assertThrows(EmailException.class,
+    assertThrows(
+        EmailException.class,
         () -> emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>()));
-    verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
-    verify(messageCreator).sendMessage(isA(Map.class));
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailTargetEmailInfoProps2() throws MailException {
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps2() {
     // Arrange
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    doNothing().when(emailServiceProducer).send(Mockito.<Map<Object, Object>>any());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
+
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getSendEmailReliableAsync()).thenReturn(Boolean.TRUE.toString());
+    when(emailInfo.getEmailType()).thenReturn("jane.doe@example.org");
+
+    // Act
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>());
+
+    // Assert
+    verify(emailTrackingManager).createTrackedEmail(null, "jane.doe@example.org", null);
+    verify(emailInfo).getEmailType();
+    verify(emailInfo).getSendEmailReliableAsync();
+    verify(emailServiceProducer).send(isA(Map.class));
+    assertTrue(actualSendTemplateEmailResult);
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps3() {
+    // Arrange
+    doThrow(new EmailException("emailTrackingId"))
+        .when(emailServiceProducer)
+        .send(Mockito.<Map<Object, Object>>any());
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
+
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getSendEmailReliableAsync()).thenReturn(Boolean.TRUE.toString());
+    when(emailInfo.getEmailType()).thenReturn("jane.doe@example.org");
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>()));
+    verify(emailTrackingManager).createTrackedEmail(null, "jane.doe@example.org", null);
+    verify(emailInfo).getEmailType();
+    verify(emailInfo).getSendEmailReliableAsync();
+    verify(emailServiceProducer).send(isA(Map.class));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps4() throws MailException {
+    // Arrange
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
     emailServiceImpl.setEmailServiceProducer(null);
 
     // Act
-    boolean actualSendTemplateEmailResult = emailServiceImpl.sendTemplateEmail(new EmailTargetImpl(), null, null);
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail(new EmailTargetImpl(), null, null);
 
     // Assert
-    verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
     verify(messageCreator).sendMessage(isA(Map.class));
     assertTrue(actualSendTemplateEmailResult);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
-   * <ul>
-   *   <li>Given {@link Boolean#TRUE} toString.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_givenTrueToString() {
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps5() throws MailException {
     // Arrange
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+        .thenReturn(1L);
+    doThrow(new EmailException("emailTrackingId"))
+        .when(messageCreator)
+        .sendMessage(Mockito.<Map<String, Object>>any());
+    emailServiceImpl.setEmailServiceProducer(null);
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail(new EmailTargetImpl(), null, null));
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
+    verify(messageCreator).sendMessage(isA(Map.class));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps6() {
+    // Arrange
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     emailServiceImpl.setEmailServiceProducer(null);
     EmailTargetImpl emailTarget = new EmailTargetImpl();
@@ -293,143 +526,221 @@ public class EmailServiceImplDiffblueTest {
     emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
 
     // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, null));
-    verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, null));
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_thenReturnTrue() throws MailException {
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_thenReturnTrue()
+      throws MailException {
     // Arrange
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
     EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act
-    boolean actualSendTemplateEmailResult = emailServiceImpl.sendTemplateEmail(emailTarget, null, new HashMap<>());
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail(emailTarget, null, new HashMap<>());
 
     // Assert
-    verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
     verify(messageCreator).sendMessage(isA(Map.class));
     assertTrue(actualSendTemplateEmailResult);
   }
 
   /**
-   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
    * <ul>
-   *   <li>When {@link EmailInfo} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link EmailInfo} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
-  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_whenEmailInfo_thenReturnTrue() throws MailException {
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_whenEmailInfo_thenReturnTrue()
+      throws MailException {
     // Arrange
-    when(emailTrackingManager.createTrackedEmail(Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
+    when(emailTrackingManager.createTrackedEmail(
+            Mockito.<String>any(), Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(1L);
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
     EmailTargetImpl emailTarget = new EmailTargetImpl();
     EmailInfo emailInfo = new EmailInfo();
 
     // Act
-    boolean actualSendTemplateEmailResult = emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>());
+    boolean actualSendTemplateEmailResult =
+        emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>());
 
     // Assert
-    verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
+    verify(emailTrackingManager).createTrackedEmail(null, null, null);
     verify(messageCreator).sendMessage(isA(Map.class));
     assertTrue(actualSendTemplateEmailResult);
   }
 
   /**
    * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
    * <ul>
-   *   <li>Given {@link EmailServiceProducer} {@link EmailServiceProducer#send(Map)} does nothing.</li>
-   *   <li>Then calls {@link EmailServiceProducer#send(Map)}.</li>
+   *   <li>Given {@link EmailServiceImpl} EmailServiceProducer is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
+  public void testSendBasicEmail_givenEmailServiceImplEmailServiceProducerIsNull() {
+    // Arrange
+    emailServiceImpl.setEmailServiceProducer(null);
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendBasicEmail(emailInfo, new EmailTargetImpl(), null));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
+   * <ul>
+   *   <li>Given {@link EmailServiceImpl} EmailServiceProducer is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
+  public void testSendBasicEmail_givenEmailServiceImplEmailServiceProducerIsNull2() {
+    // Arrange
+    emailServiceImpl.setEmailServiceProducer(null);
+
+    EmailInfo emailInfo = new EmailInfo();
+    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
+
+    // Act and Assert
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
+   * <ul>
+   *   <li>Given {@link EmailServiceProducer} {@link EmailServiceProducer#send(Map)} does nothing.
+   *   <li>Then calls {@link EmailServiceProducer#send(Map)}.
+   * </ul>
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
   public void testSendBasicEmail_givenEmailServiceProducerSendDoesNothing_thenCallsSend() {
     // Arrange
-    EmailServiceProducer emailServiceProducer = mock(EmailServiceProducer.class);
     doNothing().when(emailServiceProducer).send(Mockito.<Map<Object, Object>>any());
 
-    EmailServiceImpl emailServiceImpl = new EmailServiceImpl();
-    emailServiceImpl.setEmailServiceProducer(emailServiceProducer);
-
-    EmailInfo emailInfo = new EmailInfo();
-    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getSendEmailReliableAsync()).thenReturn(Boolean.TRUE.toString());
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act
-    boolean actualSendBasicEmailResult = emailServiceImpl.sendBasicEmail(emailInfo, new EmailTargetImpl(), null);
+    boolean actualSendBasicEmailResult =
+        emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>());
 
     // Assert
+    verify(emailInfo).getSendEmailReliableAsync();
     verify(emailServiceProducer).send(isA(Map.class));
     assertTrue(actualSendBasicEmailResult);
   }
 
   /**
    * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
    * <ul>
-   *   <li>Given {@link EmailServiceProducer} {@link EmailServiceProducer#send(Map)} throw {@link EmailException#EmailException(String)} with {@code Arg0}.</li>
+   *   <li>Given {@link EmailServiceProducer} {@link EmailServiceProducer#send(Map)} throw {@link
+   *       EmailException#EmailException(String)} with {@code Arg0}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
   public void testSendBasicEmail_givenEmailServiceProducerSendThrowEmailExceptionWithArg0() {
     // Arrange
-    EmailServiceProducer emailServiceProducer = mock(EmailServiceProducer.class);
-    doThrow(new EmailException("Arg0")).when(emailServiceProducer).send(Mockito.<Map<Object, Object>>any());
+    doThrow(new EmailException("Arg0"))
+        .when(emailServiceProducer)
+        .send(Mockito.<Map<Object, Object>>any());
 
-    EmailServiceImpl emailServiceImpl = new EmailServiceImpl();
-    emailServiceImpl.setEmailServiceProducer(emailServiceProducer);
-
-    EmailInfo emailInfo = new EmailInfo();
-    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getSendEmailReliableAsync()).thenReturn(Boolean.TRUE.toString());
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendBasicEmail(emailInfo, new EmailTargetImpl(), null));
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>()));
+    verify(emailInfo).getSendEmailReliableAsync();
     verify(emailServiceProducer).send(isA(Map.class));
   }
 
   /**
    * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
    * <ul>
-   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} does nothing.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} does nothing.
+   *   <li>When {@link EmailInfo} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
-  public void testSendBasicEmail_givenMessageCreatorSendMessageDoesNothing_thenReturnTrue() throws MailException {
+  public void testSendBasicEmail_givenMessageCreatorSendMessageDoesNothing_whenEmailInfo()
+      throws MailException {
     // Arrange
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
+    EmailInfo emailInfo = new EmailInfo();
     EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act
-    boolean actualSendBasicEmailResult = emailServiceImpl.sendBasicEmail(null, emailTarget, new HashMap<>());
+    boolean actualSendBasicEmailResult =
+        emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>());
 
     // Assert
     verify(messageCreator).sendMessage(isA(Map.class));
@@ -438,24 +749,27 @@ public class EmailServiceImplDiffblueTest {
 
   /**
    * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
    * <ul>
-   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} does nothing.</li>
-   *   <li>When {@link EmailInfo} (default constructor).</li>
+   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} does nothing.
+   *   <li>When {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
-  public void testSendBasicEmail_givenMessageCreatorSendMessageDoesNothing_whenEmailInfo() throws MailException {
+  public void testSendBasicEmail_givenMessageCreatorSendMessageDoesNothing_whenNull()
+      throws MailException {
     // Arrange
     doNothing().when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
-    EmailInfo emailInfo = new EmailInfo();
     EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act
-    boolean actualSendBasicEmailResult = emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>());
+    boolean actualSendBasicEmailResult =
+        emailServiceImpl.sendBasicEmail(null, emailTarget, new HashMap<>());
 
     // Assert
     verify(messageCreator).sendMessage(isA(Map.class));
@@ -464,76 +778,39 @@ public class EmailServiceImplDiffblueTest {
 
   /**
    * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   *
    * <ul>
-   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} throw {@link EmailException#EmailException(String)} with {@code Arg0}.</li>
+   *   <li>Given {@link MessageCreator} {@link MessageCreator#sendMessage(Map)} throw {@link
+   *       EmailException#EmailException(String)} with {@code Arg0}.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
-  public void testSendBasicEmail_givenMessageCreatorSendMessageThrowEmailExceptionWithArg0() throws MailException {
+  public void testSendBasicEmail_givenMessageCreatorSendMessageThrowEmailExceptionWithArg0()
+      throws MailException {
     // Arrange
-    doThrow(new EmailException("Arg0")).when(messageCreator).sendMessage(Mockito.<Map<String, Object>>any());
-    emailServiceImpl.setEmailServiceProducer(null);
-
-    // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendBasicEmail(null, new EmailTargetImpl(), null));
-    verify(messageCreator).sendMessage(isA(Map.class));
-  }
-
-  /**
-   * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
-   * <ul>
-   *   <li>Given {@link MessageCreator}.</li>
-   *   <li>Then throw {@link EmailException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
-  public void testSendBasicEmail_givenMessageCreator_thenThrowEmailException() {
-    // Arrange
-    emailServiceImpl.setEmailServiceProducer(null);
-
+    doThrow(new EmailException("Arg0"))
+        .when(messageCreator)
+        .sendMessage(Mockito.<Map<String, Object>>any());
     EmailInfo emailInfo = new EmailInfo();
-    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
-
-    // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendBasicEmail(emailInfo, new EmailTargetImpl(), null));
-  }
-
-  /**
-   * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
-   * <ul>
-   *   <li>Given {@link MessageCreator}.</li>
-   *   <li>Then throw {@link EmailException}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
-  public void testSendBasicEmail_givenMessageCreator_thenThrowEmailException2() {
-    // Arrange
-    emailServiceImpl.setEmailServiceProducer(null);
-
-    EmailInfo emailInfo = new EmailInfo();
-    emailInfo.setSendEmailReliableAsync(Boolean.TRUE.toString());
     EmailTargetImpl emailTarget = new EmailTargetImpl();
 
     // Act and Assert
-    assertThrows(EmailException.class, () -> emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>()));
+    assertThrows(
+        EmailException.class,
+        () -> emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>()));
+    verify(messageCreator).sendMessage(isA(Map.class));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailServiceImpl#setEmailServiceProducer(EmailServiceProducer)}
    *   <li>{@link EmailServiceImpl#setEmailTrackingManager(EmailTrackingManager)}
@@ -546,13 +823,18 @@ public class EmailServiceImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"EmailServiceProducer EmailServiceImpl.getEmailServiceProducer()",
-      "EmailTrackingManager EmailServiceImpl.getEmailTrackingManager()",
-      "MessageCreator EmailServiceImpl.getMessageCreator()", "ServerInfo EmailServiceImpl.getServerInfo()",
-      "void EmailServiceImpl.setEmailServiceProducer(EmailServiceProducer)",
-      "void EmailServiceImpl.setEmailTrackingManager(EmailTrackingManager)",
-      "void EmailServiceImpl.setMessageCreator(MessageCreator)", "void EmailServiceImpl.setServerInfo(ServerInfo)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "EmailServiceProducer EmailServiceImpl.getEmailServiceProducer()",
+    "EmailTrackingManager EmailServiceImpl.getEmailTrackingManager()",
+    "MessageCreator EmailServiceImpl.getMessageCreator()",
+    "ServerInfo EmailServiceImpl.getServerInfo()",
+    "void EmailServiceImpl.setEmailServiceProducer(EmailServiceProducer)",
+    "void EmailServiceImpl.setEmailTrackingManager(EmailTrackingManager)",
+    "void EmailServiceImpl.setMessageCreator(MessageCreator)",
+    "void EmailServiceImpl.setServerInfo(ServerInfo)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     EmailServiceImpl emailServiceImpl = new EmailServiceImpl();

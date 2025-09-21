@@ -20,6 +20,7 @@ package org.broadleafcommerce.core.web.checkout.validator;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.web.checkout.model.CreditCardInfoForm;
 import org.junit.jupiter.api.DisplayName;
@@ -31,15 +32,17 @@ import org.springframework.validation.Errors;
 class CreditCardInfoFormValidatorDiffblueTest {
   /**
    * Test {@link CreditCardInfoFormValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardInfoFormValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link CreditCardInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CreditCardInfoFormValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
@@ -52,16 +55,18 @@ class CreditCardInfoFormValidatorDiffblueTest {
 
   /**
    * Test {@link CreditCardInfoFormValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Object}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CreditCardInfoFormValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link CreditCardInfoFormValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CreditCardInfoFormValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange
@@ -74,12 +79,13 @@ class CreditCardInfoFormValidatorDiffblueTest {
 
   /**
    * Test {@link CreditCardInfoFormValidator#validate(Object, Errors)}.
-   * <p>
-   * Method under test: {@link CreditCardInfoFormValidator#validate(Object, Errors)}
+   *
+   * <p>Method under test: {@link CreditCardInfoFormValidator#validate(Object, Errors)}
    */
   @Test
   @DisplayName("Test validate(Object, Errors)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CreditCardInfoFormValidator.validate(Object, Errors)"})
   void testValidate() {
     // Arrange
@@ -93,9 +99,11 @@ class CreditCardInfoFormValidatorDiffblueTest {
     creditCardInfoForm.setCreditCardNumber("42");
     creditCardInfoForm.setPaymentMethod("Payment Method");
     creditCardInfoForm.setSelectedCreditCardType("Selected Credit Card Type");
+    BindException errors =
+        new BindException(
+            creditCardInfoForm, "org.broadleafcommerce.core.web.checkout.model.CreditCardInfoForm");
 
-    // Act
-    assertDoesNotThrow(() -> creditCardInfoFormValidator.validate(creditCardInfoForm,
-        new BindException(creditCardInfoForm, "org.broadleafcommerce.core.web.checkout.model.CreditCardInfoForm")));
+    // Act and Assert
+    assertDoesNotThrow(() -> creditCardInfoFormValidator.validate(creditCardInfoForm, errors));
   }
 }

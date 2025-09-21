@@ -18,10 +18,10 @@
 package org.broadleafcommerce.common.email.dao;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.domain.EmailTargetImpl;
@@ -36,33 +36,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EmailReportingDaoImplDiffblueTest {
-  @InjectMocks
-  private EmailReportingDaoImpl emailReportingDaoImpl;
+  @InjectMocks private EmailReportingDaoImpl emailReportingDaoImpl;
 
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link EmailReportingDaoImpl#createTarget()}.
-   * <p>
-   * Method under test: {@link EmailReportingDaoImpl#createTarget()}
+   *
+   * <p>Method under test: {@link EmailReportingDaoImpl#createTarget()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"EmailTarget EmailReportingDaoImpl.createTarget()"})
   public void testCreateTarget() {
     // Arrange
     EmailTargetImpl emailTargetImpl = new EmailTargetImpl();
-    emailTargetImpl.setBCCAddresses(new String[]{"mary.somerville@example.org"});
-    emailTargetImpl.setCCAddresses(new String[]{"42 Main St"});
+    emailTargetImpl.setBCCAddresses(new String[] {"mary.somerville@example.org"});
+    emailTargetImpl.setCCAddresses(new String[] {"42 Main St"});
     emailTargetImpl.setEmailAddress("42 Main St");
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(emailTargetImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(emailTargetImpl);
 
     // Act
     EmailTarget actualCreateTargetResult = emailReportingDaoImpl.createTarget();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.common.email.domain.EmailTarget"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.common.email.domain.EmailTarget");
     assertSame(emailTargetImpl, actualCreateTargetResult);
   }
 }

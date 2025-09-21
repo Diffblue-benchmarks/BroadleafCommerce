@@ -20,13 +20,11 @@ package org.broadleafcommerce.core.offer.service.processor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,29 +33,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OfferQualifyingCriteriaXref;
 import org.broadleafcommerce.core.offer.domain.OfferQualifyingCriteriaXrefImpl;
-import org.broadleafcommerce.core.offer.service.OfferServiceUtilities;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOffer;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOffer;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtility;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetail;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailWrapper;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
-import org.broadleafcommerce.core.order.dao.OrderItemDao;
-import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
@@ -66,52 +58,73 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemOfferProcessorImplDiffblueTest {
-  @Mock
-  private GenericEntityService genericEntityService;
+  @InjectMocks private ItemOfferProcessorImpl itemOfferProcessorImpl;
 
-  @InjectMocks
-  private ItemOfferProcessorImpl itemOfferProcessorImpl;
-
-  @Mock
-  private OfferDao offerDao;
-
-  @Mock
-  private OfferServiceUtilities offerServiceUtilities;
-
-  @Mock
-  private OfferTimeZoneProcessor offerTimeZoneProcessor;
-
-  @Mock
-  private OrderItemDao orderItemDao;
-
-  @Mock
-  private PromotableItemFactory promotableItemFactory;
-
-  @Mock
-  private PromotableOfferUtility promotableOfferUtility;
+  @Mock private PromotableItemFactory promotableItemFactory;
 
   /**
    * Test {@link ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}.
-   * <ul>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}
+   *
+   * <p>Method under test: {@link
+   * ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ItemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(PromotableOrder)"})
-  public void testIsTotalitarianOfferAppliedToAnyItem_thenReturnFalse() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ItemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(PromotableOrder)"
+  })
+  public void testIsTotalitarianOfferAppliedToAnyItem() {
+    // Arrange
+    ArrayList<PromotableOrderItemPriceDetail> promotableOrderItemPriceDetailList =
+        new ArrayList<>();
+    PromotableOrderItemImpl promotableOrderItem =
+        new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true);
+    promotableOrderItemPriceDetailList.add(
+        new PromotableOrderItemPriceDetailWrapper(
+            new PromotableOrderItemPriceDetailImpl(promotableOrderItem, 1)));
+
+    PromotableOrder order = mock(PromotableOrder.class);
+    when(order.getAllPromotableOrderItemPriceDetails())
+        .thenReturn(promotableOrderItemPriceDetailList);
+
+    // Act
+    boolean actualIsTotalitarianOfferAppliedToAnyItemResult =
+        itemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(order);
+
+    // Assert
+    verify(order).getAllPromotableOrderItemPriceDetails();
+    assertFalse(actualIsTotalitarianOfferAppliedToAnyItemResult);
+  }
+
+  /**
+   * Test {@link ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}.
+   *
+   * <ul>
+   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ItemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(PromotableOrder)"
+  })
+  public void testIsTotalitarianOfferAppliedToAnyItem_givenAuditableCreatedByIsOne() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     OrderImpl order = new OrderImpl();
@@ -132,89 +145,74 @@ public class ItemOfferProcessorImplDiffblueTest {
     order.setPayments(new ArrayList<>());
     order.setStatus(OrderStatus.ARCHIVED);
     order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setSubmitDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     order.setTaxOverride(true);
     order.setTotal(new Money());
     order.setTotalFulfillmentCharges(new Money());
     order.setTotalTax(new Money());
 
     // Act and Assert
-    assertFalse(itemOfferProcessorImpl
-        .isTotalitarianOfferAppliedToAnyItem(new PromotableOrderImpl(order, promotableItemFactory, true)));
+    assertFalse(
+        itemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(
+            new PromotableOrderImpl(order, promotableItemFactory, true)));
   }
 
   /**
-   * Test {@link ItemOfferProcessorImpl#applyItemQualifiersAndTargets(PromotableCandidateItemOffer, PromotableOrder)}.
+   * Test {@link ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}.
+   *
    * <ul>
-   *   <li>Then calls {@link PromotableCandidateItemOffer#getCandidateFixedTargetsMap()}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#applyItemQualifiersAndTargets(PromotableCandidateItemOffer, PromotableOrder)}
+   *
+   * <p>Method under test: {@link
+   * ItemOfferProcessorImpl#isTotalitarianOfferAppliedToAnyItem(PromotableOrder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void ItemOfferProcessorImpl.applyItemQualifiersAndTargets(PromotableCandidateItemOffer, PromotableOrder)"})
-  public void testApplyItemQualifiersAndTargets_thenCallsGetCandidateFixedTargetsMap() {
+    "boolean ItemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(PromotableOrder)"
+  })
+  public void testIsTotalitarianOfferAppliedToAnyItem_thenReturnTrue() {
     // Arrange
-    PromotableCandidateItemOffer itemOffer = mock(PromotableCandidateItemOffer.class);
-    when(itemOffer.getCandidateFixedTargetsMap()).thenReturn(new HashMap<>());
-    when(itemOffer.getCandidateQualifiersMap()).thenReturn(new HashMap<>());
-    when(itemOffer.getCandidateTargetsMap()).thenReturn(new HashMap<>());
-    when(itemOffer.getOffer()).thenReturn(new OfferImpl());
+    PromotableOrderItemPriceDetailImpl wrappedDetail =
+        mock(PromotableOrderItemPriceDetailImpl.class);
+    when(wrappedDetail.isTotalitarianOfferApplied()).thenReturn(true);
+    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper =
+        new PromotableOrderItemPriceDetailWrapper(wrappedDetail);
 
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
+    ArrayList<PromotableOrderItemPriceDetail> promotableOrderItemPriceDetailList =
+        new ArrayList<>();
+    promotableOrderItemPriceDetailList.add(promotableOrderItemPriceDetailWrapper);
 
-    OrderImpl order = new OrderImpl();
-    order.setAdditionalOfferInformation(new HashMap<>());
-    order.setAuditable(auditable);
-    order.setCandidateOrderOffers(new ArrayList<>());
-    order.setCurrency(new BroadleafCurrencyImpl());
-    order.setCustomer(new CustomerImpl());
-    order.setEmailAddress("42 Main St");
-    order.setFulfillmentGroups(new ArrayList<>());
-    order.setId(1L);
-    order.setLocale(new LocaleImpl());
-    order.setName("Name");
-    order.setOrderAttributes(new HashMap<>());
-    order.setOrderItems(new ArrayList<>());
-    order.setOrderMessages(new ArrayList<>());
-    order.setOrderNumber("42");
-    order.setPayments(new ArrayList<>());
-    order.setStatus(OrderStatus.ARCHIVED);
-    order.setSubTotal(new Money());
-    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    order.setTaxOverride(true);
-    order.setTotal(new Money());
-    order.setTotalFulfillmentCharges(new Money());
-    order.setTotalTax(new Money());
+    PromotableOrder order = mock(PromotableOrder.class);
+    when(order.getAllPromotableOrderItemPriceDetails())
+        .thenReturn(promotableOrderItemPriceDetailList);
 
     // Act
-    itemOfferProcessorImpl.applyItemQualifiersAndTargets(itemOffer,
-        new PromotableOrderImpl(order, promotableItemFactory, true));
+    boolean actualIsTotalitarianOfferAppliedToAnyItemResult =
+        itemOfferProcessorImpl.isTotalitarianOfferAppliedToAnyItem(order);
 
     // Assert
-    verify(itemOffer).getCandidateFixedTargetsMap();
-    verify(itemOffer).getCandidateQualifiersMap();
-    verify(itemOffer).getCandidateTargetsMap();
-    verify(itemOffer, atLeast(1)).getOffer();
+    verify(order).getAllPromotableOrderItemPriceDetails();
+    verify(wrappedDetail).isTotalitarianOfferApplied();
+    assertTrue(actualIsTotalitarianOfferAppliedToAnyItemResult);
   }
 
   /**
    * Test {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}.
+   *
    * <ul>
-   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal ItemOfferProcessorImpl.calculatePercent(Money, Money)"})
   public void testCalculatePercent_givenBigDecimalWith23_thenReturnBigDecimalWith000() {
     // Arrange
@@ -222,7 +220,8 @@ public class ItemOfferProcessorImplDiffblueTest {
     when(itemSubTotal.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    BigDecimal actualCalculatePercentResult = itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
+    BigDecimal actualCalculatePercentResult =
+        itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
 
     // Assert
     verify(itemSubTotal).getAmount();
@@ -231,50 +230,55 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}.
+   *
    * <ul>
-   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 100.0}.</li>
+   *   <li>Given {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 20.0}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal ItemOfferProcessorImpl.calculatePercent(Money, Money)"})
-  public void testCalculatePercent_givenBigDecimalWith23_thenReturnBigDecimalWith1000() {
+  public void testCalculatePercent_givenBigDecimalWith23_thenReturnBigDecimalWith200() {
     // Arrange
-    Money itemSubTotal = mock(Money.class);
-    when(itemSubTotal.getAmount()).thenReturn(new BigDecimal("2.3"));
+    Money itemSubTotal = new Money(10.0d);
+
     Money itemSavings = mock(Money.class);
     when(itemSavings.getAmount()).thenReturn(new BigDecimal("2.3"));
 
     // Act
-    BigDecimal actualCalculatePercentResult = itemOfferProcessorImpl.calculatePercent(itemSubTotal, itemSavings);
+    BigDecimal actualCalculatePercentResult =
+        itemOfferProcessorImpl.calculatePercent(itemSubTotal, itemSavings);
 
     // Assert
-    verify(itemSubTotal).getAmount();
     verify(itemSavings).getAmount();
-    assertEquals(new BigDecimal("100.0"), actualCalculatePercentResult);
+    assertEquals(new BigDecimal("20.0"), actualCalculatePercentResult);
   }
 
   /**
    * Test {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money(double)} with amount is ten.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>When {@link Money#Money(double)} with amount is ten.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal ItemOfferProcessorImpl.calculatePercent(Money, Money)"})
   public void testCalculatePercent_whenMoneyWithAmountIsTen_thenReturnBigDecimalWith000() {
     // Arrange
     Money itemSubTotal = new Money(10.0d);
 
     // Act
-    BigDecimal actualCalculatePercentResult = itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
+    BigDecimal actualCalculatePercentResult =
+        itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
 
     // Assert
     assertEquals(new BigDecimal("0.00"), actualCalculatePercentResult);
@@ -282,22 +286,48 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}.
+   *
    * <ul>
-   *   <li>When {@link Money#Money()}.</li>
-   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0}.</li>
+   *   <li>When {@link Money#Money()}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"BigDecimal ItemOfferProcessorImpl.calculatePercent(Money, Money)"})
   public void testCalculatePercent_whenMoney_thenReturnBigDecimalWith0() {
     // Arrange
     Money itemSubTotal = new Money();
 
     // Act
-    BigDecimal actualCalculatePercentResult = itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
+    BigDecimal actualCalculatePercentResult =
+        itemOfferProcessorImpl.calculatePercent(itemSubTotal, new Money());
+
+    // Assert
+    assertEquals(new BigDecimal("0"), actualCalculatePercentResult);
+  }
+
+  /**
+   * Test {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}.
+   *
+   * <ul>
+   *   <li>When {@link Money#ZERO}.
+   *   <li>Then return {@link BigDecimal#BigDecimal(String)} with {@code 0}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#calculatePercent(Money, Money)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"BigDecimal ItemOfferProcessorImpl.calculatePercent(Money, Money)"})
+  public void testCalculatePercent_whenZero_thenReturnBigDecimalWith0() {
+    // Arrange and Act
+    BigDecimal actualCalculatePercentResult =
+        itemOfferProcessorImpl.calculatePercent(Money.ZERO, new Money());
 
     // Assert
     assertEquals(new BigDecimal("0"), actualCalculatePercentResult);
@@ -305,14 +335,17 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link HashSet#HashSet()} add {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.</li>
+   *   <li>Given {@link HashSet#HashSet()} add {@link
+   *       OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.useCalculatePercent(Offer)"})
   public void testUseCalculatePercent_givenHashSetAddOfferQualifyingCriteriaXrefImpl() {
     // Arrange
@@ -328,15 +361,18 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.</li>
-   *   <li>When {@link OfferImpl} (default constructor) DiscountType is {@link OfferDiscountType#PERCENT_OFF}.</li>
+   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.
+   *   <li>When {@link OfferImpl} (default constructor) DiscountType is {@link
+   *       OfferDiscountType#PERCENT_OFF}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.useCalculatePercent(Offer)"})
   public void testUseCalculatePercent_givenPercent_off_whenOfferImplDiscountTypeIsPercent_off() {
     // Arrange
@@ -349,15 +385,17 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link OfferImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#useCalculatePercent(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.useCalculatePercent(Offer)"})
   public void testUseCalculatePercent_whenOfferImpl_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -366,15 +404,17 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.isPercentOffOffer(Offer)"})
   public void testIsPercentOffOffer_givenPercent_off_thenReturnTrue() {
     // Arrange
@@ -387,15 +427,17 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link OfferImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#isPercentOffOffer(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.isPercentOffOffer(Offer)"})
   public void testIsPercentOffOffer_whenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -404,15 +446,44 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link HashSet#HashSet()} add {@link
+   *       OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean ItemOfferProcessorImpl.usePercentOffValue(Offer)"})
+  public void testUsePercentOffValue_givenHashSetAddOfferQualifyingCriteriaXrefImpl() {
+    // Arrange
+    HashSet<OfferQualifyingCriteriaXref> qualifyingItemCriteriaXref = new HashSet<>();
+    qualifyingItemCriteriaXref.add(new OfferQualifyingCriteriaXrefImpl());
+
+    OfferImpl offer = new OfferImpl();
+    offer.setQualifyingItemCriteriaXref(qualifyingItemCriteriaXref);
+    offer.setDiscountType(OfferDiscountType.PERCENT_OFF);
+
+    // Act and Assert
+    assertFalse(itemOfferProcessorImpl.usePercentOffValue(offer));
+  }
+
+  /**
+   * Test {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}.
+   *
+   * <ul>
+   *   <li>Given {@link OfferDiscountType#PERCENT_OFF}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.usePercentOffValue(Offer)"})
   public void testUsePercentOffValue_givenPercent_off_thenReturnTrue() {
     // Arrange
@@ -425,81 +496,20 @@ public class ItemOfferProcessorImplDiffblueTest {
 
   /**
    * Test {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link OfferImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}
+   *
+   * <p>Method under test: {@link ItemOfferProcessorImpl#usePercentOffValue(Offer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ItemOfferProcessorImpl.usePercentOffValue(Offer)"})
   public void testUsePercentOffValue_whenOfferImpl_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(itemOfferProcessorImpl.usePercentOffValue(new OfferImpl()));
-  }
-
-  /**
-   * Test {@link ItemOfferProcessorImpl#applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)}.
-   * <ul>
-   *   <li>Then calls {@link PromotableOrderImpl#getAllOrderItems()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ItemOfferProcessorImpl.applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)"})
-  public void testApplyAndCompareOrderAndItemOffers_thenCallsGetAllOrderItems() {
-    // Arrange
-    ItemOfferProcessorImpl itemOfferProcessorImpl = new ItemOfferProcessorImpl(new PromotableOfferUtilityImpl());
-    PromotableOrderImpl order = mock(PromotableOrderImpl.class);
-    when(order.getAllOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getAllPromotableOrderItemPriceDetails()).thenReturn(new ArrayList<>());
-    doNothing().when(order).setOrderSubTotalToPriceWithAdjustments();
-    ArrayList<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<>();
-
-    // Act
-    itemOfferProcessorImpl.applyAndCompareOrderAndItemOffers(order, qualifiedOrderOffers, new ArrayList<>());
-
-    // Assert
-    verify(order).getAllOrderItems();
-    verify(order).getAllPromotableOrderItemPriceDetails();
-    verify(order, atLeast(1)).setOrderSubTotalToPriceWithAdjustments();
-  }
-
-  /**
-   * Test {@link ItemOfferProcessorImpl#applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)}.
-   * <ul>
-   *   <li>Then calls {@link NullOrderImpl#getCurrency()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ItemOfferProcessorImpl#applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ItemOfferProcessorImpl.applyAndCompareOrderAndItemOffers(PromotableOrder, List, List)"})
-  public void testApplyAndCompareOrderAndItemOffers_thenCallsGetCurrency() {
-    // Arrange
-    ItemOfferProcessorImpl itemOfferProcessorImpl = new ItemOfferProcessorImpl(new PromotableOfferUtilityImpl());
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
-    when(order.getOrderItems()).thenReturn(new ArrayList<>());
-    when(order.getCurrency()).thenReturn(null);
-    doNothing().when(order).setSubTotal(Mockito.<Money>any());
-    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
-        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
-
-    ArrayList<PromotableCandidateOrderOffer> qualifiedOrderOffers = new ArrayList<>();
-
-    // Act
-    itemOfferProcessorImpl.applyAndCompareOrderAndItemOffers(order2, qualifiedOrderOffers, new ArrayList<>());
-
-    // Assert
-    verify(order, atLeast(1)).getCurrency();
-    verify(order, atLeast(1)).getOrderAdjustments();
-    verify(order).getOrderItems();
-    verify(order, atLeast(1)).setSubTotal(isA(Money.class));
   }
 }

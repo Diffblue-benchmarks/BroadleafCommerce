@@ -22,10 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -42,28 +42,25 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultJCacheUtilDiffblueTest {
-  @Mock
-  private CacheManager cacheManager;
+  @Mock private CacheManager cacheManager;
 
-  @InjectMocks
-  private DefaultJCacheUtil defaultJCacheUtil;
-
-  @Mock
-  private JCacheConfigurationBuilder jCacheConfigurationBuilder;
+  @InjectMocks private DefaultJCacheUtil defaultJCacheUtil;
 
   /**
    * Test {@link DefaultJCacheUtil#getCache(String)}.
+   *
    * <ul>
-   *   <li>Given {@link JCacheConfigurationBuilder}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link CacheManager} {@link CacheManager#getCache(String)} return {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultJCacheUtil#getCache(String)}
+   *
+   * <p>Method under test: {@link DefaultJCacheUtil#getCache(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Cache DefaultJCacheUtil.getCache(String)"})
-  public void testGetCache_givenJCacheConfigurationBuilder_thenReturnNull() {
+  public void testGetCache_givenCacheManagerGetCacheReturnNull_thenReturnNull() {
     // Arrange
     when(cacheManager.getCache(Mockito.<String>any())).thenReturn(null);
 
@@ -71,27 +68,29 @@ public class DefaultJCacheUtilDiffblueTest {
     Cache<Object, Object> actualCache = defaultJCacheUtil.getCache("Cache Name");
 
     // Assert
-    verify(cacheManager).getCache(eq("Cache Name"));
+    verify(cacheManager).getCache("Cache Name");
     assertNull(actualCache);
   }
 
   /**
    * Test {@link DefaultJCacheUtil#getCache(String)}.
+   *
    * <ul>
-   *   <li>Then return {@link NoOpCache}.</li>
+   *   <li>Then return {@link NoOpCache}.
    * </ul>
-   * <p>
-   * Method under test: {@link DefaultJCacheUtil#getCache(String)}
+   *
+   * <p>Method under test: {@link DefaultJCacheUtil#getCache(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Cache DefaultJCacheUtil.getCache(String)"})
   public void testGetCache_thenReturnNoOpCache() {
     // Arrange
     NoOpCacheManager cacheManager = new NoOpCacheManager();
 
     // Act
-    Cache<Object, Object> actualCache = (new DefaultEhCacheUtil(cacheManager)).getCache("Cache Name");
+    Cache<Object, Object> actualCache = new DefaultEhCacheUtil(cacheManager).getCache("Cache Name");
 
     // Assert
     assertTrue(actualCache instanceof NoOpCache);

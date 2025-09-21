@@ -24,7 +24,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,71 +65,93 @@ public class AdminNotificationForgotUsernameEventListenerDiffblueTest {
   private SiteService siteService;
 
   /**
-   * Test {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)} with {@code AdminForgotUsernameEvent}.
-   * <p>
-   * Method under test: {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   * Test {@link
+   * AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   * with {@code AdminForgotUsernameEvent}.
+   *
+   * <p>Method under test: {@link
+   * AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminNotificationForgotUsernameEventListener.handleApplicationEvent(AdminForgotUsernameEvent)"})
+    "void AdminNotificationForgotUsernameEventListener.handleApplicationEvent(AdminForgotUsernameEvent)"
+  })
   public void testHandleApplicationEventWithAdminForgotUsernameEvent() throws ServiceException {
     // Arrange
     doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
+    AdminForgotUsernameEvent event =
+        new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>());
 
     // Act
-    adminNotificationForgotUsernameEventListener
-        .handleApplicationEvent(new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>()));
+    adminNotificationForgotUsernameEventListener.handleApplicationEvent(event);
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
   }
 
   /**
-   * Test {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)} with {@code AdminForgotUsernameEvent}.
-   * <p>
-   * Method under test: {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   * Test {@link
+   * AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   * with {@code AdminForgotUsernameEvent}.
+   *
+   * <p>Method under test: {@link
+   * AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void AdminNotificationForgotUsernameEventListener.handleApplicationEvent(AdminForgotUsernameEvent)"})
+    "void AdminNotificationForgotUsernameEventListener.handleApplicationEvent(AdminForgotUsernameEvent)"
+  })
   public void testHandleApplicationEventWithAdminForgotUsernameEvent2() throws ServiceException {
     // Arrange
-    doThrow(new ServiceException("An error occurred")).when(notificationDispatcher)
+    doThrow(new ServiceException("An error occurred"))
+        .when(notificationDispatcher)
         .dispatchNotification(Mockito.<Notification>any());
+    AdminForgotUsernameEvent event =
+        new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>());
 
     // Act
-    adminNotificationForgotUsernameEventListener
-        .handleApplicationEvent(new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>()));
+    adminNotificationForgotUsernameEventListener.handleApplicationEvent(event);
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
   }
 
   /**
-   * Test {@link AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}.
+   * Test {@link
+   * AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}
+   *
+   * <p>Method under test: {@link
+   * AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map AdminNotificationForgotUsernameEventListener.createContext(AdminForgotUsernameEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map AdminNotificationForgotUsernameEventListener.createContext(AdminForgotUsernameEvent)"
+  })
   public void testCreateContext_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<String> activeUsernames = new ArrayList<>();
+    AdminForgotUsernameEvent event =
+        new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", activeUsernames);
 
     // Act
-    Map<String, Object> actualCreateContextResult = adminNotificationForgotUsernameEventListener
-        .createContext(new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", activeUsernames));
+    Map<String, Object> actualCreateContextResult =
+        adminNotificationForgotUsernameEventListener.createContext(event);
 
     // Assert
     assertEquals(1, actualCreateContextResult.size());
-    Object getResult = actualCreateContextResult
-        .get(AdminNotificationForgotUsernameEventListener.ACTIVE_USERNAMES_CONTEXT_KEY);
+    Object getResult =
+        actualCreateContextResult.get(
+            AdminNotificationForgotUsernameEventListener.ACTIVE_USERNAMES_CONTEXT_KEY);
     assertTrue(getResult instanceof List);
     assertTrue(((List<Object>) getResult).isEmpty());
     assertSame(activeUsernames, getResult);
@@ -136,14 +159,15 @@ public class AdminNotificationForgotUsernameEventListenerDiffblueTest {
 
   /**
    * Test {@link AdminNotificationForgotUsernameEventListener#isAsynchronous()}.
-   * <p>
-   * Method under test: {@link AdminNotificationForgotUsernameEventListener#isAsynchronous()}
+   *
+   * <p>Method under test: {@link AdminNotificationForgotUsernameEventListener#isAsynchronous()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AdminNotificationForgotUsernameEventListener.isAsynchronous()"})
   public void testIsAsynchronous() {
     // Arrange, Act and Assert
-    assertTrue((new AdminNotificationForgotUsernameEventListener()).isAsynchronous());
+    assertTrue(new AdminNotificationForgotUsernameEventListener().isAsynchronous());
   }
 }

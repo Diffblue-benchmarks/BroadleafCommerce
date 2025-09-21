@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.email.service;
 
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,16 +36,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NullEmailServiceImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullEmailServiceImplDiffblueTest {
-  @Autowired
-  private NullEmailServiceImpl nullEmailServiceImpl;
+  @Autowired private NullEmailServiceImpl nullEmailServiceImpl;
 
   /**
-   * Test {@link NullEmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code emailAddress}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link NullEmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
+   * Test {@link NullEmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)} with {@code
+   * emailAddress}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link NullEmailServiceImpl#sendTemplateEmail(String, EmailInfo, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NullEmailServiceImpl.sendTemplateEmail(String, EmailInfo, Map)"})
   public void testSendTemplateEmailWithEmailAddressEmailInfoProps() {
     // Arrange
@@ -55,12 +57,15 @@ public class NullEmailServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link NullEmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code emailTarget}, {@code emailInfo}, {@code props}.
-   * <p>
-   * Method under test: {@link NullEmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   * Test {@link NullEmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)} with {@code
+   * emailTarget}, {@code emailInfo}, {@code props}.
+   *
+   * <p>Method under test: {@link NullEmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo,
+   * Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NullEmailServiceImpl.sendTemplateEmail(EmailTarget, EmailInfo, Map)"})
   public void testSendTemplateEmailWithEmailTargetEmailInfoProps() {
     // Arrange
@@ -73,11 +78,12 @@ public class NullEmailServiceImplDiffblueTest {
 
   /**
    * Test {@link NullEmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
-   * <p>
-   * Method under test: {@link NullEmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   *
+   * <p>Method under test: {@link NullEmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NullEmailServiceImpl.sendBasicEmail(EmailInfo, EmailTarget, Map)"})
   public void testSendBasicEmail() {
     // Arrange

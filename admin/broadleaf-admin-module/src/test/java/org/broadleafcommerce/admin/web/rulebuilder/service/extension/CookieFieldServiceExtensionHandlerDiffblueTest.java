@@ -22,7 +22,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,33 +44,38 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CookieFieldServiceExtensionHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CookieFieldServiceExtensionHandlerDiffblueTest {
-  @Autowired
-  private CookieFieldServiceExtensionHandler cookieFieldServiceExtensionHandler;
+  @Autowired private CookieFieldServiceExtensionHandler cookieFieldServiceExtensionHandler;
 
-  @Autowired
-  private List<RuleDTOConfig> list;
+  @Autowired private List<RuleDTOConfig> list;
 
   @MockBean(name = "blRuleBuilderFieldServiceExtensionManager")
   private RuleBuilderFieldServiceExtensionManager ruleBuilderFieldServiceExtensionManager;
 
-  @MockBean
-  private RuleDTOConfig ruleDTOConfig;
+  @MockBean private RuleDTOConfig ruleDTOConfig;
 
   /**
-   * Test {@link CookieFieldServiceExtensionHandler#CookieFieldServiceExtensionHandler(RuleBuilderFieldServiceExtensionManager, List)}.
-   * <p>
-   * Method under test: {@link CookieFieldServiceExtensionHandler#CookieFieldServiceExtensionHandler(RuleBuilderFieldServiceExtensionManager, List)}
+   * Test {@link
+   * CookieFieldServiceExtensionHandler#CookieFieldServiceExtensionHandler(RuleBuilderFieldServiceExtensionManager,
+   * List)}.
+   *
+   * <p>Method under test: {@link
+   * CookieFieldServiceExtensionHandler#CookieFieldServiceExtensionHandler(RuleBuilderFieldServiceExtensionManager,
+   * List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CookieFieldServiceExtensionHandler.<init>(RuleBuilderFieldServiceExtensionManager, List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CookieFieldServiceExtensionHandler.<init>(RuleBuilderFieldServiceExtensionManager, List)"
+  })
   public void testNewCookieFieldServiceExtensionHandler() {
     // Arrange
-    RuleBuilderFieldServiceExtensionManager extensionManager = new RuleBuilderFieldServiceExtensionManager();
+    RuleBuilderFieldServiceExtensionManager extensionManager =
+        new RuleBuilderFieldServiceExtensionManager();
 
     // Act
-    CookieFieldServiceExtensionHandler actualCookieFieldServiceExtensionHandler = new CookieFieldServiceExtensionHandler(
-        extensionManager, new ArrayList<>());
+    CookieFieldServiceExtensionHandler actualCookieFieldServiceExtensionHandler =
+        new CookieFieldServiceExtensionHandler(extensionManager, new ArrayList<>());
 
     // Assert
     assertEquals(0, actualCookieFieldServiceExtensionHandler.getPriority());
@@ -80,39 +86,50 @@ public class CookieFieldServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}.
+   *
    * <ul>
-   *   <li>Given {@link RuleDTOConfig}.</li>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   *   <li>Given {@link RuleDTOConfig}.
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}
+   *
+   * <p>Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"
+  })
   public void testAddFields_givenRuleDTOConfig_whenArrayList_thenArrayListEmpty() {
     // Arrange
     ArrayList<FieldData> fields = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         cookieFieldServiceExtensionHandler.addFields(fields, "Rule Field Name", "Dto Class Name"));
     assertTrue(fields.isEmpty());
   }
 
   /**
    * Test {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} first FieldLabel is {@code Label}.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}
+   *
+   * <p>Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"})
-  public void testAddFields_thenArrayListFirstFieldLabelIsLabel() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"
+  })
+  public void testAddFields_thenArrayListSizeIsOne() {
     // Arrange
     when(ruleDTOConfig.getFieldName()).thenReturn("Field Name");
     when(ruleDTOConfig.getLabel()).thenReturn("Label");
@@ -122,8 +139,8 @@ public class CookieFieldServiceExtensionHandlerDiffblueTest {
     ArrayList<FieldData> fields = new ArrayList<>();
 
     // Act
-    ExtensionResultStatusType actualAddFieldsResult = cookieFieldServiceExtensionHandler.addFields(fields,
-        "REQUEST_FIELDS", "Dto Class Name");
+    ExtensionResultStatusType actualAddFieldsResult =
+        cookieFieldServiceExtensionHandler.addFields(fields, "REQUEST_FIELDS", "Dto Class Name");
 
     // Assert
     verify(ruleDTOConfig).getFieldName();
@@ -143,95 +160,57 @@ public class CookieFieldServiceExtensionHandlerDiffblueTest {
     assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE, actualAddFieldsResult);
     assertEquals(SupportedFieldType.UNKNOWN, getResult.getFieldType());
     assertTrue(getResult.getSkipValidation());
-    assertEquals(CookieFieldServiceExtensionHandler.COOKIE_ATTRIBUTE_NAME, getResult.getOverrideEntityKey());
+    assertEquals(
+        CookieFieldServiceExtensionHandler.COOKIE_ATTRIBUTE_NAME, getResult.getOverrideEntityKey());
   }
 
   /**
    * Test {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}.
+   *
    * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
+   *   <li>Then {@link ArrayList#ArrayList()} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}
+   *
+   * <p>Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"})
-  public void testAddFields_thenArrayListSizeIsOne() {
-    // Arrange
-    ArrayList<FieldData> fields = new ArrayList<>();
-    FieldData buildResult = (new Builder()).label("Field Label")
-        .name("Field Name")
-        .type(SupportedFieldType.UNKNOWN)
-        .operators("Operators")
-        .options("Options")
-        .overrideEntityKey("Override Entity Key")
-        .secondaryType(SupportedFieldType.UNKNOWN)
-        .selectizeSectionKey("Selectize Section Key")
-        .skipValidation(true)
-        .build();
-    fields.add(buildResult);
-
-    // Act
-    ExtensionResultStatusType actualAddFieldsResult = cookieFieldServiceExtensionHandler.addFields(fields,
-        "Rule Field Name", "Dto Class Name");
-
-    // Assert
-    assertEquals(1, fields.size());
-    FieldData getResult = fields.get(0);
-    assertEquals("Field Label", getResult.getFieldLabel());
-    assertEquals("Field Name", getResult.getFieldName());
-    assertEquals("Operators", getResult.getOperators());
-    assertEquals("Options", getResult.getOptions());
-    assertEquals("Override Entity Key", getResult.getOverrideEntityKey());
-    assertEquals("Selectize Section Key", getResult.getSelectizeSectionKey());
-    assertNull(getResult.getOverrideDtoClassName());
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualAddFieldsResult);
-    assertEquals(SupportedFieldType.UNKNOWN, getResult.getFieldType());
-    assertEquals(SupportedFieldType.UNKNOWN, getResult.getSecondaryFieldType());
-    assertTrue(getResult.getSkipValidation());
-  }
-
-  /**
-   * Test {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}.
-   * <ul>
-   *   <li>Then {@link ArrayList#ArrayList()} size is two.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CookieFieldServiceExtensionHandler#addFields(List, String, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType CookieFieldServiceExtensionHandler.addFields(List, String, String)"
+  })
   public void testAddFields_thenArrayListSizeIsTwo() {
     // Arrange
     ArrayList<FieldData> fields = new ArrayList<>();
-    FieldData buildResult = (new Builder()).label("Field Label")
-        .name("Field Name")
-        .type(SupportedFieldType.UNKNOWN)
-        .operators("Operators")
-        .options("Options")
-        .overrideEntityKey("Override Entity Key")
-        .secondaryType(SupportedFieldType.UNKNOWN)
-        .selectizeSectionKey("Selectize Section Key")
-        .skipValidation(true)
-        .build();
-    fields.add(buildResult);
-    FieldData buildResult2 = (new Builder()).label("Field Label")
-        .name("Field Name")
-        .type(SupportedFieldType.UNKNOWN)
-        .operators("Operators")
-        .options("Options")
-        .overrideEntityKey("Override Entity Key")
-        .secondaryType(SupportedFieldType.UNKNOWN)
-        .selectizeSectionKey("Selectize Section Key")
-        .skipValidation(true)
-        .build();
-    fields.add(buildResult2);
+    fields.add(
+        new Builder()
+            .label("Field Label")
+            .name("Field Name")
+            .type(SupportedFieldType.UNKNOWN)
+            .operators("Operators")
+            .options("Options")
+            .overrideEntityKey("Override Entity Key")
+            .secondaryType(SupportedFieldType.UNKNOWN)
+            .selectizeSectionKey("Selectize Section Key")
+            .skipValidation(true)
+            .build());
+    fields.add(
+        new Builder()
+            .label("Field Label")
+            .name("Field Name")
+            .type(SupportedFieldType.UNKNOWN)
+            .operators("Operators")
+            .options("Options")
+            .overrideEntityKey("Override Entity Key")
+            .secondaryType(SupportedFieldType.UNKNOWN)
+            .selectizeSectionKey("Selectize Section Key")
+            .skipValidation(true)
+            .build());
 
     // Act
-    ExtensionResultStatusType actualAddFieldsResult = cookieFieldServiceExtensionHandler.addFields(fields,
-        "Rule Field Name", "Dto Class Name");
+    ExtensionResultStatusType actualAddFieldsResult =
+        cookieFieldServiceExtensionHandler.addFields(fields, "Rule Field Name", "Dto Class Name");
 
     // Assert
     assertEquals(2, fields.size());

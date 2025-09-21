@@ -18,9 +18,10 @@
 package org.broadleafcommerce.core.search.service.solr.index;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,12 +29,12 @@ import java.util.List;
 import java.util.Map;
 import org.apache.solr.common.SolrInputDocument;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
-import org.broadleafcommerce.common.i18n.service.TranslationService;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
-import org.broadleafcommerce.common.locale.service.LocaleService;
 import org.broadleafcommerce.core.catalog.domain.Indexable;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.search.domain.Field;
+import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexField;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
@@ -46,112 +47,180 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
-  @Mock
-  private LocaleService localeService;
-
-  @Mock
-  private SolrHelperService solrHelperService;
-
-  @Mock
-  private TranslationService translationService;
+  @Mock private SolrHelperService solrHelperService;
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalBasicFields(Indexable, SolrInputDocument, SolrHelperService)}.
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalBasicFields(Indexable, SolrInputDocument, SolrHelperService)}
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#addPropertyValues(Indexable, Field,
+   * FieldType, Map, String, List)}.
+   *
+   * <ul>
+   *   <li>Then return {@code NOT_HANDLED}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#addPropertyValues(Indexable, Field, FieldType, Map,
+   * String, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachAdditionalBasicFields(Indexable, SolrInputDocument, SolrHelperService)"})
-  public void testAttachAdditionalBasicFields() {
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.addPropertyValues(Indexable, Field, FieldType, Map, String, List)"
+  })
+  public void testAddPropertyValues_thenReturnNotHandled()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
+    ProductBundleImpl indexable = new ProductBundleImpl();
+    FieldImpl field = new FieldImpl();
+    HashMap<String, Object> values = new HashMap<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, i18nSolrIndexServiceExtensionHandler
-        .attachAdditionalBasicFields(new ProductBundleImpl(), null, solrHelperService));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.addPropertyValues(
+            indexable, field, FieldType.BOOLEAN, values, "Property Name", new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#populateDocumentForIndexField(SolrInputDocument, IndexField, FieldType, Map)}.
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#populateDocumentForIndexField(SolrInputDocument, IndexField, FieldType, Map)}
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalBasicFields(Indexable,
+   * SolrInputDocument, SolrHelperService)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachAdditionalBasicFields(Indexable,
+   * SolrInputDocument, SolrHelperService)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.populateDocumentForIndexField(SolrInputDocument, IndexField, FieldType, Map)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachAdditionalBasicFields(Indexable, SolrInputDocument, SolrHelperService)"
+  })
+  public void testAttachAdditionalBasicFields() {
+    // Arrange
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
+
+    // Act and Assert
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachAdditionalBasicFields(
+            new ProductBundleImpl(), null, solrHelperService));
+  }
+
+  /**
+   * Test {@link
+   * AbstractSolrIndexServiceExtensionHandler#populateDocumentForIndexField(SolrInputDocument,
+   * IndexField, FieldType, Map)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#populateDocumentForIndexField(SolrInputDocument,
+   * IndexField, FieldType, Map)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.populateDocumentForIndexField(SolrInputDocument, IndexField, FieldType, Map)"
+  })
   public void testPopulateDocumentForIndexField() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     IndexFieldImpl field = new IndexFieldImpl();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, i18nSolrIndexServiceExtensionHandler
-        .populateDocumentForIndexField(null, field, FieldType.BOOLEAN, new HashMap<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.populateDocumentForIndexField(
+            null, field, FieldType.BOOLEAN, new HashMap<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}.
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalDocumentFields(Indexable, SolrInputDocument)}
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachAdditionalDocumentFields(Indexable,
+   * SolrInputDocument)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachAdditionalDocumentFields(Indexable,
+   * SolrInputDocument)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachAdditionalDocumentFields(Indexable, SolrInputDocument)"
+  })
   public void testAttachAdditionalDocumentFields() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachAdditionalDocumentFields(new ProductBundleImpl(), null));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachAdditionalDocumentFields(
+            new ProductBundleImpl(), null));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable,
+   * SolrInputDocument, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"
+  })
   public void testAttachChildDocuments_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ProductBundleImpl indexable = new ProductBundleImpl();
 
     ArrayList<IndexField> fields = new ArrayList<>();
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(indexable, null, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(
+            indexable, null, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable,
+   * SolrInputDocument, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"
+  })
   public void testAttachChildDocuments_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl2() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ProductBundleImpl indexable = new ProductBundleImpl();
 
     ArrayList<IndexField> fields = new ArrayList<>();
@@ -159,26 +228,35 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(indexable, null, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(
+            indexable, null, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable,
+   * SolrInputDocument, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"
+  })
   public void testAttachChildDocuments_givenLocaleImpl_whenArrayListAddLocaleImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ProductBundleImpl indexable = new ProductBundleImpl();
     ArrayList<IndexField> fields = new ArrayList<>();
 
@@ -186,26 +264,35 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(indexable, null, fields, locales));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(
+            indexable, null, fields, locales));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable,
+   * SolrInputDocument, List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"
+  })
   public void testAttachChildDocuments_givenLocaleImpl_whenArrayListAddLocaleImpl2() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ProductBundleImpl indexable = new ProductBundleImpl();
     ArrayList<IndexField> fields = new ArrayList<>();
 
@@ -214,49 +301,66 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(indexable, null, fields, locales));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(
+            indexable, null, fields, locales));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable,
+   * SolrInputDocument, List, List)}.
+   *
    * <ul>
-   *   <li>When {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>When {@link ProductBundleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#attachChildDocuments(Indexable, SolrInputDocument,
+   * List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.attachChildDocuments(Indexable, SolrInputDocument, List, List)"
+  })
   public void testAttachChildDocuments_whenProductBundleImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ProductBundleImpl indexable = new ProductBundleImpl();
     ArrayList<IndexField> fields = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(indexable, null, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.attachChildDocuments(
+            indexable, null, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
     ArrayList<Indexable> products = new ArrayList<>();
 
@@ -264,26 +368,34 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).</li>
+   *   <li>Given {@link IndexFieldImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl2() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
     ArrayList<Indexable> products = new ArrayList<>();
 
@@ -292,26 +404,34 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     fields.add(new IndexFieldImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenLocaleImpl_whenArrayListAddLocaleImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
     ArrayList<Indexable> products = new ArrayList<>();
     ArrayList<IndexField> fields = new ArrayList<>();
@@ -320,26 +440,34 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, locales));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, locales));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link LocaleImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link LocaleImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenLocaleImpl_whenArrayListAddLocaleImpl2() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
     ArrayList<Indexable> products = new ArrayList<>();
     ArrayList<IndexField> fields = new ArrayList<>();
@@ -349,25 +477,33 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     locales.add(new LocaleImpl());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, locales));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, locales));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenProductBundleImpl() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
 
     ArrayList<Indexable> products = new ArrayList<>();
@@ -375,25 +511,33 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     ArrayList<IndexField> fields = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link ProductBundleImpl} (default constructor).</li>
+   *   <li>Given {@link ProductBundleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_givenProductBundleImpl2() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
 
     ArrayList<Indexable> products = new ArrayList<>();
@@ -402,116 +546,84 @@ public class AbstractSolrIndexServiceExtensionHandlerDiffblueTest {
     ArrayList<IndexField> fields = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, new ArrayList<>()));
   }
 
   /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
+   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List,
+   * List, List)}.
+   *
    * <ul>
-   *   <li>Given {@link SolrInputDocument}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
+   *
+   * <p>Method under test: {@link
+   * AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
-  public void testModifyBuiltDocuments_givenSolrInputDocument() {
-    // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
-
-    ArrayList<SolrInputDocument> documents = new ArrayList<>();
-    documents.add(mock(SolrInputDocument.class));
-    ArrayList<Indexable> products = new ArrayList<>();
-    ArrayList<IndexField> fields = new ArrayList<>();
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
-   * <ul>
-   *   <li>Given {@link SolrInputDocument}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
-  public void testModifyBuiltDocuments_givenSolrInputDocument2() {
-    // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
-
-    ArrayList<SolrInputDocument> documents = new ArrayList<>();
-    documents.add(mock(SolrInputDocument.class));
-    documents.add(mock(SolrInputDocument.class));
-    ArrayList<Indexable> products = new ArrayList<>();
-    ArrayList<IndexField> fields = new ArrayList<>();
-
-    // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#modifyBuiltDocuments(Collection, List, List, List)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.modifyBuiltDocuments(Collection, List, List, List)"
+  })
   public void testModifyBuiltDocuments_whenArrayList() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
     ArrayList<SolrInputDocument> documents = new ArrayList<>();
     ArrayList<Indexable> products = new ArrayList<>();
     ArrayList<IndexField> fields = new ArrayList<>();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(documents, products, fields, new ArrayList<>()));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.modifyBuiltDocuments(
+            documents, products, fields, new ArrayList<>()));
   }
 
   /**
    * Test {@link AbstractSolrIndexServiceExtensionHandler#getIndexableId(Indexable, Long[])}.
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#getIndexableId(Indexable, Long[])}
+   *
+   * <p>Method under test: {@link AbstractSolrIndexServiceExtensionHandler#getIndexableId(Indexable,
+   * Long[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.getIndexableId(Indexable, Long[])"})
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.getIndexableId(Indexable, Long[])"
+  })
   public void testGetIndexableId() {
     // Arrange
-    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler = new I18nSolrIndexServiceExtensionHandler();
+    I18nSolrIndexServiceExtensionHandler i18nSolrIndexServiceExtensionHandler =
+        new I18nSolrIndexServiceExtensionHandler();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        i18nSolrIndexServiceExtensionHandler.getIndexableId(new ProductBundleImpl(), new Long[]{1L}));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        i18nSolrIndexServiceExtensionHandler.getIndexableId(
+            new ProductBundleImpl(), new Long[] {1L}));
   }
 
   /**
    * Test {@link AbstractSolrIndexServiceExtensionHandler#getCategoryId(Long, Long[])}.
-   * <p>
-   * Method under test: {@link AbstractSolrIndexServiceExtensionHandler#getCategoryId(Long, Long[])}
+   *
+   * <p>Method under test: {@link AbstractSolrIndexServiceExtensionHandler#getCategoryId(Long,
+   * Long[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.getCategoryId(Long, Long[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType AbstractSolrIndexServiceExtensionHandler.getCategoryId(Long, Long[])"
+  })
   public void testGetCategoryId() {
     // Arrange, Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        (new I18nSolrIndexServiceExtensionHandler()).getCategoryId(1L, new Long[]{1L}));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        new I18nSolrIndexServiceExtensionHandler().getCategoryId(1L, new Long[] {1L}));
   }
 }

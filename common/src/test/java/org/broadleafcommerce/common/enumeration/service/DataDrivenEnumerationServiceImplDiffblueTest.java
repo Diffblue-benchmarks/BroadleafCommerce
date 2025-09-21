@@ -18,10 +18,10 @@
 package org.broadleafcommerce.common.enumeration.service;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.enumeration.dao.DataDrivenEnumerationDao;
 import org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumeration;
@@ -38,53 +38,61 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DataDrivenEnumerationServiceImplDiffblueTest {
-  @Mock
-  private DataDrivenEnumerationDao dataDrivenEnumerationDao;
+  @Mock private DataDrivenEnumerationDao dataDrivenEnumerationDao;
 
-  @InjectMocks
-  private DataDrivenEnumerationServiceImpl dataDrivenEnumerationServiceImpl;
+  @InjectMocks private DataDrivenEnumerationServiceImpl dataDrivenEnumerationServiceImpl;
 
   /**
    * Test {@link DataDrivenEnumerationServiceImpl#findEnumByKey(String)}.
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationServiceImpl#findEnumByKey(String)}
+   *
+   * <p>Method under test: {@link DataDrivenEnumerationServiceImpl#findEnumByKey(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"DataDrivenEnumeration DataDrivenEnumerationServiceImpl.findEnumByKey(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "DataDrivenEnumeration DataDrivenEnumerationServiceImpl.findEnumByKey(String)"
+  })
   public void testFindEnumByKey() {
     // Arrange
     DataDrivenEnumerationImpl dataDrivenEnumerationImpl = new DataDrivenEnumerationImpl();
-    when(dataDrivenEnumerationDao.readEnumByKey(Mockito.<String>any())).thenReturn(dataDrivenEnumerationImpl);
+    when(dataDrivenEnumerationDao.readEnumByKey(Mockito.<String>any()))
+        .thenReturn(dataDrivenEnumerationImpl);
 
     // Act
-    DataDrivenEnumeration actualFindEnumByKeyResult = dataDrivenEnumerationServiceImpl.findEnumByKey("Enum Key");
+    DataDrivenEnumeration actualFindEnumByKeyResult =
+        dataDrivenEnumerationServiceImpl.findEnumByKey("Enum Key");
 
     // Assert
-    verify(dataDrivenEnumerationDao).readEnumByKey(eq("Enum Key"));
+    verify(dataDrivenEnumerationDao).readEnumByKey("Enum Key");
     assertSame(dataDrivenEnumerationImpl, actualFindEnumByKeyResult);
   }
 
   /**
    * Test {@link DataDrivenEnumerationServiceImpl#findEnumValueByKey(String, String)}.
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationServiceImpl#findEnumValueByKey(String, String)}
+   *
+   * <p>Method under test: {@link DataDrivenEnumerationServiceImpl#findEnumValueByKey(String,
+   * String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"DataDrivenEnumerationValue DataDrivenEnumerationServiceImpl.findEnumValueByKey(String, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "DataDrivenEnumerationValue DataDrivenEnumerationServiceImpl.findEnumValueByKey(String, String)"
+  })
   public void testFindEnumValueByKey() {
     // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl = new DataDrivenEnumerationValueImpl();
+    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl =
+        new DataDrivenEnumerationValueImpl();
     when(dataDrivenEnumerationDao.readEnumValueByKey(Mockito.<String>any(), Mockito.<String>any()))
         .thenReturn(dataDrivenEnumerationValueImpl);
 
     // Act
-    DataDrivenEnumerationValue actualFindEnumValueByKeyResult = dataDrivenEnumerationServiceImpl
-        .findEnumValueByKey("Enum Key", "42");
+    DataDrivenEnumerationValue actualFindEnumValueByKeyResult =
+        dataDrivenEnumerationServiceImpl.findEnumValueByKey("Enum Key", "42");
 
     // Assert
-    verify(dataDrivenEnumerationDao).readEnumValueByKey(eq("Enum Key"), eq("42"));
+    verify(dataDrivenEnumerationDao).readEnumValueByKey("Enum Key", "42");
     assertSame(dataDrivenEnumerationValueImpl, actualFindEnumValueByKeyResult);
   }
 }

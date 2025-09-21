@@ -18,7 +18,8 @@
 package org.broadleafcommerce.browsertest.page;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,47 +27,55 @@ import org.junit.experimental.categories.Category;
 public class FieldConverterSupportDiffblueTest {
   /**
    * Test {@link FieldConverterSupport#convertFieldName(String)}.
-   * <p>
-   * Method under test: {@link FieldConverterSupport#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link FieldConverterSupport#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String FieldConverterSupport.convertFieldName(String)"})
   public void testConvertFieldName() {
     // Arrange, Act and Assert
-    assertEquals("[name=\"fields\\[\\'org__broadleafcommerce__browsertest__page__FieldConverterSupport\\'\\].value\"]",
-        (new FieldConverterSupport()).convertFieldName("org.broadleafcommerce.browsertest.page.FieldConverterSupport"));
+    assertEquals(
+        "[name=\"fields\\[\\'org__broadleafcommerce__browsertest__page__FieldConverterSupport\\'\\].value\"]",
+        new FieldConverterSupport()
+            .convertFieldName("org.broadleafcommerce.browsertest.page.FieldConverterSupport"));
   }
 
   /**
    * Test {@link FieldConverterSupport#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code Field Name}.</li>
-   *   <li>Then return {@code [name="fields\[\'Field Name\'\].value"]}.</li>
+   *   <li>When {@code Field Name}.
+   *   <li>Then return {@code [name="fields\[\'Field Name\'\].value"]}.
    * </ul>
-   * <p>
-   * Method under test: {@link FieldConverterSupport#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link FieldConverterSupport#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String FieldConverterSupport.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnNameFieldsFieldNameValue() {
     // Arrange, Act and Assert
-    assertEquals("[name=\"fields\\[\\'Field Name\\'\\].value\"]",
-        (new FieldConverterSupport()).convertFieldName("Field Name"));
+    assertEquals(
+        "[name=\"fields\\[\\'Field Name\\'\\].value\"]",
+        new FieldConverterSupport().convertFieldName("Field Name"));
   }
 
   /**
    * Test new {@link FieldConverterSupport} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link FieldConverterSupport}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link FieldConverterSupport}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void FieldConverterSupport.<init>()"})
   public void testNewFieldConverterSupport() {
     // Arrange, Act and Assert
-    assertEquals("[name=\"fields\\[\\'Field Name\\'\\].value\"]",
-        (new FieldConverterSupport()).convertFieldName("Field Name"));
+    assertEquals(
+        "[name=\"fields\\[\\'Field Name\\'\\].value\"]",
+        new FieldConverterSupport().convertFieldName("Field Name"));
   }
 }

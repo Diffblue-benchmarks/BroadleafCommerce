@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,19 +29,26 @@ import org.junit.experimental.categories.Category;
 public class SecurityServiceExceptionDiffblueTest {
   /**
    * Test {@link SecurityServiceException#SecurityServiceException(String)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link SecurityServiceException#SecurityServiceException(String)}
+   *
+   * <p>Method under test: {@link SecurityServiceException#SecurityServiceException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SecurityServiceException.<init>()", "void SecurityServiceException.<init>(String)",
-      "void SecurityServiceException.<init>(String, Throwable)", "void SecurityServiceException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SecurityServiceException.<init>()",
+    "void SecurityServiceException.<init>(String)",
+    "void SecurityServiceException.<init>(String, Throwable)",
+    "void SecurityServiceException.<init>(Throwable)"
+  })
   public void testNewSecurityServiceException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    SecurityServiceException actualSecurityServiceException = new SecurityServiceException("An error occurred");
+    SecurityServiceException actualSecurityServiceException =
+        new SecurityServiceException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualSecurityServiceException.getMessage());
@@ -50,22 +58,30 @@ public class SecurityServiceExceptionDiffblueTest {
 
   /**
    * Test {@link SecurityServiceException#SecurityServiceException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link SecurityServiceException#SecurityServiceException(String, Throwable)}
+   *
+   * <p>Method under test: {@link SecurityServiceException#SecurityServiceException(String,
+   * Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SecurityServiceException.<init>()", "void SecurityServiceException.<init>(String)",
-      "void SecurityServiceException.<init>(String, Throwable)", "void SecurityServiceException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SecurityServiceException.<init>()",
+    "void SecurityServiceException.<init>(String)",
+    "void SecurityServiceException.<init>(String, Throwable)",
+    "void SecurityServiceException.<init>(Throwable)"
+  })
   public void testNewSecurityServiceException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    SecurityServiceException actualSecurityServiceException = new SecurityServiceException("An error occurred", cause);
+    SecurityServiceException actualSecurityServiceException =
+        new SecurityServiceException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualSecurityServiceException.getMessage());
@@ -75,16 +91,22 @@ public class SecurityServiceExceptionDiffblueTest {
 
   /**
    * Test {@link SecurityServiceException#SecurityServiceException(Throwable)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code Throwable}.</li>
+   *   <li>Then return Message is {@code Throwable}.
    * </ul>
-   * <p>
-   * Method under test: {@link SecurityServiceException#SecurityServiceException(Throwable)}
+   *
+   * <p>Method under test: {@link SecurityServiceException#SecurityServiceException(Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SecurityServiceException.<init>()", "void SecurityServiceException.<init>(String)",
-      "void SecurityServiceException.<init>(String, Throwable)", "void SecurityServiceException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SecurityServiceException.<init>()",
+    "void SecurityServiceException.<init>(String)",
+    "void SecurityServiceException.<init>(String, Throwable)",
+    "void SecurityServiceException.<init>(Throwable)"
+  })
   public void testNewSecurityServiceException_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();
@@ -100,16 +122,22 @@ public class SecurityServiceExceptionDiffblueTest {
 
   /**
    * Test {@link SecurityServiceException#SecurityServiceException()}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link SecurityServiceException#SecurityServiceException()}
+   *
+   * <p>Method under test: {@link SecurityServiceException#SecurityServiceException()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SecurityServiceException.<init>()", "void SecurityServiceException.<init>(String)",
-      "void SecurityServiceException.<init>(String, Throwable)", "void SecurityServiceException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SecurityServiceException.<init>()",
+    "void SecurityServiceException.<init>(String)",
+    "void SecurityServiceException.<init>(String, Throwable)",
+    "void SecurityServiceException.<init>(Throwable)"
+  })
   public void testNewSecurityServiceException_thenReturnMessageIsNull() {
     // Arrange and Act
     SecurityServiceException actualSecurityServiceException = new SecurityServiceException();

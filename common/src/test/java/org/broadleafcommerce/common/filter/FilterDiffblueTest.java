@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +32,17 @@ import org.junit.experimental.categories.Category;
 public class FilterDiffblueTest {
   /**
    * Test {@link Filter#copy()}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.</li>
-   *   <li>Then return IndexColumnNames size is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code foo}.
+   *   <li>Then return IndexColumnNames size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link Filter#copy()}
+   *
+   * <p>Method under test: {@link Filter#copy()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenArrayListAddFoo_thenReturnIndexColumnNamesSizeIsOne() {
     // Arrange
@@ -64,15 +67,18 @@ public class FilterDiffblueTest {
 
   /**
    * Test {@link Filter#copy()}.
+   *
    * <ul>
-   *   <li>Given {@link Filter} (default constructor) IndexColumnNames is {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return IndexColumnNames is {@code null}.</li>
+   *   <li>Given {@link Filter} (default constructor) IndexColumnNames is {@link
+   *       ArrayList#ArrayList()}.
+   *   <li>Then return IndexColumnNames is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link Filter#copy()}
+   *
+   * <p>Method under test: {@link Filter#copy()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenFilterIndexColumnNamesIsArrayList_thenReturnIndexColumnNamesIsNull() {
     // Arrange
@@ -92,19 +98,21 @@ public class FilterDiffblueTest {
 
   /**
    * Test {@link Filter#copy()}.
+   *
    * <ul>
-   *   <li>Given {@link Filter} (default constructor).</li>
-   *   <li>Then return IndexColumnNames is {@code null}.</li>
+   *   <li>Given {@link Filter} (default constructor).
+   *   <li>Then return IndexColumnNames is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link Filter#copy()}
+   *
+   * <p>Method under test: {@link Filter#copy()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Filter Filter.copy()"})
   public void testCopy_givenFilter_thenReturnIndexColumnNamesIsNull() {
     // Arrange and Act
-    Filter actualCopyResult = (new Filter()).copy();
+    Filter actualCopyResult = new Filter().copy();
 
     // Assert
     assertNull(actualCopyResult.getCondition());
@@ -116,8 +124,9 @@ public class FilterDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link Filter}
    *   <li>{@link Filter#setCondition(String)}
@@ -133,12 +142,21 @@ public class FilterDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void Filter.<init>()", "String Filter.getCondition()",
-      "String Filter.getEntityImplementationClassName()", "List Filter.getIndexColumnNames()",
-      "String Filter.getName()", "String Filter.getOverrideIndexNameKey()", "void Filter.setCondition(String)",
-      "void Filter.setEntityImplementationClassName(String)", "void Filter.setIndexColumnNames(List)",
-      "void Filter.setName(String)", "void Filter.setOverrideIndexNameKey(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void Filter.<init>()",
+    "String Filter.getCondition()",
+    "String Filter.getEntityImplementationClassName()",
+    "List Filter.getIndexColumnNames()",
+    "String Filter.getName()",
+    "String Filter.getOverrideIndexNameKey()",
+    "void Filter.setCondition(String)",
+    "void Filter.setEntityImplementationClassName(String)",
+    "void Filter.setIndexColumnNames(List)",
+    "void Filter.setName(String)",
+    "void Filter.setOverrideIndexNameKey(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     Filter actualFilter = new Filter();

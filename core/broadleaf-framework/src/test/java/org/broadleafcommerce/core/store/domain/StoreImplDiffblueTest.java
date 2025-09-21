@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
@@ -32,8 +33,9 @@ import org.junit.experimental.categories.Category;
 public class StoreImplDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link StoreImpl#setAddress(Address)}
    *   <li>{@link StoreImpl#setId(Long)}
@@ -54,13 +56,26 @@ public class StoreImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Address StoreImpl.getAddress()", "Long StoreImpl.getId()", "Double StoreImpl.getLatitude()",
-      "Double StoreImpl.getLongitude()", "String StoreImpl.getName()", "Boolean StoreImpl.getOpen()",
-      "String StoreImpl.getStoreHours()", "String StoreImpl.getStoreNumber()", "void StoreImpl.setAddress(Address)",
-      "void StoreImpl.setId(Long)", "void StoreImpl.setLatitude(Double)", "void StoreImpl.setLongitude(Double)",
-      "void StoreImpl.setName(String)", "void StoreImpl.setOpen(Boolean)", "void StoreImpl.setStoreHours(String)",
-      "void StoreImpl.setStoreNumber(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address StoreImpl.getAddress()",
+    "Long StoreImpl.getId()",
+    "Double StoreImpl.getLatitude()",
+    "Double StoreImpl.getLongitude()",
+    "String StoreImpl.getName()",
+    "Boolean StoreImpl.getOpen()",
+    "String StoreImpl.getStoreHours()",
+    "String StoreImpl.getStoreNumber()",
+    "void StoreImpl.setAddress(Address)",
+    "void StoreImpl.setId(Long)",
+    "void StoreImpl.setLatitude(Double)",
+    "void StoreImpl.setLongitude(Double)",
+    "void StoreImpl.setName(String)",
+    "void StoreImpl.setOpen(Boolean)",
+    "void StoreImpl.setStoreHours(String)",
+    "void StoreImpl.setStoreNumber(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     StoreImpl storeImpl = new StoreImpl();
@@ -96,24 +111,26 @@ public class StoreImplDiffblueTest {
 
   /**
    * Test {@link StoreImpl#getArchived()}.
-   * <p>
-   * Method under test: {@link StoreImpl#getArchived()}
+   *
+   * <p>Method under test: {@link StoreImpl#getArchived()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Character StoreImpl.getArchived()"})
   public void testGetArchived() {
     // Arrange, Act and Assert
-    assertEquals('N', (new StoreImpl()).getArchived().charValue());
+    assertEquals('N', new StoreImpl().getArchived().charValue());
   }
 
   /**
    * Test {@link StoreImpl#setArchived(Character)}.
-   * <p>
-   * Method under test: {@link StoreImpl#setArchived(Character)}
+   *
+   * <p>Method under test: {@link StoreImpl#setArchived(Character)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StoreImpl.setArchived(Character)"})
   public void testSetArchived() {
     // Arrange
@@ -129,19 +146,29 @@ public class StoreImplDiffblueTest {
 
   /**
    * Test {@link StoreImpl#isActive()}.
+   *
    * <ul>
-   *   <li>Given {@link StoreImpl} (default constructor) Archived is {@code Y}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link StoreImpl} (default constructor) Archived is {@code Y}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link StoreImpl#isActive()}
+   *
+   * <p>Method under test: {@link StoreImpl#isActive()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StoreImpl.isActive()"})
   public void testIsActive_givenStoreImplArchivedIsY_thenReturnFalse() {
     // Arrange
     StoreImpl storeImpl = new StoreImpl();
+    storeImpl.setAddress(new AddressImpl());
+    storeImpl.setId(1L);
+    storeImpl.setLatitude(10.0d);
+    storeImpl.setLongitude(10.0d);
+    storeImpl.setName("Name");
+    storeImpl.setOpen(true);
+    storeImpl.setStoreHours("Store Hours");
+    storeImpl.setStoreNumber("42");
     storeImpl.setArchived('Y');
 
     // Act and Assert
@@ -150,28 +177,31 @@ public class StoreImplDiffblueTest {
 
   /**
    * Test {@link StoreImpl#isActive()}.
+   *
    * <ul>
-   *   <li>Given {@link StoreImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link StoreImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link StoreImpl#isActive()}
+   *
+   * <p>Method under test: {@link StoreImpl#isActive()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean StoreImpl.isActive()"})
   public void testIsActive_givenStoreImpl_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new StoreImpl()).isActive());
+    assertTrue(new StoreImpl().isActive());
   }
 
   /**
    * Test new {@link StoreImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link StoreImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link StoreImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void StoreImpl.<init>()"})
   public void testNewStoreImpl() {
     // Arrange and Act

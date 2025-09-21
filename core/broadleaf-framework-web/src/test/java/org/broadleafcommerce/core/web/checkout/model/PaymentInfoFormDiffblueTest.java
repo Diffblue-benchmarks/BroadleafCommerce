@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.profile.core.domain.Address;
@@ -36,12 +37,13 @@ import org.junit.jupiter.api.Test;
 class PaymentInfoFormDiffblueTest {
   /**
    * Test new {@link PaymentInfoForm} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link PaymentInfoForm}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link PaymentInfoForm}
    */
   @Test
   @DisplayName("Test new PaymentInfoForm (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PaymentInfoForm.<init>()"})
   void testNewPaymentInfoForm() {
     // Arrange and Act
@@ -63,8 +65,9 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PaymentInfoForm#setAddress(Address)}
    *   <li>{@link PaymentInfoForm#setCustomerPaymentId(Long)}
@@ -88,17 +91,28 @@ class PaymentInfoFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Address PaymentInfoForm.getAddress()", "Long PaymentInfoForm.getCustomerPaymentId()",
-      "String PaymentInfoForm.getEmailAddress()", "boolean PaymentInfoForm.getIsDefault()",
-      "String PaymentInfoForm.getPaymentName()", "String PaymentInfoForm.getPaymentToken()",
-      "boolean PaymentInfoForm.getShouldSaveNewPayment()", "boolean PaymentInfoForm.getShouldUseCustomerPayment()",
-      "boolean PaymentInfoForm.getShouldUseShippingAddress()", "void PaymentInfoForm.setAddress(Address)",
-      "void PaymentInfoForm.setCustomerPaymentId(Long)", "void PaymentInfoForm.setEmailAddress(String)",
-      "void PaymentInfoForm.setIsDefault(boolean)", "void PaymentInfoForm.setPaymentName(String)",
-      "void PaymentInfoForm.setPaymentToken(String)", "void PaymentInfoForm.setShouldSaveNewPayment(boolean)",
-      "void PaymentInfoForm.setShouldUseCustomerPayment(boolean)",
-      "void PaymentInfoForm.setShouldUseShippingAddress(boolean)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address PaymentInfoForm.getAddress()",
+    "Long PaymentInfoForm.getCustomerPaymentId()",
+    "String PaymentInfoForm.getEmailAddress()",
+    "boolean PaymentInfoForm.getIsDefault()",
+    "String PaymentInfoForm.getPaymentName()",
+    "String PaymentInfoForm.getPaymentToken()",
+    "boolean PaymentInfoForm.getShouldSaveNewPayment()",
+    "boolean PaymentInfoForm.getShouldUseCustomerPayment()",
+    "boolean PaymentInfoForm.getShouldUseShippingAddress()",
+    "void PaymentInfoForm.setAddress(Address)",
+    "void PaymentInfoForm.setCustomerPaymentId(Long)",
+    "void PaymentInfoForm.setEmailAddress(String)",
+    "void PaymentInfoForm.setIsDefault(boolean)",
+    "void PaymentInfoForm.setPaymentName(String)",
+    "void PaymentInfoForm.setPaymentToken(String)",
+    "void PaymentInfoForm.setShouldSaveNewPayment(boolean)",
+    "void PaymentInfoForm.setShouldUseCustomerPayment(boolean)",
+    "void PaymentInfoForm.setShouldUseShippingAddress(boolean)"
+  })
   void testGettersAndSetters() {
     // Arrange
     PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
@@ -138,33 +152,38 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test {@link PaymentInfoForm#hasCustomerPaymentId()}.
+   *
    * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link PaymentInfoForm} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
    */
   @Test
-  @DisplayName("Test hasCustomerPaymentId(); given PaymentInfoForm (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test hasCustomerPaymentId(); given PaymentInfoForm (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasCustomerPaymentId()"})
   void testHasCustomerPaymentId_givenPaymentInfoForm_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new PaymentInfoForm()).hasCustomerPaymentId());
+    assertFalse(new PaymentInfoForm().hasCustomerPaymentId());
   }
 
   /**
    * Test {@link PaymentInfoForm#hasCustomerPaymentId()}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasCustomerPaymentId()}
    */
   @Test
   @DisplayName("Test hasCustomerPaymentId(); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasCustomerPaymentId()"})
   void testHasCustomerPaymentId_thenReturnTrue() {
     // Arrange
@@ -177,16 +196,19 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test {@link PaymentInfoForm#hasValidAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is {@code not blank}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link AddressImpl} (default constructor) City is {@code not blank}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is 'not blank'; then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test hasValidAddress(); given AddressImpl (default constructor) City is 'not blank'; then return 'true'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenAddressImplCityIsNotBlank_thenReturnTrue() {
     // Arrange
@@ -233,16 +255,19 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test {@link PaymentInfoForm#hasValidAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) City is space.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link AddressImpl} (default constructor) City is space.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given AddressImpl (default constructor) City is space; then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test hasValidAddress(); given AddressImpl (default constructor) City is space; then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenAddressImplCityIsSpace_thenReturnFalse() {
     // Arrange
@@ -289,16 +314,19 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test {@link PaymentInfoForm#hasValidAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor) Address is {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link PaymentInfoForm} (default constructor) Address is {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given PaymentInfoForm (default constructor) Address is 'null'; then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test hasValidAddress(); given PaymentInfoForm (default constructor) Address is 'null'; then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenPaymentInfoFormAddressIsNull_thenReturnFalse() {
     // Arrange
@@ -311,19 +339,22 @@ class PaymentInfoFormDiffblueTest {
 
   /**
    * Test {@link PaymentInfoForm#hasValidAddress()}.
+   *
    * <ul>
-   *   <li>Given {@link PaymentInfoForm} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link PaymentInfoForm} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentInfoForm#hasValidAddress()}
+   *
+   * <p>Method under test: {@link PaymentInfoForm#hasValidAddress()}
    */
   @Test
-  @DisplayName("Test hasValidAddress(); given PaymentInfoForm (default constructor); then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test hasValidAddress(); given PaymentInfoForm (default constructor); then return 'false'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PaymentInfoForm.hasValidAddress()"})
   void testHasValidAddress_givenPaymentInfoForm_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new PaymentInfoForm()).hasValidAddress());
+    assertFalse(new PaymentInfoForm().hasValidAddress());
   }
 }

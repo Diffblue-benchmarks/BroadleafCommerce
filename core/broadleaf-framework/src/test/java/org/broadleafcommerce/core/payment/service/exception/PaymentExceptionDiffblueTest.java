@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.payment.service.exception;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,16 +29,22 @@ import org.junit.experimental.categories.Category;
 public class PaymentExceptionDiffblueTest {
   /**
    * Test {@link PaymentException#PaymentException()}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentException#PaymentException()}
+   *
+   * <p>Method under test: {@link PaymentException#PaymentException()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PaymentException.<init>()", "void PaymentException.<init>(String)",
-      "void PaymentException.<init>(String, Throwable)", "void PaymentException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentException.<init>()",
+    "void PaymentException.<init>(String)",
+    "void PaymentException.<init>(String, Throwable)",
+    "void PaymentException.<init>(Throwable)"
+  })
   public void testNewPaymentException_thenReturnMessageIsNull() {
     // Arrange and Act
     PaymentException actualPaymentException = new PaymentException();
@@ -50,17 +57,23 @@ public class PaymentExceptionDiffblueTest {
 
   /**
    * Test {@link PaymentException#PaymentException(String)}.
+   *
    * <ul>
-   *   <li>When {@code An error occurred}.</li>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>When {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentException#PaymentException(String)}
+   *
+   * <p>Method under test: {@link PaymentException#PaymentException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PaymentException.<init>()", "void PaymentException.<init>(String)",
-      "void PaymentException.<init>(String, Throwable)", "void PaymentException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentException.<init>()",
+    "void PaymentException.<init>(String)",
+    "void PaymentException.<init>(String, Throwable)",
+    "void PaymentException.<init>(Throwable)"
+  })
   public void testNewPaymentException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
     PaymentException actualPaymentException = new PaymentException("An error occurred");
@@ -73,17 +86,23 @@ public class PaymentExceptionDiffblueTest {
 
   /**
    * Test {@link PaymentException#PaymentException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>When {@code An error occurred}.</li>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>When {@code An error occurred}.
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentException#PaymentException(String, Throwable)}
+   *
+   * <p>Method under test: {@link PaymentException#PaymentException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PaymentException.<init>()", "void PaymentException.<init>(String)",
-      "void PaymentException.<init>(String, Throwable)", "void PaymentException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentException.<init>()",
+    "void PaymentException.<init>(String)",
+    "void PaymentException.<init>(String, Throwable)",
+    "void PaymentException.<init>(Throwable)"
+  })
   public void testNewPaymentException_whenAnErrorOccurred_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
@@ -99,17 +118,23 @@ public class PaymentExceptionDiffblueTest {
 
   /**
    * Test {@link PaymentException#PaymentException(Throwable)}.
+   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code Throwable}.</li>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Message is {@code Throwable}.
    * </ul>
-   * <p>
-   * Method under test: {@link PaymentException#PaymentException(Throwable)}
+   *
+   * <p>Method under test: {@link PaymentException#PaymentException(Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PaymentException.<init>()", "void PaymentException.<init>(String)",
-      "void PaymentException.<init>(String, Throwable)", "void PaymentException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PaymentException.<init>()",
+    "void PaymentException.<init>(String)",
+    "void PaymentException.<init>(String, Throwable)",
+    "void PaymentException.<init>(Throwable)"
+  })
   public void testNewPaymentException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

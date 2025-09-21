@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.i18n.service.type.ISOCodeStatusType;
 import org.junit.Test;
@@ -34,94 +35,89 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ISOCountryImplDiffblueTest {
-  @Autowired
-  private ISOCountryImpl iSOCountryImpl;
+  @Autowired private ISOCountryImpl iSOCountryImpl;
 
   /**
    * Test {@link ISOCountryImpl#getStatus()}.
-   * <p>
-   * Method under test: {@link ISOCountryImpl#getStatus()}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#getStatus()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ISOCodeStatusType ISOCountryImpl.getStatus()"})
   public void testGetStatus() {
     // Arrange, Act and Assert
-    assertNull((new ISOCountryImpl()).getStatus());
+    assertNull(iSOCountryImpl.getStatus());
   }
 
   /**
    * Test {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}.
+   *
    * <ul>
-   *   <li>Given {@link ISOCountryImpl} (default constructor) Alpha2 is {@code Alpha2}.</li>
-   *   <li>Then {@link ISOCountryImpl} (default constructor) {@link ISOCountryImpl#status} is {@code null}.</li>
+   *   <li>Then {@link ISOCountryImpl} {@link ISOCountryImpl#status} is {@code
+   *       EXCEPTIONALLY_RESERVED}.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ISOCountryImpl.setStatus(ISOCodeStatusType)"})
-  public void testSetStatus_givenISOCountryImplAlpha2IsAlpha2_thenISOCountryImplStatusIsNull() {
-    // Arrange
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    isoCountryImpl.setAlpha2("Alpha2");
-    isoCountryImpl.setAlpha3("Alpha3");
-    isoCountryImpl.setName("Name");
-    isoCountryImpl.setNumericCode(10);
-    isoCountryImpl.setStatus(ISOCodeStatusType.EXCEPTIONALLY_RESERVED);
-
-    // Act
-    isoCountryImpl.setStatus(null);
-
-    // Assert
-    assertNull(isoCountryImpl.status);
-    assertNull(isoCountryImpl.getStatus());
-  }
-
-  /**
-   * Test {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}.
-   * <ul>
-   *   <li>Then {@link ISOCountryImpl} (default constructor) {@link ISOCountryImpl#status} is {@code EXCEPTIONALLY_RESERVED}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ISOCountryImpl.setStatus(ISOCodeStatusType)"})
   public void testSetStatus_thenISOCountryImplStatusIsExceptionallyReserved() {
-    // Arrange
-    ISOCountryImpl isoCountryImpl = new ISOCountryImpl();
-    ISOCodeStatusType status = ISOCodeStatusType.EXCEPTIONALLY_RESERVED;
-
-    // Act
-    isoCountryImpl.setStatus(status);
+    // Arrange and Act
+    iSOCountryImpl.setStatus(ISOCodeStatusType.EXCEPTIONALLY_RESERVED);
 
     // Assert
-    assertEquals("EXCEPTIONALLY_RESERVED", isoCountryImpl.status);
-    ISOCodeStatusType expectedStatus = status.EXCEPTIONALLY_RESERVED;
-    assertSame(expectedStatus, isoCountryImpl.getStatus());
+    assertEquals("EXCEPTIONALLY_RESERVED", iSOCountryImpl.status);
+    assertSame(ISOCodeStatusType.EXCEPTIONALLY_RESERVED, iSOCountryImpl.getStatus());
+  }
+
+  /**
+   * Test {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}.
+   *
+   * <ul>
+   *   <li>When {@code null}.
+   *   <li>Then {@link ISOCountryImpl} {@link ISOCountryImpl#status} is {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ISOCountryImpl#setStatus(ISOCodeStatusType)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"void ISOCountryImpl.setStatus(ISOCodeStatusType)"})
+  public void testSetStatus_whenNull_thenISOCountryImplStatusIsNull() {
+    // Arrange and Act
+    iSOCountryImpl.setStatus(null);
+
+    // Assert that nothing has changed
+    assertNull(iSOCountryImpl.status);
+    assertNull(iSOCountryImpl.getStatus());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -141,25 +137,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -179,25 +177,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -217,25 +217,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
@@ -255,25 +257,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
@@ -293,25 +297,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
@@ -331,25 +337,27 @@ public class ISOCountryImplDiffblueTest {
 
     // Act and Assert
     assertEquals(isoCountryImpl, isoCountryImpl2);
-    int expectedHashCodeResult = isoCountryImpl.hashCode();
-    assertEquals(expectedHashCodeResult, isoCountryImpl2.hashCode());
+    assertEquals(isoCountryImpl.hashCode(), isoCountryImpl2.hashCode());
   }
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}, and {@link ISOCountryImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ISOCountryImpl#equals(Object)}
    *   <li>{@link ISOCountryImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -368,15 +376,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -400,15 +410,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
@@ -432,15 +444,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
@@ -464,15 +478,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
@@ -496,15 +512,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
@@ -528,15 +546,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
@@ -560,15 +580,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
@@ -592,15 +614,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
@@ -624,15 +648,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
@@ -656,15 +682,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
@@ -688,15 +716,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -713,15 +743,17 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ISOCountryImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ISOCountryImpl.equals(Object)", "int ISOCountryImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -738,21 +770,23 @@ public class ISOCountryImplDiffblueTest {
 
   /**
    * Test {@link ISOCountryImpl#getMainEntityName()}.
-   * <p>
-   * Method under test: {@link ISOCountryImpl#getMainEntityName()}
+   *
+   * <p>Method under test: {@link ISOCountryImpl#getMainEntityName()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String ISOCountryImpl.getMainEntityName()"})
   public void testGetMainEntityName() {
     // Arrange, Act and Assert
-    assertNull((new ISOCountryImpl()).getMainEntityName());
+    assertNull(iSOCountryImpl.getMainEntityName());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ISOCountryImpl}
    *   <li>{@link ISOCountryImpl#setAlpha2(String)}
@@ -766,11 +800,19 @@ public class ISOCountryImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void ISOCountryImpl.<init>()", "String ISOCountryImpl.getAlpha2()",
-      "String ISOCountryImpl.getAlpha3()", "String ISOCountryImpl.getName()", "Integer ISOCountryImpl.getNumericCode()",
-      "void ISOCountryImpl.setAlpha2(String)", "void ISOCountryImpl.setAlpha3(String)",
-      "void ISOCountryImpl.setName(String)", "void ISOCountryImpl.setNumericCode(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ISOCountryImpl.<init>()",
+    "String ISOCountryImpl.getAlpha2()",
+    "String ISOCountryImpl.getAlpha3()",
+    "String ISOCountryImpl.getName()",
+    "Integer ISOCountryImpl.getNumericCode()",
+    "void ISOCountryImpl.setAlpha2(String)",
+    "void ISOCountryImpl.setAlpha3(String)",
+    "void ISOCountryImpl.setName(String)",
+    "void ISOCountryImpl.setNumericCode(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     ISOCountryImpl actualIsoCountryImpl = new ISOCountryImpl();

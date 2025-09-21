@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -41,12 +42,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @ContextConfiguration(classes = {BroadleafAdminRequestFilter.class})
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 public class AbstractBroadleafAdminRequestFilterDiffblueTest {
-  @Autowired
-  private AbstractBroadleafAdminRequestFilter abstractBroadleafAdminRequestFilter;
+  @Autowired private AbstractBroadleafAdminRequestFilter abstractBroadleafAdminRequestFilter;
 
   @MockBean(name = "blAdminRequestProcessor")
   private BroadleafWebRequestProcessor broadleafWebRequestProcessor;
@@ -62,63 +62,64 @@ public class AbstractBroadleafAdminRequestFilterDiffblueTest {
 
   /**
    * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
-   * <p>
-   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
-  public void testShouldProcessURL() {
-    // Arrange, Act and Assert
-    assertTrue(abstractBroadleafAdminRequestFilter.shouldProcessURL(
-        new JSCompatibilityRequestWrapper(
-            new HttpServletRequestWrapper(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()))),
-        "https://example.org/example"));
-  }
-
-  /**
-   * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
+   *
    * <ul>
-   *   <li>When {@code .}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code .}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   *
+   * <p>Method under test: {@link
+   * AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"
+  })
   public void testShouldProcessURL_whenDot_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(abstractBroadleafAdminRequestFilter
-        .shouldProcessURL(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()), "."));
+    assertTrue(
+        abstractBroadleafAdminRequestFilter.shouldProcessURL(
+            new HttpServletRequestWrapper(
+                new JSCompatibilityRequestWrapper(new MockHttpServletRequest())),
+            "."));
   }
 
   /**
    * Test {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}.
+   *
    * <ul>
-   *   <li>When {@code https://example.org/example}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code https://example.org/example}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
+   *
+   * <p>Method under test: {@link
+   * AbstractBroadleafAdminRequestFilter#shouldProcessURL(HttpServletRequest, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean AbstractBroadleafAdminRequestFilter.shouldProcessURL(HttpServletRequest, String)"
+  })
   public void testShouldProcessURL_whenHttpsExampleOrgExample_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(abstractBroadleafAdminRequestFilter.shouldProcessURL(
-        new JSCompatibilityRequestWrapper(new MockHttpServletRequest()), "https://example.org/example"));
+    assertTrue(
+        abstractBroadleafAdminRequestFilter.shouldProcessURL(
+            new HttpServletRequestWrapper(
+                new JSCompatibilityRequestWrapper(new MockHttpServletRequest())),
+            "https://example.org/example"));
   }
 
   /**
    * Test {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}.
-   * <p>
-   * Method under test: {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
+   *
+   * <p>Method under test: {@link AbstractBroadleafAdminRequestFilter#getIgnoreSuffixes()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.util.Set AbstractBroadleafAdminRequestFilter.getIgnoreSuffixes()"})
   public void testGetIgnoreSuffixes() {
     // Arrange, Act and Assert

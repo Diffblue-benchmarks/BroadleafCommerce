@@ -28,6 +28,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.IOException;
 import java.util.Collection;
@@ -38,16 +39,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import org.broadleafcommerce.core.web.security.XssRequestWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -57,65 +57,86 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @ContextConfiguration(classes = {SearchUrlFilter.class})
-@WebAppConfiguration
 @ExtendWith(SpringExtension.class)
+@WebAppConfiguration
 class SearchUrlFilterDiffblueTest {
-  @Autowired
-  private SearchUrlFilter searchUrlFilter;
+  @Autowired private SearchUrlFilter searchUrlFilter;
 
   /**
-   * Test {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * Test {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
    * <ul>
-   *   <li>Then throw {@link ServletException}.</li>
+   *   <li>Then throw {@link ServletException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   *
+   * <p>Method under test: {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); then throw ServletException")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); then throw ServletException")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SearchUrlFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
-  void testDoFilterInternalUnlessIgnored_thenThrowServletException() throws IOException, ServletException {
+    "void SearchUrlFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  void testDoFilterInternalUnlessIgnored_thenThrowServletException()
+      throws IOException, ServletException {
     // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    HttpServletRequestWrapper httpServletRequest =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+
     FilterChain filterChain = mock(FilterChain.class);
-    doThrow(new ServletException("An error occurred")).when(filterChain)
+    doThrow(new ServletException("An error occurred"))
+        .when(filterChain)
         .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act and Assert
-    assertThrows(ServletException.class,
-        () -> searchUrlFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain));
+    assertThrows(
+        ServletException.class,
+        () ->
+            searchUrlFilter.doFilterInternalUnlessIgnored(
+                httpServletRequest, httpServletResponse, filterChain));
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
   }
 
   /**
-   * Test {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * Test {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}.
+   *
    * <ul>
-   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)} does nothing.</li>
+   *   <li>When {@link FilterChain} {@link FilterChain#doFilter(ServletRequest, ServletResponse)}
+   *       does nothing.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   *
+   * <p>Method under test: {@link SearchUrlFilter#doFilterInternalUnlessIgnored(HttpServletRequest,
+   * HttpServletResponse, FilterChain)}
    */
   @Test
-  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain); when FilterChain doFilter(ServletRequest, ServletResponse) does nothing")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SearchUrlFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"})
-  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing() throws IOException, ServletException {
+    "void SearchUrlFilter.doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)"
+  })
+  void testDoFilterInternalUnlessIgnored_whenFilterChainDoFilterDoesNothing()
+      throws IOException, ServletException {
     // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    HttpServletRequestWrapper httpServletRequest =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
     MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+
     FilterChain filterChain = mock(FilterChain.class);
-    doNothing().when(filterChain).doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
+    doNothing()
+        .when(filterChain)
+        .doFilter(Mockito.<ServletRequest>any(), Mockito.<ServletResponse>any());
 
     // Act
-    searchUrlFilter.doFilterInternalUnlessIgnored(httpServletRequest, httpServletResponse, filterChain);
+    searchUrlFilter.doFilterInternalUnlessIgnored(
+        httpServletRequest, httpServletResponse, filterChain);
 
     // Assert
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
@@ -123,21 +144,22 @@ class SearchUrlFilterDiffblueTest {
 
   /**
    * Test {@link SearchUrlFilter#wrapRequest(HttpServletRequest)}.
+   *
    * <ul>
-   *   <li>Then Parts return {@link List}.</li>
+   *   <li>Then Parts return {@link List}.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchUrlFilter#wrapRequest(HttpServletRequest)}
+   *
+   * <p>Method under test: {@link SearchUrlFilter#wrapRequest(HttpServletRequest)}
    */
   @Test
   @DisplayName("Test wrapRequest(HttpServletRequest); then Parts return List")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchRequestWrapper SearchUrlFilter.wrapRequest(HttpServletRequest)"})
   void testWrapRequest_thenPartsReturnList() throws IOException, ServletException {
     // Arrange
-    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
-    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
-        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    HttpServletRequestWrapper httpServletRequest =
+        new HttpServletRequestWrapper(new SearchRequestWrapper(new MockHttpServletRequest()));
 
     // Act
     SearchRequestWrapper actualWrapRequestResult = searchUrlFilter.wrapRequest(httpServletRequest);
@@ -146,7 +168,7 @@ class SearchUrlFilterDiffblueTest {
     Collection<Part> parts = actualWrapRequestResult.getParts();
     assertTrue(parts instanceof List);
     ServletRequest request = actualWrapRequestResult.getRequest();
-    assertTrue(request instanceof SearchRequestWrapper);
+    assertTrue(request instanceof HttpServletRequestWrapper);
     assertTrue(actualWrapRequestResult.getSession() instanceof MockHttpSession);
     assertTrue(actualWrapRequestResult.getServletContext() instanceof MockServletContext);
     assertEquals("", actualWrapRequestResult.getContextPath());
@@ -187,15 +209,16 @@ class SearchUrlFilterDiffblueTest {
 
   /**
    * Test {@link SearchUrlFilter#getOrder()}.
-   * <p>
-   * Method under test: {@link SearchUrlFilter#getOrder()}
+   *
+   * <p>Method under test: {@link SearchUrlFilter#getOrder()}
    */
   @Test
   @DisplayName("Test getOrder()")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"int SearchUrlFilter.getOrder()"})
   void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(1000000, (new SearchUrlFilter()).getOrder());
+    assertEquals(1000000, new SearchUrlFilter().getOrder());
   }
 }

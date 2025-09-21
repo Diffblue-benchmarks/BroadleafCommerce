@@ -26,9 +26,11 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
+import java.util.Currency;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.money.Money;
@@ -39,35 +41,40 @@ import org.mockito.Mockito;
 public class DiscreteOrderItemFeePriceImplDiffblueTest {
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Given {@link DiscreteOrderItemFeePriceImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link DiscreteOrderItemFeePriceImpl} (default constructor).
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#getAmount()}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.getAmount()"})
   public void testGetAmount_givenDiscreteOrderItemFeePriceImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new DiscreteOrderItemFeePriceImpl()).getAmount());
+    assertNull(new DiscreteOrderItemFeePriceImpl().getAmount());
   }
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#getAmount()}.
+   *
    * <ul>
-   *   <li>Then return {@link Money#Money()}.</li>
+   *   <li>Then return {@link Money#Money()}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#getAmount()}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#getAmount()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.getAmount()"})
   public void testGetAmount_thenReturnMoney() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
@@ -81,18 +88,23 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>Then {@link DiscreteOrderItemFeePriceImpl} (default constructor) {@link DiscreteOrderItemFeePriceImpl#amount} is {@link BigDecimal#BigDecimal(String)} with {@code 0.00}.</li>
+   *   <li>Then {@link DiscreteOrderItemFeePriceImpl} (default constructor) {@link
+   *       DiscreteOrderItemFeePriceImpl#amount} is {@link BigDecimal#BigDecimal(String)} with
+   *       {@code 0.00}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DiscreteOrderItemFeePriceImpl.setAmount(Money)"})
   public void testSetAmount_thenDiscreteOrderItemFeePriceImplAmountIsBigDecimalWith000() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     Money amount = new Money();
 
     // Act
@@ -125,100 +137,89 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link DiscreteOrderItemFeePriceImpl} (default constructor) {@link DiscreteOrderItemFeePriceImpl#amount} is {@code null}.</li>
+   *   <li>Then {@link DiscreteOrderItemFeePriceImpl} (default constructor) {@link
+   *       DiscreteOrderItemFeePriceImpl#amount} is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#setAmount(Money)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void DiscreteOrderItemFeePriceImpl.setAmount(Money)"})
-  public void testSetAmount_whenNull_thenDiscreteOrderItemFeePriceImplAmountIsNull() {
+  public void testSetAmount_thenDiscreteOrderItemFeePriceImplAmountIsNull() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
-
-    // Act
-    discreteOrderItemFeePriceImpl.setAmount(null);
-
-    // Assert that nothing has changed
-    assertNull(discreteOrderItemFeePriceImpl.amount);
-  }
-
-  /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}.
-   * <ul>
-   *   <li>Given {@link DiscreteOrderItemFeePriceImpl} (default constructor).</li>
-   *   <li>Then return abs abs zero is {@link Money#ZERO}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_givenDiscreteOrderItemFeePriceImpl_thenReturnAbsAbsZeroIsZero() {
-    // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
-
-    // Act
-    Money actualConvertToMoneyResult = discreteOrderItemFeePriceImpl.convertToMoney(new BigDecimal("2.3"));
-
-    // Assert
-    Money money = actualConvertToMoneyResult.ZERO;
-    Money absResult = actualConvertToMoneyResult.abs();
-    assertEquals(money, absResult.abs().zero());
-    assertEquals(money, absResult.zero());
-    assertEquals(money, actualConvertToMoneyResult.zero());
-  }
-
-  /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}.
-   * <ul>
-   *   <li>Then return abs abs zero is {@link Money#Money()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_thenReturnAbsAbsZeroIsMoney() {
-    // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
-    Money amount = new Money();
-    discreteOrderItemFeePriceImpl.setAmount(amount);
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
+    discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
     // Act
-    Money actualConvertToMoneyResult = discreteOrderItemFeePriceImpl.convertToMoney(new BigDecimal("2.3"));
+    discreteOrderItemFeePriceImpl.setAmount(null);
 
     // Assert
-    Money absResult = actualConvertToMoneyResult.abs();
-    assertEquals(amount, absResult.abs().zero());
-    assertEquals(amount, absResult.zero());
-    assertEquals(amount, actualConvertToMoneyResult.zero());
+    assertNull(discreteOrderItemFeePriceImpl.amount);
+    assertNull(discreteOrderItemFeePriceImpl.getAmount());
   }
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Then return Currency Symbol is {@code $}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.convertToMoney(BigDecimal)"})
-  public void testConvertToMoney_whenNull_thenReturnNull() {
+  public void testConvertToMoney_thenReturnCurrencySymbolIsDollarSign() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
+
+    // Act
+    Money actualConvertToMoneyResult =
+        discreteOrderItemFeePriceImpl.convertToMoney(new BigDecimal("2.3"));
+
+    // Assert
+    Currency currency = actualConvertToMoneyResult.getCurrency();
+    assertEquals("$", currency.getSymbol());
+    assertEquals("US Dollar", currency.getDisplayName());
+    assertEquals("USD", currency.getCurrencyCode());
+    assertEquals("USD", currency.toString());
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(840, currency.getNumericCode());
+    assertEquals(new BigDecimal("2.30"), actualConvertToMoneyResult.getAmount());
+    Money actualAbsResult = actualConvertToMoneyResult.abs();
+    assertEquals(actualConvertToMoneyResult, actualAbsResult);
+    assertEquals(Money.ZERO, actualConvertToMoneyResult.zero());
+  }
+
+  /**
+   * Test {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#convertToMoney(BigDecimal)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Money DiscreteOrderItemFeePriceImpl.convertToMoney(BigDecimal)"})
+  public void testConvertToMoney_thenReturnNull() {
+    // Arrange
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -231,18 +232,21 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#clone()}.
+   *
    * <ul>
-   *   <li>Then DiscreteOrderItem return {@link DiscreteOrderItemImpl}.</li>
+   *   <li>Then DiscreteOrderItem return {@link DiscreteOrderItemImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#clone()}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"DiscreteOrderItemFeePrice DiscreteOrderItemFeePriceImpl.clone()"})
   public void testClone_thenDiscreteOrderItemReturnDiscreteOrderItemImpl() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     DiscreteOrderItemImpl discreteOrderItem = new DiscreteOrderItemImpl();
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(discreteOrderItem);
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -261,25 +265,29 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
     assertEquals("Name", actualCloneResult.getName());
     assertEquals("Reporting Code", actualCloneResult.getReportingCode());
     assertNull(actualCloneResult.getId());
-    assertEquals(new BigDecimal("0.00"), ((DiscreteOrderItemFeePriceImpl) actualCloneResult).amount);
+    assertEquals(
+        new BigDecimal("0.00"), ((DiscreteOrderItemFeePriceImpl) actualCloneResult).amount);
     assertEquals(amount, actualCloneResult.getAmount());
     assertSame(discreteOrderItem, discreteOrderItem2);
   }
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#clone()}.
+   *
    * <ul>
-   *   <li>Then return {@link DiscreteOrderItemFeePriceImpl} (default constructor).</li>
+   *   <li>Then return {@link DiscreteOrderItemFeePriceImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#clone()}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"DiscreteOrderItemFeePrice DiscreteOrderItemFeePriceImpl.clone()"})
   public void testClone_thenReturnDiscreteOrderItemFeePriceImpl() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
 
     // Act
     DiscreteOrderItemFeePrice actualCloneResult = discreteOrderItemFeePriceImpl.clone();
@@ -290,25 +298,31 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * DiscreteOrderItemFeePriceImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * DiscreteOrderItemFeePriceImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse DiscreteOrderItemFeePriceImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse DiscreteOrderItemFeePriceImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
 
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new DiscreteOrderItemFeePriceImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<DiscreteOrderItemFeePrice> actualCreateOrRetrieveCopyInstanceResult = discreteOrderItemFeePriceImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<DiscreteOrderItemFeePrice> actualCreateOrRetrieveCopyInstanceResult =
+        discreteOrderItemFeePriceImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -316,32 +330,40 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -350,37 +372,45 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-    int expectedHashCodeResult = discreteOrderItemFeePriceImpl.hashCode();
-    assertEquals(expectedHashCodeResult, discreteOrderItemFeePriceImpl2.hashCode());
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(null);
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(null);
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -389,37 +419,45 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-    int expectedHashCodeResult = discreteOrderItemFeePriceImpl.hashCode();
-    assertEquals(expectedHashCodeResult, discreteOrderItemFeePriceImpl2.hashCode());
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(null);
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(null);
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -428,37 +466,45 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-    int expectedHashCodeResult = discreteOrderItemFeePriceImpl.hashCode();
-    assertEquals(expectedHashCodeResult, discreteOrderItemFeePriceImpl2.hashCode());
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(null);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(null);
@@ -467,37 +513,45 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-    int expectedHashCodeResult = discreteOrderItemFeePriceImpl.hashCode();
-    assertEquals(expectedHashCodeResult, discreteOrderItemFeePriceImpl2.hashCode());
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName(null);
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -506,30 +560,84 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-    int expectedHashCodeResult = discreteOrderItemFeePriceImpl.hashCode();
-    assertEquals(expectedHashCodeResult, discreteOrderItemFeePriceImpl2.hashCode());
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
   }
 
   /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link DiscreteOrderItemFeePriceImpl#hashCode()}.
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
+    discreteOrderItemFeePriceImpl.setAmount(new Money());
+    discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
+    discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    discreteOrderItemFeePriceImpl.setName("Name");
+    discreteOrderItemFeePriceImpl.setReportingCode(null);
+
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
+    discreteOrderItemFeePriceImpl2.setAmount(new Money());
+    discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
+    discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    discreteOrderItemFeePriceImpl2.setName("Name");
+    discreteOrderItemFeePriceImpl2.setReportingCode(null);
+
+    // Act and Assert
+    assertEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
+    assertEquals(
+        discreteOrderItemFeePriceImpl.hashCode(), discreteOrderItemFeePriceImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}, and {@link
+   * DiscreteOrderItemFeePriceImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *   <li>{@link DiscreteOrderItemFeePriceImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -544,27 +652,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(null);
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -577,27 +691,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money(10.0d));
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -610,27 +730,72 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
+    discreteOrderItemFeePriceImpl.setAmount(new Money());
+    discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DynamicPriceDiscreteOrderItemImpl());
+    discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
+    discreteOrderItemFeePriceImpl.setName("Name");
+    discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
+
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
+    discreteOrderItemFeePriceImpl2.setAmount(new Money());
+    discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
+    discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
+    discreteOrderItemFeePriceImpl2.setName("Name");
+    discreteOrderItemFeePriceImpl2.setReportingCode("Reporting Code");
+
+    // Act and Assert
+    assertNotEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
+  }
+
+  /**
+   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(null);
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -643,60 +808,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
-    // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
-    discreteOrderItemFeePriceImpl.setAmount(new Money());
-    discreteOrderItemFeePriceImpl.setDiscreteOrderItem(mock(DiscreteOrderItemImpl.class));
-    discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
-    discreteOrderItemFeePriceImpl.setName("Name");
-    discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
-
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
-    discreteOrderItemFeePriceImpl2.setAmount(new Money());
-    discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
-    discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
-    discreteOrderItemFeePriceImpl2.setName("Name");
-    discreteOrderItemFeePriceImpl2.setReportingCode("Reporting Code");
-
-    // Act and Assert
-    assertNotEquals(discreteOrderItemFeePriceImpl, discreteOrderItemFeePriceImpl2);
-  }
-
-  /**
-   * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(2L);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -709,27 +847,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(null);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -742,27 +886,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Reporting Code");
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -775,27 +925,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName(null);
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -808,27 +964,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode("Name");
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -841,27 +1003,33 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     discreteOrderItemFeePriceImpl.setName("Name");
     discreteOrderItemFeePriceImpl.setReportingCode(null);
 
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl2 =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl2.setAmount(new Money());
     discreteOrderItemFeePriceImpl2.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl2.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -874,20 +1042,25 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -900,20 +1073,25 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
 
   /**
    * Test {@link DiscreteOrderItemFeePriceImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link DiscreteOrderItemFeePriceImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
-      "int DiscreteOrderItemFeePriceImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean DiscreteOrderItemFeePriceImpl.equals(Object)",
+    "int DiscreteOrderItemFeePriceImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl discreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     discreteOrderItemFeePriceImpl.setAmount(new Money());
     discreteOrderItemFeePriceImpl.setDiscreteOrderItem(new DiscreteOrderItemImpl());
     discreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
@@ -921,13 +1099,15 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
     discreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
 
     // Act and Assert
-    assertNotEquals(discreteOrderItemFeePriceImpl, "Different type to DiscreteOrderItemFeePriceImpl");
+    assertNotEquals(
+        discreteOrderItemFeePriceImpl, "Different type to DiscreteOrderItemFeePriceImpl");
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link DiscreteOrderItemFeePriceImpl}
    *   <li>{@link DiscreteOrderItemFeePriceImpl#setDiscreteOrderItem(DiscreteOrderItem)}
@@ -941,23 +1121,30 @@ public class DiscreteOrderItemFeePriceImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void DiscreteOrderItemFeePriceImpl.<init>()",
-      "DiscreteOrderItem DiscreteOrderItemFeePriceImpl.getDiscreteOrderItem()",
-      "Long DiscreteOrderItemFeePriceImpl.getId()", "String DiscreteOrderItemFeePriceImpl.getName()",
-      "String DiscreteOrderItemFeePriceImpl.getReportingCode()",
-      "void DiscreteOrderItemFeePriceImpl.setDiscreteOrderItem(DiscreteOrderItem)",
-      "void DiscreteOrderItemFeePriceImpl.setId(Long)", "void DiscreteOrderItemFeePriceImpl.setName(String)",
-      "void DiscreteOrderItemFeePriceImpl.setReportingCode(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DiscreteOrderItemFeePriceImpl.<init>()",
+    "DiscreteOrderItem DiscreteOrderItemFeePriceImpl.getDiscreteOrderItem()",
+    "Long DiscreteOrderItemFeePriceImpl.getId()",
+    "String DiscreteOrderItemFeePriceImpl.getName()",
+    "String DiscreteOrderItemFeePriceImpl.getReportingCode()",
+    "void DiscreteOrderItemFeePriceImpl.setDiscreteOrderItem(DiscreteOrderItem)",
+    "void DiscreteOrderItemFeePriceImpl.setId(Long)",
+    "void DiscreteOrderItemFeePriceImpl.setName(String)",
+    "void DiscreteOrderItemFeePriceImpl.setReportingCode(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    DiscreteOrderItemFeePriceImpl actualDiscreteOrderItemFeePriceImpl = new DiscreteOrderItemFeePriceImpl();
+    DiscreteOrderItemFeePriceImpl actualDiscreteOrderItemFeePriceImpl =
+        new DiscreteOrderItemFeePriceImpl();
     DiscreteOrderItemImpl discreteOrderItem = new DiscreteOrderItemImpl();
     actualDiscreteOrderItemFeePriceImpl.setDiscreteOrderItem(discreteOrderItem);
     actualDiscreteOrderItemFeePriceImpl.setId(OrderItemQualifierImpl.serialVersionUID);
     actualDiscreteOrderItemFeePriceImpl.setName("Name");
     actualDiscreteOrderItemFeePriceImpl.setReportingCode("Reporting Code");
-    DiscreteOrderItem actualDiscreteOrderItem = actualDiscreteOrderItemFeePriceImpl.getDiscreteOrderItem();
+    DiscreteOrderItem actualDiscreteOrderItem =
+        actualDiscreteOrderItemFeePriceImpl.getDiscreteOrderItem();
     Long actualId = actualDiscreteOrderItemFeePriceImpl.getId();
     String actualName = actualDiscreteOrderItemFeePriceImpl.getName();
 

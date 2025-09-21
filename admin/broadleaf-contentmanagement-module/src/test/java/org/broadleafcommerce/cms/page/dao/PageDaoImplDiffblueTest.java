@@ -24,7 +24,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -44,24 +45,26 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PageDaoImplDiffblueTest {
-  @InjectMocks
-  private PageDaoImpl pageDaoImpl;
+  @InjectMocks private PageDaoImpl pageDaoImpl;
 
   /**
    * Test {@link PageDaoImpl#filterInactive(List)}.
-   * <p>
-   * Method under test: {@link PageDaoImpl#filterInactive(List)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#filterInactive(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PageDaoImpl.filterInactive(List)"})
   public void testFilterInactive() {
     // Arrange
     PageImpl pageImpl = mock(PageImpl.class);
     when(pageImpl.getActiveEndDate())
-        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        .thenReturn(
+            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     when(pageImpl.getActiveStartDate())
-        .thenReturn(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        .thenReturn(
+            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<Page> pages = new ArrayList<>();
     pages.add(pageImpl);
@@ -78,38 +81,46 @@ public class PageDaoImplDiffblueTest {
 
   /**
    * Test {@link PageDaoImpl#filterInactive(List)}.
+   *
    * <ul>
-   *   <li>Given {@link PageImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).</li>
-   *   <li>Then return {@link ArrayList#ArrayList()}.</li>
+   *   <li>Given {@link PageImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).
+   *   <li>Then {@link ArrayList#ArrayList()} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link PageDaoImpl#filterInactive(List)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#filterInactive(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PageDaoImpl.filterInactive(List)"})
-  public void testFilterInactive_givenPageImpl_whenArrayListAddPageImpl_thenReturnArrayList() {
+  public void testFilterInactive_givenPageImpl_whenArrayListAddPageImpl_thenArrayListSizeIsOne() {
     // Arrange
     ArrayList<Page> pages = new ArrayList<>();
     pages.add(new PageImpl());
 
-    // Act and Assert
-    assertSame(pages, pageDaoImpl.filterInactive(pages));
+    // Act
+    List<Page> actualFilterInactiveResult = pageDaoImpl.filterInactive(pages);
+
+    // Assert
+    assertEquals(1, pages.size());
+    assertSame(pages, actualFilterInactiveResult);
   }
 
   /**
    * Test {@link PageDaoImpl#filterInactive(List)}.
+   *
    * <ul>
-   *   <li>Given {@link PageImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).</li>
-   *   <li>Then return size is two.</li>
+   *   <li>Given {@link PageImpl} (default constructor).
+   *   <li>When {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link PageDaoImpl#filterInactive(List)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#filterInactive(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PageDaoImpl.filterInactive(List)"})
   public void testFilterInactive_givenPageImpl_whenArrayListAddPageImpl_thenReturnSizeIsTwo() {
     // Arrange
@@ -128,15 +139,17 @@ public class PageDaoImplDiffblueTest {
 
   /**
    * Test {@link PageDaoImpl#filterInactive(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ArrayList#ArrayList()} Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ArrayList#ArrayList()} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link PageDaoImpl#filterInactive(List)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#filterInactive(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List PageDaoImpl.filterInactive(List)"})
   public void testFilterInactive_whenArrayList_thenArrayListEmpty() {
     // Arrange
@@ -152,11 +165,12 @@ public class PageDaoImplDiffblueTest {
 
   /**
    * Test {@link PageDaoImpl#isActiveNow(Page)}.
-   * <p>
-   * Method under test: {@link PageDaoImpl#isActiveNow(Page)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#isActiveNow(Page)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PageDaoImpl.isActiveNow(Page)"})
   public void testIsActiveNow() {
     // Arrange
@@ -174,27 +188,24 @@ public class PageDaoImplDiffblueTest {
     page.setPageTemplate(new PageTemplateImpl());
     page.setPriority(1);
     page.setQualifyingItemCriteria(new HashSet<>());
-    page.setActiveStartDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    page.setActiveEndDate(null);
+    page.setActiveStartDate(null);
+    page.setActiveEndDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act and Assert
-    assertTrue(pageDaoImpl.isActiveNow(page));
+    assertFalse(pageDaoImpl.isActiveNow(page));
   }
 
   /**
    * Test {@link PageDaoImpl#isActiveNow(Page)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()}.</li>
-   *   <li>When {@link PageImpl} (default constructor) ActiveStartDate is {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link PageDaoImpl#isActiveNow(Page)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#isActiveNow(Page)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PageDaoImpl.isActiveNow(Page)"})
-  public void testIsActiveNow_givenHashMap_whenPageImplActiveStartDateIsNull_thenReturnFalse() {
+  public void testIsActiveNow2() {
     // Arrange
     PageImpl page = new PageImpl();
     page.setAdditionalAttributes(new HashMap<>());
@@ -210,24 +221,27 @@ public class PageDaoImplDiffblueTest {
     page.setPageTemplate(new PageTemplateImpl());
     page.setPriority(1);
     page.setQualifyingItemCriteria(new HashSet<>());
-    page.setActiveStartDate(null);
-    page.setActiveEndDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    page.setActiveEndDate(null);
 
     // Act and Assert
-    assertFalse(pageDaoImpl.isActiveNow(page));
+    assertTrue(pageDaoImpl.isActiveNow(page));
   }
 
   /**
    * Test {@link PageDaoImpl#isActiveNow(Page)}.
+   *
    * <ul>
-   *   <li>When {@link PageImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link PageImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link PageDaoImpl#isActiveNow(Page)}
+   *
+   * <p>Method under test: {@link PageDaoImpl#isActiveNow(Page)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PageDaoImpl.isActiveNow(Page)"})
   public void testIsActiveNow_whenPageImpl_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -236,16 +250,21 @@ public class PageDaoImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link PageDaoImpl#setCurrentDateResolution(Long)}
    *   <li>{@link PageDaoImpl#getCurrentDateResolution()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long PageDaoImpl.getCurrentDateResolution()", "void PageDaoImpl.setCurrentDateResolution(Long)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long PageDaoImpl.getCurrentDateResolution()",
+    "void PageDaoImpl.setCurrentDateResolution(Long)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     PageDaoImpl pageDaoImpl = new PageDaoImpl();

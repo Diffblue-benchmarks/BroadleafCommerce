@@ -19,11 +19,11 @@ package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,19 +40,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CountryServiceImplDiffblueTest {
-  @Mock
-  private CountryDao countryDao;
+  @Mock private CountryDao countryDao;
 
-  @InjectMocks
-  private CountryServiceImpl countryServiceImpl;
+  @InjectMocks private CountryServiceImpl countryServiceImpl;
 
   /**
    * Test {@link CountryServiceImpl#findCountries()}.
-   * <p>
-   * Method under test: {@link CountryServiceImpl#findCountries()}
+   *
+   * <p>Method under test: {@link CountryServiceImpl#findCountries()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List CountryServiceImpl.findCountries()"})
   public void testFindCountries() {
     // Arrange
@@ -68,11 +67,12 @@ public class CountryServiceImplDiffblueTest {
 
   /**
    * Test {@link CountryServiceImpl#findCountryByAbbreviation(String)}.
-   * <p>
-   * Method under test: {@link CountryServiceImpl#findCountryByAbbreviation(String)}
+   *
+   * <p>Method under test: {@link CountryServiceImpl#findCountryByAbbreviation(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Country CountryServiceImpl.findCountryByAbbreviation(String)"})
   public void testFindCountryByAbbreviation() {
     // Arrange
@@ -80,20 +80,22 @@ public class CountryServiceImplDiffblueTest {
     when(countryDao.findCountryByAbbreviation(Mockito.<String>any())).thenReturn(countryImpl);
 
     // Act
-    Country actualFindCountryByAbbreviationResult = countryServiceImpl.findCountryByAbbreviation("Abbreviation");
+    Country actualFindCountryByAbbreviationResult =
+        countryServiceImpl.findCountryByAbbreviation("Abbreviation");
 
     // Assert
-    verify(countryDao).findCountryByAbbreviation(eq("Abbreviation"));
+    verify(countryDao).findCountryByAbbreviation("Abbreviation");
     assertSame(countryImpl, actualFindCountryByAbbreviationResult);
   }
 
   /**
    * Test {@link CountryServiceImpl#save(Country)}.
-   * <p>
-   * Method under test: {@link CountryServiceImpl#save(Country)}
+   *
+   * <p>Method under test: {@link CountryServiceImpl#save(Country)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Country CountryServiceImpl.save(Country)"})
   public void testSave() {
     // Arrange

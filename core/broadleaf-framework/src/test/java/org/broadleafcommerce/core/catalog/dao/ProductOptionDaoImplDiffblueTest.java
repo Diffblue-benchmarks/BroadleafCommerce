@@ -20,39 +20,36 @@ package org.broadleafcommerce.core.catalog.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
-import org.broadleafcommerce.common.sandbox.SandBoxHelper;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductOptionDaoImplDiffblueTest {
-  @InjectMocks
-  private ProductOptionDaoImpl productOptionDaoImpl;
-
-  @Mock
-  private SandBoxHelper sandBoxHelper;
+  @InjectMocks private ProductOptionDaoImpl productOptionDaoImpl;
 
   /**
    * Test {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}.
+   *
    * <ul>
-   *   <li>Given {@link SkuImpl} (default constructor).</li>
-   *   <li>Then return size is one.</li>
+   *   <li>Given {@link SkuImpl} (default constructor).
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}
+   *
+   * <p>Method under test: {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List ProductOptionDaoImpl.filterCandidateSkusForArchivedStatus(List)"})
   public void testFilterCandidateSkusForArchivedStatus_givenSkuImpl_thenReturnSizeIsOne() {
     // Arrange
@@ -60,8 +57,8 @@ public class ProductOptionDaoImplDiffblueTest {
     candidateSkus.add(new SkuImpl());
 
     // Act
-    List<Long> actualFilterCandidateSkusForArchivedStatusResult = productOptionDaoImpl
-        .filterCandidateSkusForArchivedStatus(candidateSkus);
+    List<Long> actualFilterCandidateSkusForArchivedStatusResult =
+        productOptionDaoImpl.filterCandidateSkusForArchivedStatus(candidateSkus);
 
     // Assert
     assertEquals(1, actualFilterCandidateSkusForArchivedStatusResult.size());
@@ -70,18 +67,21 @@ public class ProductOptionDaoImplDiffblueTest {
 
   /**
    * Test {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}
+   *
+   * <p>Method under test: {@link ProductOptionDaoImpl#filterCandidateSkusForArchivedStatus(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List ProductOptionDaoImpl.filterCandidateSkusForArchivedStatus(List)"})
   public void testFilterCandidateSkusForArchivedStatus_whenArrayList_thenReturnEmpty() {
     // Arrange, Act and Assert
-    assertTrue(productOptionDaoImpl.filterCandidateSkusForArchivedStatus(new ArrayList<>()).isEmpty());
+    assertTrue(
+        productOptionDaoImpl.filterCandidateSkusForArchivedStatus(new ArrayList<>()).isEmpty());
   }
 }

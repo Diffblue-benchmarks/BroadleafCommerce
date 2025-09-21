@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 class FrameworkWebPropertiesDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FrameworkWebProperties}
    *   <li>{@link FrameworkWebProperties#getClasspathFolder()}
@@ -35,11 +37,14 @@ class FrameworkWebPropertiesDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void FrameworkWebProperties.<init>()",
-      "java.lang.String FrameworkWebProperties.getClasspathFolder()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FrameworkWebProperties.<init>()",
+    "java.lang.String FrameworkWebProperties.getClasspathFolder()"
+  })
   void testGettersAndSetters() {
     // Arrange, Act and Assert
-    assertEquals("config/bc/web/", (new FrameworkWebProperties()).getClasspathFolder());
+    assertEquals("config/bc/web/", new FrameworkWebProperties().getClasspathFolder());
   }
 }

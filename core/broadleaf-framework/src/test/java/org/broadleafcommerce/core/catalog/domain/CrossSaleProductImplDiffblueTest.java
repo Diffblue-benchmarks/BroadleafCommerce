@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.copy.CreateResponse;
@@ -36,32 +37,36 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CrossSaleProductImplDiffblueTest {
-  @Autowired
-  private CrossSaleProductImpl crossSaleProductImpl;
+  @Autowired private CrossSaleProductImpl crossSaleProductImpl;
 
   /**
    * Test {@link CrossSaleProductImpl#getPromotionMessage()}.
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#getPromotionMessage()}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#getPromotionMessage()}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CrossSaleProductImpl.getPromotionMessage()"})
   public void testGetPromotionMessage() {
     // Arrange, Act and Assert
-    assertNull((new CrossSaleProductImpl()).getPromotionMessage());
+    assertNull(crossSaleProductImpl.getPromotionMessage());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CrossSaleProductImpl#setCategory(Category)}
    *   <li>{@link CrossSaleProductImpl#setId(Long)}
@@ -77,13 +82,21 @@ public class CrossSaleProductImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Category CrossSaleProductImpl.getCategory()", "Long CrossSaleProductImpl.getId()",
-      "Product CrossSaleProductImpl.getProduct()", "Product CrossSaleProductImpl.getRelatedProduct()",
-      "BigDecimal CrossSaleProductImpl.getSequence()", "void CrossSaleProductImpl.setCategory(Category)",
-      "void CrossSaleProductImpl.setId(Long)", "void CrossSaleProductImpl.setProduct(Product)",
-      "void CrossSaleProductImpl.setPromotionMessage(String)", "void CrossSaleProductImpl.setRelatedProduct(Product)",
-      "void CrossSaleProductImpl.setSequence(BigDecimal)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Category CrossSaleProductImpl.getCategory()",
+    "Long CrossSaleProductImpl.getId()",
+    "Product CrossSaleProductImpl.getProduct()",
+    "Product CrossSaleProductImpl.getRelatedProduct()",
+    "BigDecimal CrossSaleProductImpl.getSequence()",
+    "void CrossSaleProductImpl.setCategory(Category)",
+    "void CrossSaleProductImpl.setId(Long)",
+    "void CrossSaleProductImpl.setProduct(Product)",
+    "void CrossSaleProductImpl.setPromotionMessage(String)",
+    "void CrossSaleProductImpl.setRelatedProduct(Product)",
+    "void CrossSaleProductImpl.setSequence(BigDecimal)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -116,20 +129,26 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CrossSaleProductImpl#equals(Object)}
    *   <li>{@link CrossSaleProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -150,26 +169,31 @@ public class CrossSaleProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
-    int expectedHashCodeResult = crossSaleProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, crossSaleProductImpl2.hashCode());
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
   }
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CrossSaleProductImpl#equals(Object)}
    *   <li>{@link CrossSaleProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -190,26 +214,211 @@ public class CrossSaleProductImplDiffblueTest {
 
     // Act and Assert
     assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
-    int expectedHashCodeResult = crossSaleProductImpl.hashCode();
-    assertEquals(expectedHashCodeResult, crossSaleProductImpl2.hashCode());
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
   }
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CrossSaleProductImpl#equals(Object)}
    *   <li>{@link CrossSaleProductImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(null);
+    crossSaleProductImpl.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setSequence(new BigDecimal("2.3"));
+
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
+    crossSaleProductImpl2.setCategory(new CategoryImpl());
+    crossSaleProductImpl2.setId(1L);
+    crossSaleProductImpl2.setProduct(null);
+    crossSaleProductImpl2.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl2.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CrossSaleProductImpl#equals(Object)}
+   *   <li>{@link CrossSaleProductImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
+    // Arrange
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setPromotionMessage(null);
+    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setSequence(new BigDecimal("2.3"));
+
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
+    crossSaleProductImpl2.setCategory(new CategoryImpl());
+    crossSaleProductImpl2.setId(1L);
+    crossSaleProductImpl2.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setPromotionMessage(null);
+    crossSaleProductImpl2.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CrossSaleProductImpl#equals(Object)}
+   *   <li>{@link CrossSaleProductImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
+    // Arrange
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl.setRelatedProduct(null);
+    crossSaleProductImpl.setSequence(new BigDecimal("2.3"));
+
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
+    crossSaleProductImpl2.setCategory(new CategoryImpl());
+    crossSaleProductImpl2.setId(1L);
+    crossSaleProductImpl2.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl2.setRelatedProduct(null);
+    crossSaleProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CrossSaleProductImpl#equals(Object)}
+   *   <li>{@link CrossSaleProductImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setSequence(null);
+
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
+    crossSaleProductImpl2.setCategory(new CategoryImpl());
+    crossSaleProductImpl2.setId(1L);
+    crossSaleProductImpl2.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl2.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setSequence(null);
+
+    // Act and Assert
+    assertEquals(crossSaleProductImpl, crossSaleProductImpl2);
+    assertEquals(crossSaleProductImpl.hashCode(), crossSaleProductImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CrossSaleProductImpl#equals(Object)}, and {@link CrossSaleProductImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CrossSaleProductImpl#equals(Object)}
+   *   <li>{@link CrossSaleProductImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -228,16 +437,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -262,16 +476,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -296,16 +515,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -333,16 +557,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -367,16 +596,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -401,16 +635,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -435,16 +674,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     ProductBundleImpl relatedSaleProduct = new ProductBundleImpl();
@@ -472,16 +716,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -506,51 +755,22 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
-    // Arrange
-    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
-    crossSaleProductImpl.setCategory(new CategoryImpl());
-    crossSaleProductImpl.setId(1L);
-    crossSaleProductImpl.setProduct(new ProductBundleImpl());
-    crossSaleProductImpl.setPromotionMessage("Promotion Message");
-    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
-    crossSaleProductImpl.setSequence(new BigDecimal("4.5"));
-
-    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
-    crossSaleProductImpl2.setCategory(new CategoryImpl());
-    crossSaleProductImpl2.setId(1L);
-    crossSaleProductImpl2.setProduct(new ProductBundleImpl());
-    crossSaleProductImpl2.setPromotionMessage("Promotion Message");
-    crossSaleProductImpl2.setRelatedProduct(new ProductBundleImpl());
-    crossSaleProductImpl2.setSequence(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertNotEquals(crossSaleProductImpl, crossSaleProductImpl2);
-  }
-
-  /**
-   * Test {@link CrossSaleProductImpl#equals(Object)}.
-   * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
-   */
-  @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
-  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
     crossSaleProductImpl.setCategory(new CategoryImpl());
@@ -574,16 +794,60 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+    // Arrange
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setSequence(BigDecimal.valueOf(1L));
+
+    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
+    crossSaleProductImpl2.setCategory(new CategoryImpl());
+    crossSaleProductImpl2.setId(1L);
+    crossSaleProductImpl2.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl2.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl2.setSequence(new BigDecimal("2.3"));
+
+    // Act and Assert
+    assertNotEquals(crossSaleProductImpl, crossSaleProductImpl2);
+  }
+
+  /**
+   * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -600,16 +864,21 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CrossSaleProductImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CrossSaleProductImpl.equals(Object)", "int CrossSaleProductImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CrossSaleProductImpl.equals(Object)",
+    "int CrossSaleProductImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
@@ -626,23 +895,33 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * CrossSaleProductImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CrossSaleProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CrossSaleProductImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    CrossSaleProductImpl crossSaleProductImpl2 = new CrossSaleProductImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+    CrossSaleProductImpl crossSaleProductImpl = new CrossSaleProductImpl();
+    crossSaleProductImpl.setCategory(new CategoryImpl());
+    crossSaleProductImpl.setId(1L);
+    crossSaleProductImpl.setProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setPromotionMessage("Promotion Message");
+    crossSaleProductImpl.setRelatedProduct(new ProductBundleImpl());
+    crossSaleProductImpl.setSequence(new BigDecimal("2.3"));
+    CreateResponse<Object> createResponse = new CreateResponse<>(crossSaleProductImpl, true);
 
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CrossSaleProductImpl> actualCreateOrRetrieveCopyInstanceResult = crossSaleProductImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<CrossSaleProductImpl> actualCreateOrRetrieveCopyInstanceResult =
+        crossSaleProductImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -651,11 +930,12 @@ public class CrossSaleProductImplDiffblueTest {
 
   /**
    * Test new {@link CrossSaleProductImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CrossSaleProductImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link CrossSaleProductImpl}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CrossSaleProductImpl.<init>()"})
   public void testNewCrossSaleProductImpl() {
     // Arrange and Act

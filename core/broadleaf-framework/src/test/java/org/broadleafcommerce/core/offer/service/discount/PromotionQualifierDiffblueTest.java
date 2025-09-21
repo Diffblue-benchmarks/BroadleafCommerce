@@ -23,7 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.Offer;
@@ -36,15 +37,16 @@ import org.junit.experimental.categories.Category;
 public class PromotionQualifierDiffblueTest {
   /**
    * Test {@link PromotionQualifier#copy()}.
-   * <p>
-   * Method under test: {@link PromotionQualifier#copy()}
+   *
+   * <p>Method under test: {@link PromotionQualifier#copy()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PromotionQualifier PromotionQualifier.copy()"})
   public void testCopy() {
     // Arrange and Act
-    PromotionQualifier actualCopyResult = (new PromotionQualifier()).copy();
+    PromotionQualifier actualCopyResult = new PromotionQualifier().copy();
 
     // Assert
     assertNull(actualCopyResult.getPrice());
@@ -57,11 +59,12 @@ public class PromotionQualifierDiffblueTest {
 
   /**
    * Test {@link PromotionQualifier#resetQty(int)}.
-   * <p>
-   * Method under test: {@link PromotionQualifier#resetQty(int)}
+   *
+   * <p>Method under test: {@link PromotionQualifier#resetQty(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void PromotionQualifier.resetQty(int)"})
   public void testResetQty() {
     // Arrange
@@ -77,15 +80,17 @@ public class PromotionQualifierDiffblueTest {
 
   /**
    * Test {@link PromotionQualifier#split(int)}.
+   *
    * <ul>
-   *   <li>When minus one.</li>
-   *   <li>Then return Price is {@code null}.</li>
+   *   <li>When minus one.
+   *   <li>Then return Price is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionQualifier#split(int)}
+   *
+   * <p>Method under test: {@link PromotionQualifier#split(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PromotionQualifier PromotionQualifier.split(int)"})
   public void testSplit_whenMinusOne_thenReturnPriceIsNull() {
     // Arrange
@@ -107,32 +112,36 @@ public class PromotionQualifierDiffblueTest {
 
   /**
    * Test {@link PromotionQualifier#split(int)}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then throw {@link IllegalArgumentException}.</li>
+   *   <li>When one.
+   *   <li>Then throw {@link IllegalArgumentException}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionQualifier#split(int)}
+   *
+   * <p>Method under test: {@link PromotionQualifier#split(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"PromotionQualifier PromotionQualifier.split(int)"})
   public void testSplit_whenOne_thenThrowIllegalArgumentException() {
     // Arrange, Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> (new PromotionQualifier()).split(1));
+    assertThrows(IllegalArgumentException.class, () -> new PromotionQualifier().split(1));
   }
 
   /**
    * Test {@link PromotionQualifier#isFinalized()}.
+   *
    * <ul>
-   *   <li>Given {@link PromotionQualifier} (default constructor) incrementQuantity one.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link PromotionQualifier} (default constructor) incrementQuantity one.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionQualifier#isFinalized()}
+   *
+   * <p>Method under test: {@link PromotionQualifier#isFinalized()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PromotionQualifier.isFinalized()"})
   public void testIsFinalized_givenPromotionQualifierIncrementQuantityOne_thenReturnFalse() {
     // Arrange
@@ -145,25 +154,28 @@ public class PromotionQualifierDiffblueTest {
 
   /**
    * Test {@link PromotionQualifier#isFinalized()}.
+   *
    * <ul>
-   *   <li>Given {@link PromotionQualifier} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link PromotionQualifier} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link PromotionQualifier#isFinalized()}
+   *
+   * <p>Method under test: {@link PromotionQualifier#isFinalized()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean PromotionQualifier.isFinalized()"})
   public void testIsFinalized_givenPromotionQualifier_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue((new PromotionQualifier()).isFinalized());
+    assertTrue(new PromotionQualifier().isFinalized());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link PromotionQualifier}
    *   <li>{@link PromotionQualifier#incrementQuantity(int)}
@@ -180,13 +192,22 @@ public class PromotionQualifierDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void PromotionQualifier.<init>()", "int PromotionQualifier.getFinalizedQuantity()",
-      "OfferItemCriteria PromotionQualifier.getItemCriteria()", "Money PromotionQualifier.getPrice()",
-      "Offer PromotionQualifier.getPromotion()", "int PromotionQualifier.getQuantity()",
-      "void PromotionQualifier.incrementQuantity(int)", "void PromotionQualifier.setFinalizedQuantity(int)",
-      "void PromotionQualifier.setItemCriteria(OfferItemCriteria)", "void PromotionQualifier.setPrice(Money)",
-      "void PromotionQualifier.setPromotion(Offer)", "void PromotionQualifier.setQuantity(int)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void PromotionQualifier.<init>()",
+    "int PromotionQualifier.getFinalizedQuantity()",
+    "OfferItemCriteria PromotionQualifier.getItemCriteria()",
+    "Money PromotionQualifier.getPrice()",
+    "Offer PromotionQualifier.getPromotion()",
+    "int PromotionQualifier.getQuantity()",
+    "void PromotionQualifier.incrementQuantity(int)",
+    "void PromotionQualifier.setFinalizedQuantity(int)",
+    "void PromotionQualifier.setItemCriteria(OfferItemCriteria)",
+    "void PromotionQualifier.setPrice(Money)",
+    "void PromotionQualifier.setPromotion(Offer)",
+    "void PromotionQualifier.setQuantity(int)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     PromotionQualifier actualPromotionQualifier = new PromotionQualifier();

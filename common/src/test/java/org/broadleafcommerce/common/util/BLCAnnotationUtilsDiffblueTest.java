@@ -17,33 +17,37 @@
  */
 package org.broadleafcommerce.common.util;
 
+import static org.junit.Assert.assertNull;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
+import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.annotation.Annotation;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 public class BLCAnnotationUtilsDiffblueTest {
   /**
-   * Test
-   * {@link BLCAnnotationUtils#getAnnotationFromClassOrInterface(Class, Class)}.
-   * <p>
-   * Method under test:
-   * {@link BLCAnnotationUtils#getAnnotationFromClassOrInterface(Class, Class)}
+   * Test {@link BLCAnnotationUtils#getAnnotationFromClassOrInterface(Class, Class)}.
+   *
+   * <ul>
+   *   <li>Then return {@code null}.
+   * </ul>
+   *
+   * <p>Method under test: {@link BLCAnnotationUtils#getAnnotationFromClassOrInterface(Class,
+   * Class)}
    */
   @Test
-  @Ignore("TODO: Complete this test")
-  public void testGetAnnotationFromClassOrInterface() {
-    // TODO: Diffblue Cover was only able to create a partial test for this method:
-    //   Reason: No inputs found that don't throw a trivial exception.
-    //   Diffblue Cover tried to run the arrange/act section, but the method under
-    //   test threw
-    //   java.lang.NullPointerException
-    //   See https://diff.blue/R013 to resolve this issue.
-
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Annotation BLCAnnotationUtils.getAnnotationFromClassOrInterface(Class, Class)"
+  })
+  public void testGetAnnotationFromClassOrInterface_thenReturnNull() {
     // Arrange
     Class<Annotation> annotationClass = Annotation.class;
     Class<Object> clazz = Object.class;
 
-    // Act
-    BLCAnnotationUtils.getAnnotationFromClassOrInterface(annotationClass, clazz).annotationType();
+    // Act and Assert
+    assertNull(BLCAnnotationUtils.getAnnotationFromClassOrInterface(annotationClass, clazz));
   }
 }

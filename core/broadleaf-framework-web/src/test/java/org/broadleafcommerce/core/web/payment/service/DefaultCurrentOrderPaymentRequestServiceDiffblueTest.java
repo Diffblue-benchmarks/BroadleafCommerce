@@ -21,10 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.core.order.domain.Order;
-import org.broadleafcommerce.core.order.service.OrderService;
 import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -40,29 +40,30 @@ class DefaultCurrentOrderPaymentRequestServiceDiffblueTest {
   @InjectMocks
   private DefaultCurrentOrderPaymentRequestService defaultCurrentOrderPaymentRequestService;
 
-  @Mock
-  private OrderService orderService;
-
-  @Mock
-  private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
+  @Mock private OrderToPaymentRequestDTOService orderToPaymentRequestDTOService;
 
   /**
    * Test {@link DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}.
-   * <p>
-   * Method under test: {@link DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}
+   *
+   * <p>Method under test: {@link
+   * DefaultCurrentOrderPaymentRequestService#getPaymentRequestFromCurrentOrder()}
    */
   @Test
   @DisplayName("Test getPaymentRequestFromCurrentOrder()")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"PaymentRequestDTO DefaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder()"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "PaymentRequestDTO DefaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder()"
+  })
   void testGetPaymentRequestFromCurrentOrder() {
     // Arrange
     PaymentRequestDTO paymentRequestDTO = new PaymentRequestDTO();
-    when(orderToPaymentRequestDTOService.translateOrder(Mockito.<Order>any())).thenReturn(paymentRequestDTO);
+    when(orderToPaymentRequestDTOService.translateOrder(Mockito.<Order>any()))
+        .thenReturn(paymentRequestDTO);
 
     // Act
-    PaymentRequestDTO actualPaymentRequestFromCurrentOrder = defaultCurrentOrderPaymentRequestService
-        .getPaymentRequestFromCurrentOrder();
+    PaymentRequestDTO actualPaymentRequestFromCurrentOrder =
+        defaultCurrentOrderPaymentRequestService.getPaymentRequestFromCurrentOrder();
 
     // Assert
     verify(orderToPaymentRequestDTOService).translateOrder(isNull());

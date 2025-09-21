@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,20 +38,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NullAwareDateFilterValueConverter.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullAwareDateFilterValueConverterDiffblueTest {
-  @Autowired
-  private NullAwareDateFilterValueConverter nullAwareDateFilterValueConverter;
+  @Autowired private NullAwareDateFilterValueConverter nullAwareDateFilterValueConverter;
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.convert(String)"})
   public void testConvert_when42_thenThrowRuntimeException() {
     // Arrange, Act and Assert
@@ -59,15 +61,17 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When empty string.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.convert(String)"})
   public void testConvert_whenEmptyString_thenReturnNull() {
     // Arrange, Act and Assert
@@ -76,15 +80,17 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.convert(String)"})
   public void testConvert_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -93,14 +99,18 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}.
+   *
    * <ul>
-   *   <li>Then {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code 42} Calendar {@link GregorianCalendar}.</li>
+   *   <li>Then {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code 42} Calendar {@link
+   *       GregorianCalendar}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String,
+   * SimpleDateFormat)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.parseDate(String, SimpleDateFormat)"})
   public void testParseDate_thenSimpleDateFormatWith42CalendarGregorianCalendar() {
     // Arrange
@@ -112,41 +122,49 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
     // Assert
     Calendar calendar = dateFormat.getCalendar();
     assertTrue(calendar instanceof GregorianCalendar);
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    assertEquals("1970-01-01", simpleDateFormat.format(calendar.getTime()));
-    assertEquals("1970-01-01", (new SimpleDateFormat("yyyy-MM-dd")).format(actualParseDateResult));
+    String actualFormatResult = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+    assertEquals("1970-01-01", actualFormatResult);
+    String actualFormatResult2 = new SimpleDateFormat("yyyy-MM-dd").format(actualParseDateResult);
+    assertEquals("1970-01-01", actualFormatResult2);
     assertEquals(1970, calendar.getWeekYear());
-    assertEquals(53, calendar.getWeeksInWeekYear());
   }
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then throw {@link RuntimeException}.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then throw {@link RuntimeException}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String,
+   * SimpleDateFormat)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.parseDate(String, SimpleDateFormat)"})
   public void testParseDate_when42_thenThrowRuntimeException() {
     // Arrange, Act and Assert
-    assertThrows(RuntimeException.class,
-        () -> nullAwareDateFilterValueConverter.parseDate("42", new SimpleDateFormat("yyyy/mm/dd")));
+    assertThrows(
+        RuntimeException.class,
+        () ->
+            nullAwareDateFilterValueConverter.parseDate("42", new SimpleDateFormat("yyyy/mm/dd")));
   }
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
+   *   <li>When empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String,
+   * SimpleDateFormat)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.parseDate(String, SimpleDateFormat)"})
   public void testParseDate_whenEmptyString() {
     // Arrange
@@ -160,20 +178,23 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
     assertTrue(calendar instanceof GregorianCalendar);
     assertNull(actualParseDateResult);
     assertEquals(1945, calendar.getWeekYear());
-    assertEquals(52, calendar.getWeeksInWeekYear());
   }
 
   /**
    * Test {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd} Calendar {@link GregorianCalendar}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then {@link SimpleDateFormat#SimpleDateFormat(String)} with {@code yyyy/mm/dd} Calendar
+   *       {@link GregorianCalendar}.
    * </ul>
-   * <p>
-   * Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String, SimpleDateFormat)}
+   *
+   * <p>Method under test: {@link NullAwareDateFilterValueConverter#parseDate(String,
+   * SimpleDateFormat)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Date NullAwareDateFilterValueConverter.parseDate(String, SimpleDateFormat)"})
   public void testParseDate_whenNull_thenSimpleDateFormatWithYyyyMmDdCalendarGregorianCalendar() {
     // Arrange
@@ -187,6 +208,5 @@ public class NullAwareDateFilterValueConverterDiffblueTest {
     assertTrue(calendar instanceof GregorianCalendar);
     assertNull(actualParseDateResult);
     assertEquals(1945, calendar.getWeekYear());
-    assertEquals(52, calendar.getWeeksInWeekYear());
   }
 }

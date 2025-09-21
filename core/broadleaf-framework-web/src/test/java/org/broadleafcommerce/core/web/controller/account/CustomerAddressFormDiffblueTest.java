@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
@@ -34,12 +35,13 @@ import org.junit.jupiter.api.Test;
 class CustomerAddressFormDiffblueTest {
   /**
    * Test new {@link CustomerAddressForm} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CustomerAddressForm}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link CustomerAddressForm}
    */
   @Test
   @DisplayName("Test new CustomerAddressForm (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.<init>()"})
   void testNewCustomerAddressForm() {
     // Arrange and Act
@@ -53,8 +55,9 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CustomerAddressForm#setAddressName(String)}
    *   <li>{@link CustomerAddressForm#setCustomerAddressId(Long)}
@@ -65,10 +68,15 @@ class CustomerAddressFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"Address CustomerAddressForm.getAddress()", "String CustomerAddressForm.getAddressName()",
-      "Long CustomerAddressForm.getCustomerAddressId()", "void CustomerAddressForm.setAddressName(String)",
-      "void CustomerAddressForm.setCustomerAddressId(Long)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Address CustomerAddressForm.getAddress()",
+    "String CustomerAddressForm.getAddressName()",
+    "Long CustomerAddressForm.getCustomerAddressId()",
+    "void CustomerAddressForm.setAddressName(String)",
+    "void CustomerAddressForm.setCustomerAddressId(Long)"
+  })
   void testGettersAndSetters() {
     // Arrange
     CustomerAddressForm customerAddressForm = new CustomerAddressForm();
@@ -87,16 +95,19 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>Given {@code Fax}.</li>
-   *   <li>Then {@link AddressImpl} (default constructor) PhonePrimary Id is {@code null}.</li>
+   *   <li>Given {@code Fax}.
+   *   <li>Then {@link AddressImpl} (default constructor) PhonePrimary Id is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); given 'Fax'; then AddressImpl (default constructor) PhonePrimary Id is 'null'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); given 'Fax'; then AddressImpl (default constructor) PhonePrimary Id is 'null'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_givenFax_thenAddressImplPhonePrimaryIdIsNull() {
     // Arrange
@@ -121,15 +132,19 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>Then {@link AddressImpl} (default constructor) PhoneFax is {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then {@link AddressImpl} (default constructor) PhoneFax is {@link PhoneImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); then AddressImpl (default constructor) PhoneFax is PhoneImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); then AddressImpl (default constructor) PhoneFax is PhoneImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_thenAddressImplPhoneFaxIsPhoneImpl() {
     // Arrange
@@ -156,15 +171,19 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor) PhonePrimary is {@link PhoneImpl} (default constructor).</li>
+   *   <li>When {@link AddressImpl} (default constructor) PhonePrimary is {@link PhoneImpl} (default
+   *       constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); when AddressImpl (default constructor) PhonePrimary is PhoneImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); when AddressImpl (default constructor) PhonePrimary is PhoneImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_whenAddressImplPhonePrimaryIsPhoneImpl() {
     // Arrange
@@ -187,15 +206,19 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor) PhoneSecondary is {@link PhoneImpl} (default constructor).</li>
+   *   <li>When {@link AddressImpl} (default constructor) PhoneSecondary is {@link PhoneImpl}
+   *       (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); when AddressImpl (default constructor) PhoneSecondary is PhoneImpl (default constructor)")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); when AddressImpl (default constructor) PhoneSecondary is PhoneImpl (default constructor)")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_whenAddressImplPhoneSecondaryIsPhoneImpl() {
     // Arrange
@@ -218,15 +241,18 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor) PrimaryPhone is {@code 6625550144}.</li>
+   *   <li>When {@link AddressImpl} (default constructor) PrimaryPhone is {@code 6625550144}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); when AddressImpl (default constructor) PrimaryPhone is '6625550144'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); when AddressImpl (default constructor) PrimaryPhone is '6625550144'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_whenAddressImplPrimaryPhoneIs6625550144() {
     // Arrange
@@ -255,15 +281,18 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor) SecondaryPhone is {@code 6625550144}.</li>
+   *   <li>When {@link AddressImpl} (default constructor) SecondaryPhone is {@code 6625550144}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); when AddressImpl (default constructor) SecondaryPhone is '6625550144'")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); when AddressImpl (default constructor) SecondaryPhone is '6625550144'")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_whenAddressImplSecondaryPhoneIs6625550144() {
     // Arrange
@@ -292,16 +321,20 @@ class CustomerAddressFormDiffblueTest {
 
   /**
    * Test {@link CustomerAddressForm#setAddress(Address)}.
+   *
    * <ul>
-   *   <li>When {@link AddressImpl} (default constructor).</li>
-   *   <li>Then {@link AddressImpl} (default constructor) PhonePrimary is {@link AddressImpl} (default constructor) PhoneFax.</li>
+   *   <li>When {@link AddressImpl} (default constructor).
+   *   <li>Then {@link AddressImpl} (default constructor) PhonePrimary is {@link AddressImpl}
+   *       (default constructor) PhoneFax.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressForm#setAddress(Address)}
+   *
+   * <p>Method under test: {@link CustomerAddressForm#setAddress(Address)}
    */
   @Test
-  @DisplayName("Test setAddress(Address); when AddressImpl (default constructor); then AddressImpl (default constructor) PhonePrimary is AddressImpl (default constructor) PhoneFax")
-  @Tag("MaintainedByDiffblue")
+  @DisplayName(
+      "Test setAddress(Address); when AddressImpl (default constructor); then AddressImpl (default constructor) PhonePrimary is AddressImpl (default constructor) PhoneFax")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CustomerAddressForm.setAddress(Address)"})
   void testSetAddress_whenAddressImpl_thenAddressImplPhonePrimaryIsAddressImplPhoneFax() {
     // Arrange

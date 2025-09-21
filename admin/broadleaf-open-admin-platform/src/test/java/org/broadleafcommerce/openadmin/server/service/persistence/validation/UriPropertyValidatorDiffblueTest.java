@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -41,20 +42,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {UriPropertyValidator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UriPropertyValidatorDiffblueTest {
-  @Autowired
-  private UriPropertyValidator uriPropertyValidator;
+  @Autowired private UriPropertyValidator uriPropertyValidator;
 
   /**
    * Test {@link UriPropertyValidator#isFullUrl(String)}.
+   *
    * <ul>
-   *   <li>When {@code ftp}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code ftp}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link UriPropertyValidator#isFullUrl(String)}
+   *
+   * <p>Method under test: {@link UriPropertyValidator#isFullUrl(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean UriPropertyValidator.isFullUrl(String)"})
   public void testIsFullUrl_whenFtp_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -63,15 +65,17 @@ public class UriPropertyValidatorDiffblueTest {
 
   /**
    * Test {@link UriPropertyValidator#isFullUrl(String)}.
+   *
    * <ul>
-   *   <li>When {@code https://example.org/example}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code https://example.org/example}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link UriPropertyValidator#isFullUrl(String)}
+   *
+   * <p>Method under test: {@link UriPropertyValidator#isFullUrl(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean UriPropertyValidator.isFullUrl(String)"})
   public void testIsFullUrl_whenHttpsExampleOrgExample_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -80,15 +84,17 @@ public class UriPropertyValidatorDiffblueTest {
 
   /**
    * Test {@link UriPropertyValidator#isFullUrl(String)}.
+   *
    * <ul>
-   *   <li>When {@code Url}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Url}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link UriPropertyValidator#isFullUrl(String)}
+   *
+   * <p>Method under test: {@link UriPropertyValidator#isFullUrl(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean UriPropertyValidator.isFullUrl(String)"})
   public void testIsFullUrl_whenUrl_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -96,18 +102,23 @@ public class UriPropertyValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata,
+   * String, String)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return ErrorMessage is {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return ErrorMessage is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult UriPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult UriPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_whenNull_thenReturnErrorMessageIsNull() {
     // Arrange
     Entity entity = new Entity();
@@ -116,8 +127,15 @@ public class UriPropertyValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = uriPropertyValidator.validate(entity, instance, entityFieldMetadata,
-        validationConfiguration, new BasicFieldMetadata(), "Property Name", null);
+    PropertyValidationResult actualValidateResult =
+        uriPropertyValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            null);
 
     // Assert
     assertNull(actualValidateResult.getErrorMessage());
@@ -127,18 +145,23 @@ public class UriPropertyValidatorDiffblueTest {
   }
 
   /**
-   * Test {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}.
+   * Test {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata,
+   * String, String)}.
+   *
    * <ul>
-   *   <li>When space.</li>
-   *   <li>Then return ErrorMessages size is one.</li>
+   *   <li>When space.
+   *   <li>Then return ErrorMessages size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)}
+   *
+   * <p>Method under test: {@link UriPropertyValidator#validate(Entity, Serializable, Map, Map,
+   * BasicFieldMetadata, String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "PropertyValidationResult UriPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"})
+    "PropertyValidationResult UriPropertyValidator.validate(Entity, Serializable, Map, Map, BasicFieldMetadata, String, String)"
+  })
   public void testValidate_whenSpace_thenReturnErrorMessagesSizeIsOne() {
     // Arrange
     Entity entity = new Entity();
@@ -147,31 +170,43 @@ public class UriPropertyValidatorDiffblueTest {
     HashMap<String, String> validationConfiguration = new HashMap<>();
 
     // Act
-    PropertyValidationResult actualValidateResult = uriPropertyValidator.validate(entity, instance, entityFieldMetadata,
-        validationConfiguration, new BasicFieldMetadata(), "Property Name", " ");
+    PropertyValidationResult actualValidateResult =
+        uriPropertyValidator.validate(
+            entity,
+            instance,
+            entityFieldMetadata,
+            validationConfiguration,
+            new BasicFieldMetadata(),
+            "Property Name",
+            " ");
 
     // Assert
     List<String> errorMessages = actualValidateResult.getErrorMessages();
     assertEquals(1, errorMessages.size());
     assertEquals("uriPropertyValidatorCannotContainSpacesError", errorMessages.get(0));
-    assertEquals("uriPropertyValidatorCannotContainSpacesError", actualValidateResult.getErrorMessage());
+    assertEquals(
+        "uriPropertyValidatorCannotContainSpacesError", actualValidateResult.getErrorMessage());
     assertFalse(actualValidateResult.isValid());
     assertTrue(actualValidateResult.isNotValid());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link UriPropertyValidator#setSucceedForNullValues(boolean)}
    *   <li>{@link UriPropertyValidator#isSucceedForNullValues()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean UriPropertyValidator.isSucceedForNullValues()",
-      "void UriPropertyValidator.setSucceedForNullValues(boolean)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean UriPropertyValidator.isSucceedForNullValues()",
+    "void UriPropertyValidator.setSucceedForNullValues(boolean)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     UriPropertyValidator uriPropertyValidator = new UriPropertyValidator();

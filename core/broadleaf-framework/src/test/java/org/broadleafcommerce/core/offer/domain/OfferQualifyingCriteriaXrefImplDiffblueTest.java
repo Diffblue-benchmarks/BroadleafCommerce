@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
@@ -41,16 +42,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {OfferQualifyingCriteriaXrefImpl.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferQualifyingCriteriaXrefImplDiffblueTest {
-  @Autowired
-  private OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl;
+  @Autowired private OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#setId(Long)}
@@ -62,24 +63,32 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.<init>()",
-      "void OfferQualifyingCriteriaXrefImpl.<init>(Offer, OfferItemCriteria)",
-      "Long OfferQualifyingCriteriaXrefImpl.getId()", "Offer OfferQualifyingCriteriaXrefImpl.getOffer()",
-      "OfferItemCriteria OfferQualifyingCriteriaXrefImpl.getOfferItemCriteria()",
-      "void OfferQualifyingCriteriaXrefImpl.setId(Long)", "void OfferQualifyingCriteriaXrefImpl.setOffer(Offer)",
-      "void OfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(OfferItemCriteria)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferQualifyingCriteriaXrefImpl.<init>()",
+    "void OfferQualifyingCriteriaXrefImpl.<init>(Offer, OfferItemCriteria)",
+    "Long OfferQualifyingCriteriaXrefImpl.getId()",
+    "Offer OfferQualifyingCriteriaXrefImpl.getOffer()",
+    "OfferItemCriteria OfferQualifyingCriteriaXrefImpl.getOfferItemCriteria()",
+    "void OfferQualifyingCriteriaXrefImpl.setId(Long)",
+    "void OfferQualifyingCriteriaXrefImpl.setOffer(Offer)",
+    "void OfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(OfferItemCriteria)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    OfferQualifyingCriteriaXrefImpl actualOfferQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
-    actualOfferQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    OfferQualifyingCriteriaXrefImpl actualOfferQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
+    actualOfferQualifyingCriteriaXrefImpl.setId(
+        CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     OfferImpl offer = new OfferImpl();
     actualOfferQualifyingCriteriaXrefImpl.setOffer(offer);
     OfferItemCriteriaImpl offerItemCriteria = new OfferItemCriteriaImpl();
     actualOfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(offerItemCriteria);
     Long actualId = actualOfferQualifyingCriteriaXrefImpl.getId();
     Offer actualOffer = actualOfferQualifyingCriteriaXrefImpl.getOffer();
-    OfferItemCriteria actualOfferItemCriteria = actualOfferQualifyingCriteriaXrefImpl.getOfferItemCriteria();
+    OfferItemCriteria actualOfferItemCriteria =
+        actualOfferQualifyingCriteriaXrefImpl.getOfferItemCriteria();
 
     // Assert
     assertEquals(CandidateFulfillmentGroupOfferImpl.serialVersionUID, actualId.longValue());
@@ -89,13 +98,16 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link OfferImpl} (default constructor).</li>
+   *   <li>When {@link OfferImpl} (default constructor).
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl(Offer, OfferItemCriteria)}
+   *   <li>{@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl(Offer,
+   *       OfferItemCriteria)}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#setId(Long)}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#setOffer(Offer)}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#setOfferItemCriteria(OfferItemCriteria)}
@@ -105,28 +117,35 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.<init>()",
-      "void OfferQualifyingCriteriaXrefImpl.<init>(Offer, OfferItemCriteria)",
-      "Long OfferQualifyingCriteriaXrefImpl.getId()", "Offer OfferQualifyingCriteriaXrefImpl.getOffer()",
-      "OfferItemCriteria OfferQualifyingCriteriaXrefImpl.getOfferItemCriteria()",
-      "void OfferQualifyingCriteriaXrefImpl.setId(Long)", "void OfferQualifyingCriteriaXrefImpl.setOffer(Offer)",
-      "void OfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(OfferItemCriteria)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferQualifyingCriteriaXrefImpl.<init>()",
+    "void OfferQualifyingCriteriaXrefImpl.<init>(Offer, OfferItemCriteria)",
+    "Long OfferQualifyingCriteriaXrefImpl.getId()",
+    "Offer OfferQualifyingCriteriaXrefImpl.getOffer()",
+    "OfferItemCriteria OfferQualifyingCriteriaXrefImpl.getOfferItemCriteria()",
+    "void OfferQualifyingCriteriaXrefImpl.setId(Long)",
+    "void OfferQualifyingCriteriaXrefImpl.setOffer(Offer)",
+    "void OfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(OfferItemCriteria)"
+  })
   public void testGettersAndSetters_whenOfferImpl() {
     // Arrange
     OfferImpl offer = new OfferImpl();
 
     // Act
-    OfferQualifyingCriteriaXrefImpl actualOfferQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl(offer,
-        new OfferItemCriteriaImpl());
-    actualOfferQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
+    OfferQualifyingCriteriaXrefImpl actualOfferQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl(offer, new OfferItemCriteriaImpl());
+    actualOfferQualifyingCriteriaXrefImpl.setId(
+        CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     OfferImpl offer2 = new OfferImpl();
     actualOfferQualifyingCriteriaXrefImpl.setOffer(offer2);
     OfferItemCriteriaImpl offerItemCriteria = new OfferItemCriteriaImpl();
     actualOfferQualifyingCriteriaXrefImpl.setOfferItemCriteria(offerItemCriteria);
     Long actualId = actualOfferQualifyingCriteriaXrefImpl.getId();
     Offer actualOffer = actualOfferQualifyingCriteriaXrefImpl.getOffer();
-    OfferItemCriteria actualOfferItemCriteria = actualOfferQualifyingCriteriaXrefImpl.getOfferItemCriteria();
+    OfferItemCriteria actualOfferItemCriteria =
+        actualOfferQualifyingCriteriaXrefImpl.getOfferItemCriteria();
 
     // Assert
     assertEquals(CandidateFulfillmentGroupOfferImpl.serialVersionUID, actualId.longValue());
@@ -136,34 +155,40 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer OfferQualifyingCriteriaXrefImpl.getQuantity()"})
   public void testGetQuantity_givenOfferQualifyingCriteriaXrefImpl() {
     // Arrange, Act and Assert
-    assertNull((new OfferQualifyingCriteriaXrefImpl()).getQuantity());
+    assertNull(new OfferQualifyingCriteriaXrefImpl().getQuantity());
   }
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is
+   *       {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#getQuantity()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer OfferQualifyingCriteriaXrefImpl.getQuantity()"})
   public void testGetQuantity_givenOfferQualifyingCriteriaXrefImplIdIsSerialVersionUID() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -174,18 +199,21 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.setQuantity(Integer)"})
   public void testSetQuantity_givenOfferQualifyingCriteriaXrefImpl() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
 
     // Act
     offerQualifyingCriteriaXrefImpl.setQuantity(1);
@@ -199,18 +227,22 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is
+   *       {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#setQuantity(Integer)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.setQuantity(Integer)"})
   public void testSetQuantity_givenOfferQualifyingCriteriaXrefImplIdIsSerialVersionUID() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -227,34 +259,40 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OfferQualifyingCriteriaXrefImpl.getMatchRule()"})
   public void testGetMatchRule_givenOfferQualifyingCriteriaXrefImpl() {
     // Arrange, Act and Assert
-    assertNull((new OfferQualifyingCriteriaXrefImpl()).getMatchRule());
+    assertNull(new OfferQualifyingCriteriaXrefImpl().getMatchRule());
   }
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is
+   *       {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#getMatchRule()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String OfferQualifyingCriteriaXrefImpl.getMatchRule()"})
   public void testGetMatchRule_givenOfferQualifyingCriteriaXrefImplIdIsSerialVersionUID() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -265,112 +303,121 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}.
-   * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.setMatchRule(String)"})
-  public void testSetMatchRule_givenOfferQualifyingCriteriaXrefImpl() {
+  public void testSetMatchRule() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
+    offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
 
     // Act
-    offerQualifyingCriteriaXrefImpl2.setMatchRule("Match Rule");
+    offerQualifyingCriteriaXrefImpl.setMatchRule("Match Rule");
 
     // Assert
-    OfferItemCriteria offerItemCriteria = offerQualifyingCriteriaXrefImpl2.getOfferItemCriteria();
+    OfferItemCriteria offerItemCriteria = offerQualifyingCriteriaXrefImpl.getOfferItemCriteria();
     assertTrue(offerItemCriteria instanceof OfferItemCriteriaImpl);
     assertEquals("Match Rule", offerItemCriteria.getMatchRule());
-    assertEquals("Match Rule", offerQualifyingCriteriaXrefImpl2.getMatchRule());
+    assertEquals("Match Rule", offerQualifyingCriteriaXrefImpl.getMatchRule());
   }
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}.
+   *
    * <ul>
-   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl#OfferQualifyingCriteriaXrefImpl()} Id is {@link CandidateFulfillmentGroupOfferImpl#serialVersionUID}.</li>
+   *   <li>Given {@link OfferQualifyingCriteriaXrefImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#setMatchRule(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void OfferQualifyingCriteriaXrefImpl.setMatchRule(String)"})
-  public void testSetMatchRule_givenOfferQualifyingCriteriaXrefImplIdIsSerialVersionUID() {
-    // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
-    offerQualifyingCriteriaXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
-    offerQualifyingCriteriaXrefImpl2.setOffer(new OfferImpl());
-    offerQualifyingCriteriaXrefImpl2.setOfferItemCriteria(new OfferItemCriteriaImpl());
-
-    // Act
-    offerQualifyingCriteriaXrefImpl2.setMatchRule("Match Rule");
+  public void testSetMatchRule_givenOfferQualifyingCriteriaXrefImpl() {
+    // Arrange and Act
+    offerQualifyingCriteriaXrefImpl.setMatchRule("Match Rule");
 
     // Assert
-    OfferItemCriteria offerItemCriteria = offerQualifyingCriteriaXrefImpl2.getOfferItemCriteria();
+    OfferItemCriteria offerItemCriteria = offerQualifyingCriteriaXrefImpl.getOfferItemCriteria();
     assertTrue(offerItemCriteria instanceof OfferItemCriteriaImpl);
     assertEquals("Match Rule", offerItemCriteria.getMatchRule());
-    assertEquals("Match Rule", offerQualifyingCriteriaXrefImpl2.getMatchRule());
+    assertEquals("Match Rule", offerQualifyingCriteriaXrefImpl.getMatchRule());
   }
 
   /**
-   * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}, and {@link OfferQualifyingCriteriaXrefImpl#hashCode()}.
+   * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}, and {@link
+   * OfferQualifyingCriteriaXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
-      "int OfferQualifyingCriteriaXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
+    "int OfferQualifyingCriteriaXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
 
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl2.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl2.setOfferItemCriteria(new OfferItemCriteriaImpl());
 
     // Act and Assert
     assertEquals(offerQualifyingCriteriaXrefImpl, offerQualifyingCriteriaXrefImpl2);
-    int expectedHashCodeResult = offerQualifyingCriteriaXrefImpl.hashCode();
-    assertEquals(expectedHashCodeResult, offerQualifyingCriteriaXrefImpl2.hashCode());
+    assertEquals(
+        offerQualifyingCriteriaXrefImpl.hashCode(), offerQualifyingCriteriaXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}, and {@link OfferQualifyingCriteriaXrefImpl#hashCode()}.
+   * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}, and {@link
+   * OfferQualifyingCriteriaXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
    *   <li>{@link OfferQualifyingCriteriaXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
-      "int OfferQualifyingCriteriaXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
+    "int OfferQualifyingCriteriaXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -383,25 +430,31 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
-      "int OfferQualifyingCriteriaXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
+    "int OfferQualifyingCriteriaXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(2L);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
 
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl2.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl2.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -412,20 +465,25 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
-      "int OfferQualifyingCriteriaXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
+    "int OfferQualifyingCriteriaXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
@@ -436,48 +494,60 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
 
   /**
    * Test {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferQualifyingCriteriaXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
-      "int OfferQualifyingCriteriaXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferQualifyingCriteriaXrefImpl.equals(Object)",
+    "int OfferQualifyingCriteriaXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl.setOfferItemCriteria(new OfferItemCriteriaImpl());
 
     // Act and Assert
-    assertNotEquals(offerQualifyingCriteriaXrefImpl, "Different type to OfferQualifyingCriteriaXrefImpl");
+    assertNotEquals(
+        offerQualifyingCriteriaXrefImpl, "Different type to OfferQualifyingCriteriaXrefImpl");
   }
 
   /**
-   * Test {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
 
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new OfferQualifyingCriteriaXrefImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult = offerQualifyingCriteriaXrefImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult =
+        offerQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -485,85 +555,89 @@ public class OfferQualifyingCriteriaXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    CreateResponse<Offer> createResponse = mock(CreateResponse.class);
-    when(createResponse.getClone()).thenReturn(new OfferImpl());
-    Offer offer = mock(Offer.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any())).thenReturn(createResponse);
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl(offer, null);
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
 
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl2.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl2.setOfferItemCriteria(new OfferItemCriteriaImpl());
-    CreateResponse<Object> createResponse2 = new CreateResponse<>(offerQualifyingCriteriaXrefImpl2, false);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(offerQualifyingCriteriaXrefImpl2, false);
 
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse2);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult = offerQualifyingCriteriaXrefImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult =
+        offerQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(createResponse).getClone();
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse2, actualCreateOrRetrieveCopyInstanceResult);
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
-   * Test {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * Test {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
    * <ul>
-   *   <li>Then calls {@link OfferItemCriteriaImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.</li>
+   *   <li>Then calls {@link OfferImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * OfferQualifyingCriteriaXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse OfferQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance_thenCallsCreateOrRetrieveCopyInstance()
       throws CloneNotSupportedException {
     // Arrange
-    CreateResponse<Offer> createResponse = mock(CreateResponse.class);
-    when(createResponse.getClone()).thenReturn(new OfferImpl());
-    Offer offer = mock(Offer.class);
-    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any())).thenReturn(createResponse);
-    OfferItemCriteriaImpl offerItemCriteria = mock(OfferItemCriteriaImpl.class);
-    when(offerItemCriteria.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
-        .thenReturn(new CreateResponse<>(new OfferItemCriteriaImpl(), true));
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl = new OfferQualifyingCriteriaXrefImpl(offer,
-        offerItemCriteria);
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new OfferImpl(), true));
 
-    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 = new OfferQualifyingCriteriaXrefImpl();
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl =
+        new OfferQualifyingCriteriaXrefImpl();
+    offerQualifyingCriteriaXrefImpl.setOffer(offer);
+
+    OfferQualifyingCriteriaXrefImpl offerQualifyingCriteriaXrefImpl2 =
+        new OfferQualifyingCriteriaXrefImpl();
     offerQualifyingCriteriaXrefImpl2.setId(CandidateFulfillmentGroupOfferImpl.serialVersionUID);
     offerQualifyingCriteriaXrefImpl2.setOffer(new OfferImpl());
     offerQualifyingCriteriaXrefImpl2.setOfferItemCriteria(new OfferItemCriteriaImpl());
-    CreateResponse<Object> createResponse2 = new CreateResponse<>(offerQualifyingCriteriaXrefImpl2, false);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(offerQualifyingCriteriaXrefImpl2, false);
 
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse2);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult = offerQualifyingCriteriaXrefImpl
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<OfferQualifyingCriteriaXref> actualCreateOrRetrieveCopyInstanceResult =
+        offerQualifyingCriteriaXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(createResponse).getClone();
-    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    verify(offerItemCriteria).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
-    assertSame(createResponse2, actualCreateOrRetrieveCopyInstanceResult);
+    verify(offer).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 }

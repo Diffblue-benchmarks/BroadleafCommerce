@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -37,22 +38,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class CategoryProductXrefImplDiffblueTest {
-  @Autowired
-  private CategoryProductXrefImpl categoryProductXrefImpl;
+  @Autowired private CategoryProductXrefImpl categoryProductXrefImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryProductXrefImpl#setCategory(Category)}
    *   <li>{@link CategoryProductXrefImpl#setDefaultReference(Boolean)}
@@ -67,13 +65,20 @@ public class CategoryProductXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Category CategoryProductXrefImpl.getCategory()",
-      "Boolean CategoryProductXrefImpl.getDefaultReference()", "BigDecimal CategoryProductXrefImpl.getDisplayOrder()",
-      "Long CategoryProductXrefImpl.getId()", "Product CategoryProductXrefImpl.getProduct()",
-      "void CategoryProductXrefImpl.setCategory(Category)", "void CategoryProductXrefImpl.setDefaultReference(Boolean)",
-      "void CategoryProductXrefImpl.setDisplayOrder(BigDecimal)", "void CategoryProductXrefImpl.setId(Long)",
-      "void CategoryProductXrefImpl.setProduct(Product)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Category CategoryProductXrefImpl.getCategory()",
+    "Boolean CategoryProductXrefImpl.getDefaultReference()",
+    "BigDecimal CategoryProductXrefImpl.getDisplayOrder()",
+    "Long CategoryProductXrefImpl.getId()",
+    "Product CategoryProductXrefImpl.getProduct()",
+    "void CategoryProductXrefImpl.setCategory(Category)",
+    "void CategoryProductXrefImpl.setDefaultReference(Boolean)",
+    "void CategoryProductXrefImpl.setDisplayOrder(BigDecimal)",
+    "void CategoryProductXrefImpl.setId(Long)",
+    "void CategoryProductXrefImpl.setProduct(Product)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -103,21 +108,28 @@ public class CategoryProductXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link CategoryProductXrefImpl#hashCode()}.
+   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link
+   * CategoryProductXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryProductXrefImpl#equals(Object)}
    *   <li>{@link CategoryProductXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -136,26 +148,32 @@ public class CategoryProductXrefImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryProductXrefImpl, categoryProductXrefImpl2);
-    int expectedHashCodeResult = categoryProductXrefImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryProductXrefImpl2.hashCode());
+    assertEquals(categoryProductXrefImpl.hashCode(), categoryProductXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link CategoryProductXrefImpl#hashCode()}.
+   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link
+   * CategoryProductXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryProductXrefImpl#equals(Object)}
    *   <li>{@link CategoryProductXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -174,26 +192,76 @@ public class CategoryProductXrefImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryProductXrefImpl, categoryProductXrefImpl2);
-    int expectedHashCodeResult = categoryProductXrefImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryProductXrefImpl2.hashCode());
+    assertEquals(categoryProductXrefImpl.hashCode(), categoryProductXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link CategoryProductXrefImpl#hashCode()}.
+   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link
+   * CategoryProductXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryProductXrefImpl#equals(Object)}
    *   <li>{@link CategoryProductXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
+    categoryProductXrefImpl.setCategory(new CategoryImpl());
+    categoryProductXrefImpl.setDefaultReference(true);
+    categoryProductXrefImpl.setDisplayOrder(new BigDecimal("2.3"));
+    categoryProductXrefImpl.setId(1L);
+    categoryProductXrefImpl.setProduct(null);
+
+    CategoryProductXrefImpl categoryProductXrefImpl2 = new CategoryProductXrefImpl();
+    categoryProductXrefImpl2.setCategory(new CategoryImpl());
+    categoryProductXrefImpl2.setDefaultReference(true);
+    categoryProductXrefImpl2.setDisplayOrder(new BigDecimal("2.3"));
+    categoryProductXrefImpl2.setId(1L);
+    categoryProductXrefImpl2.setProduct(null);
+
+    // Act and Assert
+    assertEquals(categoryProductXrefImpl, categoryProductXrefImpl2);
+    assertEquals(categoryProductXrefImpl.hashCode(), categoryProductXrefImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link CategoryProductXrefImpl#equals(Object)}, and {@link
+   * CategoryProductXrefImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link CategoryProductXrefImpl#equals(Object)}
+   *   <li>{@link CategoryProductXrefImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -211,16 +279,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -243,16 +316,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -275,16 +353,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     ProductBundleImpl product = new ProductBundleImpl();
@@ -310,16 +393,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -342,16 +430,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -367,16 +460,21 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryProductXrefImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryProductXrefImpl.equals(Object)", "int CategoryProductXrefImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryProductXrefImpl.equals(Object)",
+    "int CategoryProductXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryProductXrefImpl categoryProductXrefImpl = new CategoryProductXrefImpl();
@@ -392,23 +490,26 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CategoryProductXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CategoryProductXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    CategoryProductXrefImpl categoryProductXrefImpl2 = new CategoryProductXrefImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new CategoryProductXrefImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CategoryProductXref> actualCreateOrRetrieveCopyInstanceResult = categoryProductXrefImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<CategoryProductXref> actualCreateOrRetrieveCopyInstanceResult =
+        categoryProductXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -417,52 +518,44 @@ public class CategoryProductXrefImplDiffblueTest {
 
   /**
    * Test {@link CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * CategoryProductXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CategoryProductXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCallsGetClone() throws CloneNotSupportedException {
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CategoryProductXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    CategoryProductXrefImpl categoryProductXrefImpl2 = new CategoryProductXrefImpl();
-
-    CategoryProductXrefImpl categoryProductXrefImpl3 = new CategoryProductXrefImpl();
-    categoryProductXrefImpl3.setCategory(new CategoryImpl());
-    categoryProductXrefImpl3.setDefaultReference(true);
-    categoryProductXrefImpl3.setDisplayOrder(new BigDecimal("2.3"));
-    categoryProductXrefImpl3.setId(1L);
-    categoryProductXrefImpl3.setProduct(new ProductBundleImpl());
-    CreateResponse<Object> createResponse = mock(CreateResponse.class);
-    when(createResponse.isAlreadyPopulated()).thenReturn(false);
-    when(createResponse.getClone()).thenReturn(categoryProductXrefImpl3);
-
     HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("MANUAL_DUPLICATION", "MANUAL_DUPLICATION");
+    stringStringMap.put("MANUAL_DUPLICATION", "Copy Hints");
+
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
     when(context.getCopyHints()).thenReturn(stringStringMap);
+    CreateResponse<Object> createResponse = new CreateResponse<>(categoryProductXrefImpl, false);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    categoryProductXrefImpl2.createOrRetrieveCopyInstance(context);
+    CreateResponse<CategoryProductXref> actualCreateOrRetrieveCopyInstanceResult =
+        categoryProductXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(createResponse).getClone();
-    verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     verify(context).getCopyHints();
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test new {@link CategoryProductXrefImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link CategoryProductXrefImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link CategoryProductXrefImpl}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void CategoryProductXrefImpl.<init>()"})
   public void testNewCategoryProductXrefImpl() {
     // Arrange and Act

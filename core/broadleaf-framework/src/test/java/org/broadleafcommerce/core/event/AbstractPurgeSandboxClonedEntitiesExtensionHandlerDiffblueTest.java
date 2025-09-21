@@ -19,7 +19,8 @@ package org.broadleafcommerce.core.event;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -29,34 +30,48 @@ import org.junit.experimental.categories.Category;
 
 public class AbstractPurgeSandboxClonedEntitiesExtensionHandlerDiffblueTest {
   /**
-   * Test {@link AbstractPurgeSandboxClonedEntitiesExtensionHandler#cleanUpAndDeleteEntity(Serializable, Object)}.
-   * <p>
-   * Method under test: {@link AbstractPurgeSandboxClonedEntitiesExtensionHandler#cleanUpAndDeleteEntity(Serializable, Object)}
+   * Test {@link
+   * AbstractPurgeSandboxClonedEntitiesExtensionHandler#cleanUpAndDeleteEntity(Serializable,
+   * Object)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractPurgeSandboxClonedEntitiesExtensionHandler#cleanUpAndDeleteEntity(Serializable,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractPurgeSandboxClonedEntitiesExtensionHandler.cleanUpAndDeleteEntity(Serializable, Object)"})
+    "ExtensionResultStatusType AbstractPurgeSandboxClonedEntitiesExtensionHandler.cleanUpAndDeleteEntity(Serializable, Object)"
+  })
   public void testCleanUpAndDeleteEntity() {
     // Arrange
-    AbstractPurgeSandboxClonedEntitiesExtensionHandler abstractPurgeSandboxClonedEntitiesExtensionHandler = new AbstractPurgeSandboxClonedEntitiesExtensionHandler();
+    AbstractPurgeSandboxClonedEntitiesExtensionHandler
+        abstractPurgeSandboxClonedEntitiesExtensionHandler =
+            new AbstractPurgeSandboxClonedEntitiesExtensionHandler();
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractPurgeSandboxClonedEntitiesExtensionHandler
-        .cleanUpAndDeleteEntity(new SimpleDateFormat("yyyy/mm/dd"), "Entity"));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractPurgeSandboxClonedEntitiesExtensionHandler.cleanUpAndDeleteEntity(
+            new SimpleDateFormat("yyyy/mm/dd"), "Entity"));
   }
 
   /**
    * Test new {@link AbstractPurgeSandboxClonedEntitiesExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractPurgeSandboxClonedEntitiesExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractPurgeSandboxClonedEntitiesExtensionHandler}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractPurgeSandboxClonedEntitiesExtensionHandler.<init>()"})
   public void testNewAbstractPurgeSandboxClonedEntitiesExtensionHandler() {
     // Arrange and Act
-    AbstractPurgeSandboxClonedEntitiesExtensionHandler actualAbstractPurgeSandboxClonedEntitiesExtensionHandler = new AbstractPurgeSandboxClonedEntitiesExtensionHandler();
+    AbstractPurgeSandboxClonedEntitiesExtensionHandler
+        actualAbstractPurgeSandboxClonedEntitiesExtensionHandler =
+            new AbstractPurgeSandboxClonedEntitiesExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractPurgeSandboxClonedEntitiesExtensionHandler.getPriority());

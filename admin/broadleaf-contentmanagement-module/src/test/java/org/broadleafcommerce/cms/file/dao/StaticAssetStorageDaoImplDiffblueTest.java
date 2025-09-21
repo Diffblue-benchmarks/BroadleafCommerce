@@ -18,13 +18,13 @@
 package org.broadleafcommerce.cms.file.dao;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import java.sql.Blob;
+import java.sql.SQLException;
+import javax.sql.rowset.serial.SerialBlob;
 import org.broadleafcommerce.cms.file.domain.StaticAssetStorage;
 import org.broadleafcommerce.cms.file.domain.StaticAssetStorageImpl;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -38,33 +38,35 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StaticAssetStorageDaoImplDiffblueTest {
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
-  @InjectMocks
-  private StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
+  @InjectMocks private StaticAssetStorageDaoImpl staticAssetStorageDaoImpl;
 
   /**
    * Test {@link StaticAssetStorageDaoImpl#create()}.
-   * <p>
-   * Method under test: {@link StaticAssetStorageDaoImpl#create()}
+   *
+   * <p>Method under test: {@link StaticAssetStorageDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"StaticAssetStorage StaticAssetStorageDaoImpl.create()"})
-  public void testCreate() {
+  public void testCreate() throws SQLException {
     // Arrange
     StaticAssetStorageImpl staticAssetStorageImpl = new StaticAssetStorageImpl();
-    staticAssetStorageImpl.setFileData(mock(Blob.class));
+    SerialBlob fileData = new SerialBlob(new byte[] {'A', 1, 'A', 1, 'A', 1, 'A', 1});
+    staticAssetStorageImpl.setFileData(fileData);
     staticAssetStorageImpl.setId(1L);
     staticAssetStorageImpl.setStaticAssetId(1L);
-    when(entityConfiguration.createEntityInstance(Mockito.<String>any())).thenReturn(staticAssetStorageImpl);
+    when(entityConfiguration.createEntityInstance(Mockito.<String>any()))
+        .thenReturn(staticAssetStorageImpl);
 
     // Act
     StaticAssetStorage actualCreateResult = staticAssetStorageDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.cms.file.domain.StaticAssetStorage"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.cms.file.domain.StaticAssetStorage");
     assertSame(staticAssetStorageImpl, actualCreateResult);
   }
 }

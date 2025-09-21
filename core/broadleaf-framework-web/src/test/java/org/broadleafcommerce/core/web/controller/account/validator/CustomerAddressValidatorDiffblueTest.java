@@ -19,6 +19,7 @@ package org.broadleafcommerce.core.web.controller.account.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -27,15 +28,17 @@ import org.junit.jupiter.api.Test;
 class CustomerAddressValidatorDiffblueTest {
   /**
    * Test {@link CustomerAddressValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link CustomerAddressValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); then return 'true'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerAddressValidator.supports(Class)"})
   void testSupports_thenReturnTrue() {
     // Arrange
@@ -48,16 +51,18 @@ class CustomerAddressValidatorDiffblueTest {
 
   /**
    * Test {@link CustomerAddressValidator#supports(Class)}.
+   *
    * <ul>
-   *   <li>When {@code Object}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Object}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerAddressValidator#supports(Class)}
+   *
+   * <p>Method under test: {@link CustomerAddressValidator#supports(Class)}
    */
   @Test
   @DisplayName("Test supports(Class); when 'java.lang.Object'; then return 'false'")
-  @Tag("MaintainedByDiffblue")
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean CustomerAddressValidator.supports(Class)"})
   void testSupports_whenJavaLangObject_thenReturnFalse() {
     // Arrange

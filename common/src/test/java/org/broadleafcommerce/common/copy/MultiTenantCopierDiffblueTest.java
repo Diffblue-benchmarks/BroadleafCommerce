@@ -22,16 +22,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
+import org.broadleafcommerce.common.config.domain.SystemPropertyImpl;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.persistence.EntityDuplicatorImpl;
 import org.broadleafcommerce.common.service.GenericEntityService;
@@ -50,38 +53,35 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-@RunWith(MockitoJUnitRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(MockitoJUnitRunner.class)
 public class MultiTenantCopierDiffblueTest {
-  @Mock
-  private Collection collection;
+  @InjectMocks private EntityDuplicatorImpl entityDuplicatorImpl;
 
-  @InjectMocks
-  private EntityDuplicatorImpl entityDuplicatorImpl;
-
-  @Mock
-  private GenericEntityService genericEntityService;
+  @Mock private GenericEntityService genericEntityService;
 
   /**
    * Test {@link MultiTenantCopier#getOrder()}.
-   * <p>
-   * Method under test: {@link MultiTenantCopier#getOrder()}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#getOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int MultiTenantCopier.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert
-    assertEquals(0, (new EntityDuplicatorImpl()).getOrder());
+    assertEquals(0, new EntityDuplicatorImpl().getOrder());
   }
 
   /**
    * Test {@link MultiTenantCopier#setOrder(int)}.
-   * <p>
-   * Method under test: {@link MultiTenantCopier#setOrder(int)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#setOrder(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MultiTenantCopier.setOrder(int)"})
   public void testSetOrder() {
     // Arrange
@@ -95,34 +95,56 @@ public class MultiTenantCopierDiffblueTest {
   }
 
   /**
-   * Test {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}.
+   * Test {@link MultiTenantCopier#persistCopyObjectTreeInternal(Object, Set,
+   * MultiTenantCopyContext)}.
+   *
    * <ul>
-   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given empty array of {@link Field}.
+   *   <li>Then calls {@link MultiTenantCopyContext#getAllFields(Class)}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#persistCopyObjectTreeInternal(Object, Set,
+   * MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean MultiTenantCopier.excludeFromCopyRegexPattern(Object)"})
-  public void testExcludeFromCopyRegexPattern_givenEntityDuplicatorImpl_thenReturnFalse() {
-    // Arrange, Act and Assert
-    assertFalse((new EntityDuplicatorImpl()).excludeFromCopyRegexPattern(BLCFieldUtils.NULL_FIELD));
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void MultiTenantCopier.persistCopyObjectTreeInternal(Object, Set, MultiTenantCopyContext)"
+  })
+  public void testPersistCopyObjectTreeInternal_givenEmptyArrayOfField_thenCallsGetAllFields() {
+    // Arrange
+    when(genericEntityService.sessionContains(Mockito.<Object>any())).thenReturn(true);
+    SystemPropertyImpl systemPropertyImpl = new SystemPropertyImpl();
+    HashSet<Integer> library = new HashSet<>();
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.getAllFields(Mockito.<Class<?>>any())).thenReturn(new Field[] {});
+
+    // Act
+    entityDuplicatorImpl.persistCopyObjectTreeInternal(systemPropertyImpl, library, context);
+
+    // Assert
+    verify(context).getAllFields(isA(Class.class));
+    verify(genericEntityService).sessionContains(isA(Object.class));
+    assertEquals(1, library.size());
   }
 
   /**
    * Test {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}.
+   *
    * <ul>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor) addPattern compile {@code
+   *       .*\.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"java.lang.Boolean MultiTenantCopier.excludeFromCopyRegexPattern(Object)"})
-  public void testExcludeFromCopyRegexPattern_thenReturnFalse() {
+  public void testExcludeFromCopyRegexPattern_givenEntityDuplicatorImplAddPatternCompileTxt() {
     // Arrange
     EntityDuplicatorImpl entityDuplicatorImpl = new EntityDuplicatorImpl();
     entityDuplicatorImpl.addPattern(Pattern.compile(".*\\.txt"));
@@ -132,45 +154,36 @@ public class MultiTenantCopierDiffblueTest {
   }
 
   /**
-   * Test {@link MultiTenantCopier#save(MultiTenantCopyContext, Object)}.
+   * Test {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}.
+   *
    * <ul>
-   *   <li>Given {@link CatalogImpl} (default constructor).</li>
-   *   <li>Then calls {@link MultiTenantCopyContext#getToCatalog()}.</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#save(MultiTenantCopyContext, Object)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#excludeFromCopyRegexPattern(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object MultiTenantCopier.save(MultiTenantCopyContext, Object)"})
-  public void testSave_givenCatalogImpl_thenCallsGetToCatalog() throws ServiceException {
-    // Arrange
-    when(genericEntityService.save(Mockito.<Object>any())).thenReturn(BLCFieldUtils.NULL_FIELD);
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    when(context.getToCatalog()).thenReturn(new CatalogImpl());
-    when(context.getToSite()).thenReturn(new SiteImpl());
-    Object object = BLCFieldUtils.NULL_FIELD;
-
-    // Act
-    Object actualSaveResult = entityDuplicatorImpl.save(context, object);
-
-    // Assert
-    verify(context).getToCatalog();
-    verify(context, atLeast(1)).getToSite();
-    verify(genericEntityService).save(isA(Object.class));
-    assertSame(object, actualSaveResult);
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"java.lang.Boolean MultiTenantCopier.excludeFromCopyRegexPattern(Object)"})
+  public void testExcludeFromCopyRegexPattern_givenEntityDuplicatorImpl_thenReturnFalse() {
+    // Arrange, Act and Assert
+    assertFalse(new EntityDuplicatorImpl().excludeFromCopyRegexPattern(BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link MultiTenantCopier#readCount(Class, Site, Catalog)}.
+   *
    * <ul>
-   *   <li>Then return longValue is three.</li>
+   *   <li>Then return longValue is three.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#readCount(Class, Site, Catalog)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#readCount(Class, Site, Catalog)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long MultiTenantCopier.readCount(Class, Site, Catalog)"})
   public void testReadCount_thenReturnLongValueIsThree() throws ServiceException {
     // Arrange
@@ -187,24 +200,82 @@ public class MultiTenantCopierDiffblueTest {
   }
 
   /**
-   * Test {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}.
+   * Test {@link MultiTenantCopier#readCount(Class, Site, Catalog)}.
+   *
    * <ul>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return longValue is three.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#readCount(Class, Site, Catalog)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"Long MultiTenantCopier.readCount(Class, Site, Catalog)"})
+  public void testReadCount_thenReturnLongValueIsThree2() throws ServiceException {
+    // Arrange
+    when(genericEntityService.readCountGenericEntity(Mockito.<Class<Object>>any())).thenReturn(3L);
+    Class<Object> clazz = Object.class;
+
+    // Act
+    Long actualReadCountResult = entityDuplicatorImpl.readCount(clazz, null, new CatalogImpl());
+
+    // Assert
+    verify(genericEntityService).readCountGenericEntity(isA(Class.class));
+    assertEquals(3L, actualReadCountResult.longValue());
+  }
+
+  /**
+   * Test {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}.
+   *
+   * <ul>
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List MultiTenantCopier.readAllIds(Class, Site, Catalog)"})
   public void testReadAllIds_thenReturnEmpty() throws ServiceException {
     // Arrange
-    when(genericEntityService.readAllGenericEntityId(Mockito.<Class<Object>>any())).thenReturn(new ArrayList<>());
+    when(genericEntityService.readAllGenericEntityId(Mockito.<Class<?>>any()))
+        .thenReturn(new ArrayList<>());
     Class<Object> clazz = Object.class;
     SiteImpl site = new SiteImpl();
 
     // Act
-    List<Long> actualReadAllIdsResult = entityDuplicatorImpl.readAllIds(clazz, site, new CatalogImpl());
+    List<Long> actualReadAllIdsResult =
+        entityDuplicatorImpl.readAllIds(clazz, site, new CatalogImpl());
+
+    // Assert
+    verify(genericEntityService).readAllGenericEntityId(isA(Class.class));
+    assertTrue(actualReadAllIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}.
+   *
+   * <ul>
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link MultiTenantCopier#readAllIds(Class, Site, Catalog)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"List MultiTenantCopier.readAllIds(Class, Site, Catalog)"})
+  public void testReadAllIds_thenReturnEmpty2() throws ServiceException {
+    // Arrange
+    when(genericEntityService.readAllGenericEntityId(Mockito.<Class<?>>any()))
+        .thenReturn(new ArrayList<>());
+    Class<Object> clazz = Object.class;
+
+    // Act
+    List<Long> actualReadAllIdsResult =
+        entityDuplicatorImpl.readAllIds(clazz, null, new CatalogImpl());
 
     // Assert
     verify(genericEntityService).readAllGenericEntityId(isA(Class.class));
@@ -213,14 +284,16 @@ public class MultiTenantCopierDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopier#addPattern(Pattern)}.
+   *
    * <ul>
-   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MultiTenantCopier.addPattern(Pattern)"})
   public void testAddPattern_givenEntityDuplicatorImpl() {
     // Arrange
@@ -238,14 +311,17 @@ public class MultiTenantCopierDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopier#addPattern(Pattern)}.
+   *
    * <ul>
-   *   <li>Then {@link EntityDuplicatorImpl} (default constructor) {@link MultiTenantCopier#classExcludeRegexPatternList} size is one.</li>
+   *   <li>Then {@link EntityDuplicatorImpl} (default constructor) {@link
+   *       MultiTenantCopier#classExcludeRegexPatternList} size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MultiTenantCopier.addPattern(Pattern)"})
   public void testAddPattern_thenEntityDuplicatorImplClassExcludeRegexPatternListSizeIsOne() {
     // Arrange
@@ -264,64 +340,72 @@ public class MultiTenantCopierDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopier#addPattern(Pattern)}.
+   *
    * <ul>
-   *   <li>Then {@link EntityDuplicatorImpl} (default constructor) {@link MultiTenantCopier#classExcludeRegexPatternList} size is two.</li>
+   *   <li>Then {@link EntityDuplicatorImpl} (default constructor) {@link
+   *       MultiTenantCopier#classExcludeRegexPatternList} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#addPattern(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void MultiTenantCopier.addPattern(Pattern)"})
   public void testAddPattern_thenEntityDuplicatorImplClassExcludeRegexPatternListSizeIsTwo() {
     // Arrange
     EntityDuplicatorImpl entityDuplicatorImpl = new EntityDuplicatorImpl();
     Pattern pattern = Pattern.compile("foo");
     entityDuplicatorImpl.addPattern(pattern);
-    Pattern pattern2 = Pattern.compile(".*\\.txt");
+    entityDuplicatorImpl.addPattern(Pattern.compile(".*\\.txt"));
 
     // Act
-    entityDuplicatorImpl.addPattern(pattern2);
+    entityDuplicatorImpl.addPattern(Pattern.compile(".*\\.txt"));
 
-    // Assert
+    // Assert that nothing has changed
     List<Pattern> patternList = entityDuplicatorImpl.classExcludeRegexPatternList;
     assertEquals(2, patternList.size());
-    assertSame(pattern2, patternList.get(1));
     assertSame(pattern, patternList.get(0));
   }
 
   /**
    * Test {@link MultiTenantCopier#needToAdd(Pattern)}.
+   *
    * <ul>
-   *   <li>Given {@link EntityDuplicatorImpl} (default constructor) addPattern compile {@code foo}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor) addPattern compile {@code foo}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MultiTenantCopier.needToAdd(Pattern)"})
-  public void testNeedToAdd_givenEntityDuplicatorImplAddPatternCompileFoo_thenReturnTrue() {
+  public void testNeedToAdd_givenEntityDuplicatorImplAddPatternCompileFoo_thenReturnFalse() {
     // Arrange
     EntityDuplicatorImpl entityDuplicatorImpl = new EntityDuplicatorImpl();
     entityDuplicatorImpl.addPattern(Pattern.compile("foo"));
+    entityDuplicatorImpl.addPattern(Pattern.compile(".*\\.txt"));
 
     // Act and Assert
-    assertTrue(entityDuplicatorImpl.needToAdd(Pattern.compile(".*\\.txt")));
+    assertFalse(entityDuplicatorImpl.needToAdd(Pattern.compile(".*\\.txt")));
   }
 
   /**
    * Test {@link MultiTenantCopier#needToAdd(Pattern)}.
+   *
    * <ul>
-   *   <li>Given {@link EntityDuplicatorImpl} (default constructor) addPattern compile {@code .*\.txt}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor) addPattern compile {@code
+   *       .*\.txt}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MultiTenantCopier.needToAdd(Pattern)"})
   public void testNeedToAdd_givenEntityDuplicatorImplAddPatternCompileTxt_thenReturnFalse() {
     // Arrange
@@ -334,16 +418,18 @@ public class MultiTenantCopierDiffblueTest {
 
   /**
    * Test {@link MultiTenantCopier#needToAdd(Pattern)}.
+   *
    * <ul>
-   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).</li>
-   *   <li>When compile {@code .*\.txt}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link EntityDuplicatorImpl} (default constructor).
+   *   <li>When compile {@code .*\.txt}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
+   *
+   * <p>Method under test: {@link MultiTenantCopier#needToAdd(Pattern)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MultiTenantCopier.needToAdd(Pattern)"})
   public void testNeedToAdd_givenEntityDuplicatorImpl_whenCompileTxt_thenReturnTrue() {
     // Arrange

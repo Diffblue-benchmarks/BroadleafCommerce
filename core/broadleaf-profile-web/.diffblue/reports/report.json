@@ -1,0 +1,2714 @@
+{
+  "meta" : {
+    "reportVersion" : "2.7"
+  },
+  "run" : {
+    "version" : "2025.09.01-44e352d-licensed",
+    "creationTimestamp" : "2025-09-19T10:40:50.455477524Z",
+    "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
+    "totalTime" : 513.1,
+    "environmentDetectionTime" : 0.102,
+    "indexingTime" : 0.394,
+    "entryPointsTime" : 0.092,
+    "generationTime" : 28574.701,
+    "timeToFirstTest" : 2402.164,
+    "timeToLastTest" : 29732.343,
+    "indexQueryTime" : 6.849,
+    "verificationTime" : 956.963,
+    "validationTime" : 14.251
+  },
+  "codes" : {
+    "R000" : "Success",
+    "R002" : "Missing observers",
+    "R004" : "No meaningful assertions found",
+    "R013" : "No inputs found that don't throw a trivial exception",
+    "R027" : "Missing beans when creating Spring context",
+    "T000" : "Method eligible for test creation",
+    "T001" : "Trivial getter",
+    "T002" : "Trivial setter",
+    "T003" : "Private method",
+    "T004" : "In anonymous inner class",
+    "T005" : "Trivial constructor",
+    "T007" : "Framework configuration callback",
+    "T010" : "Abstract or interface method",
+    "T012" : "Synthetic method",
+    "T021" : "Empty method body",
+    "T023" : "Testability unknown",
+    "V000" : "Validated successfully",
+    "V003" : "Tests discarded during validation",
+    "W002" : "Test compiled, but did not pass"
+  },
+  "summary" : {
+    "classesCount" : 35,
+    "methodsCount" : 155,
+    "cumulativeDiffblueTestCount" : 118,
+    "cumulativeManualTestCount" : 0,
+    "completeTestCount" : 118,
+    "incompleteTestCount" : 0,
+    "skeletonTestCount" : 0,
+    "totalPhysicalLineCount" : 1412,
+    "perMethodTestability" : {
+      "T000" : 69,
+      "T001" : 18,
+      "T002" : 27,
+      "T003" : 2,
+      "T004" : 2,
+      "T005" : 19,
+      "T007" : 1,
+      "T010" : 8,
+      "T012" : 2,
+      "T021" : 4,
+      "T023" : 3
+    },
+    "perMethodOutcome" : {
+      "R000" : 87,
+      "R002" : 13,
+      "R004" : 1,
+      "R013" : 10,
+      "R027" : 7,
+      "T003" : 2,
+      "T004" : 2,
+      "T005" : 17,
+      "T007" : 1,
+      "T010" : 8,
+      "T012" : 2,
+      "T023" : 3,
+      "W002" : 2
+    },
+    "perTestOutcome" : {
+      "R000" : 118
+    },
+    "perTestValidation" : {
+      "V000" : 118,
+      "V003" : 1
+    },
+    "warnings" : {
+      "W002" : 3
+    }
+  },
+  "classes" : {
+    "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 5,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 3
+      },
+      "perTestOutcome" : {
+        "R000" : 5
+      }
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController" : {
+      "methodsCount" : 18,
+      "completeTestCount" : 5,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 5,
+        "T002" : 12,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 5,
+        "R002" : 12,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 5
+      }
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController" : {
+      "methodsCount" : 15,
+      "completeTestCount" : 6,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 6,
+        "T001" : 4,
+        "T002" : 4,
+        "T007" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 13,
+        "T005" : 1,
+        "T007" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 6
+      }
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R013" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 17,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 17
+      }
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator" : {
+      "methodsCount" : 6,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 4,
+        "T002" : 1,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R002" : 1,
+        "R013" : 3,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState" : {
+      "methodsCount" : 5,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 4,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R013" : 3,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerStateRefresher" : {
+      "methodsCount" : 4,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1,
+        "T012" : 1
+      },
+      "perMethodOutcome" : {
+        "R027" : 2,
+        "T005" : 1,
+        "T012" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.config.ProfileWebConfig" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "T005" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression" : {
+      "methodsCount" : 7,
+      "completeTestCount" : 7,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 5,
+        "T001" : 1,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 5,
+        "R027" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 7
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression$1" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T004" : 2,
+        "T012" : 1
+      },
+      "perMethodOutcome" : {
+        "T004" : 2,
+        "T012" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm" : {
+      "methodsCount" : 9,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T001" : 4,
+        "T002" : 4,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 9
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm" : {
+      "methodsCount" : 5,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T001" : 2,
+        "T002" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 5
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.AbstractAnonymousCustomerExtensionHandler" : {
+      "methodsCount" : 2,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.AnonymousCustomerExtensionHandler" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T010" : 1
+      },
+      "perMethodOutcome" : {
+        "T010" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.AnonymousCustomerExtensionManager" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1
+      },
+      "perMethodOutcome" : {
+        "T005" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerAuthenticatedFromCookieEvent" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T001" : 1,
+        "T002" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 3
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerLoggedInEvent" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T001" : 1,
+        "T002" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 3
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerMergeExtensionHandler" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T010" : 1
+      },
+      "perMethodOutcome" : {
+        "T010" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerMergeExtensionManager" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1
+      },
+      "perMethodOutcome" : {
+        "T005" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor" : {
+      "methodsCount" : 13,
+      "completeTestCount" : 29,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 9,
+        "T001" : 3,
+        "T002" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 11,
+        "R013" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 29
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.DefaultCustomerMergeExtensionHandler" : {
+      "methodsCount" : 2,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter" : {
+      "methodsCount" : 6,
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 3,
+        "T001" : 1,
+        "T003" : 1,
+        "T023" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2,
+        "R013" : 1,
+        "T003" : 1,
+        "T023" : 1,
+        "W002" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "warnings" : {
+        "W002" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginService" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T010" : 3
+      },
+      "perMethodOutcome" : {
+        "T010" : 3
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl" : {
+      "methodsCount" : 5,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 4,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R027" : 3,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationService" : {
+      "methodsCount" : 2,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T010" : 2
+      },
+      "perMethodOutcome" : {
+        "T010" : 2
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 2,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "R027" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatter" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T010" : 1
+      },
+      "perMethodOutcome" : {
+        "T010" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 14,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T003" : 1,
+        "T005" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "T003" : 1,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 14
+      }
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter" : {
+      "methodsCount" : 6,
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T001" : 1,
+        "T002" : 1,
+        "T005" : 1,
+        "T021" : 2
+      },
+      "perMethodOutcome" : {
+        "R000" : 6
+      },
+      "perTestOutcome" : {
+        "R000" : 3
+      }
+    },
+    "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet" : {
+      "methodsCount" : 3,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T005" : 1,
+        "T023" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 1,
+        "T023" : 1,
+        "W002" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "warnings" : {
+        "W002" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter" : {
+      "methodsCount" : 5,
+      "completeTestCount" : 7,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 5
+      },
+      "perMethodOutcome" : {
+        "R000" : 4,
+        "T005" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 7
+      }
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateInterceptor" : {
+      "methodsCount" : 4,
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1,
+        "T005" : 1,
+        "T021" : 2
+      },
+      "perMethodOutcome" : {
+        "R000" : 3,
+        "R013" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionCookie" : {
+      "methodsCount" : 1,
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 1
+      },
+      "perMethodOutcome" : {
+        "R004" : 1
+      }
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter" : {
+      "methodsCount" : 4,
+      "completeTestCount" : 4,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : {
+        "T000" : 3,
+        "T023" : 1
+      },
+      "perMethodOutcome" : {
+        "R000" : 2,
+        "T005" : 1,
+        "T023" : 1
+      },
+      "perTestOutcome" : {
+        "R000" : 4
+      },
+      "warnings" : {
+        "W002" : 1
+      }
+    }
+  },
+  "methods" : {
+    "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor.<init>:(Lorg/broadleafcommerce/profile/core/service/ChallengeQuestionService;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        29,
+        30,
+        31
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor.getAsText:()Ljava/lang/String;" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        35,
+        36,
+        37,
+        39
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomChallengeQuestionEditor.setAsText:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        45,
+        46
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        49,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.deletePhone:(Ljava/lang/Long;Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        90,
+        92,
+        94
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.initPhoneNameForm:(Ljavax/servlet/http/HttpServletRequest;Lorg/springframework/ui/Model;)Lorg/broadleafcommerce/profile/web/core/model/PhoneNameForm;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        108,
+        109,
+        111
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.makePhoneDefault:(Ljava/lang/Long;Ljavax/servlet/http/HttpServletRequest;)Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        127,
+        128,
+        130,
+        132
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.savePhone:(Lorg/broadleafcommerce/profile/web/core/model/PhoneNameForm;Lorg/springframework/validation/BindingResult;Ljavax/servlet/http/HttpServletRequest;Ljava/lang/Long;Ljava/lang/Long;)Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        154,
+        155,
+        158,
+        159,
+        162,
+        163,
+        164,
+        165,
+        167,
+        168,
+        169,
+        170,
+        171,
+        173,
+        174,
+        177,
+        179,
+        180,
+        181,
+        182,
+        185,
+        187
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setCustomerPhoneService:(Lorg/broadleafcommerce/profile/core/service/CustomerPhoneService;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        192,
+        193
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setCustomerPhoneValidator:(Lorg/broadleafcommerce/profile/web/controller/validator/CustomerPhoneValidator;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        196,
+        197
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setCustomerState:(Lorg/broadleafcommerce/profile/web/core/CustomerState;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        200,
+        201
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setEntityConfiguration:(Lorg/broadleafcommerce/common/persistence/EntityConfiguration;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        208,
+        209
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setPhoneFormatter:(Lorg/broadleafcommerce/profile/web/core/util/PhoneFormatter;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        216,
+        217
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setPhoneValidator:(Lorg/broadleafcommerce/profile/web/controller/validator/PhoneValidator;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        220,
+        221
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setdeletePhoneSuccessView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        204,
+        205
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setmakePhoneDefaultSuccessView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        212,
+        213
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setsavePhoneErrorView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        224,
+        225
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setsavePhoneSuccessView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        228,
+        229
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setviewPhoneErrorView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        232,
+        233
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.setviewPhoneSuccessView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        236,
+        237
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.CustomerPhoneController.viewPhone:(Ljava/lang/Long;Ljavax/servlet/http/HttpServletRequest;Lorg/broadleafcommerce/profile/web/core/model/PhoneNameForm;Lorg/springframework/validation/BindingResult;)Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        256,
+        257,
+        259,
+        260,
+        262,
+        265,
+        266,
+        269,
+        270,
+        271,
+        272,
+        274,
+        276
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        51,
+        54,
+        55,
+        56
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.getChallengeQuestions:()Ljava/util/List;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        103
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.getDisplayRegistrationFormView:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        132
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.getRegisterCustomerValidator:()Lorg/broadleafcommerce/profile/web/controller/validator/RegisterCustomerValidator;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        124
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.getRegistrationErrorView:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        108
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.getRegistrationSuccessView:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        116
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.initBinder:(Lorg/springframework/web/bind/WebDataBinder;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T007",
+      "perMethodOutcome" : "T007",
+      "lineNumbers" : [
+        141,
+        142
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.initCustomerRegistrationForm:()Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        95,
+        96,
+        97,
+        98
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.registerCustomer:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        72
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.registerCustomer:(Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;Lorg/springframework/validation/BindingResult;Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)Lorg/springframework/web/servlet/ModelAndView;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        78,
+        79,
+        80,
+        81,
+        82,
+        84
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.registerCustomerSuccess:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        90
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.setDisplayRegistrationFormView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        136,
+        137
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.setRegisterCustomerValidator:(Lorg/broadleafcommerce/profile/web/controller/validator/RegisterCustomerValidator;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        128,
+        129
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.setRegistrationErrorView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        112,
+        113
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.RegisterCustomerController.setRegistrationSuccessView:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        120,
+        121
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        36,
+        37,
+        38
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator.supports:(Ljava/lang/Class;)Z" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        42
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.CustomerPhoneValidator.validate:(Ljava/lang/Object;Lorg/springframework/validation/Errors;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        47,
+        49,
+        51,
+        53,
+        54,
+        56,
+        57,
+        59,
+        60,
+        62,
+        64,
+        65,
+        66,
+        71,
+        72,
+        73,
+        77,
+        78,
+        81,
+        82,
+        83,
+        84,
+        87,
+        88,
+        90,
+        92,
+        93,
+        94,
+        95,
+        98,
+        99,
+        102
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        27
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator.supports:(Ljava/lang/Class;)Z" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        31
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.PhoneValidator.validate:(Ljava/lang/Object;Lorg/springframework/validation/Errors;)V" : {
+      "completeTestCount" : 15,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 15
+      },
+      "lineNumbers" : [
+        36,
+        37,
+        40,
+        41,
+        42,
+        44,
+        45,
+        49,
+        50,
+        51,
+        52,
+        55
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        43,
+        38,
+        43
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.getValidatePasswordExpression:()Ljava/lang/String;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        94
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.setValidatePasswordExpression:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R002",
+      "lineNumbers" : [
+        98,
+        99
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.supports:(Ljava/lang/Class;)Z" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        47
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.validate:(Ljava/lang/Object;Lorg/springframework/validation/Errors;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        51,
+        52
+      ]
+    },
+    "org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator.validate:(Ljava/lang/Object;Lorg/springframework/validation/Errors;Z)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        55,
+        57,
+        59,
+        60,
+        61,
+        63,
+        67,
+        68,
+        70,
+        71,
+        72,
+        73,
+        74,
+        77,
+        79,
+        80,
+        83,
+        84,
+        87,
+        88,
+        91
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        36
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState.getCustomer:()Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        47,
+        48,
+        49,
+        51
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState.getCustomer:(Ljavax/servlet/http/HttpServletRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        39
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState.getCustomer:(Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        43
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerState.setCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        55,
+        56
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerStateRefresher.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        40
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerStateRefresher.onApplicationEvent:(Lorg/broadleafcommerce/profile/core/domain/CustomerPersistedEvent;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        54,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        65,
+        66,
+        67,
+        72,
+        75,
+        76,
+        78,
+        81
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerStateRefresher.onApplicationEvent:(Lorg/springframework/context/ApplicationEvent;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        39
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.CustomerStateRefresher.resetTransientFields:(Lorg/broadleafcommerce/profile/core/domain/Customer;Lorg/broadleafcommerce/profile/core/domain/Customer;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.config.ProfileWebConfig.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        26
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression$1.<init>:(Lorg/broadleafcommerce/profile/web/core/expression/CustomerVariableExpression;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T004",
+      "perMethodOutcome" : "T004",
+      "lineNumbers" : [
+        90
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression$1.compare:(Ljava/lang/Object;Ljava/lang/Object;)I" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T012",
+      "perMethodOutcome" : "T012",
+      "lineNumbers" : [
+        90
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression$1.compare:(Lorg/broadleafcommerce/profile/core/domain/CustomerPayment;Lorg/broadleafcommerce/profile/core/domain/CustomerPayment;)I" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T004",
+      "perMethodOutcome" : "T004",
+      "lineNumbers" : [
+        93,
+        94,
+        95,
+        96,
+        98
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        47
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.getCurrent:()Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        64
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.getCustomerAddresses:()Ljava/util/List;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        68,
+        70
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.getCustomerPayments:()Ljava/util/List;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        78,
+        79,
+        81,
+        82,
+        83,
+        86
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.getName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        60
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.savedPaymentsAreEnabled:()Z" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        74
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression.sortCustomerPaymentsByDefault:(Ljava/util/List;)V" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        90,
+        102
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        24
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.getCustomer:()Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        33
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.getPassword:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        41
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.getPasswordConfirm:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        49
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.getRedirectUrl:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        57
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.setCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        37,
+        38
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.setPassword:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        45,
+        46
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.setPasswordConfirm:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        53,
+        54
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm.setRedirectUrl:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        61,
+        62
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        31
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm.getPhone:()Lorg/broadleafcommerce/profile/core/domain/Phone;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        36
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm.getPhoneName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        40
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm.setPhone:(Lorg/broadleafcommerce/profile/core/domain/Phone;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        44,
+        45
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.model.PhoneNameForm.setPhoneName:(Ljava/lang/String;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        48,
+        49
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.AbstractAnonymousCustomerExtensionHandler.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        26
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.AbstractAnonymousCustomerExtensionHandler.getAnonymousCustomer:(Lorg/broadleafcommerce/common/extension/ExtensionResultHolder;Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        30
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.AnonymousCustomerExtensionHandler.getAnonymousCustomer:(Lorg/broadleafcommerce/common/extension/ExtensionResultHolder;Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.security.AnonymousCustomerExtensionManager.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        27,
+        28
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerAuthenticatedFromCookieEvent.<init>:(Lorg/broadleafcommerce/profile/core/domain/Customer;Ljava/lang/Object;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        30,
+        31,
+        32
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerAuthenticatedFromCookieEvent.getCustomer:()Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        35
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerAuthenticatedFromCookieEvent.setCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        39,
+        40
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerLoggedInEvent.<init>:(Lorg/broadleafcommerce/profile/core/domain/Customer;Ljava/lang/Object;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        30,
+        31,
+        32
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerLoggedInEvent.getCustomer:()Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        35
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerLoggedInEvent.setCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        39,
+        40
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerMergeExtensionHandler.merge:(Lorg/broadleafcommerce/common/extension/ExtensionResultHolder;Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerMergeExtensionManager.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        27,
+        28
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        53,
+        56
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.copyAnonymousCustomerInfoToCustomer:(Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 4,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 4
+      },
+      "lineNumbers" : [
+        204,
+        205,
+        206,
+        207,
+        209,
+        210,
+        211,
+        213,
+        214,
+        218,
+        220
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getAnonymousCustomer:(Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 5,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 5
+      },
+      "lineNumbers" : [
+        292,
+        293,
+        294,
+        295,
+        296,
+        300,
+        301,
+        303,
+        306,
+        307,
+        310,
+        313,
+        315
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getAnonymousCustomerIdSessionAttributeName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        346
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getAnonymousCustomerMergedSessionAttributeName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        377
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getAnonymousCustomerSessionAttributeName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        329
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.getCustomerRequestAttributeName:()Ljava/lang/String;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        366
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.mergeCustomerIfRequired:(Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 8,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 8
+      },
+      "lineNumbers" : [
+        176,
+        178,
+        180,
+        182,
+        183,
+        186
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.process:(Lorg/springframework/web/context/request/WebRequest;)V" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        80,
+        81,
+        82,
+        83,
+        85,
+        86,
+        87,
+        88,
+        91,
+        92,
+        93,
+        94,
+        95,
+        97,
+        98,
+        99,
+        102,
+        103,
+        104,
+        106,
+        108,
+        109,
+        110,
+        111,
+        112,
+        115,
+        116,
+        117,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        127,
+        128,
+        129,
+        132,
+        133,
+        138,
+        144,
+        147,
+        149,
+        153,
+        154,
+        155,
+        157,
+        158,
+        160
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.publishEvent:(Lorg/springframework/context/ApplicationEvent;Lorg/springframework/web/context/request/WebRequest;Ljava/lang/String;Ljava/lang/String;)V" : {
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
+      "lineNumbers" : [
+        163,
+        164,
+        165,
+        166
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.resolveAnonymousCustomer:(Lorg/springframework/web/context/request/WebRequest;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 5,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 5
+      },
+      "lineNumbers" : [
+        265,
+        269,
+        270,
+        271,
+        272,
+        275,
+        277
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.resolveAuthenticatedCustomer:(Lorg/springframework/security/core/Authentication;)Lorg/broadleafcommerce/profile/core/domain/Customer;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        229
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.CustomerStateRequestProcessor.setApplicationEventPublisher:(Lorg/springframework/context/ApplicationEventPublisher;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        351,
+        352
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.DefaultCustomerMergeExtensionHandler.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        27
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.DefaultCustomerMergeExtensionHandler.merge:(Lorg/broadleafcommerce/common/extension/ExtensionResultHolder;Lorg/springframework/web/context/request/WebRequest;Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/broadleafcommerce/common/extension/ExtensionResultStatusType;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        31
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.<clinit>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T023",
+      "perMethodOutcome" : "T023"
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "W002",
+      "warnings" : {
+        "W002" : 1
+      },
+      "lineNumbers" : [
+        60
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.doFilter:(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;Ljavax/servlet/FilterChain;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        74,
+        76,
+        79,
+        82,
+        83,
+        86,
+        88,
+        91,
+        93,
+        96,
+        98,
+        100,
+        101,
+        102,
+        103,
+        105,
+        106,
+        110,
+        111,
+        112,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        125,
+        126
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.getCustomerIdAttributeName:()Ljava/lang/String;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        145
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.getOrder:()I" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        141
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.security.RestApiCustomerStateFilter.setupCustomerForRuleProcessing:(Lorg/broadleafcommerce/profile/core/domain/Customer;Ljavax/servlet/http/HttpServletRequest;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T003",
+      "perMethodOutcome" : "T003",
+      "lineNumbers" : [
+        131,
+        132,
+        133,
+        135,
+        136,
+        137
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginService.loginCustomer:(Ljava/lang/String;Ljava/lang/String;)Lorg/springframework/security/core/Authentication;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginService.loginCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/springframework/security/core/Authentication;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginService.logoutCustomer:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        36
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl.getWebRequest:()Lorg/springframework/web/context/request/WebRequest;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        74
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl.loginCustomer:(Ljava/lang/String;Ljava/lang/String;)Lorg/springframework/security/core/Authentication;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl.loginCustomer:(Lorg/broadleafcommerce/profile/core/domain/Customer;)Lorg/springframework/security/core/Authentication;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        52
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.login.LoginServiceImpl.logoutCustomer:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        68,
+        69,
+        70,
+        71
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationService.addRedirectUrlToForm:(Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationService.initCustomerRegistrationForm:()Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        33
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl.addRedirectUrlToForm:(Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R027",
+      "lineNumbers" : [
+        52,
+        53,
+        55,
+        56,
+        58,
+        60
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.service.register.RegistrationServiceImpl.initCustomerRegistrationForm:()Lorg/broadleafcommerce/profile/web/core/form/RegisterCustomerForm;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        40,
+        41,
+        42,
+        45,
+        46,
+        47
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatter.formatPhoneNumber:(Lorg/broadleafcommerce/profile/core/domain/Phone;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T010",
+      "perMethodOutcome" : "T010"
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        25
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl.formatPhoneNumber:(Lorg/broadleafcommerce/profile/core/domain/Phone;)V" : {
+      "completeTestCount" : 14,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 14
+      },
+      "lineNumbers" : [
+        27,
+        28,
+        30
+      ]
+    },
+    "org.broadleafcommerce.profile.web.core.util.PhoneFormatterImpl.formatTelephoneNumber:(Ljava/lang/String;)Ljava/lang/String;" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T003",
+      "perMethodOutcome" : "T003",
+      "lineNumbers" : [
+        33,
+        34,
+        37,
+        39,
+        40,
+        43,
+        44,
+        47,
+        49,
+        50,
+        51,
+        54
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        44
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.destroy:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T021",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        58
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.doFilter:(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;Ljavax/servlet/FilterChain;)V" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        67,
+        68,
+        74,
+        75,
+        77,
+        78,
+        79,
+        80,
+        81,
+        83,
+        85,
+        87,
+        88,
+        89,
+        93,
+        94,
+        95,
+        97,
+        98
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.getEmailTrackingManager:()Lorg/broadleafcommerce/common/email/service/EmailTrackingManager;" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T001",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        112
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.init:(Ljavax/servlet/FilterConfig;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T021",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        106
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailClickTrackingFilter.setEmailTrackingManager:(Lorg/broadleafcommerce/common/email/service/EmailTrackingManager;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T002",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        119,
+        120
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet.<clinit>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T023",
+      "perMethodOutcome" : "T023"
+    },
+    "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        42
+      ]
+    },
+    "org.broadleafcommerce.profile.web.email.EmailOpenTrackingServlet.doGet:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "W002",
+      "warnings" : {
+        "W002" : 1
+      },
+      "lineNumbers" : [
+        55,
+        56,
+        59,
+        60,
+        61,
+        65,
+        66,
+        67,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        77,
+        78,
+        79,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        88,
+        90,
+        92,
+        93,
+        95,
+        93,
+        94,
+        95,
+        92,
+        93,
+        95,
+        93,
+        94,
+        99,
+        100
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        49
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter.doFilterInternalUnlessIgnored:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;Ljavax/servlet/FilterChain;)V" : {
+      "completeTestCount" : 2,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 2
+      },
+      "lineNumbers" : [
+        57,
+        59,
+        60,
+        62,
+        63,
+        62,
+        63,
+        64
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter.getOrder:()I" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        78
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter.isIgnored:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)Z" : {
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
+      "lineNumbers" : [
+        68,
+        69,
+        71,
+        73
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateFilter.shouldNotFilterErrorDispatch:()Z" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        83
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateInterceptor.<init>:()V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T005",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        40
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateInterceptor.afterCompletion:(Lorg/springframework/web/context/request/WebRequest;Ljava/lang/Exception;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T021",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        58
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateInterceptor.postHandle:(Lorg/springframework/web/context/request/WebRequest;Lorg/springframework/ui/ModelMap;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T021",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        53
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.CustomerStateInterceptor.preHandle:(Lorg/springframework/web/context/request/WebRequest;)V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R013",
+      "lineNumbers" : [
+        47,
+        48
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionCookie.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R004",
+      "lineNumbers" : [
+        33,
+        34
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.<clinit>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T023",
+      "perMethodOutcome" : "T023"
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.<init>:()V" : {
+      "completeTestCount" : 0,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "T005",
+      "lineNumbers" : [
+        58
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.abortUser:(Ljavax/servlet/http/HttpServletRequest;Ljavax/servlet/http/HttpServletResponse;)V" : {
+      "completeTestCount" : 1,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 1
+      },
+      "lineNumbers" : [
+        121,
+        122,
+        123,
+        124,
+        126,
+        127
+      ]
+    },
+    "org.broadleafcommerce.profile.web.site.security.SessionFixationProtectionFilter.doFilter:(Ljavax/servlet/ServletRequest;Ljavax/servlet/ServletResponse;Ljavax/servlet/FilterChain;)V" : {
+      "completeTestCount" : 3,
+      "incompleteTestCount" : 0,
+      "perMethodTestability" : "T000",
+      "perMethodOutcome" : "R000",
+      "perTestOutcome" : {
+        "R000" : 3
+      },
+      "warnings" : {
+        "W002" : 1
+      },
+      "lineNumbers" : [
+        77,
+        78,
+        79,
+        81,
+        82,
+        83,
+        86,
+        88,
+        91,
+        92,
+        94,
+        95,
+        96,
+        97,
+        99,
+        105,
+        108,
+        106,
+        107,
+        110,
+        112,
+        113,
+        117,
+        118
+      ]
+    }
+  },
+  "validationMetrics" : { }
+}

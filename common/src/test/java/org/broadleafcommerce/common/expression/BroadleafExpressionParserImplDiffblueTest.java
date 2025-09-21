@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.List;
@@ -53,30 +54,34 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {BroadleafExpressionParserImpl.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafExpressionParserImplDiffblueTest {
-  @Autowired
-  private BroadleafExpressionParserImpl broadleafExpressionParserImpl;
+  @Autowired private BroadleafExpressionParserImpl broadleafExpressionParserImpl;
 
   /**
-   * Test {@link BroadleafExpressionParserImpl#parseExpression(String, Map)} with {@code expressionString}, {@code context}.
-   * <p>
-   * Method under test: {@link BroadleafExpressionParserImpl#parseExpression(String, Map)}
+   * Test {@link BroadleafExpressionParserImpl#parseExpression(String, Map)} with {@code
+   * expressionString}, {@code context}.
+   *
+   * <p>Method under test: {@link BroadleafExpressionParserImpl#parseExpression(String, Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafExpressionParserImpl.parseExpression(String, Map)"})
   public void testParseExpressionWithExpressionStringContext() {
     // Arrange, Act and Assert
-    assertEquals("Expression String",
+    assertEquals(
+        "Expression String",
         broadleafExpressionParserImpl.parseExpression("Expression String", new HashMap<>()));
   }
 
   /**
-   * Test {@link BroadleafExpressionParserImpl#parseExpression(String, Map, Class)} with {@code expressionString}, {@code context}, {@code targetType}.
-   * <p>
-   * Method under test: {@link BroadleafExpressionParserImpl#parseExpression(String, Map, Class)}
+   * Test {@link BroadleafExpressionParserImpl#parseExpression(String, Map, Class)} with {@code
+   * expressionString}, {@code context}, {@code targetType}.
+   *
+   * <p>Method under test: {@link BroadleafExpressionParserImpl#parseExpression(String, Map, Class)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object BroadleafExpressionParserImpl.parseExpression(String, Map, Class)"})
   public void testParseExpressionWithExpressionStringContextTargetType() {
     // Arrange
@@ -84,8 +89,8 @@ public class BroadleafExpressionParserImplDiffblueTest {
     Class<Object> targetType = Object.class;
 
     // Act
-    Object actualParseExpressionResult = broadleafExpressionParserImpl.parseExpression("Expression String", context,
-        targetType);
+    Object actualParseExpressionResult =
+        broadleafExpressionParserImpl.parseExpression("Expression String", context, targetType);
 
     // Assert
     List<PropertyAccessor> propertyAccessors = broadleafExpressionParserImpl.getPropertyAccessors();
@@ -99,11 +104,12 @@ public class BroadleafExpressionParserImplDiffblueTest {
 
   /**
    * Test {@link BroadleafExpressionParserImpl#getParserContext()}.
-   * <p>
-   * Method under test: {@link BroadleafExpressionParserImpl#getParserContext()}
+   *
+   * <p>Method under test: {@link BroadleafExpressionParserImpl#getParserContext()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ParserContext BroadleafExpressionParserImpl.getParserContext()"})
   public void testGetParserContext() {
     // Arrange and Act
@@ -118,37 +124,48 @@ public class BroadleafExpressionParserImplDiffblueTest {
 
   /**
    * Test {@link BroadleafExpressionParserImpl#createStandardEvaluationContext(Map)}.
-   * <p>
-   * Method under test: {@link BroadleafExpressionParserImpl#createStandardEvaluationContext(Map)}
+   *
+   * <p>Method under test: {@link
+   * BroadleafExpressionParserImpl#createStandardEvaluationContext(Map)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"StandardEvaluationContext BroadleafExpressionParserImpl.createStandardEvaluationContext(Map)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "StandardEvaluationContext BroadleafExpressionParserImpl.createStandardEvaluationContext(Map)"
+  })
   public void testCreateStandardEvaluationContext() {
     // Arrange
     HashMap<String, Object> context = new HashMap<>();
 
     // Act
-    StandardEvaluationContext actualCreateStandardEvaluationContextResult = broadleafExpressionParserImpl
-        .createStandardEvaluationContext(context);
+    StandardEvaluationContext actualCreateStandardEvaluationContextResult =
+        broadleafExpressionParserImpl.createStandardEvaluationContext(context);
 
     // Assert
     Object value = actualCreateStandardEvaluationContextResult.getRootObject().getValue();
     assertTrue(value instanceof Map);
-    List<ConstructorResolver> constructorResolvers = actualCreateStandardEvaluationContextResult
-        .getConstructorResolvers();
+    List<ConstructorResolver> constructorResolvers =
+        actualCreateStandardEvaluationContextResult.getConstructorResolvers();
     assertEquals(1, constructorResolvers.size());
     assertTrue(constructorResolvers.get(0) instanceof ReflectiveConstructorResolver);
-    List<MethodResolver> methodResolvers = actualCreateStandardEvaluationContextResult.getMethodResolvers();
+    List<MethodResolver> methodResolvers =
+        actualCreateStandardEvaluationContextResult.getMethodResolvers();
     assertEquals(1, methodResolvers.size());
     assertTrue(methodResolvers.get(0) instanceof ReflectiveMethodResolver);
-    List<PropertyAccessor> propertyAccessors = actualCreateStandardEvaluationContextResult.getPropertyAccessors();
+    List<PropertyAccessor> propertyAccessors =
+        actualCreateStandardEvaluationContextResult.getPropertyAccessors();
     assertEquals(1, propertyAccessors.size());
     assertTrue(propertyAccessors.get(0) instanceof ReflectivePropertyAccessor);
     assertTrue(
-        actualCreateStandardEvaluationContextResult.getOperatorOverloader() instanceof StandardOperatorOverloader);
-    assertTrue(actualCreateStandardEvaluationContextResult.getTypeComparator() instanceof StandardTypeComparator);
-    assertTrue(actualCreateStandardEvaluationContextResult.getTypeConverter() instanceof StandardTypeConverter);
+        actualCreateStandardEvaluationContextResult.getOperatorOverloader()
+            instanceof StandardOperatorOverloader);
+    assertTrue(
+        actualCreateStandardEvaluationContextResult.getTypeComparator()
+            instanceof StandardTypeComparator);
+    assertTrue(
+        actualCreateStandardEvaluationContextResult.getTypeConverter()
+            instanceof StandardTypeConverter);
     TypeLocator typeLocator = actualCreateStandardEvaluationContextResult.getTypeLocator();
     assertTrue(typeLocator instanceof StandardTypeLocator);
     assertNull(actualCreateStandardEvaluationContextResult.getBeanResolver());
@@ -160,26 +177,33 @@ public class BroadleafExpressionParserImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link BroadleafExpressionParserImpl#getExpressionParser()}
    *   <li>{@link BroadleafExpressionParserImpl#getPropertyAccessors()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExpressionParser BroadleafExpressionParserImpl.getExpressionParser()",
-      "List BroadleafExpressionParserImpl.getPropertyAccessors()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExpressionParser BroadleafExpressionParserImpl.getExpressionParser()",
+    "List BroadleafExpressionParserImpl.getPropertyAccessors()"
+  })
   public void testGettersAndSetters() {
     // Arrange
-    BroadleafExpressionParserImpl broadleafExpressionParserImpl = new BroadleafExpressionParserImpl();
+    BroadleafExpressionParserImpl broadleafExpressionParserImpl =
+        new BroadleafExpressionParserImpl();
 
     // Act
     ExpressionParser actualExpressionParser = broadleafExpressionParserImpl.getExpressionParser();
+    List<PropertyAccessor> actualPropertyAccessors =
+        broadleafExpressionParserImpl.getPropertyAccessors();
 
     // Assert
     assertTrue(actualExpressionParser instanceof SpelExpressionParser);
-    assertSame(broadleafExpressionParserImpl.propertyAccessors, broadleafExpressionParserImpl.getPropertyAccessors());
+    assertSame(broadleafExpressionParserImpl.propertyAccessors, actualPropertyAccessors);
   }
 }

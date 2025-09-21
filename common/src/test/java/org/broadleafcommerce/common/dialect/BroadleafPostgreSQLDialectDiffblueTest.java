@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import java.util.Properties;
@@ -46,20 +47,24 @@ import org.junit.experimental.categories.Category;
 public class BroadleafPostgreSQLDialectDiffblueTest {
   /**
    * Test {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}.
+   *
    * <ul>
-   *   <li>When {@code 2005}.</li>
-   *   <li>Then return {@link PostgreSQLClobTypeDescriptor}.</li>
+   *   <li>When {@code 2005}.
+   *   <li>Then return {@link PostgreSQLClobTypeDescriptor}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}
+   *
+   * <p>Method under test: {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"SqlTypeDescriptor BroadleafPostgreSQLDialect.getSqlTypeDescriptorOverride(int)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "SqlTypeDescriptor BroadleafPostgreSQLDialect.getSqlTypeDescriptorOverride(int)"
+  })
   public void testGetSqlTypeDescriptorOverride_when2005_thenReturnPostgreSQLClobTypeDescriptor() {
     // Arrange and Act
-    SqlTypeDescriptor actualSqlTypeDescriptorOverride = (new BroadleafPostgreSQLDialect())
-        .getSqlTypeDescriptorOverride(2005);
+    SqlTypeDescriptor actualSqlTypeDescriptorOverride =
+        new BroadleafPostgreSQLDialect().getSqlTypeDescriptorOverride(2005);
 
     // Assert
     assertTrue(actualSqlTypeDescriptorOverride instanceof PostgreSQLClobTypeDescriptor);
@@ -68,28 +73,34 @@ public class BroadleafPostgreSQLDialectDiffblueTest {
 
   /**
    * Test {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}.
+   *
    * <ul>
-   *   <li>When one.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When one.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}
+   *
+   * <p>Method under test: {@link BroadleafPostgreSQLDialect#getSqlTypeDescriptorOverride(int)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"SqlTypeDescriptor BroadleafPostgreSQLDialect.getSqlTypeDescriptorOverride(int)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "SqlTypeDescriptor BroadleafPostgreSQLDialect.getSqlTypeDescriptorOverride(int)"
+  })
   public void testGetSqlTypeDescriptorOverride_whenOne_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new BroadleafPostgreSQLDialect()).getSqlTypeDescriptorOverride(1));
+    assertNull(new BroadleafPostgreSQLDialect().getSqlTypeDescriptorOverride(1));
   }
 
   /**
    * Test new {@link BroadleafPostgreSQLDialect} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link BroadleafPostgreSQLDialect}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * BroadleafPostgreSQLDialect}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void BroadleafPostgreSQLDialect.<init>()"})
   public void testNewBroadleafPostgreSQLDialect() {
     // Arrange and Act
@@ -97,27 +108,44 @@ public class BroadleafPostgreSQLDialectDiffblueTest {
 
     // Assert
     assertTrue(
-        actualBroadleafPostgreSQLDialect.getIdentityColumnSupport() instanceof PostgreSQL81IdentityColumnSupport);
-    assertTrue(actualBroadleafPostgreSQLDialect.getUniqueDelegate() instanceof DefaultUniqueDelegate);
-    assertTrue(actualBroadleafPostgreSQLDialect.getSchemaNameResolver() instanceof DefaultSchemaNameResolver);
-    assertTrue(actualBroadleafPostgreSQLDialect
-        .getDefaultMultiTableBulkIdStrategy() instanceof LocalTemporaryTableBulkIdStrategy);
+        actualBroadleafPostgreSQLDialect.getIdentityColumnSupport()
+            instanceof PostgreSQL81IdentityColumnSupport);
     assertTrue(
-        actualBroadleafPostgreSQLDialect.getCallableStatementSupport() instanceof PostgresCallableStatementSupport);
-    assertTrue(actualBroadleafPostgreSQLDialect
-        .getSequenceInformationExtractor() instanceof SequenceInformationExtractorLegacyImpl);
-    assertTrue(actualBroadleafPostgreSQLDialect
-        .getAuxiliaryDatabaseObjectExporter() instanceof StandardAuxiliaryDatabaseObjectExporter);
-    assertTrue(actualBroadleafPostgreSQLDialect.getForeignKeyExporter() instanceof StandardForeignKeyExporter);
-    assertTrue(actualBroadleafPostgreSQLDialect.getIndexExporter() instanceof StandardIndexExporter);
-    assertTrue(actualBroadleafPostgreSQLDialect.getSequenceExporter() instanceof StandardSequenceExporter);
-    assertTrue(actualBroadleafPostgreSQLDialect.getTableExporter() instanceof StandardTableExporter);
-    assertTrue(actualBroadleafPostgreSQLDialect.getUniqueKeyExporter() instanceof StandardUniqueKeyExporter);
+        actualBroadleafPostgreSQLDialect.getUniqueDelegate() instanceof DefaultUniqueDelegate);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getSchemaNameResolver()
+            instanceof DefaultSchemaNameResolver);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getDefaultMultiTableBulkIdStrategy()
+            instanceof LocalTemporaryTableBulkIdStrategy);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getCallableStatementSupport()
+            instanceof PostgresCallableStatementSupport);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getSequenceInformationExtractor()
+            instanceof SequenceInformationExtractorLegacyImpl);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getAuxiliaryDatabaseObjectExporter()
+            instanceof StandardAuxiliaryDatabaseObjectExporter);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getForeignKeyExporter()
+            instanceof StandardForeignKeyExporter);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getIndexExporter() instanceof StandardIndexExporter);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getSequenceExporter() instanceof StandardSequenceExporter);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getTableExporter() instanceof StandardTableExporter);
+    assertTrue(
+        actualBroadleafPostgreSQLDialect.getUniqueKeyExporter()
+            instanceof StandardUniqueKeyExporter);
     assertEquals(" cascade", actualBroadleafPostgreSQLDialect.getCascadeConstraintsString());
     assertEquals(" cross join ", actualBroadleafPostgreSQLDialect.getCrossJoinSeparator());
     assertEquals(" drop constraint ", actualBroadleafPostgreSQLDialect.getDropForeignKeyString());
-    assertEquals(" for update nowait ", actualBroadleafPostgreSQLDialect.getForUpdateNowaitString());
-    assertEquals(" for update skip locked", actualBroadleafPostgreSQLDialect.getForUpdateSkipLockedString());
+    assertEquals(
+        " for update nowait ", actualBroadleafPostgreSQLDialect.getForUpdateNowaitString());
+    assertEquals(
+        " for update skip locked", actualBroadleafPostgreSQLDialect.getForUpdateSkipLockedString());
     assertEquals(" for update", actualBroadleafPostgreSQLDialect.getForUpdateString());
     assertEquals("", actualBroadleafPostgreSQLDialect.getAddColumnSuffixString());
     assertEquals("", actualBroadleafPostgreSQLDialect.getNullColumnString());
@@ -125,14 +153,18 @@ public class BroadleafPostgreSQLDialectDiffblueTest {
     assertEquals("add column", actualBroadleafPostgreSQLDialect.getAddColumnString());
     assertEquals("create table", actualBroadleafPostgreSQLDialect.getCreateMultisetTableString());
     assertEquals("create table", actualBroadleafPostgreSQLDialect.getCreateTableString());
-    assertEquals("current_timestamp", actualBroadleafPostgreSQLDialect.getCurrentTimestampSQLFunctionName());
+    assertEquals(
+        "current_timestamp", actualBroadleafPostgreSQLDialect.getCurrentTimestampSQLFunctionName());
     assertEquals("default values", actualBroadleafPostgreSQLDialect.getNoColumnsInsertString());
     assertEquals("ilike", actualBroadleafPostgreSQLDialect.getCaseInsensitiveLike());
     assertEquals("lower", actualBroadleafPostgreSQLDialect.getLowercaseFunction());
-    assertEquals("select * from information_schema.sequences",
+    assertEquals(
+        "select * from information_schema.sequences",
         actualBroadleafPostgreSQLDialect.getQuerySequencesString());
-    assertEquals("select now()", actualBroadleafPostgreSQLDialect.getCurrentTimestampSelectString());
-    assertEquals("sequence", actualBroadleafPostgreSQLDialect.getNativeIdentifierGeneratorStrategy());
+    assertEquals(
+        "select now()", actualBroadleafPostgreSQLDialect.getCurrentTimestampSelectString());
+    assertEquals(
+        "sequence", actualBroadleafPostgreSQLDialect.getNativeIdentifierGeneratorStrategy());
     assertNull(actualBroadleafPostgreSQLDialect.getCurrentSchemaCommand());
     assertNull(actualBroadleafPostgreSQLDialect.getNameQualifierSupport());
     assertEquals(0, actualBroadleafPostgreSQLDialect.getInExpressionCountLimit());
@@ -157,7 +189,8 @@ public class BroadleafPostgreSQLDialectDiffblueTest {
     assertTrue(actualBroadleafPostgreSQLDialect.hasAlterTable());
     assertTrue(actualBroadleafPostgreSQLDialect.isJdbcLogWarningsEnabledByDefault());
     Class<IdentityGenerator> expectedNativeIdentifierGeneratorClass = IdentityGenerator.class;
-    assertEquals(expectedNativeIdentifierGeneratorClass,
+    assertEquals(
+        expectedNativeIdentifierGeneratorClass,
         actualBroadleafPostgreSQLDialect.getNativeIdentifierGeneratorClass());
   }
 }

@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.sandbox.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,8 +29,9 @@ import org.junit.experimental.categories.Category;
 public class SandBoxTypeDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SandBoxType#SandBoxType()}
    *   <li>{@link SandBoxType#getFriendlyType()}
@@ -38,9 +40,14 @@ public class SandBoxTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SandBoxType.<init>()", "String SandBoxType.getFriendlyType()",
-      "Integer SandBoxType.getPriority()", "String SandBoxType.getType()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SandBoxType.<init>()",
+    "String SandBoxType.getFriendlyType()",
+    "Integer SandBoxType.getPriority()",
+    "String SandBoxType.getType()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SandBoxType actualSandBoxType = new SandBoxType();
@@ -55,19 +62,22 @@ public class SandBoxTypeDiffblueTest {
 
   /**
    * Test {@link SandBoxType#equals(Object)}, and {@link SandBoxType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SandBoxType#equals(Object)}
    *   <li>{@link SandBoxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -76,25 +86,27 @@ public class SandBoxTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(sandBoxType, sandBoxType2);
-    int expectedHashCodeResult = sandBoxType.hashCode();
-    assertEquals(expectedHashCodeResult, sandBoxType2.hashCode());
+    assertEquals(sandBoxType.hashCode(), sandBoxType2.hashCode());
   }
 
   /**
    * Test {@link SandBoxType#equals(Object)}, and {@link SandBoxType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SandBoxType#equals(Object)}
    *   <li>{@link SandBoxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -103,25 +115,27 @@ public class SandBoxTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(sandBoxType, sandBoxType2);
-    int expectedHashCodeResult = sandBoxType.hashCode();
-    assertEquals(expectedHashCodeResult, sandBoxType2.hashCode());
+    assertEquals(sandBoxType.hashCode(), sandBoxType2.hashCode());
   }
 
   /**
    * Test {@link SandBoxType#equals(Object)}, and {@link SandBoxType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link SandBoxType#equals(Object)}
    *   <li>{@link SandBoxType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -135,15 +149,17 @@ public class SandBoxTypeDiffblueTest {
 
   /**
    * Test {@link SandBoxType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#equals(Object)}
+   *
+   * <p>Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -152,15 +168,17 @@ public class SandBoxTypeDiffblueTest {
 
   /**
    * Test {@link SandBoxType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#equals(Object)}
+   *
+   * <p>Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
@@ -169,15 +187,17 @@ public class SandBoxTypeDiffblueTest {
 
   /**
    * Test {@link SandBoxType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#equals(Object)}
+   *
+   * <p>Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
@@ -186,15 +206,17 @@ public class SandBoxTypeDiffblueTest {
 
   /**
    * Test {@link SandBoxType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link SandBoxType#equals(Object)}
+   *
+   * <p>Method under test: {@link SandBoxType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean SandBoxType.equals(Object)", "int SandBoxType.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert

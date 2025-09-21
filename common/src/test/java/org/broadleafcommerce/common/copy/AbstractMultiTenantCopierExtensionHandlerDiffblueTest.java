@@ -19,7 +19,8 @@ package org.broadleafcommerce.common.copy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
@@ -41,14 +42,19 @@ public class AbstractMultiTenantCopierExtensionHandlerDiffblueTest {
   private AbstractMultiTenantCopierExtensionHandler abstractMultiTenantCopierExtensionHandler;
 
   /**
-   * Test {@link AbstractMultiTenantCopierExtensionHandler#transformCopy(MultiTenantCopyContext, Object, Object)}.
-   * <p>
-   * Method under test: {@link AbstractMultiTenantCopierExtensionHandler#transformCopy(MultiTenantCopyContext, Object, Object)}
+   * Test {@link AbstractMultiTenantCopierExtensionHandler#transformCopy(MultiTenantCopyContext,
+   * Object, Object)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractMultiTenantCopierExtensionHandler#transformCopy(MultiTenantCopyContext, Object,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.transformCopy(MultiTenantCopyContext, Object, Object)"})
+    "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.transformCopy(MultiTenantCopyContext, Object, Object)"
+  })
   public void testTransformCopy() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -57,22 +63,36 @@ public class AbstractMultiTenantCopierExtensionHandlerDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
+    MultiTenantCopyContext context =
+        new MultiTenantCopyContext(
+            fromCatalog,
+            toCatalog,
+            fromSite,
+            toSite,
+            genericEntityService,
+            new MultiTenantCopierExtensionManager());
+
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractMultiTenantCopierExtensionHandler.transformCopy(new MultiTenantCopyContext(fromCatalog, toCatalog,
-            fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()), BLCFieldUtils.NULL_FIELD,
-            BLCFieldUtils.NULL_FIELD));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractMultiTenantCopierExtensionHandler.transformCopy(
+            context, BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link AbstractMultiTenantCopierExtensionHandler#prepareForSave(MultiTenantCopyContext, Object, Object)}.
-   * <p>
-   * Method under test: {@link AbstractMultiTenantCopierExtensionHandler#prepareForSave(MultiTenantCopyContext, Object, Object)}
+   * Test {@link AbstractMultiTenantCopierExtensionHandler#prepareForSave(MultiTenantCopyContext,
+   * Object, Object)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractMultiTenantCopierExtensionHandler#prepareForSave(MultiTenantCopyContext, Object,
+   * Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.prepareForSave(MultiTenantCopyContext, Object, Object)"})
+    "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.prepareForSave(MultiTenantCopyContext, Object, Object)"
+  })
   public void testPrepareForSave() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -81,22 +101,35 @@ public class AbstractMultiTenantCopierExtensionHandlerDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
+    MultiTenantCopyContext context =
+        new MultiTenantCopyContext(
+            fromCatalog,
+            toCatalog,
+            fromSite,
+            toSite,
+            genericEntityService,
+            new MultiTenantCopierExtensionManager());
+
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractMultiTenantCopierExtensionHandler.prepareForSave(new MultiTenantCopyContext(fromCatalog, toCatalog,
-            fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()), BLCFieldUtils.NULL_FIELD,
-            BLCFieldUtils.NULL_FIELD));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractMultiTenantCopierExtensionHandler.prepareForSave(
+            context, BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link AbstractMultiTenantCopierExtensionHandler#postSave(MultiTenantCopyContext, Object, Object)}.
-   * <p>
-   * Method under test: {@link AbstractMultiTenantCopierExtensionHandler#postSave(MultiTenantCopyContext, Object, Object)}
+   * Test {@link AbstractMultiTenantCopierExtensionHandler#postSave(MultiTenantCopyContext, Object,
+   * Object)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractMultiTenantCopierExtensionHandler#postSave(MultiTenantCopyContext, Object, Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.postSave(MultiTenantCopyContext, Object, Object)"})
+    "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.postSave(MultiTenantCopyContext, Object, Object)"
+  })
   public void testPostSave() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -105,22 +138,36 @@ public class AbstractMultiTenantCopierExtensionHandlerDiffblueTest {
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
 
+    MultiTenantCopyContext context =
+        new MultiTenantCopyContext(
+            fromCatalog,
+            toCatalog,
+            fromSite,
+            toSite,
+            genericEntityService,
+            new MultiTenantCopierExtensionManager());
+
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractMultiTenantCopierExtensionHandler.postSave(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
-            toSite, genericEntityService, new MultiTenantCopierExtensionManager()), BLCFieldUtils.NULL_FIELD,
-            BLCFieldUtils.NULL_FIELD));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractMultiTenantCopierExtensionHandler.postSave(
+            context, BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD));
   }
 
   /**
-   * Test {@link AbstractMultiTenantCopierExtensionHandler#shouldClone(MultiTenantCopyContext, Object, ExtensionResultHolder)}.
-   * <p>
-   * Method under test: {@link AbstractMultiTenantCopierExtensionHandler#shouldClone(MultiTenantCopyContext, Object, ExtensionResultHolder)}
+   * Test {@link AbstractMultiTenantCopierExtensionHandler#shouldClone(MultiTenantCopyContext,
+   * Object, ExtensionResultHolder)}.
+   *
+   * <p>Method under test: {@link
+   * AbstractMultiTenantCopierExtensionHandler#shouldClone(MultiTenantCopyContext, Object,
+   * ExtensionResultHolder)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.shouldClone(MultiTenantCopyContext, Object, ExtensionResultHolder)"})
+    "ExtensionResultStatusType AbstractMultiTenantCopierExtensionHandler.shouldClone(MultiTenantCopyContext, Object, ExtensionResultHolder)"
+  })
   public void testShouldClone() {
     // Arrange
     CatalogImpl fromCatalog = new CatalogImpl();
@@ -128,29 +175,41 @@ public class AbstractMultiTenantCopierExtensionHandlerDiffblueTest {
     SiteImpl fromSite = new SiteImpl();
     SiteImpl toSite = new SiteImpl();
     GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
-    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    MultiTenantCopyContext context =
+        new MultiTenantCopyContext(
+            fromCatalog,
+            toCatalog,
+            fromSite,
+            toSite,
+            genericEntityService,
+            new MultiTenantCopierExtensionManager());
 
     ExtensionResultHolder<Boolean> result = new ExtensionResultHolder<>();
     result.setResult(true);
     result.setThrowable(new Throwable());
 
     // Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
-        abstractMultiTenantCopierExtensionHandler.shouldClone(context, BLCFieldUtils.NULL_FIELD, result));
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
+        abstractMultiTenantCopierExtensionHandler.shouldClone(
+            context, BLCFieldUtils.NULL_FIELD, result));
   }
 
   /**
    * Test new {@link AbstractMultiTenantCopierExtensionHandler} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AbstractMultiTenantCopierExtensionHandler}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * AbstractMultiTenantCopierExtensionHandler}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AbstractMultiTenantCopierExtensionHandler.<init>()"})
   public void testNewAbstractMultiTenantCopierExtensionHandler() {
     // Arrange and Act
-    AbstractMultiTenantCopierExtensionHandler actualAbstractMultiTenantCopierExtensionHandler = new AbstractMultiTenantCopierExtensionHandler();
+    AbstractMultiTenantCopierExtensionHandler actualAbstractMultiTenantCopierExtensionHandler =
+        new AbstractMultiTenantCopierExtensionHandler();
 
     // Assert
     assertEquals(0, actualAbstractMultiTenantCopierExtensionHandler.getPriority());

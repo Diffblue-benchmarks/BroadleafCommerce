@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.search.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +34,17 @@ import org.junit.experimental.categories.Category;
 public class SearchResultDiffblueTest {
   /**
    * Test {@link SearchResult#getStartResult()}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getStartResult()}
+   *
+   * <p>Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenArrayListAddProductBundleImpl_thenReturnIntValueIsOne() {
     // Arrange
@@ -62,15 +65,17 @@ public class SearchResultDiffblueTest {
 
   /**
    * Test {@link SearchResult#getStartResult()}.
+   *
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor) Page is one.</li>
-   *   <li>Then return intValue is zero.</li>
+   *   <li>Given {@link SearchResult} (default constructor) Page is one.
+   *   <li>Then return intValue is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getStartResult()}
+   *
+   * <p>Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenSearchResultPageIsOne_thenReturnIntValueIsZero() {
     // Arrange
@@ -88,32 +93,36 @@ public class SearchResultDiffblueTest {
 
   /**
    * Test {@link SearchResult#getStartResult()}.
+   *
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor).</li>
-   *   <li>Then return intValue is zero.</li>
+   *   <li>Given {@link SearchResult} (default constructor).
+   *   <li>Then return intValue is zero.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getStartResult()}
+   *
+   * <p>Method under test: {@link SearchResult#getStartResult()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getStartResult()"})
   public void testGetStartResult_givenSearchResult_thenReturnIntValueIsZero() {
     // Arrange, Act and Assert
-    assertEquals(0, (new SearchResult()).getStartResult().intValue());
+    assertEquals(0, new SearchResult().getStartResult().intValue());
   }
 
   /**
    * Test {@link SearchResult#getEndResult()}.
+   *
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor) Facets is {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Given {@link SearchResult} (default constructor) Facets is {@link ArrayList#ArrayList()}.
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getEndResult()}
+   *
+   * <p>Method under test: {@link SearchResult#getEndResult()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getEndResult()"})
   public void testGetEndResult_givenSearchResultFacetsIsArrayList_thenReturnIntValueIsOne() {
     // Arrange
@@ -131,15 +140,17 @@ public class SearchResultDiffblueTest {
 
   /**
    * Test {@link SearchResult#getTotalPages()}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link ProductBundleImpl} (default constructor).
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getTotalPages()}
+   *
+   * <p>Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenArrayListAddProductBundleImpl_thenReturnIntValueIsOne() {
     // Arrange
@@ -160,15 +171,17 @@ public class SearchResultDiffblueTest {
 
   /**
    * Test {@link SearchResult#getTotalPages()}.
+   *
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor) PageSize is three.</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Given {@link SearchResult} (default constructor) PageSize is three.
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getTotalPages()}
+   *
+   * <p>Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenSearchResultPageSizeIsThree_thenReturnIntValueIsOne() {
     // Arrange
@@ -186,25 +199,28 @@ public class SearchResultDiffblueTest {
 
   /**
    * Test {@link SearchResult#getTotalPages()}.
+   *
    * <ul>
-   *   <li>Given {@link SearchResult} (default constructor).</li>
-   *   <li>Then return intValue is one.</li>
+   *   <li>Given {@link SearchResult} (default constructor).
+   *   <li>Then return intValue is one.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchResult#getTotalPages()}
+   *
+   * <p>Method under test: {@link SearchResult#getTotalPages()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Integer SearchResult.getTotalPages()"})
   public void testGetTotalPages_givenSearchResult_thenReturnIntValueIsOne() {
     // Arrange, Act and Assert
-    assertEquals(1, (new SearchResult()).getTotalPages().intValue());
+    assertEquals(1, new SearchResult().getTotalPages().intValue());
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link SearchResult}
    *   <li>{@link SearchResult#setFacets(List)}
@@ -222,13 +238,23 @@ public class SearchResultDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void SearchResult.<init>()", "List SearchResult.getFacets()", "Integer SearchResult.getPage()",
-      "Integer SearchResult.getPageSize()", "List SearchResult.getProducts()",
-      "QueryResponse SearchResult.getQueryResponse()", "Integer SearchResult.getTotalResults()",
-      "void SearchResult.setFacets(List)", "void SearchResult.setPage(Integer)",
-      "void SearchResult.setPageSize(Integer)", "void SearchResult.setProducts(List)",
-      "void SearchResult.setQueryResponse(QueryResponse)", "void SearchResult.setTotalResults(Integer)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void SearchResult.<init>()",
+    "List SearchResult.getFacets()",
+    "Integer SearchResult.getPage()",
+    "Integer SearchResult.getPageSize()",
+    "List SearchResult.getProducts()",
+    "QueryResponse SearchResult.getQueryResponse()",
+    "Integer SearchResult.getTotalResults()",
+    "void SearchResult.setFacets(List)",
+    "void SearchResult.setPage(Integer)",
+    "void SearchResult.setPageSize(Integer)",
+    "void SearchResult.setProducts(List)",
+    "void SearchResult.setQueryResponse(QueryResponse)",
+    "void SearchResult.setTotalResults(Integer)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     SearchResult actualSearchResult = new SearchResult();

@@ -19,7 +19,8 @@ package org.broadleafcommerce.cms.field.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,8 +28,9 @@ import org.junit.experimental.categories.Category;
 public class FieldEnumerationItemImplDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link FieldEnumerationItemImpl}
    *   <li>{@link FieldEnumerationItemImpl#setFieldEnumeration(FieldEnumeration)}
@@ -44,14 +46,21 @@ public class FieldEnumerationItemImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void FieldEnumerationItemImpl.<init>()",
-      "FieldEnumeration FieldEnumerationItemImpl.getFieldEnumeration()", "int FieldEnumerationItemImpl.getFieldOrder()",
-      "String FieldEnumerationItemImpl.getFriendlyName()", "Long FieldEnumerationItemImpl.getId()",
-      "String FieldEnumerationItemImpl.getName()",
-      "void FieldEnumerationItemImpl.setFieldEnumeration(FieldEnumeration)",
-      "void FieldEnumerationItemImpl.setFieldOrder(int)", "void FieldEnumerationItemImpl.setFriendlyName(String)",
-      "void FieldEnumerationItemImpl.setId(Long)", "void FieldEnumerationItemImpl.setName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void FieldEnumerationItemImpl.<init>()",
+    "FieldEnumeration FieldEnumerationItemImpl.getFieldEnumeration()",
+    "int FieldEnumerationItemImpl.getFieldOrder()",
+    "String FieldEnumerationItemImpl.getFriendlyName()",
+    "Long FieldEnumerationItemImpl.getId()",
+    "String FieldEnumerationItemImpl.getName()",
+    "void FieldEnumerationItemImpl.setFieldEnumeration(FieldEnumeration)",
+    "void FieldEnumerationItemImpl.setFieldOrder(int)",
+    "void FieldEnumerationItemImpl.setFriendlyName(String)",
+    "void FieldEnumerationItemImpl.setId(Long)",
+    "void FieldEnumerationItemImpl.setName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     FieldEnumerationItemImpl actualFieldEnumerationItemImpl = new FieldEnumerationItemImpl();

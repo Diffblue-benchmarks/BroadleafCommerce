@@ -19,10 +19,10 @@ package org.broadleafcommerce.profile.core.dao;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -46,23 +46,23 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerDaoImplDiffblueTest {
-  @InjectMocks
-  private CustomerDaoImpl customerDaoImpl;
+  @InjectMocks private CustomerDaoImpl customerDaoImpl;
 
-  @Mock
-  private EntityConfiguration entityConfiguration;
+  @Mock private EntityConfiguration entityConfiguration;
 
   /**
    * Test {@link CustomerDaoImpl#readCustomersByIds(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerDaoImpl#readCustomersByIds(List)}
+   *
+   * <p>Method under test: {@link CustomerDaoImpl#readCustomersByIds(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List CustomerDaoImpl.readCustomersByIds(List)"})
   public void testReadCustomersByIds_whenArrayList_thenReturnNull() {
     // Arrange, Act and Assert
@@ -71,15 +71,17 @@ public class CustomerDaoImplDiffblueTest {
 
   /**
    * Test {@link CustomerDaoImpl#readCustomersByIds(List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link CustomerDaoImpl#readCustomersByIds(List)}
+   *
+   * <p>Method under test: {@link CustomerDaoImpl#readCustomersByIds(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List CustomerDaoImpl.readCustomersByIds(List)"})
   public void testReadCustomersByIds_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
@@ -88,18 +90,21 @@ public class CustomerDaoImplDiffblueTest {
 
   /**
    * Test {@link CustomerDaoImpl#create()}.
-   * <p>
-   * Method under test: {@link CustomerDaoImpl#create()}
+   *
+   * <p>Method under test: {@link CustomerDaoImpl#create()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Customer CustomerDaoImpl.create()"})
   public void testCreate() {
     // Arrange
     Auditable auditable = new Auditable();
     auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateCreated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     auditable.setUpdatedBy(1L);
 
     CustomerImpl customerImpl = new CustomerImpl();
@@ -130,7 +135,8 @@ public class CustomerDaoImplDiffblueTest {
     Customer actualCreateResult = customerDaoImpl.create();
 
     // Assert
-    verify(entityConfiguration).createEntityInstance(eq("org.broadleafcommerce.profile.core.domain.Customer"));
+    verify(entityConfiguration)
+        .createEntityInstance("org.broadleafcommerce.profile.core.domain.Customer");
     assertSame(customerImpl, actualCreateResult);
   }
 }

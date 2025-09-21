@@ -19,23 +19,18 @@ package org.broadleafcommerce.common.enumeration.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
-import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -47,99 +42,97 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-common-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DataDrivenEnumerationValueImplDiffblueTest {
-  @Autowired
-  private DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl;
+  @Autowired private DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl;
 
   /**
    * Test {@link DataDrivenEnumerationValueImpl#getHidden()}.
+   *
    * <ul>
-   *   <li>Given {@link DataDrivenEnumerationValueImpl} (default constructor) Hidden is {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link DataDrivenEnumerationValueImpl} Hidden is {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
+   *
+   * <p>Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean DataDrivenEnumerationValueImpl.getHidden()"})
   public void testGetHidden_givenDataDrivenEnumerationValueImplHiddenIsNull_thenReturnFalse() {
     // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl2 = new DataDrivenEnumerationValueImpl();
-    dataDrivenEnumerationValueImpl2.setDisplay("Display");
-    dataDrivenEnumerationValueImpl2.setId(1L);
-    dataDrivenEnumerationValueImpl2.setKey("Key");
-    dataDrivenEnumerationValueImpl2.setType(new DataDrivenEnumerationImpl());
-    dataDrivenEnumerationValueImpl2.setHidden(null);
+    dataDrivenEnumerationValueImpl.setHidden(null);
 
     // Act and Assert
-    assertFalse(dataDrivenEnumerationValueImpl2.getHidden());
+    assertFalse(dataDrivenEnumerationValueImpl.getHidden());
   }
 
   /**
    * Test {@link DataDrivenEnumerationValueImpl#getHidden()}.
+   *
    * <ul>
-   *   <li>Given {@link DataDrivenEnumerationValueImpl} (default constructor) Hidden is {@code true}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link DataDrivenEnumerationValueImpl} Hidden is {@code true}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
+   *
+   * <p>Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean DataDrivenEnumerationValueImpl.getHidden()"})
   public void testGetHidden_givenDataDrivenEnumerationValueImplHiddenIsTrue_thenReturnTrue() {
     // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl2 = new DataDrivenEnumerationValueImpl();
-    dataDrivenEnumerationValueImpl2.setDisplay("Display");
-    dataDrivenEnumerationValueImpl2.setId(1L);
-    dataDrivenEnumerationValueImpl2.setKey("Key");
-    dataDrivenEnumerationValueImpl2.setType(new DataDrivenEnumerationImpl());
-    dataDrivenEnumerationValueImpl2.setHidden(true);
+    dataDrivenEnumerationValueImpl.setHidden(true);
 
     // Act and Assert
-    assertTrue(dataDrivenEnumerationValueImpl2.getHidden());
+    assertTrue(dataDrivenEnumerationValueImpl.getHidden());
   }
 
   /**
    * Test {@link DataDrivenEnumerationValueImpl#getHidden()}.
+   *
    * <ul>
-   *   <li>Given {@link DataDrivenEnumerationValueImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@link DataDrivenEnumerationValueImpl}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
+   *
+   * <p>Method under test: {@link DataDrivenEnumerationValueImpl#getHidden()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Boolean DataDrivenEnumerationValueImpl.getHidden()"})
   public void testGetHidden_givenDataDrivenEnumerationValueImpl_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse((new DataDrivenEnumerationValueImpl()).getHidden());
+    assertFalse(dataDrivenEnumerationValueImpl.getHidden());
   }
 
   /**
-   * Test {@link DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+    "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl2 = new DataDrivenEnumerationValueImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>(BLCFieldUtils.NULL_FIELD, true);
-
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(new DataDrivenEnumerationValueImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<DataDrivenEnumerationValue> actualCreateOrRetrieveCopyInstanceResult = dataDrivenEnumerationValueImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<DataDrivenEnumerationValue> actualCreateOrRetrieveCopyInstanceResult =
+        dataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -147,54 +140,124 @@ public class DataDrivenEnumerationValueImplDiffblueTest {
   }
 
   /**
-   * Test {@link DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link DataDrivenEnumerationValueImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   * Test {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnDataDrivenEnumerationValueImpl()
-      throws CloneNotSupportedException {
+    "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl2 = new DataDrivenEnumerationValueImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse =
+        new CreateResponse<>(dataDrivenEnumerationValueImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<DataDrivenEnumerationValue> actualCreateOrRetrieveCopyInstanceResult = dataDrivenEnumerationValueImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<DataDrivenEnumerationValue> actualCreateOrRetrieveCopyInstanceResult =
+        dataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService)
-        .getCeilingImplClass(eq("org.broadleafcommerce.common.enumeration.domain.DataDrivenEnumerationValueImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    DataDrivenEnumerationValue clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof DataDrivenEnumerationValueImpl);
-    assertNull(clone.getId());
-    assertNull(clone.getDisplay());
-    assertNull(clone.getKey());
-    assertNull(clone.getType());
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertFalse(clone.getHidden());
-    assertFalse(((DataDrivenEnumerationValueImpl) clone).hidden);
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    DataDrivenEnumerationImpl type = mock(DataDrivenEnumerationImpl.class);
+    when(type.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new DataDrivenEnumerationImpl(), true));
+
+    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl =
+        new DataDrivenEnumerationValueImpl();
+    dataDrivenEnumerationValueImpl.setType(type);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new DataDrivenEnumerationValueImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    dataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(type).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+  }
+
+  /**
+   * Test {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <ul>
+   *   <li>Then throw {@link CloneNotSupportedException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * DataDrivenEnumerationValueImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse DataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance_thenThrowCloneNotSupportedException()
+      throws CloneNotSupportedException {
+    // Arrange
+    DataDrivenEnumerationImpl type = mock(DataDrivenEnumerationImpl.class);
+    when(type.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenThrow(new CloneNotSupportedException());
+
+    DataDrivenEnumerationValueImpl dataDrivenEnumerationValueImpl =
+        new DataDrivenEnumerationValueImpl();
+    dataDrivenEnumerationValueImpl.setType(type);
+
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(new DataDrivenEnumerationValueImpl());
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act and Assert
+    assertThrows(
+        CloneNotSupportedException.class,
+        () -> dataDrivenEnumerationValueImpl.createOrRetrieveCopyInstance(context));
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(type).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link DataDrivenEnumerationValueImpl}
    *   <li>{@link DataDrivenEnumerationValueImpl#setDisplay(String)}
@@ -209,18 +272,24 @@ public class DataDrivenEnumerationValueImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void DataDrivenEnumerationValueImpl.<init>()",
-      "String DataDrivenEnumerationValueImpl.getDisplay()", "Long DataDrivenEnumerationValueImpl.getId()",
-      "String DataDrivenEnumerationValueImpl.getKey()",
-      "DataDrivenEnumeration DataDrivenEnumerationValueImpl.getType()",
-      "void DataDrivenEnumerationValueImpl.setDisplay(String)",
-      "void DataDrivenEnumerationValueImpl.setHidden(Boolean)", "void DataDrivenEnumerationValueImpl.setId(Long)",
-      "void DataDrivenEnumerationValueImpl.setKey(String)",
-      "void DataDrivenEnumerationValueImpl.setType(DataDrivenEnumeration)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DataDrivenEnumerationValueImpl.<init>()",
+    "String DataDrivenEnumerationValueImpl.getDisplay()",
+    "Long DataDrivenEnumerationValueImpl.getId()",
+    "String DataDrivenEnumerationValueImpl.getKey()",
+    "DataDrivenEnumeration DataDrivenEnumerationValueImpl.getType()",
+    "void DataDrivenEnumerationValueImpl.setDisplay(String)",
+    "void DataDrivenEnumerationValueImpl.setHidden(Boolean)",
+    "void DataDrivenEnumerationValueImpl.setId(Long)",
+    "void DataDrivenEnumerationValueImpl.setKey(String)",
+    "void DataDrivenEnumerationValueImpl.setType(DataDrivenEnumeration)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    DataDrivenEnumerationValueImpl actualDataDrivenEnumerationValueImpl = new DataDrivenEnumerationValueImpl();
+    DataDrivenEnumerationValueImpl actualDataDrivenEnumerationValueImpl =
+        new DataDrivenEnumerationValueImpl();
     actualDataDrivenEnumerationValueImpl.setDisplay("Display");
     actualDataDrivenEnumerationValueImpl.setHidden(true);
     actualDataDrivenEnumerationValueImpl.setId(1L);

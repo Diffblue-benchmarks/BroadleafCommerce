@@ -20,7 +20,8 @@ package org.broadleafcommerce.common.extensibility.cache;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import javax.cache.configuration.Configuration;
 import javax.cache.configuration.MutableConfiguration;
@@ -30,11 +31,13 @@ import org.junit.experimental.categories.Category;
 public class JCacheRegionConfigurationDiffblueTest {
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Cache Name}.</li>
+   *   <li>When {@code Cache Name}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String)}
    *   <li>{@link JCacheRegionConfiguration#setCacheName(String)}
@@ -56,25 +59,35 @@ public class JCacheRegionConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JCacheRegionConfiguration.<init>(String)",
-      "void JCacheRegionConfiguration.<init>(String, int, int)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
-      "void JCacheRegionConfiguration.<init>(String, Configuration)", "String JCacheRegionConfiguration.getCacheName()",
-      "Configuration JCacheRegionConfiguration.getConfiguration()",
-      "Boolean JCacheRegionConfiguration.getEnableManagement()",
-      "Boolean JCacheRegionConfiguration.getEnableStatistics()", "Class JCacheRegionConfiguration.getKey()",
-      "int JCacheRegionConfiguration.getMaxElementsInMemory()", "int JCacheRegionConfiguration.getTtlSeconds()",
-      "Class JCacheRegionConfiguration.getValue()", "void JCacheRegionConfiguration.setCacheName(String)",
-      "void JCacheRegionConfiguration.setConfiguration(Configuration)",
-      "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
-      "void JCacheRegionConfiguration.setEnableStatistics(Boolean)", "void JCacheRegionConfiguration.setKey(Class)",
-      "void JCacheRegionConfiguration.setMaxElementsInMemory(int)", "void JCacheRegionConfiguration.setTtlSeconds(int)",
-      "void JCacheRegionConfiguration.setValue(Class)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JCacheRegionConfiguration.<init>(String)",
+    "void JCacheRegionConfiguration.<init>(String, int, int)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
+    "void JCacheRegionConfiguration.<init>(String, Configuration)",
+    "String JCacheRegionConfiguration.getCacheName()",
+    "Configuration JCacheRegionConfiguration.getConfiguration()",
+    "Boolean JCacheRegionConfiguration.getEnableManagement()",
+    "Boolean JCacheRegionConfiguration.getEnableStatistics()",
+    "Class JCacheRegionConfiguration.getKey()",
+    "int JCacheRegionConfiguration.getMaxElementsInMemory()",
+    "int JCacheRegionConfiguration.getTtlSeconds()",
+    "Class JCacheRegionConfiguration.getValue()",
+    "void JCacheRegionConfiguration.setCacheName(String)",
+    "void JCacheRegionConfiguration.setConfiguration(Configuration)",
+    "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
+    "void JCacheRegionConfiguration.setEnableStatistics(Boolean)",
+    "void JCacheRegionConfiguration.setKey(Class)",
+    "void JCacheRegionConfiguration.setMaxElementsInMemory(int)",
+    "void JCacheRegionConfiguration.setTtlSeconds(int)",
+    "void JCacheRegionConfiguration.setValue(Class)"
+  })
   public void testGettersAndSetters_whenCacheName() {
     // Arrange and Act
-    JCacheRegionConfiguration actualJCacheRegionConfiguration = new JCacheRegionConfiguration("Cache Name");
+    JCacheRegionConfiguration actualJCacheRegionConfiguration =
+        new JCacheRegionConfiguration("Cache Name");
     actualJCacheRegionConfiguration.setCacheName("Cache Name");
     MutableConfiguration<?, ?> configuration = new MutableConfiguration<>();
     actualJCacheRegionConfiguration.setConfiguration(configuration);
@@ -107,13 +120,16 @@ public class JCacheRegionConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code Object}.</li>
+   *   <li>When {@code Object}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, int, int, Class, Class)}
+   *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, int, int, Class,
+   *       Class)}
    *   <li>{@link JCacheRegionConfiguration#setCacheName(String)}
    *   <li>{@link JCacheRegionConfiguration#setConfiguration(Configuration)}
    *   <li>{@link JCacheRegionConfiguration#setEnableManagement(Boolean)}
@@ -133,30 +149,39 @@ public class JCacheRegionConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JCacheRegionConfiguration.<init>(String)",
-      "void JCacheRegionConfiguration.<init>(String, int, int)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
-      "void JCacheRegionConfiguration.<init>(String, Configuration)", "String JCacheRegionConfiguration.getCacheName()",
-      "Configuration JCacheRegionConfiguration.getConfiguration()",
-      "Boolean JCacheRegionConfiguration.getEnableManagement()",
-      "Boolean JCacheRegionConfiguration.getEnableStatistics()", "Class JCacheRegionConfiguration.getKey()",
-      "int JCacheRegionConfiguration.getMaxElementsInMemory()", "int JCacheRegionConfiguration.getTtlSeconds()",
-      "Class JCacheRegionConfiguration.getValue()", "void JCacheRegionConfiguration.setCacheName(String)",
-      "void JCacheRegionConfiguration.setConfiguration(Configuration)",
-      "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
-      "void JCacheRegionConfiguration.setEnableStatistics(Boolean)", "void JCacheRegionConfiguration.setKey(Class)",
-      "void JCacheRegionConfiguration.setMaxElementsInMemory(int)", "void JCacheRegionConfiguration.setTtlSeconds(int)",
-      "void JCacheRegionConfiguration.setValue(Class)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JCacheRegionConfiguration.<init>(String)",
+    "void JCacheRegionConfiguration.<init>(String, int, int)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
+    "void JCacheRegionConfiguration.<init>(String, Configuration)",
+    "String JCacheRegionConfiguration.getCacheName()",
+    "Configuration JCacheRegionConfiguration.getConfiguration()",
+    "Boolean JCacheRegionConfiguration.getEnableManagement()",
+    "Boolean JCacheRegionConfiguration.getEnableStatistics()",
+    "Class JCacheRegionConfiguration.getKey()",
+    "int JCacheRegionConfiguration.getMaxElementsInMemory()",
+    "int JCacheRegionConfiguration.getTtlSeconds()",
+    "Class JCacheRegionConfiguration.getValue()",
+    "void JCacheRegionConfiguration.setCacheName(String)",
+    "void JCacheRegionConfiguration.setConfiguration(Configuration)",
+    "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
+    "void JCacheRegionConfiguration.setEnableStatistics(Boolean)",
+    "void JCacheRegionConfiguration.setKey(Class)",
+    "void JCacheRegionConfiguration.setMaxElementsInMemory(int)",
+    "void JCacheRegionConfiguration.setTtlSeconds(int)",
+    "void JCacheRegionConfiguration.setValue(Class)"
+  })
   public void testGettersAndSetters_whenJavaLangObject() {
     // Arrange
     Class<Object> key = Object.class;
     Class<Object> value = Object.class;
 
     // Act
-    JCacheRegionConfiguration actualJCacheRegionConfiguration = new JCacheRegionConfiguration("Cache Name", 1, 3, key,
-        value);
+    JCacheRegionConfiguration actualJCacheRegionConfiguration =
+        new JCacheRegionConfiguration("Cache Name", 1, 3, key, value);
     actualJCacheRegionConfiguration.setCacheName("Cache Name");
     MutableConfiguration<?, ?> configuration = new MutableConfiguration<>();
     actualJCacheRegionConfiguration.setConfiguration(configuration);
@@ -189,11 +214,13 @@ public class JCacheRegionConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@link MutableConfiguration#MutableConfiguration()}.</li>
+   *   <li>When {@link MutableConfiguration#MutableConfiguration()}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, Configuration)}
    *   <li>{@link JCacheRegionConfiguration#setCacheName(String)}
@@ -215,26 +242,35 @@ public class JCacheRegionConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JCacheRegionConfiguration.<init>(String)",
-      "void JCacheRegionConfiguration.<init>(String, int, int)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
-      "void JCacheRegionConfiguration.<init>(String, Configuration)", "String JCacheRegionConfiguration.getCacheName()",
-      "Configuration JCacheRegionConfiguration.getConfiguration()",
-      "Boolean JCacheRegionConfiguration.getEnableManagement()",
-      "Boolean JCacheRegionConfiguration.getEnableStatistics()", "Class JCacheRegionConfiguration.getKey()",
-      "int JCacheRegionConfiguration.getMaxElementsInMemory()", "int JCacheRegionConfiguration.getTtlSeconds()",
-      "Class JCacheRegionConfiguration.getValue()", "void JCacheRegionConfiguration.setCacheName(String)",
-      "void JCacheRegionConfiguration.setConfiguration(Configuration)",
-      "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
-      "void JCacheRegionConfiguration.setEnableStatistics(Boolean)", "void JCacheRegionConfiguration.setKey(Class)",
-      "void JCacheRegionConfiguration.setMaxElementsInMemory(int)", "void JCacheRegionConfiguration.setTtlSeconds(int)",
-      "void JCacheRegionConfiguration.setValue(Class)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JCacheRegionConfiguration.<init>(String)",
+    "void JCacheRegionConfiguration.<init>(String, int, int)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
+    "void JCacheRegionConfiguration.<init>(String, Configuration)",
+    "String JCacheRegionConfiguration.getCacheName()",
+    "Configuration JCacheRegionConfiguration.getConfiguration()",
+    "Boolean JCacheRegionConfiguration.getEnableManagement()",
+    "Boolean JCacheRegionConfiguration.getEnableStatistics()",
+    "Class JCacheRegionConfiguration.getKey()",
+    "int JCacheRegionConfiguration.getMaxElementsInMemory()",
+    "int JCacheRegionConfiguration.getTtlSeconds()",
+    "Class JCacheRegionConfiguration.getValue()",
+    "void JCacheRegionConfiguration.setCacheName(String)",
+    "void JCacheRegionConfiguration.setConfiguration(Configuration)",
+    "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
+    "void JCacheRegionConfiguration.setEnableStatistics(Boolean)",
+    "void JCacheRegionConfiguration.setKey(Class)",
+    "void JCacheRegionConfiguration.setMaxElementsInMemory(int)",
+    "void JCacheRegionConfiguration.setTtlSeconds(int)",
+    "void JCacheRegionConfiguration.setValue(Class)"
+  })
   public void testGettersAndSetters_whenMutableConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualJCacheRegionConfiguration = new JCacheRegionConfiguration("Cache Name",
-        new MutableConfiguration<>());
+    JCacheRegionConfiguration actualJCacheRegionConfiguration =
+        new JCacheRegionConfiguration("Cache Name", new MutableConfiguration<>());
     actualJCacheRegionConfiguration.setCacheName("Cache Name");
     MutableConfiguration<?, ?> configuration = new MutableConfiguration<>();
     actualJCacheRegionConfiguration.setConfiguration(configuration);
@@ -267,11 +303,13 @@ public class JCacheRegionConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When one.</li>
+   *   <li>When one.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, int, int)}
    *   <li>{@link JCacheRegionConfiguration#setCacheName(String)}
@@ -293,25 +331,35 @@ public class JCacheRegionConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JCacheRegionConfiguration.<init>(String)",
-      "void JCacheRegionConfiguration.<init>(String, int, int)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
-      "void JCacheRegionConfiguration.<init>(String, Configuration)", "String JCacheRegionConfiguration.getCacheName()",
-      "Configuration JCacheRegionConfiguration.getConfiguration()",
-      "Boolean JCacheRegionConfiguration.getEnableManagement()",
-      "Boolean JCacheRegionConfiguration.getEnableStatistics()", "Class JCacheRegionConfiguration.getKey()",
-      "int JCacheRegionConfiguration.getMaxElementsInMemory()", "int JCacheRegionConfiguration.getTtlSeconds()",
-      "Class JCacheRegionConfiguration.getValue()", "void JCacheRegionConfiguration.setCacheName(String)",
-      "void JCacheRegionConfiguration.setConfiguration(Configuration)",
-      "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
-      "void JCacheRegionConfiguration.setEnableStatistics(Boolean)", "void JCacheRegionConfiguration.setKey(Class)",
-      "void JCacheRegionConfiguration.setMaxElementsInMemory(int)", "void JCacheRegionConfiguration.setTtlSeconds(int)",
-      "void JCacheRegionConfiguration.setValue(Class)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JCacheRegionConfiguration.<init>(String)",
+    "void JCacheRegionConfiguration.<init>(String, int, int)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
+    "void JCacheRegionConfiguration.<init>(String, Configuration)",
+    "String JCacheRegionConfiguration.getCacheName()",
+    "Configuration JCacheRegionConfiguration.getConfiguration()",
+    "Boolean JCacheRegionConfiguration.getEnableManagement()",
+    "Boolean JCacheRegionConfiguration.getEnableStatistics()",
+    "Class JCacheRegionConfiguration.getKey()",
+    "int JCacheRegionConfiguration.getMaxElementsInMemory()",
+    "int JCacheRegionConfiguration.getTtlSeconds()",
+    "Class JCacheRegionConfiguration.getValue()",
+    "void JCacheRegionConfiguration.setCacheName(String)",
+    "void JCacheRegionConfiguration.setConfiguration(Configuration)",
+    "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
+    "void JCacheRegionConfiguration.setEnableStatistics(Boolean)",
+    "void JCacheRegionConfiguration.setKey(Class)",
+    "void JCacheRegionConfiguration.setMaxElementsInMemory(int)",
+    "void JCacheRegionConfiguration.setTtlSeconds(int)",
+    "void JCacheRegionConfiguration.setValue(Class)"
+  })
   public void testGettersAndSetters_whenOne() {
     // Arrange and Act
-    JCacheRegionConfiguration actualJCacheRegionConfiguration = new JCacheRegionConfiguration("Cache Name", 1, 3);
+    JCacheRegionConfiguration actualJCacheRegionConfiguration =
+        new JCacheRegionConfiguration("Cache Name", 1, 3);
     actualJCacheRegionConfiguration.setCacheName("Cache Name");
     MutableConfiguration<?, ?> configuration = new MutableConfiguration<>();
     actualJCacheRegionConfiguration.setConfiguration(configuration);
@@ -344,13 +392,16 @@ public class JCacheRegionConfigurationDiffblueTest {
 
   /**
    * Test getters and setters.
+   *
    * <ul>
-   *   <li>When {@code true}.</li>
+   *   <li>When {@code true}.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
-   *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, int, int, Class, Class, Boolean, Boolean)}
+   *   <li>{@link JCacheRegionConfiguration#JCacheRegionConfiguration(String, int, int, Class,
+   *       Class, Boolean, Boolean)}
    *   <li>{@link JCacheRegionConfiguration#setCacheName(String)}
    *   <li>{@link JCacheRegionConfiguration#setConfiguration(Configuration)}
    *   <li>{@link JCacheRegionConfiguration#setEnableManagement(Boolean)}
@@ -370,30 +421,39 @@ public class JCacheRegionConfigurationDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void JCacheRegionConfiguration.<init>(String)",
-      "void JCacheRegionConfiguration.<init>(String, int, int)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
-      "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
-      "void JCacheRegionConfiguration.<init>(String, Configuration)", "String JCacheRegionConfiguration.getCacheName()",
-      "Configuration JCacheRegionConfiguration.getConfiguration()",
-      "Boolean JCacheRegionConfiguration.getEnableManagement()",
-      "Boolean JCacheRegionConfiguration.getEnableStatistics()", "Class JCacheRegionConfiguration.getKey()",
-      "int JCacheRegionConfiguration.getMaxElementsInMemory()", "int JCacheRegionConfiguration.getTtlSeconds()",
-      "Class JCacheRegionConfiguration.getValue()", "void JCacheRegionConfiguration.setCacheName(String)",
-      "void JCacheRegionConfiguration.setConfiguration(Configuration)",
-      "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
-      "void JCacheRegionConfiguration.setEnableStatistics(Boolean)", "void JCacheRegionConfiguration.setKey(Class)",
-      "void JCacheRegionConfiguration.setMaxElementsInMemory(int)", "void JCacheRegionConfiguration.setTtlSeconds(int)",
-      "void JCacheRegionConfiguration.setValue(Class)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void JCacheRegionConfiguration.<init>(String)",
+    "void JCacheRegionConfiguration.<init>(String, int, int)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class)",
+    "void JCacheRegionConfiguration.<init>(String, int, int, Class, Class, Boolean, Boolean)",
+    "void JCacheRegionConfiguration.<init>(String, Configuration)",
+    "String JCacheRegionConfiguration.getCacheName()",
+    "Configuration JCacheRegionConfiguration.getConfiguration()",
+    "Boolean JCacheRegionConfiguration.getEnableManagement()",
+    "Boolean JCacheRegionConfiguration.getEnableStatistics()",
+    "Class JCacheRegionConfiguration.getKey()",
+    "int JCacheRegionConfiguration.getMaxElementsInMemory()",
+    "int JCacheRegionConfiguration.getTtlSeconds()",
+    "Class JCacheRegionConfiguration.getValue()",
+    "void JCacheRegionConfiguration.setCacheName(String)",
+    "void JCacheRegionConfiguration.setConfiguration(Configuration)",
+    "void JCacheRegionConfiguration.setEnableManagement(Boolean)",
+    "void JCacheRegionConfiguration.setEnableStatistics(Boolean)",
+    "void JCacheRegionConfiguration.setKey(Class)",
+    "void JCacheRegionConfiguration.setMaxElementsInMemory(int)",
+    "void JCacheRegionConfiguration.setTtlSeconds(int)",
+    "void JCacheRegionConfiguration.setValue(Class)"
+  })
   public void testGettersAndSetters_whenTrue() {
     // Arrange
     Class<Object> key = Object.class;
     Class<Object> value = Object.class;
 
     // Act
-    JCacheRegionConfiguration actualJCacheRegionConfiguration = new JCacheRegionConfiguration("Cache Name", 1, 3, key,
-        value, true, true);
+    JCacheRegionConfiguration actualJCacheRegionConfiguration =
+        new JCacheRegionConfiguration("Cache Name", 1, 3, key, value, true, true);
     actualJCacheRegionConfiguration.setCacheName("Cache Name");
     MutableConfiguration<?, ?> configuration = new MutableConfiguration<>();
     actualJCacheRegionConfiguration.setConfiguration(configuration);

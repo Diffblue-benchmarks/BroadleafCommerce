@@ -23,12 +23,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +36,6 @@ import java.util.List;
 import org.broadleafcommerce.common.locale.domain.Locale;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.locale.service.LocaleService;
-import org.broadleafcommerce.core.catalog.service.CatalogService;
 import org.broadleafcommerce.core.search.dao.IndexFieldDao;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
@@ -54,56 +53,75 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
-  @Mock
-  private CatalogService catalogService;
+  @Mock private IndexFieldDao indexFieldDao;
 
-  @Mock
-  private IndexFieldDao indexFieldDao;
-
-  @Mock
-  private LocaleService localeService;
+  @Mock private LocaleService localeService;
 
   @InjectMocks
   private MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
 
-  @Mock
-  private SolrHelperService solrHelperService;
+  @Mock private SolrHelperService solrHelperService;
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert() {
     // Arrange
-    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenThrow(new UnsupportedOperationException(
-            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenThrow(new UnsupportedOperationException());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            mvelToSearchCriteriaConversionServiceImpl.convert(
+                "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    verify(solrHelperService).getExplicitCategoryFieldName();
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert2() {
     // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert3() {
+    // Arrange
     IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
     when(indexFieldImpl.getField()).thenReturn(new FieldImpl());
+
     IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
-    when(indexFieldTypeImpl.getFieldType()).thenThrow(new UnsupportedOperationException(
-        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    when(indexFieldTypeImpl.getFieldType()).thenThrow(new UnsupportedOperationException());
     when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
 
     ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
@@ -112,9 +130,10 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
         .thenReturn(indexFieldTypeList);
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
     verify(indexFieldImpl, atLeast(1)).getField();
     verify(indexFieldTypeImpl).getFieldType();
     verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
@@ -122,56 +141,26 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
-  public void testConvert3() {
-    // Arrange
-    FieldImpl fieldImpl = mock(FieldImpl.class);
-    when(fieldImpl.getTranslatable()).thenReturn(true);
-    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
-    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
-    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
-    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
-
-    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
-    indexFieldTypeList.add(indexFieldTypeImpl);
-    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenReturn(indexFieldTypeList);
-    when(localeService.findAllLocales()).thenThrow(new UnsupportedOperationException(
-        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
-    verify(localeService).findAllLocales();
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
-    verify(fieldImpl).getTranslatable();
-    verify(indexFieldImpl).getField();
-    verify(indexFieldTypeImpl).getIndexField();
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).</li>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link LocaleImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert_givenArrayListAddLocaleImpl() {
     // Arrange
     FieldImpl fieldImpl = mock(FieldImpl.class);
     when(fieldImpl.getTranslatable()).thenReturn(true);
     when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+
     IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
     when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+
     IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
     when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
     when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
@@ -186,11 +175,12 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     when(localeService.findAllLocales()).thenReturn(localeList);
 
     // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert("product.");
 
     // Assert
     verify(localeService).findAllLocales();
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
     verify(fieldImpl).getAbbreviation();
     verify(fieldImpl).getTranslatable();
     verify(indexFieldImpl, atLeast(1)).getField();
@@ -213,22 +203,26 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Given {@link FieldImpl} {@link FieldImpl#getTranslatable()} return {@code null}.</li>
+   *   <li>Given {@link FieldImpl} {@link FieldImpl#getTranslatable()} return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert_givenFieldImplGetTranslatableReturnNull() {
     // Arrange
     FieldImpl fieldImpl = mock(FieldImpl.class);
     when(fieldImpl.getTranslatable()).thenReturn(null);
     when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+
     IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
     when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+
     IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
     when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
     when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
@@ -239,10 +233,11 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
         .thenReturn(indexFieldTypeList);
 
     // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert("product.");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
     verify(fieldImpl).getAbbreviation();
     verify(fieldImpl).getTranslatable();
     verify(indexFieldImpl, atLeast(1)).getField();
@@ -265,49 +260,101 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldDao}.</li>
-   *   <li>When {@code Mvel Rule}.</li>
+   *   <li>Given {@link LocaleService} {@link LocaleService#findAllLocales()} throw {@link
+   *       UnsupportedOperationException#UnsupportedOperationException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
-  public void testConvert_givenIndexFieldDao_whenMvelRule() {
-    // Arrange, Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> mvelToSearchCriteriaConversionServiceImpl.convert("Mvel Rule"));
+  public void testConvert_givenLocaleServiceFindAllLocalesThrowUnsupportedOperationException() {
+    // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(true);
+
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+    when(localeService.findAllLocales()).thenThrow(new UnsupportedOperationException());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("product."));
+    verify(localeService).findAllLocales();
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl).getField();
+    verify(indexFieldTypeImpl).getIndexField();
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>When a string.</li>
-   *   <li>Then return FilterQueries Empty.</li>
+   *   <li>Then return FilterQueries first is {@code (en_Abbreviation_b:"")}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
-  public void testConvert_givenSolrHelperService_whenAString_thenReturnFilterQueriesEmpty() {
+  public void testConvert_thenReturnFilterQueriesFirstIsEnAbbreviationB() {
     // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(true);
+    when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
+        .thenReturn(indexFieldTypeList);
+
+    Locale locale = mock(Locale.class);
+    when(locale.getLocaleCode()).thenReturn("en");
+
+    ArrayList<Locale> localeList = new ArrayList<>();
+    localeList.add(locale);
+    when(localeService.findAllLocales()).thenReturn(localeList);
 
     // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert(
-        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0CollectionUtils"
-            + ".intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert("product.");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("allParentCategoryIds"));
+    verify(locale, atLeast(1)).getLocaleCode();
+    verify(localeService).findAllLocales();
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
+    verify(fieldImpl).getAbbreviation();
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
     Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
     assertTrue(filterQueries instanceof List);
+    assertEquals("(en_Abbreviation_b:\"\")", ((List<String>) filterQueries).get(0));
     assertNull(actualConvertResult.getStartIndex());
     assertNull(actualConvertResult.getQuery());
     assertNull(actualConvertResult.getRequestHandler());
@@ -315,70 +362,36 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     assertNull(actualConvertResult.getCategory());
     assertEquals(1, actualConvertResult.getPage().intValue());
     assertFalse(actualConvertResult.getSearchExplicitCategory());
-    assertTrue(filterQueries.isEmpty());
     assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
     assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Given {@link SolrHelperService}.</li>
-   *   <li>When {@code product.}.</li>
-   *   <li>Then return FilterQueries Empty.</li>
+   *   <li>Then return FilterQueries first is {@code Explicit Category Field Name:("1,1,1")}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
-  public void testConvert_givenSolrHelperService_whenProduct_thenReturnFilterQueriesEmpty() {
-    // Arrange
-    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-
-    // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
-
-    // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
-    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
-    assertTrue(filterQueries instanceof List);
-    assertNull(actualConvertResult.getStartIndex());
-    assertNull(actualConvertResult.getQuery());
-    assertNull(actualConvertResult.getRequestHandler());
-    assertNull(actualConvertResult.getSortQuery());
-    assertNull(actualConvertResult.getCategory());
-    assertEquals(1, actualConvertResult.getPage().intValue());
-    assertFalse(actualConvertResult.getSearchExplicitCategory());
-    assertTrue(filterQueries.isEmpty());
-    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
-    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
-   * <ul>
-   *   <li>Then return FilterQueries first is {@code Explicit Category Field Name:("1,1,1")}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert_thenReturnFilterQueriesFirstIsExplicitCategoryFieldName111() {
     // Arrange
     when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
-    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenReturn("Explicit Category Field Name");
 
     // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl
-        .convert("CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
 
     // Assert
-    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService, atLeast(1)).getCategoryId(9L);
     verify(solrHelperService).getExplicitCategoryFieldName();
     Collection<String> filterQueries = actualConvertResult.getFilterQueries();
     assertEquals(1, filterQueries.size());
@@ -397,19 +410,22 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>Then return FilterQueries first is {@code (null_b:"")}.</li>
+   *   <li>Then return FilterQueries first is {@code (null_b:"")}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
   public void testConvert_thenReturnFilterQueriesFirstIsNullB() {
     // Arrange
     IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
     when(indexFieldImpl.getField()).thenReturn(new FieldImpl());
+
     IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
     when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
     when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
@@ -420,10 +436,11 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
         .thenReturn(indexFieldTypeList);
 
     // Act
-    SearchCriteria actualConvertResult = mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert("product.");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(""));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
     verify(indexFieldImpl, atLeast(1)).getField();
     verify(indexFieldTypeImpl).getFieldType();
     verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
@@ -443,16 +460,190 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
    * <ul>
-   *   <li>When {@code product.}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When a string.
+   *   <li>Then return FilterQueries first is {@code (en_Abbreviation_b:("9,"9","9""))}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_whenAString_thenReturnFilterQueriesFirstIsEnAbbreviationB999() {
+    // Arrange
+    FieldImpl fieldImpl = mock(FieldImpl.class);
+    when(fieldImpl.getTranslatable()).thenReturn(true);
+    when(fieldImpl.getAbbreviation()).thenReturn("Abbreviation");
+
+    IndexFieldImpl indexFieldImpl = mock(IndexFieldImpl.class);
+    when(indexFieldImpl.getField()).thenReturn(fieldImpl);
+
+    IndexFieldTypeImpl indexFieldTypeImpl = mock(IndexFieldTypeImpl.class);
+    when(indexFieldTypeImpl.getFieldType()).thenReturn(FieldType.BOOLEAN);
+    when(indexFieldTypeImpl.getIndexField()).thenReturn(indexFieldImpl);
+
+    ArrayList<IndexFieldType> indexFieldTypeList = new ArrayList<>();
+    indexFieldTypeList.add(indexFieldTypeImpl);
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(indexFieldTypeList);
+
+    Locale locale = mock(Locale.class);
+    when(locale.getLocaleCode()).thenReturn("en");
+
+    ArrayList<Locale> localeList = new ArrayList<>();
+    localeList.add(locale);
+    when(localeService.findAllLocales()).thenReturn(localeList);
+
+    // Act
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0CollectionUtils"
+                + ".intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
+
+    // Assert
+    verify(locale, atLeast(1)).getLocaleCode();
+    verify(localeService).findAllLocales();
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("allParentCategoryIds");
+    verify(fieldImpl).getAbbreviation();
+    verify(fieldImpl).getTranslatable();
+    verify(indexFieldImpl, atLeast(1)).getField();
+    verify(indexFieldTypeImpl).getFieldType();
+    verify(indexFieldTypeImpl, atLeast(1)).getIndexField();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("(en_Abbreviation_b:(\"9,\"9\",\"9\"\"))", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
+   * <ul>
+   *   <li>When {@code
+   *       CollectionUtils.intersection(product.?allParentCategoryIds,["9,"9","9""]).size()>0||}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_whenCollectionUtilsIntersectionProductAllParentCategoryIds999Size0() {
+    // Arrange
+    when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenReturn("Explicit Category Field Name");
+
+    // Act
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0||");
+
+    // Assert
+    verify(solrHelperService, atLeast(1)).getCategoryId(9L);
+    verify(solrHelperService).getExplicitCategoryFieldName();
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertEquals(1, filterQueries.size());
+    assertTrue(filterQueries instanceof List);
+    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) filterQueries).get(0));
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Mvel Rule}.
+   *   <li>Then throw {@link UnsupportedOperationException}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_whenMvelRule_thenThrowUnsupportedOperationException() {
+    // Arrange, Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convert("Mvel Rule"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   *
+   * <ul>
+   *   <li>When {@code product.}.
+   *   <li>Then return FilterQueries Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"SearchCriteria MvelToSearchCriteriaConversionServiceImpl.convert(String)"})
+  public void testConvert_whenProduct_thenReturnFilterQueriesEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    SearchCriteria actualConvertResult =
+        mvelToSearchCriteriaConversionServiceImpl.convert("product.");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
+    Collection<String> filterQueries = actualConvertResult.getFilterQueries();
+    assertTrue(filterQueries instanceof List);
+    assertNull(actualConvertResult.getStartIndex());
+    assertNull(actualConvertResult.getQuery());
+    assertNull(actualConvertResult.getRequestHandler());
+    assertNull(actualConvertResult.getSortQuery());
+    assertNull(actualConvertResult.getCategory());
+    assertEquals(1, actualConvertResult.getPage().intValue());
+    assertFalse(actualConvertResult.getSearchExplicitCategory());
+    assertTrue(filterQueries.isEmpty());
+    assertTrue(actualConvertResult.getFilterCriteria().isEmpty());
+    assertEquals(Integer.MAX_VALUE, actualConvertResult.getPageSize().intValue());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}.
+   *
+   * <ul>
+   *   <li>When {@code product.}.
+   *   <li>Then return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isProductRule(String)"})
   public void testIsProductRule_whenProduct_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -461,15 +652,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}.
+   *
    * <ul>
-   *   <li>When {@code Rule}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Rule}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isProductRule(String)"})
   public void testIsProductRule_whenRule_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -478,16 +671,21 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldTypeImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link IndexFieldTypeImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"
+  })
   public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl_thenReturnTrue() {
     // Arrange
     ArrayList<IndexFieldType> indexFieldTypes = new ArrayList<>();
@@ -499,16 +697,21 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldTypeImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@link IndexFieldTypeImpl} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"
+  })
   public void testIsCustomFieldIndexed_givenIndexFieldTypeImpl_thenReturnTrue2() {
     // Arrange
     ArrayList<IndexFieldType> indexFieldTypes = new ArrayList<>();
@@ -521,16 +724,21 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"
+  })
   public void testIsCustomFieldIndexed_whenArrayList_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(new ArrayList<>()));
@@ -538,16 +746,21 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(List)"
+  })
   public void testIsCustomFieldIndexed_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCustomFieldIndexed(null));
@@ -555,33 +768,44 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"
+  })
   public void testIsCategoryTargetingRule_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(mvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(
-        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    assertTrue(
+        mvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(
+            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
+   *
    * <ul>
-   *   <li>When {@code Mvel Rule}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code Mvel Rule}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean MvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule(String)"
+  })
   public void testIsCategoryTargetingRule_whenMvelRule_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(mvelToSearchCriteriaConversionServiceImpl.isCategoryTargetingRule("Mvel Rule"));
@@ -589,85 +813,127 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42"]}.</li>
-   *   <li>Then return array of {@link Long} with two.</li>
+   *   <li>When {@code 42"]}.
+   *   <li>Then return array of {@link Long} with two.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Long[] MvelToSearchCriteriaConversionServiceImpl.getCategoryIds(String)"})
   public void testGetCategoryIds_when42_thenReturnArrayOfLongWithTwo() {
     // Arrange, Act and Assert
-    assertArrayEquals(new Long[]{2L}, mvelToSearchCriteriaConversionServiceImpl.getCategoryIds("42\"]"));
+    assertArrayEquals(
+        new Long[] {2L}, mvelToSearchCriteriaConversionServiceImpl.getCategoryIds("42\"]"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
   public void testConvertRuleToFilters() {
     // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenThrow(new UnsupportedOperationException());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("Match Rule"));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("Match Rule");
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters2() {
+    // Arrange
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenThrow(new UnsupportedOperationException());
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
+                "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
+    verify(solrHelperService).getExplicitCategoryFieldName();
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters3() {
+    // Arrange
     when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
-    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenReturn("Explicit Category Field Name");
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters(
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
             "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0||");
 
     // Assert
-    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService, atLeast(1)).getCategoryId(9L);
     verify(solrHelperService).getExplicitCategoryFieldName();
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertEquals(1, actualConvertRuleToFiltersResult.size());
-    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) actualConvertRuleToFiltersResult).get(0));
+    assertEquals(
+        "Explicit Category Field Name:(\"1,1,1\")",
+        ((List<String>) actualConvertRuleToFiltersResult).get(0));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>Given {@link IndexFieldDao}.</li>
-   *   <li>When empty string.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>Then return first is empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_givenIndexFieldDao_whenEmptyString_thenReturnEmpty() {
-    // Arrange and Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("");
-
-    // Assert
-    assertTrue(actualConvertRuleToFiltersResult instanceof List);
-    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
-   * <ul>
-   *   <li>Then return first is empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
   public void testConvertRuleToFilters_thenReturnFirstIsEmptyString() {
     // Arrange and Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("||");
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("||");
 
     // Assert
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
@@ -677,263 +943,419 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>Then return first is {@code Explicit Category Field Name:("1,1,1")}.</li>
+   *   <li>Then return first is {@code Explicit Category Field Name:("1,1,1")}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
   public void testConvertRuleToFilters_thenReturnFirstIsExplicitCategoryFieldName111() {
     // Arrange
     when(solrHelperService.getCategoryId(Mockito.<Long>any())).thenReturn(1L);
-    when(solrHelperService.getExplicitCategoryFieldName()).thenReturn("Explicit Category Field Name");
+    when(solrHelperService.getExplicitCategoryFieldName())
+        .thenReturn("Explicit Category Field Name");
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters(
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
             "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
 
     // Assert
-    verify(solrHelperService, atLeast(1)).getCategoryId(eq(9L));
+    verify(solrHelperService, atLeast(1)).getCategoryId(9L);
     verify(solrHelperService).getExplicitCategoryFieldName();
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertEquals(1, actualConvertRuleToFiltersResult.size());
-    assertEquals("Explicit Category Field Name:(\"1,1,1\")", ((List<String>) actualConvertRuleToFiltersResult).get(0));
+    assertEquals(
+        "Explicit Category Field Name:(\"1,1,1\")",
+        ((List<String>) actualConvertRuleToFiltersResult).get(0));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>When a string.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_thenThrowUnsupportedOperationException() {
-    // Arrange
-    when(solrHelperService.getExplicitCategoryFieldName()).thenThrow(new UnsupportedOperationException(
-        "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
-
-    // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
-        () -> mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
-            "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0"));
-    verify(solrHelperService).getExplicitCategoryFieldName();
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
-   * <ul>
-   *   <li>When a string.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenAString() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenAString_thenReturnEmpty() {
     // Arrange
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters(
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
             "CollectionUtils.intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0CollectionUtils"
                 + ".intersection(product.?allParentCategoryIds,[\"9,\"9\",\"9\"\"]).size()>0");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("allParentCategoryIds"));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("allParentCategoryIds");
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>When {@link MvelToSearchCriteriaConversionServiceImpl#CATEGORY_FORMAT_REGEX}.</li>
+   *   <li>When {@link MvelToSearchCriteriaConversionServiceImpl#CATEGORY_FORMAT_REGEX}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenCategory_format_regex() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenCategory_format_regex_thenReturnEmpty() {
     // Arrange
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters(MvelToSearchCriteriaConversionServiceImpl.CATEGORY_FORMAT_REGEX);
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(
+            MvelToSearchCriteriaConversionServiceImpl.CATEGORY_FORMAT_REGEX);
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("product\\.\\allParentCategoryIds"));
+    verify(indexFieldDao)
+        .getIndexFieldTypesByAbbreviationOrPropertyName("product\\.\\allParentCategoryIds");
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>When {@code :("}.</li>
+   *   <li>When {@code :("}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenColonLeftParenthesisQuotationMark() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenColonLeftParenthesisQuotationMark_thenReturnEmpty() {
     // Arrange
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters(":(\"");
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(":(\"");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq(":(\""));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(":(\"");
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>When {@code !}.</li>
+   *   <li>When empty string.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenExclamationMark() {
-    // Arrange
-    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-
-    // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("!");
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenEmptyString_thenReturnEmpty() {
+    // Arrange and Act
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>When {@code !=}.</li>
+   *   <li>When {@code !="}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenExclamationMarkEqualsSign() {
-    // Arrange
-    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
-        .thenReturn(new ArrayList<>());
-
-    // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("!=");
-
-    // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
-    assertTrue(actualConvertRuleToFiltersResult instanceof List);
-    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
-   * <ul>
-   *   <li>When {@code !="}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
   public void testConvertRuleToFilters_whenExclamationMarkEqualsSignQuotationMark() {
     // Arrange
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("!=\"");
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("!=\"");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("!"));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("!");
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
    * <ul>
-   *   <li>When {@code Match Rule}.</li>
+   *   <li>When {@code !=}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"})
-  public void testConvertRuleToFilters_whenMatchRule() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenExclamationMarkEqualsSign_thenReturnEmpty() {
     // Arrange
     when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
         .thenReturn(new ArrayList<>());
 
     // Act
-    Collection<String> actualConvertRuleToFiltersResult = mvelToSearchCriteriaConversionServiceImpl
-        .convertRuleToFilters("Match Rule");
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("!=");
 
     // Assert
-    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName(eq("Match Rule"));
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("!");
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code !}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenExclamationMark_thenReturnEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("!");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("!");
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Match Rule}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenMatchRule_thenReturnEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("Match Rule");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("Match Rule");
+    assertTrue(actualConvertRuleToFiltersResult instanceof List);
+    assertTrue(actualConvertRuleToFiltersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?}.
+   *   <li>Then return Empty.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Collection MvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters(String)"
+  })
+  public void testConvertRuleToFilters_whenQuestionMark_thenReturnEmpty() {
+    // Arrange
+    when(indexFieldDao.getIndexFieldTypesByAbbreviationOrPropertyName(Mockito.<String>any()))
+        .thenReturn(new ArrayList<>());
+
+    // Act
+    Collection<String> actualConvertRuleToFiltersResult =
+        mvelToSearchCriteriaConversionServiceImpl.convertRuleToFilters("?");
+
+    // Assert
+    verify(indexFieldDao).getIndexFieldTypesByAbbreviationOrPropertyName("");
     assertTrue(actualConvertRuleToFiltersResult instanceof List);
     assertTrue(actualConvertRuleToFiltersResult.isEmpty());
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName() {
+    // Arrange, Act and Assert
+    assertEquals("\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\"))"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName2() {
     // Arrange, Act and Assert
     assertEquals("\\\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?\"))"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
-   * <ul>
-   *   <li>Then return {@code \*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName3() {
+    // Arrange, Act and Assert
+    assertEquals("\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\"))?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName4() {
+    // Arrange, Act and Assert
+    assertEquals("\"))\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\"))\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>Then return {@code *\}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_thenReturnAsteriskBackslash() {
+    // Arrange, Act and Assert
+    assertEquals("*\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("*\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>Then return {@code \*}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashAsterisk() {
     // Arrange, Act and Assert
@@ -942,14 +1364,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \\}.</li>
+   *   <li>Then return {@code \\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashBackslash() {
     // Arrange, Act and Assert
@@ -958,14 +1383,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \:("}.</li>
+   *   <li>Then return {@code \:("}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashColonLeftParenthesisQuotationMark() {
     // Arrange, Act and Assert
@@ -974,14 +1402,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \=}.</li>
+   *   <li>Then return {@code \=}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashEqualsSign() {
     // Arrange, Act and Assert
@@ -990,14 +1421,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \!}.</li>
+   *   <li>Then return {@code \!}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMark() {
     // Arrange, Act and Assert
@@ -1006,14 +1440,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \!=}.</li>
+   *   <li>Then return {@code \!=}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMarkEqualsSign() {
     // Arrange, Act and Assert
@@ -1022,14 +1459,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \!="}.</li>
+   *   <li>Then return {@code \!="}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashExclamationMarkEqualsSignQuotationMark() {
     // Arrange, Act and Assert
@@ -1038,14 +1478,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \"}.</li>
+   *   <li>Then return {@code \"}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMark() {
     // Arrange, Act and Assert
@@ -1054,14 +1497,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \","}.</li>
+   *   <li>Then return {@code \","}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMarkCommaQuotationMark() {
     // Arrange, Act and Assert
@@ -1070,14 +1516,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code \")}.</li>
+   *   <li>Then return {@code \")}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnBackslashQuotationMarkRightParenthesis() {
     // Arrange, Act and Assert
@@ -1086,14 +1535,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code :("}.</li>
+   *   <li>Then return {@code :("}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnColonLeftParenthesisQuotationMark() {
     // Arrange, Act and Assert
@@ -1102,14 +1554,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code !\}.</li>
+   *   <li>Then return {@code !\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnExclamationMarkBackslash() {
     // Arrange, Act and Assert
@@ -1118,14 +1573,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code !=\}.</li>
+   *   <li>Then return {@code !=\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnExclamationMarkEqualsSignBackslash() {
     // Arrange, Act and Assert
@@ -1134,30 +1592,36 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code !="}.</li>
+   *   <li>Then return {@code !="\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
-  public void testConvertFieldName_thenReturnExclamationMarkEqualsSignQuotationMark() {
+  public void testConvertFieldName_thenReturnExclamationMarkEqualsSignQuotationMarkBackslash() {
     // Arrange, Act and Assert
-    assertEquals("!=\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?!=\""));
+    assertEquals("!=\"\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!=\"\\?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ()\}.</li>
+   *   <li>Then return {@code ()\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_thenReturnLeftParenthesisRightParenthesisBackslash() {
     // Arrange, Act and Assert
@@ -1166,63 +1630,75 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ","}.</li>
+   *   <li>Then return {@code "\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
-  public void testConvertFieldName_thenReturnQuotationMarkCommaQuotationMark() {
+  public void testConvertFieldName_thenReturnQuotationMarkBackslash() {
     // Arrange, Act and Assert
-    assertEquals("\",\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\",\""));
+    assertEquals("\"\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\"\\?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ")}.</li>
+   *   <li>Then return {@code ","\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
-  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesis() {
+  public void testConvertFieldName_thenReturnQuotationMarkCommaQuotationMarkBackslash() {
     // Arrange, Act and Assert
-    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\")"));
+    assertEquals("\",\"\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\",\"\\?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code "))}.</li>
+   *   <li>Then return {@code ")\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
-  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesisRightParenthesis() {
+  public void testConvertFieldName_thenReturnQuotationMarkRightParenthesisBackslash() {
     // Arrange, Act and Assert
-    assertEquals("\"))", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\"))"));
+    assertEquals("\")\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\")\\?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?42}.</li>
-   *   <li>Then return {@code 42}.</li>
+   *   <li>When {@code ?42}.
+   *   <li>Then return {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_when42_thenReturn42() {
     // Arrange, Act and Assert
@@ -1231,15 +1707,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?42}.</li>
-   *   <li>Then return {@code \42}.</li>
+   *   <li>When {@code \?42}.
+   *   <li>Then return {@code \42}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_when42_thenReturn422() {
     // Arrange, Act and Assert
@@ -1248,15 +1727,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42?}.</li>
-   *   <li>Then return {@code 42}.</li>
+   *   <li>When {@code 42?}.
+   *   <li>Then return {@code 42}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_when42_thenReturn423() {
     // Arrange, Act and Assert
@@ -1265,15 +1747,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42\?}.</li>
-   *   <li>Then return {@code 42\}.</li>
+   *   <li>When {@code 42\?}.
+   *   <li>Then return {@code 42\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_when42_thenReturn424() {
     // Arrange, Act and Assert
@@ -1282,14 +1767,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?()}.</li>
+   *   <li>When {@code *?}.
+   *   <li>Then return {@code *}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenAsteriskQuestionMark_thenReturnAsterisk() {
+    // Arrange, Act and Assert
+    assertEquals("*", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("*?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code \?()}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMarkLeftParenthesisRightParenthesis() {
     // Arrange, Act and Assert
@@ -1298,15 +1806,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \??}.</li>
-   *   <li>Then return {@code \}.</li>
+   *   <li>When {@code \??}.
+   *   <li>Then return {@code \}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMarkQuestionMark_thenReturnBackslash() {
     // Arrange, Act and Assert
@@ -1315,15 +1826,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?}.</li>
-   *   <li>Then return {@code \}.</li>
+   *   <li>When {@code \?}.
+   *   <li>Then return {@code \}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenBackslashQuestionMark_thenReturnBackslash() {
     // Arrange, Act and Assert
@@ -1332,82 +1846,185 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?.contains}.</li>
-   *   <li>Then return {@code .contains}.</li>
+   *   <li>When {@code ?.contains}.
+   *   <li>Then return {@code .contains}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenContains_thenReturnContains() {
     // Arrange, Act and Assert
-    assertEquals(".contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.contains"));
+    assertEquals(
+        ".contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.contains"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?.contains}.</li>
-   *   <li>Then return {@code \.contains}.</li>
+   *   <li>When {@code \?.contains}.
+   *   <li>Then return {@code \.contains}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenContains_thenReturnContains2() {
     // Arrange, Act and Assert
-    assertEquals("\\.contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.contains"));
+    assertEquals(
+        "\\.contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.contains"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?.endsWith}.</li>
-   *   <li>Then return {@code .endsWith}.</li>
+   *   <li>When {@code .contains?}.
+   *   <li>Then return {@code .contains}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenContains_thenReturnContains3() {
+    // Arrange, Act and Assert
+    assertEquals(
+        ".contains", mvelToSearchCriteriaConversionServiceImpl.convertFieldName(".contains?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code .contains\?}.
+   *   <li>Then return {@code .contains\}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenContains_thenReturnContains4() {
+    // Arrange, Act and Assert
+    assertEquals(
+        ".contains\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName(".contains\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?.endsWith}.
+   *   <li>Then return {@code .endsWith}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenEndsWith_thenReturnEndsWith() {
     // Arrange, Act and Assert
-    assertEquals(".endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.endsWith"));
+    assertEquals(
+        ".endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.endsWith"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?.endsWith}.</li>
-   *   <li>Then return {@code \.endsWith}.</li>
+   *   <li>When {@code \?.endsWith}.
+   *   <li>Then return {@code \.endsWith}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenEndsWith_thenReturnEndsWith2() {
     // Arrange, Act and Assert
-    assertEquals("\\.endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.endsWith"));
+    assertEquals(
+        "\\.endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.endsWith"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code !=?}.</li>
+   *   <li>When {@code .endsWith?}.
+   *   <li>Then return {@code .endsWith}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenEndsWith_thenReturnEndsWith3() {
+    // Arrange, Act and Assert
+    assertEquals(
+        ".endsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName(".endsWith?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code .endsWith\?}.
+   *   <li>Then return {@code .endsWith\}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenEndsWith_thenReturnEndsWith4() {
+    // Arrange, Act and Assert
+    assertEquals(
+        ".endsWith\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName(".endsWith\\?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code !=?}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenExclamationMarkEqualsSignQuestionMark() {
     // Arrange, Act and Assert
@@ -1416,15 +2033,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code !?}.</li>
-   *   <li>Then return {@code !}.</li>
+   *   <li>When {@code !="?}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenExclamationMarkEqualsSignQuotationMarkQuestionMark() {
+    // Arrange, Act and Assert
+    assertEquals("!=\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("!=\"?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code !?}.
+   *   <li>Then return {@code !}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenExclamationMarkQuestionMark_thenReturnExclamationMark() {
     // Arrange, Act and Assert
@@ -1433,100 +2072,125 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code Field Name}.</li>
-   *   <li>Then return {@code Field Name}.</li>
+   *   <li>When {@code Field Name}.
+   *   <li>Then return {@code Field Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName() {
     // Arrange, Act and Assert
-    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name"));
+    assertEquals(
+        "Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?Field Name}.</li>
-   *   <li>Then return {@code Field Name}.</li>
+   *   <li>When {@code ?Field Name}.
+   *   <li>Then return {@code Field Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName2() {
     // Arrange, Act and Assert
-    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?Field Name"));
+    assertEquals(
+        "Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?Field Name"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?Field Name}.</li>
-   *   <li>Then return {@code \Field Name}.</li>
+   *   <li>When {@code \?Field Name}.
+   *   <li>Then return {@code \Field Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName3() {
     // Arrange, Act and Assert
-    assertEquals("\\Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?Field Name"));
+    assertEquals(
+        "\\Field Name",
+        mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?Field Name"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code Field Name?}.</li>
-   *   <li>Then return {@code Field Name}.</li>
+   *   <li>When {@code Field Name?}.
+   *   <li>Then return {@code Field Name}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName4() {
     // Arrange, Act and Assert
-    assertEquals("Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name?"));
+    assertEquals(
+        "Field Name", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code Field Name\?}.</li>
-   *   <li>Then return {@code Field Name\}.</li>
+   *   <li>When {@code Field Name\?}.
+   *   <li>Then return {@code Field Name\}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenFieldName_thenReturnFieldName5() {
     // Arrange, Act and Assert
-    assertEquals("Field Name\\", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name\\?"));
+    assertEquals(
+        "Field Name\\",
+        mvelToSearchCriteriaConversionServiceImpl.convertFieldName("Field Name\\?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code product.\?}.</li>
-   *   <li>Then return {@code \}.</li>
+   *   <li>When {@code product.\?}.
+   *   <li>Then return {@code \}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnBackslash() {
     // Arrange, Act and Assert
@@ -1535,15 +2199,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code product.}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code product.}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -1552,15 +2219,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?product.}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code ?product.}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnEmptyString2() {
     // Arrange, Act and Assert
@@ -1569,15 +2239,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code product.?}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code product.?}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnEmptyString3() {
     // Arrange, Act and Assert
@@ -1586,32 +2259,39 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?product.}.</li>
-   *   <li>Then return {@code \product.}.</li>
+   *   <li>When {@code \?product.}.
+   *   <li>Then return {@code \product.}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenProduct_thenReturnProduct() {
     // Arrange, Act and Assert
-    assertEquals("\\product.", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?product."));
+    assertEquals(
+        "\\product.", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?product."));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?*}.</li>
-   *   <li>Then return {@code *}.</li>
+   *   <li>When {@code ?*}.
+   *   <li>Then return {@code *}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkAsterisk_thenReturnAsterisk() {
     // Arrange, Act and Assert
@@ -1620,15 +2300,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?\?}.</li>
-   *   <li>Then return {@code \}.</li>
+   *   <li>When {@code ?\?}.
+   *   <li>Then return {@code \}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkBackslashQuestionMark_thenReturnBackslash() {
     // Arrange, Act and Assert
@@ -1637,15 +2320,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?=}.</li>
-   *   <li>Then return {@code =}.</li>
+   *   <li>When {@code ?=}.
+   *   <li>Then return {@code =}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkEqualsSign_thenReturnEqualsSign() {
     // Arrange, Act and Assert
@@ -1654,14 +2340,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?!=}.</li>
+   *   <li>When {@code ?!=}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkExclamationMarkEqualsSign() {
     // Arrange, Act and Assert
@@ -1670,15 +2359,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?!}.</li>
-   *   <li>Then return {@code !}.</li>
+   *   <li>When {@code ?!="}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenQuestionMarkExclamationMarkEqualsSignQuotationMark() {
+    // Arrange, Act and Assert
+    assertEquals("!=\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?!=\""));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?!}.
+   *   <li>Then return {@code !}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkExclamationMark_thenReturnExclamationMark() {
     // Arrange, Act and Assert
@@ -1687,15 +2398,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ??}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code ??}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkQuestionMark_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -1704,15 +2418,56 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?"}.</li>
-   *   <li>Then return {@code "}.</li>
+   *   <li>When {@code ?","}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenQuestionMarkQuotationMarkCommaQuotationMark() {
+    // Arrange, Act and Assert
+    assertEquals("\",\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\",\""));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?")}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenQuestionMarkQuotationMarkRightParenthesis() {
+    // Arrange, Act and Assert
+    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?\")"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?"}.
+   *   <li>Then return {@code "}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMarkQuotationMark_thenReturnQuotationMark() {
     // Arrange, Act and Assert
@@ -1721,15 +2476,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code ?}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenQuestionMark_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -1738,49 +2496,118 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code ?.startsWith}.</li>
-   *   <li>Then return {@code .startsWith}.</li>
+   *   <li>When {@code ","?}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
-  public void testConvertFieldName_whenStartsWith_thenReturnStartsWith() {
+  public void testConvertFieldName_whenQuotationMarkCommaQuotationMarkQuestionMark() {
     // Arrange, Act and Assert
-    assertEquals(".startsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.startsWith"));
+    assertEquals("\",\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\",\"?"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
    * <ul>
-   *   <li>When {@code \?.startsWith}.</li>
-   *   <li>Then return {@code \.startsWith}.</li>
+   *   <li>When {@code "?}.
+   *   <li>Then return {@code "}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenQuotationMarkQuestionMark_thenReturnQuotationMark() {
+    // Arrange, Act and Assert
+    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\"?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ")?}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenQuotationMarkRightParenthesisQuestionMark() {
+    // Arrange, Act and Assert
+    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\")?"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ?.startsWith}.
+   *   <li>Then return {@code .startsWith}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
+  public void testConvertFieldName_whenStartsWith_thenReturnStartsWith() {
+    // Arrange, Act and Assert
+    assertEquals(
+        ".startsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("?.startsWith"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code \?.startsWith}.
+   *   <li>Then return {@code \.startsWith}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.convertFieldName(String)"})
   public void testConvertFieldName_whenStartsWith_thenReturnStartsWith2() {
     // Arrange, Act and Assert
-    assertEquals("\\.startsWith", mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.startsWith"));
+    assertEquals(
+        "\\.startsWith",
+        mvelToSearchCriteriaConversionServiceImpl.convertFieldName("\\?.startsWith"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code Field Name}.</li>
-   *   <li>Then return {@code field Na}.</li>
+   *   <li>When {@code Field Name}.
+   *   <li>Then return {@code field Na}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenFieldName_thenReturnFieldNa() {
     // Arrange, Act and Assert
@@ -1789,32 +2616,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code getField Name}.</li>
-   *   <li>Then return {@code field Na}.</li>
+   *   <li>When {@code getField Name}.
+   *   <li>Then return {@code field Na}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetFieldName_thenReturnFieldNa() {
     // Arrange, Act and Assert
-    assertEquals("field Na", mvelToSearchCriteriaConversionServiceImpl.parseMethod("getField Name"));
+    assertEquals(
+        "field Na", mvelToSearchCriteriaConversionServiceImpl.parseMethod("getField Name"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code get(^get)}.</li>
-   *   <li>Then return {@code (^ge}.</li>
+   *   <li>When {@code get(^get)}.
+   *   <li>Then return {@code (^ge}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetGet_thenReturnGe() {
     // Arrange, Act and Assert
@@ -1823,32 +2655,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code get:("}.</li>
-   *   <li>Then return {@code :}.</li>
+   *   <li>When {@code get!="}.
+   *   <li>Then return {@code !}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
-  public void testParseMethod_whenGet_thenReturnColon() {
-    // Arrange, Act and Assert
-    assertEquals(":", mvelToSearchCriteriaConversionServiceImpl.parseMethod("get:(\""));
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
-   * <ul>
-   *   <li>When {@code get!="}.</li>
-   *   <li>Then return {@code !}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnExclamationMark() {
     // Arrange, Act and Assert
@@ -1857,15 +2674,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code get"))}.</li>
-   *   <li>Then return {@code "}.</li>
+   *   <li>When {@code get"))}.
+   *   <li>Then return {@code "}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnQuotationMark() {
     // Arrange, Act and Assert
@@ -1874,15 +2693,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code get","}.</li>
-   *   <li>Then return {@code "}.</li>
+   *   <li>When {@code get","}.
+   *   <li>Then return {@code "}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGet_thenReturnQuotationMark2() {
     // Arrange, Act and Assert
@@ -1891,15 +2712,17 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   *
    * <ul>
-   *   <li>When {@code getget}.</li>
-   *   <li>Then return {@code g}.</li>
+   *   <li>When {@code getget}.
+   *   <li>Then return {@code g}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   *
+   * <p>Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.parseMethod(String)"})
   public void testParseMethod_whenGetget_thenReturnG() {
     // Arrange, Act and Assert
@@ -1908,15 +2731,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code 42}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_when42_thenReturnFalse() {
     // Arrange, Act and Assert
@@ -1925,15 +2751,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   *
    * <ul>
-   *   <li>When {@code 42*}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code 42*}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_when42_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -1942,15 +2771,18 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   *
    * <ul>
-   *   <li>When {@code *}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code *}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean MvelToSearchCriteriaConversionServiceImpl.isWildCardSearch(String)"})
   public void testIsWildCardSearch_whenAsterisk_thenReturnTrue() {
     // Arrange, Act and Assert
@@ -1959,15 +2791,40 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
-   * <ul>
-   *   <li>Then return {@code !}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
+  public void testGetCustomFieldPropertyName() {
+    // Arrange, Act and Assert
+    assertEquals(
+        "org.apache.commons.lang3.StringUtils.contains",
+        mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(
+            "org.apache.commons.lang3.StringUtils.contains,"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
+   * <ul>
+   *   <li>Then return {@code !}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
   public void testGetCustomFieldPropertyName_thenReturnExclamationMark() {
     // Arrange, Act and Assert
     assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("!="));
@@ -1975,15 +2832,20 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ()}.</li>
+   *   <li>Then return {@code ()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
   public void testGetCustomFieldPropertyName_thenReturnLeftParenthesisRightParenthesis() {
     // Arrange, Act and Assert
     assertEquals("()", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("()"));
@@ -1991,66 +2853,68 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ["}.</li>
+   *   <li>When {@code CollectionUtils,}.
+   *   <li>Then return {@code CollectionUtils}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
-  public void testGetCustomFieldPropertyName_thenReturnLeftSquareBracketQuotationMark() {
-    // Arrange, Act and Assert
-    assertEquals("[\"", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("[\"!"));
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
-   * <ul>
-   *   <li>Then return {@code "}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
-  public void testGetCustomFieldPropertyName_thenReturnQuotationMark() {
-    // Arrange, Act and Assert
-    assertEquals("\"", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("(\")"));
-  }
-
-  /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
-   * <ul>
-   *   <li>When {@code CollectionUtils,}.</li>
-   *   <li>Then return {@code CollectionUtils}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
   public void testGetCustomFieldPropertyName_whenCollectionUtils_thenReturnCollectionUtils() {
     // Arrange, Act and Assert
-    assertEquals("CollectionUtils",
+    assertEquals(
+        "CollectionUtils",
         mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("CollectionUtils,"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
    * <ul>
-   *   <li>When {@code (}.</li>
-   *   <li>Then return {@code (}.</li>
+   *   <li>When {@code ,.endsWith}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
+  public void testGetCustomFieldPropertyName_whenEndsWith_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals(
+        "", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(",.endsWith"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code (}.
+   *   <li>Then return {@code (}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
   public void testGetCustomFieldPropertyName_whenLeftParenthesis_thenReturnLeftParenthesis() {
     // Arrange, Act and Assert
     assertEquals("(", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("("));
@@ -2058,131 +2922,315 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
    * <ul>
-   *   <li>When {@code Mvel Rule}.</li>
-   *   <li>Then return {@code Mvel Rule}.</li>
+   *   <li>When {@code Mvel Rule}.
+   *   <li>Then return {@code Mvel Rule}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
   public void testGetCustomFieldPropertyName_whenMvelRule_thenReturnMvelRule() {
     // Arrange, Act and Assert
-    assertEquals("Mvel Rule", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("Mvel Rule"));
+    assertEquals(
+        "Mvel Rule",
+        mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("Mvel Rule"));
   }
 
   /**
-   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code =}.</li>
+   *   <li>When {@code Mvel Rule!}.
+   *   <li>Then return {@code Mvel Rule}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
-  public void testGetRuleOrPropertyFromFunction_thenReturnEqualsSign() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
+  public void testGetCustomFieldPropertyName_whenMvelRule_thenReturnMvelRule2() {
     // Arrange, Act and Assert
-    assertEquals("=", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("=!"));
+    assertEquals(
+        "Mvel Rule",
+        mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("Mvel Rule!"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code ,.startsWith}.
+   *   <li>Then return empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
+  public void testGetCustomFieldPropertyName_whenStartsWith_thenReturnEmptyString() {
+    // Arrange, Act and Assert
+    assertEquals(
+        "", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(",.startsWith"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   *
+   * <ul>
+   *   <li>When {@code (U)}.
+   *   <li>Then return {@code U}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName(String)"
+  })
+  public void testGetCustomFieldPropertyName_whenU_thenReturnU() {
+    // Arrange, Act and Assert
+    assertEquals("U", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldPropertyName("(U)"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code !}.</li>
+   *   <li>Then return {@code !}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
   public void testGetRuleOrPropertyFromFunction_thenReturnExclamationMark() {
     // Arrange, Act and Assert
-    assertEquals("!", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("!="));
+    assertEquals(
+        "!", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("!="));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ()}.</li>
+   *   <li>Then return {@code ()}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
   public void testGetRuleOrPropertyFromFunction_thenReturnLeftParenthesisRightParenthesis() {
     // Arrange, Act and Assert
-    assertEquals("()", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("()"));
+    assertEquals(
+        "()", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("()"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
    * <ul>
-   *   <li>Then return {@code ")}.</li>
+   *   <li>Then return {@code ""}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
+  public void testGetRuleOrPropertyFromFunction_thenReturnQuotationMarkQuotationMark() {
+    // Arrange, Act and Assert
+    assertEquals(
+        "\"\"", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(":(\"\")"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
+   * <ul>
+   *   <li>Then return {@code ")}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
   public void testGetRuleOrPropertyFromFunction_thenReturnQuotationMarkRightParenthesis() {
     // Arrange, Act and Assert
-    assertEquals("\")", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("\")"));
+    assertEquals(
+        "\")", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("\")"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
    * <ul>
-   *   <li>When {@code Mvel Rule}.</li>
-   *   <li>Then return {@code Mvel Rule}.</li>
+   *   <li>When {@code Mvel Rule}.
+   *   <li>Then return {@code Mvel Rule}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
   public void testGetRuleOrPropertyFromFunction_whenMvelRule_thenReturnMvelRule() {
     // Arrange, Act and Assert
-    assertEquals("Mvel Rule", mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("Mvel Rule"));
+    assertEquals(
+        "Mvel Rule",
+        mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("Mvel Rule"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Mvel Rule!}.
+   *   <li>Then return {@code Mvel Rule}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction(String)"
+  })
+  public void testGetRuleOrPropertyFromFunction_whenMvelRule_thenReturnMvelRule2() {
+    // Arrange, Act and Assert
+    assertEquals(
+        "Mvel Rule",
+        mvelToSearchCriteriaConversionServiceImpl.getRuleOrPropertyFromFunction("Mvel Rule!"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code .contains"))}.</li>
-   *   <li>Then return {@code contains}.</li>
+   *   <li>Then return {@code ==}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
+  public void testGetCustomFieldValue_thenReturnEqualsSignEqualsSign() {
+    // Arrange, Act and Assert
+    assertEquals("==", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("==\"==\""));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
+   * <ul>
+   *   <li>Then return {@code [}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
+  public void testGetCustomFieldValue_thenReturnLeftSquareBracket() {
+    // Arrange, Act and Assert
+    assertEquals("[", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("!=["));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
+   * <ul>
+   *   <li>When {@code .contains"))}.
+   *   <li>Then return {@code contains}.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
   public void testGetCustomFieldValue_whenContains_thenReturnContains() {
     // Arrange, Act and Assert
-    assertEquals("contains", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(".contains\"))"));
+    assertEquals(
+        "contains", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(".contains\"))"));
   }
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code ==}.</li>
-   *   <li>Then return {@code =}.</li>
+   *   <li>When {@code ==}.
+   *   <li>Then return {@code =}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
   public void testGetCustomFieldValue_whenEqualsSignEqualsSign_thenReturnEqualsSign() {
     // Arrange, Act and Assert
     assertEquals("=", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("=="));
@@ -2190,15 +3238,20 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code !="}.</li>
+   *   <li>When {@code !="}.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
   public void testGetCustomFieldValue_whenExclamationMarkEqualsSignQuotationMark() {
     // Arrange, Act and Assert
     assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("!=\""));
@@ -2206,16 +3259,21 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code !=}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code !=}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
   public void testGetCustomFieldValue_whenExclamationMarkEqualsSign_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("!="));
@@ -2223,18 +3281,45 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
    * <ul>
-   *   <li>When {@code Mvel Rule}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code Mvel Rule}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
   public void testGetCustomFieldValue_whenMvelRule_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("Mvel Rule"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   *
+   * <ul>
+   *   <li>When {@code Mvel Rule==}.
+   *   <li>Then return empty string.
+   * </ul>
+   *
+   * <p>Method under test: {@link
+   * MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String MvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue(String)"
+  })
+  public void testGetCustomFieldValue_whenMvelRule_thenReturnEmptyString2() {
+    // Arrange, Act and Assert
+    assertEquals("", mvelToSearchCriteriaConversionServiceImpl.getCustomFieldValue("Mvel Rule=="));
   }
 }

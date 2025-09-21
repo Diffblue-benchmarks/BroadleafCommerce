@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.file.service;
 
 import static org.junit.Assert.assertEquals;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,15 +27,17 @@ import org.junit.experimental.categories.Category;
 public class BroadleafFileUtilsDiffblueTest {
   /**
    * Test {@link BroadleafFileUtils#buildFilePath(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /directory}.</li>
-   *   <li>Then return {@code /directory/}.</li>
+   *   <li>When {@code /directory}.
+   *   <li>Then return {@code /directory/}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenDirectory_thenReturnDirectory() {
     // Arrange, Act and Assert
@@ -43,15 +46,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#buildFilePath(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /directory}.</li>
-   *   <li>Then return {@code /directory/foo.txt}.</li>
+   *   <li>When {@code /directory}.
+   *   <li>Then return {@code /directory/foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenDirectory_thenReturnDirectoryFooTxt() {
     // Arrange, Act and Assert
@@ -60,15 +65,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#buildFilePath(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code /foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code /foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -77,15 +84,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#buildFilePath(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /}.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#buildFilePath(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.buildFilePath(String, String)"})
   public void testBuildFilePath_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
@@ -94,15 +103,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#removeLeadingSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingSlash(String)"})
   public void testRemoveLeadingSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -111,15 +122,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#removeLeadingSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#removeLeadingSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingSlash(String)"})
   public void testRemoveLeadingSlash_whenSlash_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -128,15 +141,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#addLeadingSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code /foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code /foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.addLeadingSlash(String)"})
   public void testAddLeadingSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -145,15 +160,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#addLeadingSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /}.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#addLeadingSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.addLeadingSlash(String)"})
   public void testAddLeadingSlash_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
@@ -162,15 +179,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#appendUnixPaths(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /directory}.</li>
-   *   <li>Then return {@code /directory/}.</li>
+   *   <li>When {@code /directory}.
+   *   <li>Then return {@code /directory/}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenDirectory_thenReturnDirectory() {
     // Arrange, Act and Assert
@@ -179,15 +198,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#appendUnixPaths(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /directory}.</li>
-   *   <li>Then return {@code /directory/foo.txt}.</li>
+   *   <li>When {@code /directory}.
+   *   <li>Then return {@code /directory/foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenDirectory_thenReturnDirectoryFooTxt() {
     // Arrange, Act and Assert
@@ -196,15 +217,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#appendUnixPaths(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code /foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code /foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -213,15 +236,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#appendUnixPaths(String, String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /}.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#appendUnixPaths(String, String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.appendUnixPaths(String, String)"})
   public void testAppendUnixPaths_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert
@@ -230,15 +255,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingUnixSlash(String)"})
   public void testRemoveLeadingUnixSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -247,15 +274,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#removeLeadingUnixSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.removeLeadingUnixSlash(String)"})
   public void testRemoveLeadingUnixSlash_whenSlash_thenReturnEmptyString() {
     // Arrange, Act and Assert
@@ -264,15 +293,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#addLeadingUnixSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code foo.txt}.</li>
-   *   <li>Then return {@code /foo.txt}.</li>
+   *   <li>When {@code foo.txt}.
+   *   <li>Then return {@code /foo.txt}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.addLeadingUnixSlash(String)"})
   public void testAddLeadingUnixSlash_whenFooTxt_thenReturnFooTxt() {
     // Arrange, Act and Assert
@@ -281,15 +312,17 @@ public class BroadleafFileUtilsDiffblueTest {
 
   /**
    * Test {@link BroadleafFileUtils#addLeadingUnixSlash(String)}.
+   *
    * <ul>
-   *   <li>When {@code /}.</li>
-   *   <li>Then return {@code /}.</li>
+   *   <li>When {@code /}.
+   *   <li>Then return {@code /}.
    * </ul>
-   * <p>
-   * Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
+   *
+   * <p>Method under test: {@link BroadleafFileUtils#addLeadingUnixSlash(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String BroadleafFileUtils.addLeadingUnixSlash(String)"})
   public void testAddLeadingUnixSlash_whenSlash_thenReturnSlash() {
     // Arrange, Act and Assert

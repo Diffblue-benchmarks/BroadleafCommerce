@@ -19,7 +19,8 @@ package org.broadleafcommerce.cms.web;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -31,16 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {NullURLProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class NullURLProcessorDiffblueTest {
-  @Autowired
-  private NullURLProcessor nullURLProcessor;
+  @Autowired private NullURLProcessor nullURLProcessor;
 
   /**
    * Test {@link NullURLProcessor#canProcessURL(String)}.
-   * <p>
-   * Method under test: {@link NullURLProcessor#canProcessURL(String)}
+   *
+   * <p>Method under test: {@link NullURLProcessor#canProcessURL(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NullURLProcessor.canProcessURL(String)"})
   public void testCanProcessURL() {
     // Arrange, Act and Assert
@@ -49,14 +50,17 @@ public class NullURLProcessorDiffblueTest {
 
   /**
    * Test {@link NullURLProcessor#processURL(String)}.
-   * <p>
-   * Method under test: {@link NullURLProcessor#processURL(String)}
+   *
+   * <p>Method under test: {@link NullURLProcessor#processURL(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NullURLProcessor.processURL(String)"})
   public void testProcessURL() {
     // Arrange, Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> nullURLProcessor.processURL("https://example.org/example"));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () -> nullURLProcessor.processURL("https://example.org/example"));
   }
 }

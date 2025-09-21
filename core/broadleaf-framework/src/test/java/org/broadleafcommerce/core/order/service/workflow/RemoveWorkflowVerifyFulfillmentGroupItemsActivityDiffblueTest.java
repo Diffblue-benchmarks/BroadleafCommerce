@@ -21,7 +21,8 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
@@ -38,31 +39,36 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RemoveWorkflowVerifyFulfillmentGroupItemsActivityDiffblueTest {
-  @Mock
-  private FulfillmentGroupItemStrategy fulfillmentGroupItemStrategy;
+  @Mock private FulfillmentGroupItemStrategy fulfillmentGroupItemStrategy;
 
   @InjectMocks
-  private RemoveWorkflowVerifyFulfillmentGroupItemsActivity removeWorkflowVerifyFulfillmentGroupItemsActivity;
+  private RemoveWorkflowVerifyFulfillmentGroupItemsActivity
+      removeWorkflowVerifyFulfillmentGroupItemsActivity;
 
   /**
    * Test {@link RemoveWorkflowVerifyFulfillmentGroupItemsActivity#execute(ProcessContext)}.
-   * <p>
-   * Method under test: {@link RemoveWorkflowVerifyFulfillmentGroupItemsActivity#execute(ProcessContext)}
+   *
+   * <p>Method under test: {@link
+   * RemoveWorkflowVerifyFulfillmentGroupItemsActivity#execute(ProcessContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ProcessContext RemoveWorkflowVerifyFulfillmentGroupItemsActivity.execute(ProcessContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ProcessContext RemoveWorkflowVerifyFulfillmentGroupItemsActivity.execute(ProcessContext)"
+  })
   public void testExecute() throws Exception {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
-    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
-
-    when(fulfillmentGroupItemStrategy.verify(Mockito.<CartOperationRequest>any())).thenReturn(cartOperationRequest);
+    CartOperationRequest cartOperationRequest =
+        new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+    when(fulfillmentGroupItemStrategy.verify(Mockito.<CartOperationRequest>any()))
+        .thenReturn(cartOperationRequest);
     DefaultProcessContextImpl<CartOperationRequest> context = new DefaultProcessContextImpl<>();
 
     // Act
-    ProcessContext<CartOperationRequest> actualExecuteResult = removeWorkflowVerifyFulfillmentGroupItemsActivity
-        .execute(context);
+    ProcessContext<CartOperationRequest> actualExecuteResult =
+        removeWorkflowVerifyFulfillmentGroupItemsActivity.execute(context);
 
     // Assert
     verify(fulfillmentGroupItemStrategy).verify(isNull());

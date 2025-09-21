@@ -19,6 +19,7 @@ package org.broadleafcommerce.core.web.checkout.model;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,9 @@ import org.junit.jupiter.api.Test;
 class OrderMultishipOptionFormDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link OrderMultishipOptionForm}
    *   <li>{@link OrderMultishipOptionForm#setOptions(List)}
@@ -40,9 +42,13 @@ class OrderMultishipOptionFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void OrderMultishipOptionForm.<init>()", "List OrderMultishipOptionForm.getOptions()",
-      "void OrderMultishipOptionForm.setOptions(List)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OrderMultishipOptionForm.<init>()",
+    "List OrderMultishipOptionForm.getOptions()",
+    "void OrderMultishipOptionForm.setOptions(List)"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
     OrderMultishipOptionForm actualOrderMultishipOptionForm = new OrderMultishipOptionForm();

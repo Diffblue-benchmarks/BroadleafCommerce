@@ -25,7 +25,8 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Field;
 import javax.persistence.Column;
@@ -49,27 +50,33 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
   @MockBean(name = "blDialectHelper")
   private DialectHelper dialectHelper;
 
-  @Autowired
-  private OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+  @Autowired private OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#canHandle(Field, Object, EntityManager)}.
+   *
    * <ul>
-   *   <li>Given Bean Name{blDialectHelper} {@link DialectHelper#isOracle(EntityManager)} return {@code false}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given Bean Name{blDialectHelper} {@link DialectHelper#isOracle(EntityManager)} return
+   *       {@code false}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#canHandle(Field, Object, EntityManager)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#canHandle(Field, Object,
+   * EntityManager)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.canHandle(Field, Object, EntityManager)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.canHandle(Field, Object, EntityManager)"
+  })
   public void testCanHandle_givenBeanNameBlDialectHelperIsOracleReturnFalse_thenReturnFalse() {
     // Arrange
     when(dialectHelper.isOracle(Mockito.<EntityManager>any())).thenReturn(false);
 
     // Act
-    boolean actualCanHandleResult = oracleRequiredFieldManagerModifier.canHandle(null, "Value", null);
+    boolean actualCanHandleResult =
+        oracleRequiredFieldManagerModifier.canHandle(null, "Value", null);
 
     // Assert
     verify(dialectHelper).isOracle(isNull());
@@ -78,24 +85,31 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
+   *
    * <ul>
-   *   <li>Given {@code 42}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code 42}.
+   *   <li>When {@link AdminPresentation} {@link AdminPresentation#defaultValue()} return {@code
+   *       42}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
+   *
+   * <p>Method under test: {@link
+   * OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"})
-  public void testIsRequiredField_given42_thenReturnFalse() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"
+  })
+  public void testIsRequiredField_given42_whenAdminPresentationDefaultValueReturn42() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
     when(adminPresentation.defaultValue()).thenReturn("42");
     when(adminPresentation.requiredOverride()).thenReturn(RequiredOverride.REQUIRED);
 
     // Act
-    boolean actualIsRequiredFieldResult = oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
+    boolean actualIsRequiredFieldResult =
+        oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
 
     // Assert
     verify(adminPresentation).defaultValue();
@@ -105,23 +119,30 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
+   *
    * <ul>
-   *   <li>Given empty string.</li>
+   *   <li>Given empty string.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
+   *
+   * <p>Method under test: {@link
+   * OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"})
-  public void testIsRequiredField_givenEmptyString() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"
+  })
+  public void testIsRequiredField_givenEmptyString_thenReturnTrue() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
     when(adminPresentation.defaultValue()).thenReturn("");
     when(adminPresentation.requiredOverride()).thenReturn(RequiredOverride.REQUIRED);
 
     // Act
-    boolean actualIsRequiredFieldResult = oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
+    boolean actualIsRequiredFieldResult =
+        oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
 
     // Assert
     verify(adminPresentation).defaultValue();
@@ -131,23 +152,29 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
+   *
    * <ul>
-   *   <li>Given {@code NOT_REQUIRED}.</li>
+   *   <li>Given {@code NOT_REQUIRED}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
+   *
+   * <p>Method under test: {@link
+   * OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"
+  })
   public void testIsRequiredField_givenNotRequired() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
-    when(adminPresentation.defaultValue()).thenReturn("42");
+    when(adminPresentation.defaultValue()).thenReturn("");
     when(adminPresentation.requiredOverride()).thenReturn(RequiredOverride.NOT_REQUIRED);
 
     // Act
-    boolean actualIsRequiredFieldResult = oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
+    boolean actualIsRequiredFieldResult =
+        oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
 
     // Assert
     verify(adminPresentation).defaultValue();
@@ -157,16 +184,22 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
+   *
    * <ul>
-   *   <li>When {@link AdminPresentation} {@link AdminPresentation#defaultValue()} return {@code null}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link AdminPresentation} {@link AdminPresentation#defaultValue()} return {@code
+   *       null}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
+   *
+   * <p>Method under test: {@link
+   * OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isRequiredField(AdminPresentation, Column)"
+  })
   public void testIsRequiredField_whenAdminPresentationDefaultValueReturnNull_thenReturnTrue() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
@@ -174,7 +207,8 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
     when(adminPresentation.requiredOverride()).thenReturn(RequiredOverride.REQUIRED);
 
     // Act
-    boolean actualIsRequiredFieldResult = oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
+    boolean actualIsRequiredFieldResult =
+        oracleRequiredFieldManagerModifier.isRequiredField(adminPresentation, null);
 
     // Assert
     verify(adminPresentation).defaultValue();
@@ -184,24 +218,29 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}.
+   *
    * <ul>
-   *   <li>Given {@code ID}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>Given {@code ID}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field,
+   * AdminPresentation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isStringFieldType(Field, AdminPresentation)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isStringFieldType(Field, AdminPresentation)"
+  })
   public void testIsStringFieldType_givenId_thenReturnFalse() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
     when(adminPresentation.fieldType()).thenReturn(SupportedFieldType.ID);
 
     // Act
-    boolean actualIsStringFieldTypeResult = oracleRequiredFieldManagerModifier.isStringFieldType(null,
-        adminPresentation);
+    boolean actualIsStringFieldTypeResult =
+        oracleRequiredFieldManagerModifier.isStringFieldType(null, adminPresentation);
 
     // Assert
     verify(adminPresentation).fieldType();
@@ -210,24 +249,29 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}.
+   *
    * <ul>
-   *   <li>Given {@code STRING}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Given {@code STRING}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field,
+   * AdminPresentation)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OracleRequiredFieldManagerModifier.isStringFieldType(Field, AdminPresentation)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OracleRequiredFieldManagerModifier.isStringFieldType(Field, AdminPresentation)"
+  })
   public void testIsStringFieldType_givenString_thenReturnTrue() {
     // Arrange
     AdminPresentation adminPresentation = mock(AdminPresentation.class);
     when(adminPresentation.fieldType()).thenReturn(SupportedFieldType.STRING);
 
     // Act
-    boolean actualIsStringFieldTypeResult = oracleRequiredFieldManagerModifier.isStringFieldType(null,
-        adminPresentation);
+    boolean actualIsStringFieldTypeResult =
+        oracleRequiredFieldManagerModifier.isStringFieldType(null, adminPresentation);
 
     // Assert
     verify(adminPresentation).fieldType();
@@ -235,100 +279,110 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
   }
 
   /**
-   * Test {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * Test {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object,
+   * EntityManager)}.
+   *
    * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return space.</li>
+   *   <li>When {@code New Value}.
+   *   <li>Then return {@code New Value}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field,
+   * Object, Object, EntityManager)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "Object OracleRequiredFieldManagerModifier.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
-  public void testGetModifiedWriteValue_whenEmptyString_thenReturnSpace() throws IllegalAccessException {
+    "Object OracleRequiredFieldManagerModifier.getModifiedWriteValue(Field, Object, Object, EntityManager)"
+  })
+  public void testGetModifiedWriteValue_whenNewValue_thenReturnNewValue()
+      throws IllegalAccessException {
     // Arrange, Act and Assert
-    assertEquals(" ", oracleRequiredFieldManagerModifier.getModifiedWriteValue(null, "Value", "", null));
-  }
-
-  /**
-   * Test {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
-   * <ul>
-   *   <li>When {@code New Value}.</li>
-   *   <li>Then return {@code New Value}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({
-      "Object OracleRequiredFieldManagerModifier.getModifiedWriteValue(Field, Object, Object, EntityManager)"})
-  public void testGetModifiedWriteValue_whenNewValue_thenReturnNewValue() throws IllegalAccessException {
-    // Arrange, Act and Assert
-    assertEquals("New Value",
+    assertEquals(
+        "New Value",
         oracleRequiredFieldManagerModifier.getModifiedWriteValue(null, "Value", "New Value", null));
   }
 
   /**
-   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}.
+   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object,
+   * EntityManager)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field,
+   * Object, EntityManager)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"
+  })
   public void testGetModifiedReadValue_whenNull_thenReturnNull() throws IllegalAccessException {
     // Arrange, Act and Assert
     assertNull(oracleRequiredFieldManagerModifier.getModifiedReadValue(null, null, null));
   }
 
   /**
-   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}.
+   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object,
+   * EntityManager)}.
+   *
    * <ul>
-   *   <li>When space.</li>
-   *   <li>Then return empty string.</li>
+   *   <li>When space.
+   *   <li>Then return empty string.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field,
+   * Object, EntityManager)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"})
-  public void testGetModifiedReadValue_whenSpace_thenReturnEmptyString() throws IllegalAccessException {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"
+  })
+  public void testGetModifiedReadValue_whenSpace_thenReturnEmptyString()
+      throws IllegalAccessException {
     // Arrange, Act and Assert
     assertEquals("", oracleRequiredFieldManagerModifier.getModifiedReadValue(null, " ", null));
   }
 
   /**
-   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}.
+   * Test {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object,
+   * EntityManager)}.
+   *
    * <ul>
-   *   <li>When {@code Value}.</li>
-   *   <li>Then return {@code Value}.</li>
+   *   <li>When {@code Value}.
+   *   <li>Then return {@code Value}.
    * </ul>
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field,
+   * Object, EntityManager)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Object OracleRequiredFieldManagerModifier.getModifiedReadValue(Field, Object, EntityManager)"
+  })
   public void testGetModifiedReadValue_whenValue_thenReturnValue() throws IllegalAccessException {
     // Arrange, Act and Assert
-    assertEquals("Value", oracleRequiredFieldManagerModifier.getModifiedReadValue(null, "Value", null));
+    assertEquals(
+        "Value", oracleRequiredFieldManagerModifier.getModifiedReadValue(null, "Value", null));
   }
 
   /**
    * Test {@link OracleRequiredFieldManagerModifier#getOrder()}.
-   * <p>
-   * Method under test: {@link OracleRequiredFieldManagerModifier#getOrder()}
+   *
+   * <p>Method under test: {@link OracleRequiredFieldManagerModifier#getOrder()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int OracleRequiredFieldManagerModifier.getOrder()"})
   public void testGetOrder() {
     // Arrange, Act and Assert

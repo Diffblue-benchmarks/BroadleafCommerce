@@ -20,7 +20,8 @@ package org.broadleafcommerce.cms.common;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,19 +29,26 @@ import org.junit.experimental.categories.Category;
 public class AssetNotFoundExceptionDiffblueTest {
   /**
    * Test {@link AssetNotFoundException#AssetNotFoundException(String)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link AssetNotFoundException#AssetNotFoundException(String)}
+   *
+   * <p>Method under test: {@link AssetNotFoundException#AssetNotFoundException(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AssetNotFoundException.<init>()", "void AssetNotFoundException.<init>(String)",
-      "void AssetNotFoundException.<init>(String, Throwable)", "void AssetNotFoundException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AssetNotFoundException.<init>()",
+    "void AssetNotFoundException.<init>(String)",
+    "void AssetNotFoundException.<init>(String, Throwable)",
+    "void AssetNotFoundException.<init>(Throwable)"
+  })
   public void testNewAssetNotFoundException_thenReturnMessageIsAnErrorOccurred() {
     // Arrange and Act
-    AssetNotFoundException actualAssetNotFoundException = new AssetNotFoundException("An error occurred");
+    AssetNotFoundException actualAssetNotFoundException =
+        new AssetNotFoundException("An error occurred");
 
     // Assert
     assertEquals("An error occurred", actualAssetNotFoundException.getMessage());
@@ -50,22 +58,29 @@ public class AssetNotFoundExceptionDiffblueTest {
 
   /**
    * Test {@link AssetNotFoundException#AssetNotFoundException(String, Throwable)}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code An error occurred}.</li>
+   *   <li>Then return Message is {@code An error occurred}.
    * </ul>
-   * <p>
-   * Method under test: {@link AssetNotFoundException#AssetNotFoundException(String, Throwable)}
+   *
+   * <p>Method under test: {@link AssetNotFoundException#AssetNotFoundException(String, Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AssetNotFoundException.<init>()", "void AssetNotFoundException.<init>(String)",
-      "void AssetNotFoundException.<init>(String, Throwable)", "void AssetNotFoundException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AssetNotFoundException.<init>()",
+    "void AssetNotFoundException.<init>(String)",
+    "void AssetNotFoundException.<init>(String, Throwable)",
+    "void AssetNotFoundException.<init>(Throwable)"
+  })
   public void testNewAssetNotFoundException_thenReturnMessageIsAnErrorOccurred2() {
     // Arrange
     Throwable cause = new Throwable();
 
     // Act
-    AssetNotFoundException actualAssetNotFoundException = new AssetNotFoundException("An error occurred", cause);
+    AssetNotFoundException actualAssetNotFoundException =
+        new AssetNotFoundException("An error occurred", cause);
 
     // Assert
     assertEquals("An error occurred", actualAssetNotFoundException.getMessage());
@@ -75,16 +90,22 @@ public class AssetNotFoundExceptionDiffblueTest {
 
   /**
    * Test {@link AssetNotFoundException#AssetNotFoundException()}.
+   *
    * <ul>
-   *   <li>Then return Message is {@code null}.</li>
+   *   <li>Then return Message is {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AssetNotFoundException#AssetNotFoundException()}
+   *
+   * <p>Method under test: {@link AssetNotFoundException#AssetNotFoundException()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AssetNotFoundException.<init>()", "void AssetNotFoundException.<init>(String)",
-      "void AssetNotFoundException.<init>(String, Throwable)", "void AssetNotFoundException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AssetNotFoundException.<init>()",
+    "void AssetNotFoundException.<init>(String)",
+    "void AssetNotFoundException.<init>(String, Throwable)",
+    "void AssetNotFoundException.<init>(Throwable)"
+  })
   public void testNewAssetNotFoundException_thenReturnMessageIsNull() {
     // Arrange and Act
     AssetNotFoundException actualAssetNotFoundException = new AssetNotFoundException();
@@ -97,17 +118,23 @@ public class AssetNotFoundExceptionDiffblueTest {
 
   /**
    * Test {@link AssetNotFoundException#AssetNotFoundException(Throwable)}.
+   *
    * <ul>
-   *   <li>When {@link Throwable#Throwable()}.</li>
-   *   <li>Then return Message is {@code Throwable}.</li>
+   *   <li>When {@link Throwable#Throwable()}.
+   *   <li>Then return Message is {@code Throwable}.
    * </ul>
-   * <p>
-   * Method under test: {@link AssetNotFoundException#AssetNotFoundException(Throwable)}
+   *
+   * <p>Method under test: {@link AssetNotFoundException#AssetNotFoundException(Throwable)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AssetNotFoundException.<init>()", "void AssetNotFoundException.<init>(String)",
-      "void AssetNotFoundException.<init>(String, Throwable)", "void AssetNotFoundException.<init>(Throwable)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AssetNotFoundException.<init>()",
+    "void AssetNotFoundException.<init>(String)",
+    "void AssetNotFoundException.<init>(String, Throwable)",
+    "void AssetNotFoundException.<init>(Throwable)"
+  })
   public void testNewAssetNotFoundException_whenThrowable_thenReturnMessageIsJavaLangThrowable() {
     // Arrange
     Throwable cause = new Throwable();

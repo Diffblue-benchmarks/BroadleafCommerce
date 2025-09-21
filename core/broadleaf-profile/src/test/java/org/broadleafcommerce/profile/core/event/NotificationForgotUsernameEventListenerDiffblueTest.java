@@ -24,7 +24,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,45 +64,59 @@ public class NotificationForgotUsernameEventListenerDiffblueTest {
   private SiteService siteService;
 
   /**
-   * Test {@link NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)} with {@code ForgotUsernameEvent}.
-   * <p>
-   * Method under test: {@link NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)}
+   * Test {@link
+   * NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)} with
+   * {@code ForgotUsernameEvent}.
+   *
+   * <p>Method under test: {@link
+   * NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NotificationForgotUsernameEventListener.handleApplicationEvent(ForgotUsernameEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NotificationForgotUsernameEventListener.handleApplicationEvent(ForgotUsernameEvent)"
+  })
   public void testHandleApplicationEventWithForgotUsernameEvent() throws ServiceException {
     // Arrange
-    doThrow(new ServiceException("An error occurred")).when(notificationDispatcher)
+    doThrow(new ServiceException("An error occurred"))
+        .when(notificationDispatcher)
         .dispatchNotification(Mockito.<Notification>any());
+    ForgotUsernameEvent event = new ForgotUsernameEvent("Source", "42 Main St", new ArrayList<>());
 
     // Act
-    notificationForgotUsernameEventListener
-        .handleApplicationEvent(new ForgotUsernameEvent("Source", "42 Main St", new ArrayList<>()));
+    notificationForgotUsernameEventListener.handleApplicationEvent(event);
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
   }
 
   /**
-   * Test {@link NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)} with {@code ForgotUsernameEvent}.
+   * Test {@link
+   * NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)} with
+   * {@code ForgotUsernameEvent}.
+   *
    * <ul>
-   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.</li>
+   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.
    * </ul>
-   * <p>
-   * Method under test: {@link NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)}
+   *
+   * <p>Method under test: {@link
+   * NotificationForgotUsernameEventListener#handleApplicationEvent(ForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NotificationForgotUsernameEventListener.handleApplicationEvent(ForgotUsernameEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NotificationForgotUsernameEventListener.handleApplicationEvent(ForgotUsernameEvent)"
+  })
   public void testHandleApplicationEventWithForgotUsernameEvent_thenCallsDispatchNotification()
       throws ServiceException {
     // Arrange
     doNothing().when(notificationDispatcher).dispatchNotification(Mockito.<Notification>any());
+    ForgotUsernameEvent event = new ForgotUsernameEvent("Source", "42 Main St", new ArrayList<>());
 
     // Act
-    notificationForgotUsernameEventListener
-        .handleApplicationEvent(new ForgotUsernameEvent("Source", "42 Main St", new ArrayList<>()));
+    notificationForgotUsernameEventListener.handleApplicationEvent(event);
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
@@ -109,22 +124,28 @@ public class NotificationForgotUsernameEventListenerDiffblueTest {
 
   /**
    * Test {@link NotificationForgotUsernameEventListener#createContext(ForgotUsernameEvent)}.
+   *
    * <ul>
-   *   <li>Then return size is one.</li>
+   *   <li>Then return size is one.
    * </ul>
-   * <p>
-   * Method under test: {@link NotificationForgotUsernameEventListener#createContext(ForgotUsernameEvent)}
+   *
+   * <p>Method under test: {@link
+   * NotificationForgotUsernameEventListener#createContext(ForgotUsernameEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Map NotificationForgotUsernameEventListener.createContext(ForgotUsernameEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Map NotificationForgotUsernameEventListener.createContext(ForgotUsernameEvent)"
+  })
   public void testCreateContext_thenReturnSizeIsOne() {
     // Arrange
     ArrayList<String> activeUsernames = new ArrayList<>();
+    ForgotUsernameEvent event = new ForgotUsernameEvent("Source", "42 Main St", activeUsernames);
 
     // Act
-    Map<String, Object> actualCreateContextResult = notificationForgotUsernameEventListener
-        .createContext(new ForgotUsernameEvent("Source", "42 Main St", activeUsernames));
+    Map<String, Object> actualCreateContextResult =
+        notificationForgotUsernameEventListener.createContext(event);
 
     // Assert
     assertEquals(1, actualCreateContextResult.size());
@@ -136,14 +157,15 @@ public class NotificationForgotUsernameEventListenerDiffblueTest {
 
   /**
    * Test {@link NotificationForgotUsernameEventListener#isAsynchronous()}.
-   * <p>
-   * Method under test: {@link NotificationForgotUsernameEventListener#isAsynchronous()}
+   *
+   * <p>Method under test: {@link NotificationForgotUsernameEventListener#isAsynchronous()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NotificationForgotUsernameEventListener.isAsynchronous()"})
   public void testIsAsynchronous() {
     // Arrange, Act and Assert
-    assertTrue((new NotificationForgotUsernameEventListener()).isAsynchronous());
+    assertTrue(new NotificationForgotUsernameEventListener().isAsynchronous());
   }
 }

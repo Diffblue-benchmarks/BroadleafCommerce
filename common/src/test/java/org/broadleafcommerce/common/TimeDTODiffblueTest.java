@@ -19,7 +19,8 @@ package org.broadleafcommerce.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -37,8 +38,9 @@ import org.junit.experimental.categories.Category;
 public class TimeDTODiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link TimeDTO#TimeDTO(Calendar)}
    *   <li>{@link TimeDTO#setCal(Calendar)}
@@ -46,13 +48,19 @@ public class TimeDTODiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void TimeDTO.<init>(Calendar)", "void TimeDTO.setCal(Calendar)", "void TimeDTO.setDate(Date)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void TimeDTO.<init>(Calendar)",
+    "void TimeDTO.setCal(Calendar)",
+    "void TimeDTO.setDate(Date)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     TimeDTO actualTimeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     actualTimeDTO.setCal(new GregorianCalendar(1, 1, 1));
-    Date date = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date date =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualTimeDTO.setDate(date);
 
     // Assert
@@ -76,246 +84,246 @@ public class TimeDTODiffblueTest {
 
   /**
    * Test {@link TimeDTO#getHour()}.
+   *
    * <ul>
-   *   <li>Given {@link TimeDTO#TimeDTO()} Hour is {@link HourOfDayType#EIGHT}.</li>
-   *   <li>Then return {@link HourOfDayType#EIGHT}.</li>
+   *   <li>Given {@link GregorianCalendar#GregorianCalendar(int, int, int)} with one and one and
+   *       one.
+   *   <li>Then return {@link HourOfDayType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#getHour()}
+   *
+   * <p>Method under test: {@link TimeDTO#getHour()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"HourOfDayType TimeDTO.getHour()"})
-  public void testGetHour_givenTimeDTOHourIsEight_thenReturnEight() {
+  public void testGetHour_givenGregorianCalendarWithOneAndOneAndOne_thenReturnEight() {
     // Arrange
-    TimeDTO timeDTO = new TimeDTO();
+    TimeDTO timeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     timeDTO.setHour(HourOfDayType.EIGHT);
 
-    // Act
-    HourOfDayType actualHour = timeDTO.getHour();
-
-    // Assert
-    assertSame(actualHour.EIGHT, actualHour);
+    // Act and Assert
+    assertSame(HourOfDayType.EIGHT, timeDTO.getHour());
   }
 
   /**
    * Test {@link TimeDTO#getDayOfWeek()}.
+   *
    * <ul>
-   *   <li>Given {@link TimeDTO#TimeDTO()} DayOfWeek is {@link DayOfWeekType#FRIDAY}.</li>
-   *   <li>Then return {@link DayOfWeekType#FRIDAY}.</li>
+   *   <li>Given {@link GregorianCalendar#GregorianCalendar(int, int, int)} with one and one and
+   *       one.
+   *   <li>Then return {@link DayOfWeekType#FRIDAY}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#getDayOfWeek()}
+   *
+   * <p>Method under test: {@link TimeDTO#getDayOfWeek()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"DayOfWeekType TimeDTO.getDayOfWeek()"})
-  public void testGetDayOfWeek_givenTimeDTODayOfWeekIsFriday_thenReturnFriday() {
+  public void testGetDayOfWeek_givenGregorianCalendarWithOneAndOneAndOne_thenReturnFriday() {
     // Arrange
-    TimeDTO timeDTO = new TimeDTO();
+    TimeDTO timeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     timeDTO.setDayOfWeek(DayOfWeekType.FRIDAY);
 
-    // Act
-    DayOfWeekType actualDayOfWeek = timeDTO.getDayOfWeek();
-
-    // Assert
-    assertSame(actualDayOfWeek.FRIDAY, actualDayOfWeek);
+    // Act and Assert
+    assertSame(DayOfWeekType.FRIDAY, timeDTO.getDayOfWeek());
   }
 
   /**
    * Test {@link TimeDTO#getDayOfMonth()}.
+   *
    * <ul>
-   *   <li>Given {@link TimeDTO#TimeDTO()} DayOfMonth is {@link DayOfMonthType#EIGHT}.</li>
-   *   <li>Then return {@link DayOfMonthType#EIGHT}.</li>
+   *   <li>Given {@link GregorianCalendar#GregorianCalendar(int, int, int)} with one and one and
+   *       one.
+   *   <li>Then return {@link DayOfMonthType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#getDayOfMonth()}
+   *
+   * <p>Method under test: {@link TimeDTO#getDayOfMonth()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"DayOfMonthType TimeDTO.getDayOfMonth()"})
-  public void testGetDayOfMonth_givenTimeDTODayOfMonthIsEight_thenReturnEight() {
+  public void testGetDayOfMonth_givenGregorianCalendarWithOneAndOneAndOne_thenReturnEight() {
     // Arrange
-    TimeDTO timeDTO = new TimeDTO();
+    TimeDTO timeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     timeDTO.setDayOfMonth(DayOfMonthType.EIGHT);
 
-    // Act
-    DayOfMonthType actualDayOfMonth = timeDTO.getDayOfMonth();
-
-    // Assert
-    assertSame(actualDayOfMonth.EIGHT, actualDayOfMonth);
+    // Act and Assert
+    assertSame(DayOfMonthType.EIGHT, timeDTO.getDayOfMonth());
   }
 
   /**
    * Test {@link TimeDTO#getMonth()}.
+   *
    * <ul>
-   *   <li>Given {@link TimeDTO#TimeDTO()} Month is {@link MonthType#APRIL}.</li>
-   *   <li>Then return {@link MonthType#APRIL}.</li>
+   *   <li>Given {@link GregorianCalendar#GregorianCalendar(int, int, int)} with one and one and
+   *       one.
+   *   <li>Then return {@link MonthType#APRIL}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#getMonth()}
+   *
+   * <p>Method under test: {@link TimeDTO#getMonth()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MonthType TimeDTO.getMonth()"})
-  public void testGetMonth_givenTimeDTOMonthIsApril_thenReturnApril() {
+  public void testGetMonth_givenGregorianCalendarWithOneAndOneAndOne_thenReturnApril() {
     // Arrange
-    TimeDTO timeDTO = new TimeDTO();
+    TimeDTO timeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     timeDTO.setMonth(MonthType.APRIL);
 
-    // Act
-    MonthType actualMonth = timeDTO.getMonth();
-
-    // Assert
-    assertSame(actualMonth.APRIL, actualMonth);
+    // Act and Assert
+    assertSame(MonthType.APRIL, timeDTO.getMonth());
   }
 
   /**
    * Test {@link TimeDTO#getMinute()}.
+   *
    * <ul>
-   *   <li>Given {@link TimeDTO#TimeDTO()} Minute is {@link MinuteType#EIGHT}.</li>
-   *   <li>Then return {@link MinuteType#EIGHT}.</li>
+   *   <li>Given {@link GregorianCalendar#GregorianCalendar(int, int, int)} with one and one and
+   *       one.
+   *   <li>Then return {@link MinuteType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#getMinute()}
+   *
+   * <p>Method under test: {@link TimeDTO#getMinute()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"MinuteType TimeDTO.getMinute()"})
-  public void testGetMinute_givenTimeDTOMinuteIsEight_thenReturnEight() {
+  public void testGetMinute_givenGregorianCalendarWithOneAndOneAndOne_thenReturnEight() {
     // Arrange
-    TimeDTO timeDTO = new TimeDTO();
+    TimeDTO timeDTO = new TimeDTO(new GregorianCalendar(1, 1, 1));
     timeDTO.setMinute(MinuteType.EIGHT);
 
-    // Act
-    MinuteType actualMinute = timeDTO.getMinute();
-
-    // Assert
-    assertSame(actualMinute.EIGHT, actualMinute);
+    // Act and Assert
+    assertSame(MinuteType.EIGHT, timeDTO.getMinute());
   }
 
   /**
    * Test {@link TimeDTO#setHour(HourOfDayType)}.
+   *
    * <ul>
-   *   <li>When {@link HourOfDayType#EIGHT}.</li>
-   *   <li>Then {@link TimeDTO#TimeDTO()} Hour is {@link HourOfDayType#EIGHT} {@link HourOfDayType#EIGHT}.</li>
+   *   <li>When {@link HourOfDayType#EIGHT}.
+   *   <li>Then {@link TimeDTO#TimeDTO()} Hour is {@link HourOfDayType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#setHour(HourOfDayType)}
+   *
+   * <p>Method under test: {@link TimeDTO#setHour(HourOfDayType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeDTO.setHour(HourOfDayType)"})
-  public void testSetHour_whenEight_thenTimeDTOHourIsEightEight() {
+  public void testSetHour_whenEight_thenTimeDTOHourIsEight() {
     // Arrange
     TimeDTO timeDTO = new TimeDTO();
-    HourOfDayType hour = HourOfDayType.EIGHT;
 
     // Act
-    timeDTO.setHour(hour);
+    timeDTO.setHour(HourOfDayType.EIGHT);
 
     // Assert
-    HourOfDayType expectedHour = hour.EIGHT;
-    assertSame(expectedHour, timeDTO.getHour());
+    assertSame(HourOfDayType.EIGHT, timeDTO.getHour());
   }
 
   /**
    * Test {@link TimeDTO#setDayOfWeek(DayOfWeekType)}.
+   *
    * <ul>
-   *   <li>When {@link DayOfWeekType#FRIDAY}.</li>
-   *   <li>Then {@link TimeDTO#TimeDTO()} DayOfWeek is {@link DayOfWeekType#FRIDAY} {@link DayOfWeekType#FRIDAY}.</li>
+   *   <li>When {@link DayOfWeekType#FRIDAY}.
+   *   <li>Then {@link TimeDTO#TimeDTO()} DayOfWeek is {@link DayOfWeekType#FRIDAY}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#setDayOfWeek(DayOfWeekType)}
+   *
+   * <p>Method under test: {@link TimeDTO#setDayOfWeek(DayOfWeekType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeDTO.setDayOfWeek(DayOfWeekType)"})
-  public void testSetDayOfWeek_whenFriday_thenTimeDTODayOfWeekIsFridayFriday() {
+  public void testSetDayOfWeek_whenFriday_thenTimeDTODayOfWeekIsFriday() {
     // Arrange
     TimeDTO timeDTO = new TimeDTO();
-    DayOfWeekType dayOfWeek = DayOfWeekType.FRIDAY;
 
     // Act
-    timeDTO.setDayOfWeek(dayOfWeek);
+    timeDTO.setDayOfWeek(DayOfWeekType.FRIDAY);
 
     // Assert
-    DayOfWeekType expectedDayOfWeek = dayOfWeek.FRIDAY;
-    assertSame(expectedDayOfWeek, timeDTO.getDayOfWeek());
+    assertSame(DayOfWeekType.FRIDAY, timeDTO.getDayOfWeek());
   }
 
   /**
    * Test {@link TimeDTO#setMonth(MonthType)}.
+   *
    * <ul>
-   *   <li>When {@link MonthType#APRIL}.</li>
-   *   <li>Then {@link TimeDTO#TimeDTO()} Month is {@link MonthType#APRIL} {@link MonthType#APRIL}.</li>
+   *   <li>When {@link MonthType#APRIL}.
+   *   <li>Then {@link TimeDTO#TimeDTO()} Month is {@link MonthType#APRIL}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#setMonth(MonthType)}
+   *
+   * <p>Method under test: {@link TimeDTO#setMonth(MonthType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeDTO.setMonth(MonthType)"})
-  public void testSetMonth_whenApril_thenTimeDTOMonthIsAprilApril() {
+  public void testSetMonth_whenApril_thenTimeDTOMonthIsApril() {
     // Arrange
     TimeDTO timeDTO = new TimeDTO();
-    MonthType month = MonthType.APRIL;
 
     // Act
-    timeDTO.setMonth(month);
+    timeDTO.setMonth(MonthType.APRIL);
 
     // Assert
-    MonthType expectedMonth = month.APRIL;
-    assertSame(expectedMonth, timeDTO.getMonth());
+    assertSame(MonthType.APRIL, timeDTO.getMonth());
   }
 
   /**
    * Test {@link TimeDTO#setDayOfMonth(DayOfMonthType)}.
+   *
    * <ul>
-   *   <li>When {@link DayOfMonthType#EIGHT}.</li>
-   *   <li>Then {@link TimeDTO#TimeDTO()} DayOfMonth is {@link DayOfMonthType#EIGHT} {@link DayOfMonthType#EIGHT}.</li>
+   *   <li>When {@link DayOfMonthType#EIGHT}.
+   *   <li>Then {@link TimeDTO#TimeDTO()} DayOfMonth is {@link DayOfMonthType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#setDayOfMonth(DayOfMonthType)}
+   *
+   * <p>Method under test: {@link TimeDTO#setDayOfMonth(DayOfMonthType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeDTO.setDayOfMonth(DayOfMonthType)"})
-  public void testSetDayOfMonth_whenEight_thenTimeDTODayOfMonthIsEightEight() {
+  public void testSetDayOfMonth_whenEight_thenTimeDTODayOfMonthIsEight() {
     // Arrange
     TimeDTO timeDTO = new TimeDTO();
-    DayOfMonthType dayOfMonth = DayOfMonthType.EIGHT;
 
     // Act
-    timeDTO.setDayOfMonth(dayOfMonth);
+    timeDTO.setDayOfMonth(DayOfMonthType.EIGHT);
 
     // Assert
-    DayOfMonthType expectedDayOfMonth = dayOfMonth.EIGHT;
-    assertSame(expectedDayOfMonth, timeDTO.getDayOfMonth());
+    assertSame(DayOfMonthType.EIGHT, timeDTO.getDayOfMonth());
   }
 
   /**
    * Test {@link TimeDTO#setMinute(MinuteType)}.
+   *
    * <ul>
-   *   <li>When {@link MinuteType#EIGHT}.</li>
-   *   <li>Then {@link TimeDTO#TimeDTO()} Minute is {@link MinuteType#EIGHT} {@link MinuteType#EIGHT}.</li>
+   *   <li>When {@link MinuteType#EIGHT}.
+   *   <li>Then {@link TimeDTO#TimeDTO()} Minute is {@link MinuteType#EIGHT}.
    * </ul>
-   * <p>
-   * Method under test: {@link TimeDTO#setMinute(MinuteType)}
+   *
+   * <p>Method under test: {@link TimeDTO#setMinute(MinuteType)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void TimeDTO.setMinute(MinuteType)"})
-  public void testSetMinute_whenEight_thenTimeDTOMinuteIsEightEight() {
+  public void testSetMinute_whenEight_thenTimeDTOMinuteIsEight() {
     // Arrange
     TimeDTO timeDTO = new TimeDTO();
-    MinuteType minute = MinuteType.EIGHT;
 
     // Act
-    timeDTO.setMinute(minute);
+    timeDTO.setMinute(MinuteType.EIGHT);
 
     // Assert
-    MinuteType expectedMinute = minute.EIGHT;
-    assertSame(expectedMinute, timeDTO.getMinute());
+    assertSame(MinuteType.EIGHT, timeDTO.getMinute());
   }
 }

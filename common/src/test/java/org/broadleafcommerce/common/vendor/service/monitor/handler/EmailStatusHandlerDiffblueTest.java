@@ -18,7 +18,8 @@
 package org.broadleafcommerce.common.vendor.service.monitor.handler;
 
 import static org.junit.Assert.assertSame;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.domain.EmailTargetImpl;
@@ -29,8 +30,9 @@ import org.junit.experimental.categories.Category;
 public class EmailStatusHandlerDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link EmailStatusHandler}
    *   <li>{@link EmailStatusHandler#setEmailInfo(EmailInfo)}
@@ -40,10 +42,15 @@ public class EmailStatusHandlerDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void EmailStatusHandler.<init>()", "EmailInfo EmailStatusHandler.getEmailInfo()",
-      "EmailTarget EmailStatusHandler.getEmailTarget()", "void EmailStatusHandler.setEmailInfo(EmailInfo)",
-      "void EmailStatusHandler.setEmailTarget(EmailTarget)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailStatusHandler.<init>()",
+    "EmailInfo EmailStatusHandler.getEmailInfo()",
+    "EmailTarget EmailStatusHandler.getEmailTarget()",
+    "void EmailStatusHandler.setEmailInfo(EmailInfo)",
+    "void EmailStatusHandler.setEmailTarget(EmailTarget)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailStatusHandler actualEmailStatusHandler = new EmailStatusHandler();

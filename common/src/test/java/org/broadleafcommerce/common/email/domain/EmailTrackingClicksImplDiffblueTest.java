@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -31,27 +32,34 @@ import org.junit.experimental.categories.Category;
 
 public class EmailTrackingClicksImplDiffblueTest {
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(1L);
@@ -59,8 +67,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -68,32 +76,38 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
-    int expectedHashCodeResult = emailTrackingClicksImpl.hashCode();
-    assertEquals(expectedHashCodeResult, emailTrackingClicksImpl2.hashCode());
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -101,8 +115,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -110,32 +124,38 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
-    int expectedHashCodeResult = emailTrackingClicksImpl.hashCode();
-    assertEquals(expectedHashCodeResult, emailTrackingClicksImpl2.hashCode());
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(1L);
@@ -143,8 +163,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(null);
@@ -152,32 +172,38 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
-    int expectedHashCodeResult = emailTrackingClicksImpl.hashCode();
-    assertEquals(expectedHashCodeResult, emailTrackingClicksImpl2.hashCode());
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId(null);
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -185,8 +211,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId(null);
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -194,26 +220,32 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
-    int expectedHashCodeResult = emailTrackingClicksImpl.hashCode();
-    assertEquals(expectedHashCodeResult, emailTrackingClicksImpl2.hashCode());
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
@@ -234,32 +266,134 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     // Act and Assert
     assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
-    int expectedHashCodeResult = emailTrackingClicksImpl.hashCode();
-    assertEquals(expectedHashCodeResult, emailTrackingClicksImpl2.hashCode());
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
   }
 
   /**
-   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link EmailTrackingClicksImpl#hashCode()}.
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
    *   <li>{@link EmailTrackingClicksImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
+    // Arrange
+    EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
+    emailTrackingClicksImpl.setCustomerId("42");
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDestinationUri(null);
+    emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
+    emailTrackingClicksImpl.setId(null);
+    emailTrackingClicksImpl.setQueryString("Query String");
+
+    EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
+    emailTrackingClicksImpl2.setCustomerId("42");
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDestinationUri(null);
+    emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
+    emailTrackingClicksImpl2.setId(1L);
+    emailTrackingClicksImpl2.setQueryString("Query String");
+
+    // Act and Assert
+    assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
+   *   <li>{@link EmailTrackingClicksImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual7() {
+    // Arrange
+    EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
+    emailTrackingClicksImpl.setCustomerId("42");
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDestinationUri("Destination Uri");
+    emailTrackingClicksImpl.setEmailTracking(null);
+    emailTrackingClicksImpl.setId(null);
+    emailTrackingClicksImpl.setQueryString("Query String");
+
+    EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
+    emailTrackingClicksImpl2.setCustomerId("42");
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
+    emailTrackingClicksImpl2.setEmailTracking(null);
+    emailTrackingClicksImpl2.setId(1L);
+    emailTrackingClicksImpl2.setQueryString("Query String");
+
+    // Act and Assert
+    assertEquals(emailTrackingClicksImpl, emailTrackingClicksImpl2);
+    assertEquals(emailTrackingClicksImpl.hashCode(), emailTrackingClicksImpl2.hashCode());
+  }
+
+  /**
+   * Test {@link EmailTrackingClicksImpl#equals(Object)}, and {@link
+   * EmailTrackingClicksImpl#hashCode()}.
+   *
+   * <ul>
+   *   <li>When other is same.
+   *   <li>Then return equal.
+   * </ul>
+   *
+   * <p>Methods under test:
+   *
+   * <ul>
+   *   <li>{@link EmailTrackingClicksImpl#equals(Object)}
+   *   <li>{@link EmailTrackingClicksImpl#hashCode()}
+   * </ul>
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(1L);
@@ -273,22 +407,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(2L);
@@ -296,8 +435,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -309,22 +448,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("Destination Uri");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -332,8 +476,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -345,22 +489,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId(null);
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -368,8 +517,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -381,22 +530,26 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(new Date());
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -404,8 +557,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -417,16 +570,21 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
@@ -439,8 +597,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -452,22 +610,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("42");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -475,8 +638,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -488,22 +651,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri(null);
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(null);
@@ -511,8 +679,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -524,22 +692,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(null);
     emailTrackingClicksImpl.setId(null);
@@ -547,8 +720,8 @@ public class EmailTrackingClicksImplDiffblueTest {
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -560,31 +733,36 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
-    emailTrackingClicksImpl.setEmailTracking(mock(EmailTrackingImpl.class));
+    emailTrackingClicksImpl.setEmailTracking(mock(EmailTracking.class));
     emailTrackingClicksImpl.setId(null);
     emailTrackingClicksImpl.setQueryString("Query String");
 
     EmailTrackingClicksImpl emailTrackingClicksImpl2 = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl2.setCustomerId("42");
-    emailTrackingClicksImpl2
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl2.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl2.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl2.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl2.setId(1L);
@@ -596,22 +774,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(1L);
@@ -623,22 +806,27 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test {@link EmailTrackingClicksImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link EmailTrackingClicksImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean EmailTrackingClicksImpl.equals(Object)", "int EmailTrackingClicksImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean EmailTrackingClicksImpl.equals(Object)",
+    "int EmailTrackingClicksImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     EmailTrackingClicksImpl emailTrackingClicksImpl = new EmailTrackingClicksImpl();
     emailTrackingClicksImpl.setCustomerId("42");
-    emailTrackingClicksImpl
-        .setDateClicked(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    emailTrackingClicksImpl.setDateClicked(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     emailTrackingClicksImpl.setDestinationUri("Destination Uri");
     emailTrackingClicksImpl.setEmailTracking(new EmailTrackingImpl());
     emailTrackingClicksImpl.setId(1L);
@@ -650,8 +838,9 @@ public class EmailTrackingClicksImplDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link EmailTrackingClicksImpl}
    *   <li>{@link EmailTrackingClicksImpl#setCustomerId(String)}
@@ -669,19 +858,29 @@ public class EmailTrackingClicksImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void EmailTrackingClicksImpl.<init>()", "String EmailTrackingClicksImpl.getCustomerId()",
-      "Date EmailTrackingClicksImpl.getDateClicked()", "String EmailTrackingClicksImpl.getDestinationUri()",
-      "EmailTracking EmailTrackingClicksImpl.getEmailTracking()", "Long EmailTrackingClicksImpl.getId()",
-      "String EmailTrackingClicksImpl.getQueryString()", "void EmailTrackingClicksImpl.setCustomerId(String)",
-      "void EmailTrackingClicksImpl.setDateClicked(Date)", "void EmailTrackingClicksImpl.setDestinationUri(String)",
-      "void EmailTrackingClicksImpl.setEmailTracking(EmailTracking)", "void EmailTrackingClicksImpl.setId(Long)",
-      "void EmailTrackingClicksImpl.setQueryString(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void EmailTrackingClicksImpl.<init>()",
+    "String EmailTrackingClicksImpl.getCustomerId()",
+    "Date EmailTrackingClicksImpl.getDateClicked()",
+    "String EmailTrackingClicksImpl.getDestinationUri()",
+    "EmailTracking EmailTrackingClicksImpl.getEmailTracking()",
+    "Long EmailTrackingClicksImpl.getId()",
+    "String EmailTrackingClicksImpl.getQueryString()",
+    "void EmailTrackingClicksImpl.setCustomerId(String)",
+    "void EmailTrackingClicksImpl.setDateClicked(Date)",
+    "void EmailTrackingClicksImpl.setDestinationUri(String)",
+    "void EmailTrackingClicksImpl.setEmailTracking(EmailTracking)",
+    "void EmailTrackingClicksImpl.setId(Long)",
+    "void EmailTrackingClicksImpl.setQueryString(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     EmailTrackingClicksImpl actualEmailTrackingClicksImpl = new EmailTrackingClicksImpl();
     actualEmailTrackingClicksImpl.setCustomerId("42");
-    Date dateClicked = Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+    Date dateClicked =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
     actualEmailTrackingClicksImpl.setDateClicked(dateClicked);
     actualEmailTrackingClicksImpl.setDestinationUri("Destination Uri");
     EmailTrackingImpl emailTracking = new EmailTrackingImpl();

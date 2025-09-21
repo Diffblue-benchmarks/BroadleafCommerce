@@ -27,7 +27,8 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,96 +51,131 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {SearchFacetCustomPersistenceHandler.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SearchFacetCustomPersistenceHandlerDiffblueTest {
-  @Autowired
-  private SearchFacetCustomPersistenceHandler searchFacetCustomPersistenceHandler;
+  @Autowired private SearchFacetCustomPersistenceHandler searchFacetCustomPersistenceHandler;
 
   /**
    * Test {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
-   * <p>
-   * Method under test: {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
+  })
   public void testCanHandleRemove() {
     // Arrange
     Entity entity = new Entity();
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "Dr Jane Doe", entity, new PersistencePerspective(), customCriteria, "ABC123");
 
     // Act and Assert
-    assertFalse(searchFacetCustomPersistenceHandler.canHandleRemove(new PersistencePackage("Dr Jane Doe", entity,
-        new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
+    assertFalse(searchFacetCustomPersistenceHandler.canHandleRemove(persistencePackage));
   }
 
   /**
    * Test {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>Then return {@code true}.</li>
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
+  })
   public void testCanHandleRemove_thenReturnTrue() {
     // Arrange
     Entity entity = new Entity();
+    String[] customCriteria = new String[] {"Custom Criteria"};
+
+    PersistencePackage persistencePackage =
+        new PersistencePackage(
+            "org.broadleafcommerce.core.search.domain.SearchFacet",
+            entity,
+            new PersistencePerspective(),
+            customCriteria,
+            "ABC123");
 
     // Act and Assert
-    assertTrue(searchFacetCustomPersistenceHandler
-        .canHandleRemove(new PersistencePackage("org.broadleafcommerce.core.search.domain.SearchFacet", entity,
-            new PersistencePerspective(), new String[]{"Custom Criteria"}, "ABC123")));
+    assertTrue(searchFacetCustomPersistenceHandler.canHandleRemove(persistencePackage));
   }
 
   /**
    * Test {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@link PersistencePackage#PersistencePackage()}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   *
+   * <p>Method under test: {@link
+   * SearchFacetCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "java.lang.Boolean SearchFacetCustomPersistenceHandler.canHandleRemove(PersistencePackage)"
+  })
   public void testCanHandleRemove_whenPersistencePackage_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse(searchFacetCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
   }
 
   /**
-   * Test {@link SearchFacetCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * Test {@link SearchFacetCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao,
+   * RecordHelper)}.
+   *
    * <ul>
-   *   <li>When {@link PersistencePackage#PersistencePackage()} Entity is {@link Entity}.</li>
-   *   <li>Then throw {@link ServiceException}.</li>
+   *   <li>Then throw {@link ServiceException}.
    * </ul>
-   * <p>
-   * Method under test: {@link SearchFacetCustomPersistenceHandler#remove(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   *
+   * <p>Method under test: {@link SearchFacetCustomPersistenceHandler#remove(PersistencePackage,
+   * DynamicEntityDao, RecordHelper)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "void SearchFacetCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"})
-  public void testRemove_whenPersistencePackageEntityIsEntity_thenThrowServiceException() throws ServiceException {
+    "void SearchFacetCustomPersistenceHandler.remove(PersistencePackage, DynamicEntityDao, RecordHelper)"
+  })
+  public void testRemove_thenThrowServiceException() throws ServiceException {
     // Arrange
     Entity entity = mock(Entity.class);
-    when(entity.getType()).thenReturn(new String[]{"Type"});
+    when(entity.getType()).thenReturn(new String[] {"Type"});
 
     PersistencePackage persistencePackage = new PersistencePackage();
     persistencePackage.setEntity(entity);
     DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
     RecordHelper helper = mock(RecordHelper.class);
     when(helper.getPrimaryKey(Mockito.<Entity>any(), Mockito.<Map<String, FieldMetadata>>any()))
         .thenReturn("Primary Key");
-    when(helper.getSimpleMergedProperties(Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
+    when(helper.getSimpleMergedProperties(
+            Mockito.<String>any(), Mockito.<PersistencePerspective>any()))
         .thenReturn(new HashMap<>());
 
     // Act and Assert
-    assertThrows(ServiceException.class,
-        () -> searchFacetCustomPersistenceHandler.remove(persistencePackage, dynamicEntityDao, helper));
+    assertThrows(
+        ServiceException.class,
+        () ->
+            searchFacetCustomPersistenceHandler.remove(
+                persistencePackage, dynamicEntityDao, helper));
     verify(entity, atLeast(1)).getType();
     verify(helper).getPrimaryKey(isA(Entity.class), isA(Map.class));
-    verify(helper).getSimpleMergedProperties(eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
+    verify(helper)
+        .getSimpleMergedProperties(
+            eq("org.broadleafcommerce.core.search.domain.SearchFacetRange"), isNull());
   }
 }

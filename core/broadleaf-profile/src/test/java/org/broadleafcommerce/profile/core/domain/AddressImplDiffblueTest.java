@@ -23,25 +23,15 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
-import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
-import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.i18n.domain.ISOCountry;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -49,16 +39,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml"})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressImplDiffblueTest {
-  @Autowired
-  private AddressImpl addressImpl;
+  @Autowired private AddressImpl addressImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressImpl#setActive(boolean)}
    *   <li>{@link AddressImpl#setAddressLine1(String)}
@@ -124,35 +114,71 @@ public class AddressImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"String AddressImpl.getAddressLine1()", "String AddressImpl.getAddressLine2()",
-      "String AddressImpl.getAddressLine3()", "String AddressImpl.getCity()", "String AddressImpl.getCompanyName()",
-      "Country AddressImpl.getCountry()", "String AddressImpl.getCounty()", "String AddressImpl.getEmailAddress()",
-      "String AddressImpl.getFax()", "String AddressImpl.getFirstName()", "String AddressImpl.getFullName()",
-      "Long AddressImpl.getId()", "ISOCountry AddressImpl.getIsoCountryAlpha2()",
-      "String AddressImpl.getIsoCountrySubdivision()", "String AddressImpl.getLastName()",
-      "String AddressImpl.getPostalCode()", "String AddressImpl.getPrimaryPhone()",
-      "String AddressImpl.getSecondaryPhone()", "Boolean AddressImpl.getStandardized()", "State AddressImpl.getState()",
-      "String AddressImpl.getStateProvinceRegion()", "String AddressImpl.getTokenizedAddress()",
-      "String AddressImpl.getVerificationLevel()", "String AddressImpl.getZipFour()", "boolean AddressImpl.isActive()",
-      "boolean AddressImpl.isBusiness()", "boolean AddressImpl.isDefault()", "boolean AddressImpl.isMailing()",
-      "boolean AddressImpl.isStreet()", "void AddressImpl.setActive(boolean)",
-      "void AddressImpl.setAddressLine1(String)", "void AddressImpl.setAddressLine2(String)",
-      "void AddressImpl.setAddressLine3(String)", "void AddressImpl.setBusiness(boolean)",
-      "void AddressImpl.setCity(String)", "void AddressImpl.setCompanyName(String)",
-      "void AddressImpl.setCountry(Country)", "void AddressImpl.setCounty(String)",
-      "void AddressImpl.setDefault(boolean)", "void AddressImpl.setEmailAddress(String)",
-      "void AddressImpl.setFax(String)", "void AddressImpl.setFirstName(String)",
-      "void AddressImpl.setFullName(String)", "void AddressImpl.setId(Long)",
-      "void AddressImpl.setIsoCountryAlpha2(ISOCountry)", "void AddressImpl.setIsoCountrySubdivision(String)",
-      "void AddressImpl.setLastName(String)", "void AddressImpl.setMailing(boolean)",
-      "void AddressImpl.setPhoneFax(Phone)", "void AddressImpl.setPhonePrimary(Phone)",
-      "void AddressImpl.setPhoneSecondary(Phone)", "void AddressImpl.setPostalCode(String)",
-      "void AddressImpl.setPrimaryPhone(String)", "void AddressImpl.setSecondaryPhone(String)",
-      "void AddressImpl.setStandardized(Boolean)", "void AddressImpl.setState(State)",
-      "void AddressImpl.setStateProvinceRegion(String)", "void AddressImpl.setStreet(boolean)",
-      "void AddressImpl.setTokenizedAddress(String)", "void AddressImpl.setVerificationLevel(String)",
-      "void AddressImpl.setZipFour(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "String AddressImpl.getAddressLine1()",
+    "String AddressImpl.getAddressLine2()",
+    "String AddressImpl.getAddressLine3()",
+    "String AddressImpl.getCity()",
+    "String AddressImpl.getCompanyName()",
+    "Country AddressImpl.getCountry()",
+    "String AddressImpl.getCounty()",
+    "String AddressImpl.getEmailAddress()",
+    "String AddressImpl.getFax()",
+    "String AddressImpl.getFirstName()",
+    "String AddressImpl.getFullName()",
+    "Long AddressImpl.getId()",
+    "ISOCountry AddressImpl.getIsoCountryAlpha2()",
+    "String AddressImpl.getIsoCountrySubdivision()",
+    "String AddressImpl.getLastName()",
+    "String AddressImpl.getPostalCode()",
+    "String AddressImpl.getPrimaryPhone()",
+    "String AddressImpl.getSecondaryPhone()",
+    "Boolean AddressImpl.getStandardized()",
+    "State AddressImpl.getState()",
+    "String AddressImpl.getStateProvinceRegion()",
+    "String AddressImpl.getTokenizedAddress()",
+    "String AddressImpl.getVerificationLevel()",
+    "String AddressImpl.getZipFour()",
+    "boolean AddressImpl.isActive()",
+    "boolean AddressImpl.isBusiness()",
+    "boolean AddressImpl.isDefault()",
+    "boolean AddressImpl.isMailing()",
+    "boolean AddressImpl.isStreet()",
+    "void AddressImpl.setActive(boolean)",
+    "void AddressImpl.setAddressLine1(String)",
+    "void AddressImpl.setAddressLine2(String)",
+    "void AddressImpl.setAddressLine3(String)",
+    "void AddressImpl.setBusiness(boolean)",
+    "void AddressImpl.setCity(String)",
+    "void AddressImpl.setCompanyName(String)",
+    "void AddressImpl.setCountry(Country)",
+    "void AddressImpl.setCounty(String)",
+    "void AddressImpl.setDefault(boolean)",
+    "void AddressImpl.setEmailAddress(String)",
+    "void AddressImpl.setFax(String)",
+    "void AddressImpl.setFirstName(String)",
+    "void AddressImpl.setFullName(String)",
+    "void AddressImpl.setId(Long)",
+    "void AddressImpl.setIsoCountryAlpha2(ISOCountry)",
+    "void AddressImpl.setIsoCountrySubdivision(String)",
+    "void AddressImpl.setLastName(String)",
+    "void AddressImpl.setMailing(boolean)",
+    "void AddressImpl.setPhoneFax(Phone)",
+    "void AddressImpl.setPhonePrimary(Phone)",
+    "void AddressImpl.setPhoneSecondary(Phone)",
+    "void AddressImpl.setPostalCode(String)",
+    "void AddressImpl.setPrimaryPhone(String)",
+    "void AddressImpl.setSecondaryPhone(String)",
+    "void AddressImpl.setStandardized(Boolean)",
+    "void AddressImpl.setState(State)",
+    "void AddressImpl.setStateProvinceRegion(String)",
+    "void AddressImpl.setStreet(boolean)",
+    "void AddressImpl.setTokenizedAddress(String)",
+    "void AddressImpl.setVerificationLevel(String)",
+    "void AddressImpl.setZipFour(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     AddressImpl addressImpl = new AddressImpl();
@@ -257,54 +283,25 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#getPhonePrimary()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) PhonePrimary is {@code null}.</li>
-   *   <li>Then return {@link PhoneImpl}.</li>
+   *   <li>Given {@link AddressImpl} PhonePrimary is {@code null}.
+   *   <li>Then return {@link PhoneImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhonePrimary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhonePrimary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhonePrimary()"})
   public void testGetPhonePrimary_givenAddressImplPhonePrimaryIsNull_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFax("Fax");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhoneFax(new PhoneImpl());
-    addressImpl2.setPhoneSecondary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setSecondaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
-    addressImpl2.setPhonePrimary(null);
-    addressImpl2.setPrimaryPhone("foo");
+    addressImpl.setPhonePrimary(null);
+    addressImpl.setPrimaryPhone("foo");
 
     // Act
-    Phone actualPhonePrimary = addressImpl2.getPhonePrimary();
+    Phone actualPhonePrimary = addressImpl.getPhonePrimary();
 
     // Assert
     assertTrue(actualPhonePrimary instanceof PhoneImpl);
@@ -318,124 +315,68 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#getPhonePrimary()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) PhonePrimary is {@link PhoneImpl} (default constructor).</li>
-   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Given {@link AddressImpl} PhonePrimary is {@link PhoneImpl} (default constructor).
+   *   <li>Then return {@link PhoneImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhonePrimary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhonePrimary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhonePrimary()"})
   public void testGetPhonePrimary_givenAddressImplPhonePrimaryIsPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFax("Fax");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhoneFax(new PhoneImpl());
-    addressImpl2.setPhoneSecondary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setSecondaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
     PhoneImpl phonePrimary = new PhoneImpl();
-    addressImpl2.setPhonePrimary(phonePrimary);
-    addressImpl2.setPrimaryPhone(null);
+    addressImpl.setPhonePrimary(phonePrimary);
+    addressImpl.setPrimaryPhone(null);
 
     // Act and Assert
-    assertSame(phonePrimary, addressImpl2.getPhonePrimary());
+    assertSame(phonePrimary, addressImpl.getPhonePrimary());
   }
 
   /**
    * Test {@link AddressImpl#getPhonePrimary()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link AddressImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhonePrimary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhonePrimary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhonePrimary()"})
   public void testGetPhonePrimary_givenAddressImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new AddressImpl()).getPhonePrimary());
+    assertNull(addressImpl.getPhonePrimary());
   }
 
   /**
    * Test {@link AddressImpl#getPhoneSecondary()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) PhoneSecondary is {@code null}.</li>
-   *   <li>Then return {@link PhoneImpl}.</li>
+   *   <li>Given {@link AddressImpl} PhoneSecondary is {@code null}.
+   *   <li>Then return {@link PhoneImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneSecondary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneSecondary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneSecondary()"})
   public void testGetPhoneSecondary_givenAddressImplPhoneSecondaryIsNull_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFax("Fax");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhoneFax(new PhoneImpl());
-    addressImpl2.setPhonePrimary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setPrimaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
-    addressImpl2.setPhoneSecondary(null);
-    addressImpl2.setSecondaryPhone("foo");
+    addressImpl.setPhoneSecondary(null);
+    addressImpl.setSecondaryPhone("foo");
 
     // Act
-    Phone actualPhoneSecondary = addressImpl2.getPhoneSecondary();
+    Phone actualPhoneSecondary = addressImpl.getPhoneSecondary();
 
     // Assert
     assertTrue(actualPhoneSecondary instanceof PhoneImpl);
@@ -449,123 +390,67 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#getPhoneSecondary()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link AddressImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneSecondary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneSecondary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneSecondary()"})
   public void testGetPhoneSecondary_givenAddressImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new AddressImpl()).getPhoneSecondary());
+    assertNull(addressImpl.getPhoneSecondary());
   }
 
   /**
    * Test {@link AddressImpl#getPhoneSecondary()}.
+   *
    * <ul>
-   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Then return {@link PhoneImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneSecondary()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneSecondary()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneSecondary()"})
   public void testGetPhoneSecondary_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFax("Fax");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhoneFax(new PhoneImpl());
-    addressImpl2.setPhonePrimary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setPrimaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
     PhoneImpl phoneSecondary = new PhoneImpl();
-    addressImpl2.setPhoneSecondary(phoneSecondary);
-    addressImpl2.setSecondaryPhone(null);
+    addressImpl.setPhoneSecondary(phoneSecondary);
+    addressImpl.setSecondaryPhone(null);
 
     // Act and Assert
-    assertSame(phoneSecondary, addressImpl2.getPhoneSecondary());
+    assertSame(phoneSecondary, addressImpl.getPhoneSecondary());
   }
 
   /**
    * Test {@link AddressImpl#getPhoneFax()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) PhoneFax is {@code null}.</li>
-   *   <li>Then return {@link PhoneImpl}.</li>
+   *   <li>Given {@link AddressImpl} PhoneFax is {@code null}.
+   *   <li>Then return {@link PhoneImpl}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneFax()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneFax()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneFax()"})
   public void testGetPhoneFax_givenAddressImplPhoneFaxIsNull_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhonePrimary(new PhoneImpl());
-    addressImpl2.setPhoneSecondary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setPrimaryPhone("6625550144");
-    addressImpl2.setSecondaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
-    addressImpl2.setPhoneFax(null);
-    addressImpl2.setFax("foo");
+    addressImpl.setPhoneFax(null);
+    addressImpl.setFax("foo");
 
     // Act
-    Phone actualPhoneFax = addressImpl2.getPhoneFax();
+    Phone actualPhoneFax = addressImpl.getPhoneFax();
 
     // Assert
     assertTrue(actualPhoneFax instanceof PhoneImpl);
@@ -579,89 +464,65 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#getPhoneFax()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor) PhoneFax is {@link PhoneImpl} (default constructor).</li>
-   *   <li>Then return {@link PhoneImpl} (default constructor).</li>
+   *   <li>Given {@link AddressImpl} PhoneFax is {@link PhoneImpl} (default constructor).
+   *   <li>Then return {@link PhoneImpl} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneFax()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneFax()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneFax()"})
   public void testGetPhoneFax_givenAddressImplPhoneFaxIsPhoneImpl_thenReturnPhoneImpl() {
     // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    addressImpl2.setActive(true);
-    addressImpl2.setAddressLine1("42 Main St");
-    addressImpl2.setAddressLine2("42 Main St");
-    addressImpl2.setAddressLine3("42 Main St");
-    addressImpl2.setBusiness(true);
-    addressImpl2.setCity("Oxford");
-    addressImpl2.setCompanyName("Company Name");
-    addressImpl2.setCountry(new CountryImpl());
-    addressImpl2.setCounty("3");
-    addressImpl2.setDefault(true);
-    addressImpl2.setEmailAddress("42 Main St");
-    addressImpl2.setFirstName("Jane");
-    addressImpl2.setFullName("Dr Jane Doe");
-    addressImpl2.setId(1L);
-    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
-    addressImpl2.setIsoCountrySubdivision("GB");
-    addressImpl2.setLastName("Doe");
-    addressImpl2.setMailing(true);
-    addressImpl2.setPhonePrimary(new PhoneImpl());
-    addressImpl2.setPhoneSecondary(new PhoneImpl());
-    addressImpl2.setPostalCode("Postal Code");
-    addressImpl2.setPrimaryPhone("6625550144");
-    addressImpl2.setSecondaryPhone("6625550144");
-    addressImpl2.setStandardized(true);
-    addressImpl2.setState(new StateImpl());
-    addressImpl2.setStateProvinceRegion("us-east-2");
-    addressImpl2.setStreet(true);
-    addressImpl2.setTokenizedAddress("42 Main St");
-    addressImpl2.setVerificationLevel("Verification Level");
-    addressImpl2.setZipFour("21654");
     PhoneImpl phoneFax = new PhoneImpl();
-    addressImpl2.setPhoneFax(phoneFax);
-    addressImpl2.setFax(null);
+    addressImpl.setPhoneFax(phoneFax);
+    addressImpl.setFax(null);
 
     // Act and Assert
-    assertSame(phoneFax, addressImpl2.getPhoneFax());
+    assertSame(phoneFax, addressImpl.getPhoneFax());
   }
 
   /**
    * Test {@link AddressImpl#getPhoneFax()}.
+   *
    * <ul>
-   *   <li>Given {@link AddressImpl} (default constructor).</li>
-   *   <li>Then return {@code null}.</li>
+   *   <li>Given {@link AddressImpl}.
+   *   <li>Then return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#getPhoneFax()}
+   *
+   * <p>Method under test: {@link AddressImpl#getPhoneFax()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Phone AddressImpl.getPhoneFax()"})
   public void testGetPhoneFax_givenAddressImpl_thenReturnNull() {
     // Arrange, Act and Assert
-    assertNull((new AddressImpl()).getPhoneFax());
+    assertNull(addressImpl.getPhoneFax());
   }
 
   /**
    * Test {@link AddressImpl#equals(Object)}, and {@link AddressImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressImpl#equals(Object)}
    *   <li>{@link AddressImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
@@ -735,25 +596,27 @@ public class AddressImplDiffblueTest {
 
     // Act and Assert
     assertEquals(addressImpl, addressImpl2);
-    int expectedHashCodeResult = addressImpl.hashCode();
-    assertEquals(expectedHashCodeResult, addressImpl2.hashCode());
+    assertEquals(addressImpl.hashCode(), addressImpl2.hashCode());
   }
 
   /**
    * Test {@link AddressImpl#equals(Object)}, and {@link AddressImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressImpl#equals(Object)}
    *   <li>{@link AddressImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
@@ -827,25 +690,27 @@ public class AddressImplDiffblueTest {
 
     // Act and Assert
     assertEquals(addressImpl, addressImpl2);
-    int notExpectedHashCodeResult = addressImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, addressImpl2.hashCode());
+    assertNotEquals(addressImpl.hashCode(), addressImpl2.hashCode());
   }
 
   /**
    * Test {@link AddressImpl#equals(Object)}, and {@link AddressImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressImpl#equals(Object)}
    *   <li>{@link AddressImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
@@ -919,25 +784,27 @@ public class AddressImplDiffblueTest {
 
     // Act and Assert
     assertEquals(addressImpl, addressImpl2);
-    int notExpectedHashCodeResult = addressImpl.hashCode();
-    assertNotEquals(notExpectedHashCodeResult, addressImpl2.hashCode());
+    assertNotEquals(addressImpl.hashCode(), addressImpl2.hashCode());
   }
 
   /**
    * Test {@link AddressImpl#equals(Object)}, and {@link AddressImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link AddressImpl#equals(Object)}
    *   <li>{@link AddressImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
@@ -983,15 +850,17 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
@@ -1069,15 +938,2481 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("17 High St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1(null);
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("17 High St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2(null);
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("London");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity(null);
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual8() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("42 Main St");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual9() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName(null);
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual10() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(null);
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual11() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(mock(Country.class));
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual12() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("42 Main St");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual13() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty(null);
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual14() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("John");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual15() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName(null);
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual16() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Mr John Smith");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual17() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName(null);
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual18() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(null);
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual19() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(mock(ISOCountry.class));
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual20() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GBR");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual21() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision(null);
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual22() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Smith");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual23() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName(null);
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual24() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("42 Main St");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual25() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode(null);
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual26() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(null);
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual27() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(mock(State.class));
+    addressImpl.setStateProvinceRegion("us-east-2");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual28() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion("MD");
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual29() {
+    // Arrange
+    AddressImpl addressImpl = new AddressImpl();
+    addressImpl.setActive(true);
+    addressImpl.setAddressLine1("42 Main St");
+    addressImpl.setAddressLine2("42 Main St");
+    addressImpl.setAddressLine3("42 Main St");
+    addressImpl.setBusiness(true);
+    addressImpl.setCity("Oxford");
+    addressImpl.setCompanyName("Company Name");
+    addressImpl.setCountry(new CountryImpl());
+    addressImpl.setCounty("3");
+    addressImpl.setDefault(true);
+    addressImpl.setEmailAddress("42 Main St");
+    addressImpl.setFax("Fax");
+    addressImpl.setFirstName("Jane");
+    addressImpl.setFullName("Dr Jane Doe");
+    addressImpl.setId(null);
+    addressImpl.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl.setIsoCountrySubdivision("GB");
+    addressImpl.setLastName("Doe");
+    addressImpl.setMailing(true);
+    addressImpl.setPhoneFax(new PhoneImpl());
+    addressImpl.setPhonePrimary(new PhoneImpl());
+    addressImpl.setPhoneSecondary(new PhoneImpl());
+    addressImpl.setPostalCode("Postal Code");
+    addressImpl.setPrimaryPhone("6625550144");
+    addressImpl.setSecondaryPhone("6625550144");
+    addressImpl.setStandardized(true);
+    addressImpl.setState(new StateImpl());
+    addressImpl.setStateProvinceRegion(null);
+    addressImpl.setStreet(true);
+    addressImpl.setTokenizedAddress("42 Main St");
+    addressImpl.setVerificationLevel("Verification Level");
+    addressImpl.setZipFour("21654");
+
+    AddressImpl addressImpl2 = new AddressImpl();
+    addressImpl2.setActive(true);
+    addressImpl2.setAddressLine1("42 Main St");
+    addressImpl2.setAddressLine2("42 Main St");
+    addressImpl2.setAddressLine3("42 Main St");
+    addressImpl2.setBusiness(true);
+    addressImpl2.setCity("Oxford");
+    addressImpl2.setCompanyName("Company Name");
+    addressImpl2.setCountry(new CountryImpl());
+    addressImpl2.setCounty("3");
+    addressImpl2.setDefault(true);
+    addressImpl2.setEmailAddress("42 Main St");
+    addressImpl2.setFax("Fax");
+    addressImpl2.setFirstName("Jane");
+    addressImpl2.setFullName("Dr Jane Doe");
+    addressImpl2.setId(1L);
+    addressImpl2.setIsoCountryAlpha2(new ISOCountryImpl());
+    addressImpl2.setIsoCountrySubdivision("GB");
+    addressImpl2.setLastName("Doe");
+    addressImpl2.setMailing(true);
+    addressImpl2.setPhoneFax(new PhoneImpl());
+    addressImpl2.setPhonePrimary(new PhoneImpl());
+    addressImpl2.setPhoneSecondary(new PhoneImpl());
+    addressImpl2.setPostalCode("Postal Code");
+    addressImpl2.setPrimaryPhone("6625550144");
+    addressImpl2.setSecondaryPhone("6625550144");
+    addressImpl2.setStandardized(true);
+    addressImpl2.setState(new StateImpl());
+    addressImpl2.setStateProvinceRegion("us-east-2");
+    addressImpl2.setStreet(true);
+    addressImpl2.setTokenizedAddress("42 Main St");
+    addressImpl2.setVerificationLevel("Verification Level");
+    addressImpl2.setZipFour("21654");
+
+    // Act and Assert
+    assertNotEquals(addressImpl, addressImpl2);
+  }
+
+  /**
+   * Test {@link AddressImpl#equals(Object)}.
+   *
+   * <ul>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
+   * </ul>
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
@@ -1121,15 +3456,17 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link AddressImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean AddressImpl.equals(Object)", "int AddressImpl.hashCode()"})
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
@@ -1172,76 +3509,13 @@ public class AddressImplDiffblueTest {
   }
 
   /**
-   * Test {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse AddressImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
-    // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
-    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
-
-    // Act
-    CreateResponse<Address> actualCreateOrRetrieveCopyInstanceResult = addressImpl2
-        .createOrRetrieveCopyInstance(context);
-
-    // Assert
-    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
-    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
-  }
-
-  /**
-   * Test {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Given {@code Object}.</li>
-   *   <li>Then Clone return {@link AddressImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse AddressImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_givenJavaLangObject_thenCloneReturnAddressImpl()
-      throws CloneNotSupportedException {
-    // Arrange
-    AddressImpl addressImpl2 = new AddressImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
-
-    // Act
-    CreateResponse<Address> actualCreateOrRetrieveCopyInstanceResult = addressImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
-
-    // Assert
-    verify(genericEntityService).getCeilingImplClass(eq("org.broadleafcommerce.profile.core.domain.AddressImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    Address clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof AddressImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(addressImpl2, clone);
-  }
-
-  /**
    * Test new {@link AddressImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link AddressImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link AddressImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void AddressImpl.<init>()"})
   public void testNewAddressImpl() {
     // Arrange and Act

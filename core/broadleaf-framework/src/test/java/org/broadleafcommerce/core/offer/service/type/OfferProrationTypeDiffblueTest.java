@@ -20,7 +20,8 @@ package org.broadleafcommerce.core.offer.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -28,8 +29,9 @@ import org.junit.experimental.categories.Category;
 public class OfferProrationTypeDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferProrationType#OfferProrationType()}
    *   <li>{@link OfferProrationType#getFriendlyType()}
@@ -37,9 +39,13 @@ public class OfferProrationTypeDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void OfferProrationType.<init>()", "String OfferProrationType.getFriendlyType()",
-      "String OfferProrationType.getType()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void OfferProrationType.<init>()",
+    "String OfferProrationType.getFriendlyType()",
+    "String OfferProrationType.getType()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     OfferProrationType actualOfferProrationType = new OfferProrationType();
@@ -52,20 +58,26 @@ public class OfferProrationTypeDiffblueTest {
 
   /**
    * Test {@link OfferProrationType#equals(Object)}, and {@link OfferProrationType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferProrationType#equals(Object)}
    *   <li>{@link OfferProrationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     OfferProrationType offerProrationType = OfferProrationType.TARGET_AND_QUALIFIER;
@@ -73,26 +85,31 @@ public class OfferProrationTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(offerProrationType, offerProrationType2);
-    int expectedHashCodeResult = offerProrationType.hashCode();
-    assertEquals(expectedHashCodeResult, offerProrationType2.hashCode());
+    assertEquals(offerProrationType.hashCode(), offerProrationType2.hashCode());
   }
 
   /**
    * Test {@link OfferProrationType#equals(Object)}, and {@link OfferProrationType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferProrationType#equals(Object)}
    *   <li>{@link OfferProrationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     OfferProrationType offerProrationType = new OfferProrationType();
@@ -100,26 +117,31 @@ public class OfferProrationTypeDiffblueTest {
 
     // Act and Assert
     assertEquals(offerProrationType, offerProrationType2);
-    int expectedHashCodeResult = offerProrationType.hashCode();
-    assertEquals(expectedHashCodeResult, offerProrationType2.hashCode());
+    assertEquals(offerProrationType.hashCode(), offerProrationType2.hashCode());
   }
 
   /**
    * Test {@link OfferProrationType#equals(Object)}, and {@link OfferProrationType#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link OfferProrationType#equals(Object)}
    *   <li>{@link OfferProrationType#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     OfferProrationType offerProrationType = OfferProrationType.TARGET_AND_QUALIFIER;
@@ -132,16 +154,21 @@ public class OfferProrationTypeDiffblueTest {
 
   /**
    * Test {@link OfferProrationType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferProrationType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferProrationType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferProrationType.TARGET_ONLY, OfferProrationType.TARGET_AND_QUALIFIER);
@@ -149,16 +176,21 @@ public class OfferProrationTypeDiffblueTest {
 
   /**
    * Test {@link OfferProrationType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferProrationType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferProrationType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange, Act and Assert
     assertNotEquals(new OfferProrationType(), OfferProrationType.TARGET_AND_QUALIFIER);
@@ -166,16 +198,21 @@ public class OfferProrationTypeDiffblueTest {
 
   /**
    * Test {@link OfferProrationType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferProrationType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferProrationType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(OfferProrationType.TARGET_AND_QUALIFIER, null);
@@ -183,18 +220,24 @@ public class OfferProrationTypeDiffblueTest {
 
   /**
    * Test {@link OfferProrationType#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link OfferProrationType#equals(Object)}
+   *
+   * <p>Method under test: {@link OfferProrationType#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean OfferProrationType.equals(Object)", "int OfferProrationType.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean OfferProrationType.equals(Object)",
+    "int OfferProrationType.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
-    assertNotEquals(OfferProrationType.TARGET_AND_QUALIFIER, "Different type to OfferProrationType");
+    assertNotEquals(
+        OfferProrationType.TARGET_AND_QUALIFIER, "Different type to OfferProrationType");
   }
 }

@@ -18,79 +18,84 @@
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.copy.CreateResponse;
-import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
-import org.broadleafcommerce.common.service.GenericEntityService;
-import org.broadleafcommerce.common.site.domain.CatalogImpl;
-import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CategoryAttributeImplDiffblueTest {
-  @Autowired
-  private CategoryAttributeImpl categoryAttributeImpl;
+  @Autowired private CategoryAttributeImpl categoryAttributeImpl;
 
   /**
    * Test {@link CategoryAttributeImpl#getValue()}.
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#getValue()}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#getValue()}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CategoryAttributeImpl.getValue()"})
   public void testGetValue() {
     // Arrange, Act and Assert
-    assertNull((new CategoryAttributeImpl()).getValue());
+    assertNull(categoryAttributeImpl.getValue());
   }
 
   /**
    * Test {@link CategoryAttributeImpl#getName()}.
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#getName()}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#getName()}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"String CategoryAttributeImpl.getName()"})
   public void testGetName() {
     // Arrange, Act and Assert
-    assertNull((new CategoryAttributeImpl()).getName());
+    assertNull(categoryAttributeImpl.getName());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -107,26 +112,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual2() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -143,26 +154,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -179,26 +196,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual4() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -215,26 +238,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual5() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -251,26 +280,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual6() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -287,26 +322,32 @@ public class CategoryAttributeImplDiffblueTest {
 
     // Act and Assert
     assertEquals(categoryAttributeImpl, categoryAttributeImpl2);
-    int expectedHashCodeResult = categoryAttributeImpl.hashCode();
-    assertEquals(expectedHashCodeResult, categoryAttributeImpl2.hashCode());
+    assertEquals(categoryAttributeImpl.hashCode(), categoryAttributeImpl2.hashCode());
   }
 
   /**
-   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link CategoryAttributeImpl#hashCode()}.
+   * Test {@link CategoryAttributeImpl#equals(Object)}, and {@link
+   * CategoryAttributeImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link CategoryAttributeImpl#equals(Object)}
    *   <li>{@link CategoryAttributeImpl#hashCode()}
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -323,16 +364,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -353,16 +399,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -383,16 +434,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual3() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -413,16 +469,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual4() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -443,16 +504,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual5() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -473,16 +539,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual6() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -503,16 +574,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual7() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -533,16 +609,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -557,16 +638,21 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link CategoryAttributeImpl#equals(Object)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean CategoryAttributeImpl.equals(Object)", "int CategoryAttributeImpl.hashCode()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean CategoryAttributeImpl.equals(Object)",
+    "int CategoryAttributeImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
@@ -581,23 +667,25 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CategoryAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CategoryAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    CategoryAttributeImpl categoryAttributeImpl2 = new CategoryAttributeImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new CategoryAttributeImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CategoryAttribute> actualCreateOrRetrieveCopyInstanceResult = categoryAttributeImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<CategoryAttribute> actualCreateOrRetrieveCopyInstanceResult =
+        categoryAttributeImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -606,47 +694,77 @@ public class CategoryAttributeImplDiffblueTest {
 
   /**
    * Test {@link CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <ul>
-   *   <li>Then Clone return {@link CategoryAttributeImpl}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse CategoryAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
-  public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryAttributeImpl()
-      throws CloneNotSupportedException {
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CategoryAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
     // Arrange
-    CategoryAttributeImpl categoryAttributeImpl2 = new CategoryAttributeImpl();
-    GenericEntityService genericEntityService = mock(GenericEntityService.class);
-    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
-    Class<Object> forNameResult = Object.class;
-    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
-    CatalogImpl fromCatalog = new CatalogImpl();
-    CatalogImpl toCatalog = new CatalogImpl();
-    SiteImpl fromSite = new SiteImpl();
-    SiteImpl toSite = new SiteImpl();
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    CreateResponse<Object> createResponse = new CreateResponse<>(categoryAttributeImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<CategoryAttribute> actualCreateOrRetrieveCopyInstanceResult = categoryAttributeImpl2
-        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
-            genericEntityService, new MultiTenantCopierExtensionManager()));
+    CreateResponse<CategoryAttribute> actualCreateOrRetrieveCopyInstanceResult =
+        categoryAttributeImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
-    verify(genericEntityService)
-        .getCeilingImplClass(eq("org.broadleafcommerce.core.catalog.domain.CategoryAttributeImpl"));
-    verify(genericEntityService).getIdentifier(isA(Object.class));
-    CategoryAttribute clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
-    assertTrue(clone instanceof CategoryAttributeImpl);
-    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
-    assertEquals(categoryAttributeImpl2, clone);
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * CategoryAttributeImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse CategoryAttributeImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance3() throws CloneNotSupportedException {
+    // Arrange
+    CategoryImpl category = mock(CategoryImpl.class);
+    when(category.createOrRetrieveCopyInstance(Mockito.<MultiTenantCopyContext>any()))
+        .thenReturn(new CreateResponse<>(new CategoryImpl(), true));
+
+    CategoryAttributeImpl categoryAttributeImpl = new CategoryAttributeImpl();
+    categoryAttributeImpl.setCategory(category);
+
+    CategoryAttributeImpl categoryAttributeImpl2 = new CategoryAttributeImpl();
+    categoryAttributeImpl2.setCategory(new CategoryImpl());
+    categoryAttributeImpl2.setId(1L);
+    categoryAttributeImpl2.setName("Name");
+    categoryAttributeImpl2.setValue("42");
+    CreateResponse<Object> createResponse = new CreateResponse<>(categoryAttributeImpl2, false);
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<CategoryAttribute> actualCreateOrRetrieveCopyInstanceResult =
+        categoryAttributeImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(category).createOrRetrieveCopyInstance(isA(MultiTenantCopyContext.class));
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
   }
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link CategoryAttributeImpl}
    *   <li>{@link CategoryAttributeImpl#setCategory(Category)}
@@ -659,11 +777,18 @@ public class CategoryAttributeImplDiffblueTest {
    * </ul>
    */
   @Test
-  @org.junit.experimental.categories.Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void CategoryAttributeImpl.<init>()", "Category CategoryAttributeImpl.getCategory()",
-      "Long CategoryAttributeImpl.getId()", "void CategoryAttributeImpl.setCategory(Category)",
-      "void CategoryAttributeImpl.setId(Long)", "void CategoryAttributeImpl.setName(String)",
-      "void CategoryAttributeImpl.setValue(String)", "String CategoryAttributeImpl.toString()"})
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void CategoryAttributeImpl.<init>()",
+    "Category CategoryAttributeImpl.getCategory()",
+    "Long CategoryAttributeImpl.getId()",
+    "void CategoryAttributeImpl.setCategory(Category)",
+    "void CategoryAttributeImpl.setId(Long)",
+    "void CategoryAttributeImpl.setName(String)",
+    "void CategoryAttributeImpl.setValue(String)",
+    "String CategoryAttributeImpl.toString()"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     CategoryAttributeImpl actualCategoryAttributeImpl = new CategoryAttributeImpl();

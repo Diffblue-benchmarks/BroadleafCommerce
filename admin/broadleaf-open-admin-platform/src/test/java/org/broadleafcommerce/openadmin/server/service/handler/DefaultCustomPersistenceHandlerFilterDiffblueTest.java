@@ -19,7 +19,8 @@ package org.broadleafcommerce.openadmin.server.service.handler;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +34,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {DefaultCustomPersistenceHandlerFilter.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DefaultCustomPersistenceHandlerFilterDiffblueTest {
-  @Autowired
-  private DefaultCustomPersistenceHandlerFilter defaultCustomPersistenceHandlerFilter;
+  @Autowired private DefaultCustomPersistenceHandlerFilter defaultCustomPersistenceHandlerFilter;
 
   /**
    * Test {@link DefaultCustomPersistenceHandlerFilter#shouldUseHandler(String)}.
-   * <p>
-   * Method under test: {@link DefaultCustomPersistenceHandlerFilter#shouldUseHandler(String)}
+   *
+   * <p>Method under test: {@link DefaultCustomPersistenceHandlerFilter#shouldUseHandler(String)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean DefaultCustomPersistenceHandlerFilter.shouldUseHandler(String)"})
   public void testShouldUseHandler() {
     // Arrange, Act and Assert
@@ -51,30 +52,38 @@ public class DefaultCustomPersistenceHandlerFilterDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link DefaultCustomPersistenceHandlerFilter}
-   *   <li>{@link DefaultCustomPersistenceHandlerFilter#setFilterCustomPersistenceHandlerClassnames(List)}
-   *   <li>{@link DefaultCustomPersistenceHandlerFilter#getFilterCustomPersistenceHandlerClassnames()}
+   *   <li>{@link
+   *       DefaultCustomPersistenceHandlerFilter#setFilterCustomPersistenceHandlerClassnames(List)}
+   *   <li>{@link
+   *       DefaultCustomPersistenceHandlerFilter#getFilterCustomPersistenceHandlerClassnames()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void DefaultCustomPersistenceHandlerFilter.<init>()",
-      "List DefaultCustomPersistenceHandlerFilter.getFilterCustomPersistenceHandlerClassnames()",
-      "void DefaultCustomPersistenceHandlerFilter.setFilterCustomPersistenceHandlerClassnames(List)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void DefaultCustomPersistenceHandlerFilter.<init>()",
+    "List DefaultCustomPersistenceHandlerFilter.getFilterCustomPersistenceHandlerClassnames()",
+    "void DefaultCustomPersistenceHandlerFilter.setFilterCustomPersistenceHandlerClassnames(List)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
-    DefaultCustomPersistenceHandlerFilter actualDefaultCustomPersistenceHandlerFilter = new DefaultCustomPersistenceHandlerFilter();
+    DefaultCustomPersistenceHandlerFilter actualDefaultCustomPersistenceHandlerFilter =
+        new DefaultCustomPersistenceHandlerFilter();
     ArrayList<String> filterCustomPersistenceHandlerClassnames = new ArrayList<>();
-    actualDefaultCustomPersistenceHandlerFilter
-        .setFilterCustomPersistenceHandlerClassnames(filterCustomPersistenceHandlerClassnames);
-    List<String> actualFilterCustomPersistenceHandlerClassnames = actualDefaultCustomPersistenceHandlerFilter
-        .getFilterCustomPersistenceHandlerClassnames();
+    actualDefaultCustomPersistenceHandlerFilter.setFilterCustomPersistenceHandlerClassnames(
+        filterCustomPersistenceHandlerClassnames);
+    List<String> actualFilterCustomPersistenceHandlerClassnames =
+        actualDefaultCustomPersistenceHandlerFilter.getFilterCustomPersistenceHandlerClassnames();
 
     // Assert
     assertTrue(actualFilterCustomPersistenceHandlerClassnames.isEmpty());
-    assertSame(filterCustomPersistenceHandlerClassnames, actualFilterCustomPersistenceHandlerClassnames);
+    assertSame(
+        filterCustomPersistenceHandlerClassnames, actualFilterCustomPersistenceHandlerClassnames);
   }
 }

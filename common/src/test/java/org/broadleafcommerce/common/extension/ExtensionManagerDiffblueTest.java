@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -46,32 +47,36 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {BreadcrumbServiceExtensionManager.class})
-@RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ExtensionManagerDiffblueTest {
-  @Autowired
-  private ExtensionManager<BreadcrumbServiceExtensionHandler> extensionManager;
+  @Autowired private ExtensionManager<BreadcrumbServiceExtensionHandler> extensionManager;
 
   /**
    * Test {@link ExtensionManager#getProxy()}.
-   * <p>
-   * Method under test: {@link ExtensionManager#getProxy()}
+   *
+   * <p>Method under test: {@link ExtensionManager#getProxy()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"ExtensionHandler ExtensionManager.getProxy()"})
   public void testGetProxy() {
-    // Arrange, Act and Assert
-    assertSame(extensionManager.extensionHandler, extensionManager.getProxy());
+    // Arrange and Act
+    BreadcrumbServiceExtensionHandler actualProxy = extensionManager.getProxy();
+
+    // Assert
+    assertSame(extensionManager.extensionHandler, actualProxy);
   }
 
   /**
    * Test {@link ExtensionManager#getHandlers()}.
-   * <p>
-   * Method under test: {@link ExtensionManager#getHandlers()}
+   *
+   * <p>Method under test: {@link ExtensionManager#getHandlers()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"List ExtensionManager.getHandlers()"})
   public void testGetHandlers() {
     // Arrange, Act and Assert
@@ -80,60 +85,33 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#registerHandler(ExtensionHandler)}.
+   *
    * <ul>
-   *   <li>Then {@link BreadcrumbServiceExtensionManager} (default constructor) Handlers size is one.</li>
+   *   <li>Given {@link ExtensionManager}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#registerHandler(ExtensionHandler)}
+   *
+   * <p>Method under test: {@link ExtensionManager#registerHandler(ExtensionHandler)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ExtensionManager.registerHandler(ExtensionHandler)"})
-  public void testRegisterHandler_thenBreadcrumbServiceExtensionManagerHandlersSizeIsOne() {
+  public void testRegisterHandler_givenExtensionManager_thenReturnTrue() {
     // Arrange
-    ArrayList<BreadcrumbServiceExtensionHandler> handlers = new ArrayList<>();
-    handlers.add(mock(BreadcrumbServiceExtensionHandler.class));
-
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
-    breadcrumbServiceExtensionManager.setHandlers(handlers);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
 
     // Act
-    boolean actualRegisterHandlerResult = breadcrumbServiceExtensionManager
-        .registerHandler(mock(BreadcrumbServiceExtensionHandler.class));
-
-    // Assert
-    List<BreadcrumbServiceExtensionHandler> handlers2 = breadcrumbServiceExtensionManager.getHandlers();
-    assertEquals(1, handlers2.size());
-    List<BreadcrumbServiceExtensionHandler> breadcrumbServiceExtensionHandlerList = breadcrumbServiceExtensionManager.handlers;
-    assertEquals(1, breadcrumbServiceExtensionHandlerList.size());
-    assertFalse(actualRegisterHandlerResult);
-    assertSame(handlers, handlers2);
-    assertSame(handlers2.get(0), breadcrumbServiceExtensionHandlerList.get(0));
-  }
-
-  /**
-   * Test {@link ExtensionManager#registerHandler(ExtensionHandler)}.
-   * <ul>
-   *   <li>Then {@link ExtensionManager} {@link BreadcrumbServiceExtensionManager}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#registerHandler(ExtensionHandler)}
-   */
-  @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ExtensionManager.registerHandler(ExtensionHandler)"})
-  public void testRegisterHandler_thenExtensionManagerBreadcrumbServiceExtensionManager() {
-    // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
-
-    // Act
-    boolean actualRegisterHandlerResult = extensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+    boolean actualRegisterHandlerResult =
+        extensionManager.registerHandler(breadcrumbServiceExtensionHandler);
 
     // Assert
     assertTrue(extensionManager instanceof BreadcrumbServiceExtensionManager);
     List<BreadcrumbServiceExtensionHandler> handlers = extensionManager.getHandlers();
     assertEquals(1, handlers.size());
-    List<BreadcrumbServiceExtensionHandler> breadcrumbServiceExtensionHandlerList = ((BreadcrumbServiceExtensionManager) extensionManager).handlers;
+    List<BreadcrumbServiceExtensionHandler> breadcrumbServiceExtensionHandlerList =
+        ((BreadcrumbServiceExtensionManager) extensionManager).handlers;
     assertEquals(1, breadcrumbServiceExtensionHandlerList.size());
     assertTrue(actualRegisterHandlerResult);
     assertSame(extensionManager.handlers, handlers);
@@ -142,15 +120,52 @@ public class ExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link ExtensionManager#setHandlers(List)}.
+   * Test {@link ExtensionManager#registerHandler(ExtensionHandler)}.
+   *
    * <ul>
-   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} size is one.</li>
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#setHandlers(List)}
+   *
+   * <p>Method under test: {@link ExtensionManager#registerHandler(ExtensionHandler)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean ExtensionManager.registerHandler(ExtensionHandler)"})
+  public void testRegisterHandler_thenReturnFalse() {
+    // Arrange
+    ArrayList<BreadcrumbServiceExtensionHandler> handlers = new ArrayList<>();
+    handlers.add(mock(BreadcrumbServiceExtensionHandler.class));
+    extensionManager.setHandlers(handlers);
+
+    // Act
+    boolean actualRegisterHandlerResult =
+        extensionManager.registerHandler(mock(BreadcrumbServiceExtensionHandler.class));
+
+    // Assert
+    assertTrue(extensionManager instanceof BreadcrumbServiceExtensionManager);
+    List<BreadcrumbServiceExtensionHandler> handlers2 = extensionManager.getHandlers();
+    assertEquals(1, handlers2.size());
+    List<BreadcrumbServiceExtensionHandler> breadcrumbServiceExtensionHandlerList =
+        ((BreadcrumbServiceExtensionManager) extensionManager).handlers;
+    assertEquals(1, breadcrumbServiceExtensionHandlerList.size());
+    assertFalse(actualRegisterHandlerResult);
+    assertSame(handlers, handlers2);
+    assertSame(handlers2.get(0), breadcrumbServiceExtensionHandlerList.get(0));
+  }
+
+  /**
+   * Test {@link ExtensionManager#setHandlers(List)}.
+   *
+   * <ul>
+   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} size is one.
+   * </ul>
+   *
+   * <p>Method under test: {@link ExtensionManager#setHandlers(List)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ExtensionManager.setHandlers(List)"})
   public void testSetHandlers_thenExtensionManagerHandlersSizeIsOne() {
     // Arrange
@@ -168,14 +183,16 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#setHandlers(List)}.
+   *
    * <ul>
-   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} size is two.</li>
+   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#setHandlers(List)}
+   *
+   * <p>Method under test: {@link ExtensionManager#setHandlers(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ExtensionManager.setHandlers(List)"})
   public void testSetHandlers_thenExtensionManagerHandlersSizeIsTwo() {
     // Arrange
@@ -194,15 +211,17 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#setHandlers(List)}.
+   *
    * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} Empty.</li>
+   *   <li>When {@link ArrayList#ArrayList()}.
+   *   <li>Then {@link ExtensionManager} {@link ExtensionManager#handlers} Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#setHandlers(List)}
+   *
+   * <p>Method under test: {@link ExtensionManager#setHandlers(List)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ExtensionManager.setHandlers(List)"})
   public void testSetHandlers_whenArrayList_thenExtensionManagerHandlersEmpty() {
     // Arrange
@@ -218,88 +237,125 @@ public class ExtensionManagerDiffblueTest {
   }
 
   /**
-   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}.
+   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler,
+   * Method, Object[])}.
+   *
    * <ul>
-   *   <li>When {@link AbstractMultiTenantCopierExtensionHandler} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@link AbstractMultiTenantCopierExtensionHandler} (default constructor).
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType,
+   * ExtensionHandler, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"})
+    "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"
+  })
   public void testShouldContinue_whenAbstractMultiTenantCopierExtensionHandler_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(extensionManager.shouldContinue(null, new AbstractMultiTenantCopierExtensionHandler(), null,
-        new Object[]{BLCFieldUtils.NULL_FIELD}));
+    assertTrue(
+        extensionManager.shouldContinue(
+            null,
+            new AbstractMultiTenantCopierExtensionHandler(),
+            null,
+            new Object[] {BLCFieldUtils.NULL_FIELD}));
   }
 
   /**
-   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}.
+   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler,
+   * Method, Object[])}.
+   *
    * <ul>
-   *   <li>When {@code HANDLED_CONTINUE}.</li>
-   *   <li>Then return {@code true}.</li>
+   *   <li>When {@code HANDLED_CONTINUE}.
+   *   <li>Then return {@code true}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType,
+   * ExtensionHandler, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"})
+    "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"
+  })
   public void testShouldContinue_whenHandledContinue_thenReturnTrue() {
     // Arrange, Act and Assert
-    assertTrue(extensionManager.shouldContinue(ExtensionResultStatusType.HANDLED_CONTINUE,
-        new AbstractMultiTenantCopierExtensionHandler(), null, new Object[]{BLCFieldUtils.NULL_FIELD}));
+    assertTrue(
+        extensionManager.shouldContinue(
+            ExtensionResultStatusType.HANDLED_CONTINUE,
+            new AbstractMultiTenantCopierExtensionHandler(),
+            null,
+            new Object[] {BLCFieldUtils.NULL_FIELD}));
   }
 
   /**
-   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}.
+   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler,
+   * Method, Object[])}.
+   *
    * <ul>
-   *   <li>When {@code HANDLED_STOP}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code HANDLED_STOP}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType,
+   * ExtensionHandler, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"})
+    "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"
+  })
   public void testShouldContinue_whenHandledStop_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(extensionManager.shouldContinue(ExtensionResultStatusType.HANDLED_STOP,
-        new AbstractMultiTenantCopierExtensionHandler(), null, new Object[]{BLCFieldUtils.NULL_FIELD}));
+    assertFalse(
+        extensionManager.shouldContinue(
+            ExtensionResultStatusType.HANDLED_STOP,
+            new AbstractMultiTenantCopierExtensionHandler(),
+            null,
+            new Object[] {BLCFieldUtils.NULL_FIELD}));
   }
 
   /**
-   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}.
+   * Test {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler,
+   * Method, Object[])}.
+   *
    * <ul>
-   *   <li>When {@code HANDLED}.</li>
-   *   <li>Then return {@code false}.</li>
+   *   <li>When {@code HANDLED}.
+   *   <li>Then return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#shouldContinue(ExtensionResultStatusType,
+   * ExtensionHandler, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({
-      "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"})
+    "boolean ExtensionManager.shouldContinue(ExtensionResultStatusType, ExtensionHandler, Method, Object[])"
+  })
   public void testShouldContinue_whenHandled_thenReturnFalse() {
     // Arrange, Act and Assert
-    assertFalse(extensionManager.shouldContinue(ExtensionResultStatusType.HANDLED,
-        new AbstractMultiTenantCopierExtensionHandler(), null, new Object[]{BLCFieldUtils.NULL_FIELD}));
+    assertFalse(
+        extensionManager.shouldContinue(
+            ExtensionResultStatusType.HANDLED,
+            new AbstractMultiTenantCopierExtensionHandler(),
+            null,
+            new Object[] {BLCFieldUtils.NULL_FIELD}));
   }
 
   /**
    * Test {@link ExtensionManager#continueOnHandled()}.
-   * <p>
-   * Method under test: {@link ExtensionManager#continueOnHandled()}
+   *
+   * <p>Method under test: {@link ExtensionManager#continueOnHandled()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean ExtensionManager.continueOnHandled()"})
   public void testContinueOnHandled() {
     // Arrange, Act and Assert
@@ -308,11 +364,12 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#getPriority()}.
-   * <p>
-   * Method under test: {@link ExtensionManager#getPriority()}
+   *
+   * <p>Method under test: {@link ExtensionManager#getPriority()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"int ExtensionManager.getPriority()"})
   public void testGetPriority() {
     // Arrange, Act and Assert
@@ -321,26 +378,33 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#invoke(Object, Method, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@link BreadcrumbServiceExtensionHandler} {@link ExtensionHandler#isEnabled()} return {@code false}.</li>
+   *   <li>Given {@link BreadcrumbServiceExtensionHandler} {@link
+   *       BreadcrumbServiceExtensionHandler#isEnabled()} return {@code false}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object ExtensionManager.invoke(Object, Method, Object[])"})
-  public void testInvoke_givenBreadcrumbServiceExtensionHandlerIsEnabledReturnFalse() throws Throwable {
+  public void testInvoke_givenBreadcrumbServiceExtensionHandlerIsEnabledReturnFalse()
+      throws Throwable {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(false);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
 
     // Act
-    Object actualInvokeResult = breadcrumbServiceExtensionManager.invoke(BLCFieldUtils.NULL_FIELD, null,
-        new Object[]{BLCFieldUtils.NULL_FIELD});
+    Object actualInvokeResult =
+        breadcrumbServiceExtensionManager.invoke(
+            BLCFieldUtils.NULL_FIELD, null, new Object[] {BLCFieldUtils.NULL_FIELD});
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -350,20 +414,24 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#invoke(Object, Method, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@link ExtensionManager}.</li>
-   *   <li>Then return {@link ExtensionResultStatusType}.</li>
+   *   <li>Given {@link ExtensionManager}.
+   *   <li>Then return {@link ExtensionResultStatusType}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object ExtensionManager.invoke(Object, Method, Object[])"})
-  public void testInvoke_givenExtensionManager_thenReturnExtensionResultStatusType() throws Throwable {
+  public void testInvoke_givenExtensionManager_thenReturnExtensionResultStatusType()
+      throws Throwable {
     // Arrange and Act
-    Object actualInvokeResult = extensionManager.invoke(BLCFieldUtils.NULL_FIELD, null,
-        new Object[]{BLCFieldUtils.NULL_FIELD});
+    Object actualInvokeResult =
+        extensionManager.invoke(
+            BLCFieldUtils.NULL_FIELD, null, new Object[] {BLCFieldUtils.NULL_FIELD});
 
     // Assert
     assertTrue(actualInvokeResult instanceof ExtensionResultStatusType);
@@ -372,51 +440,98 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#invoke(Object, Method, Object[])}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Then throw {@link UnsupportedOperationException}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#invoke(Object, Method, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Object ExtensionManager.invoke(Object, Method, Object[])"})
   public void testInvoke_thenThrowUnsupportedOperationException() throws Throwable {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
-    when(breadcrumbServiceExtensionHandler.isEnabled()).thenThrow(new UnsupportedOperationException("priority"));
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
+    when(breadcrumbServiceExtensionHandler.isEnabled())
+        .thenThrow(new UnsupportedOperationException());
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class, () -> breadcrumbServiceExtensionManager
-        .invoke(BLCFieldUtils.NULL_FIELD, null, new Object[]{BLCFieldUtils.NULL_FIELD}));
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            breadcrumbServiceExtensionManager.invoke(
+                BLCFieldUtils.NULL_FIELD, null, new Object[] {BLCFieldUtils.NULL_FIELD}));
     verify(breadcrumbServiceExtensionHandler).isEnabled();
   }
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
-   * <ul>
-   *   <li>Given {@link BreadcrumbServiceExtensionHandler} {@link ExtensionHandler#isEnabled()} return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
+  public void testExecute() {
+    // Arrange
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
+    when(breadcrumbServiceExtensionHandler.isEnabled())
+        .thenThrow(new UnsupportedOperationException());
+
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
+    breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
+    // Act and Assert
+    assertThrows(
+        UnsupportedOperationException.class,
+        () ->
+            breadcrumbServiceExtensionManager.execute(
+                mock(ExtensionManagerOperation.class), BLCFieldUtils.NULL_FIELD));
+    verify(breadcrumbServiceExtensionHandler).isEnabled();
+  }
+
+  /**
+   * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
+   * <ul>
+   *   <li>Given {@link BreadcrumbServiceExtensionHandler} {@link
+   *       BreadcrumbServiceExtensionHandler#isEnabled()} return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenBreadcrumbServiceExtensionHandlerIsEnabledReturnFalse() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(false);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager
-        .execute(mock(ExtensionManagerOperation.class), BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(
+            mock(ExtensionManagerOperation.class), BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -425,47 +540,59 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@link ExtensionManager}.</li>
-   *   <li>When {@link ExtensionManagerOperation}.</li>
+   *   <li>Given {@link ExtensionManager}.
+   *   <li>Then return {@code NOT_HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
-  public void testExecute_givenExtensionManager_whenExtensionManagerOperation() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
+  public void testExecute_givenExtensionManager_thenReturnNotHandled() {
     // Arrange, Act and Assert
-    assertEquals(ExtensionResultStatusType.NOT_HANDLED,
+    assertEquals(
+        ExtensionResultStatusType.NOT_HANDLED,
         extensionManager.execute(mock(ExtensionManagerOperation.class), BLCFieldUtils.NULL_FIELD));
   }
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@code HANDLED_CONTINUE}.</li>
+   *   <li>Given {@code HANDLED_CONTINUE}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenHandledContinue() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
     when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
         .thenReturn(ExtensionResultStatusType.HANDLED_CONTINUE);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager.execute(operation,
-        BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -475,29 +602,36 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@code HANDLED_STOP}.</li>
+   *   <li>Given {@code HANDLED_STOP}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenHandledStop() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
     when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
         .thenReturn(ExtensionResultStatusType.HANDLED_STOP);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager.execute(operation,
-        BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -507,30 +641,38 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@code HANDLED}.</li>
-   *   <li>When {@link ExtensionManagerOperation} {@link ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code HANDLED}.</li>
+   *   <li>Given {@code HANDLED}.
+   *   <li>When {@link ExtensionManagerOperation} {@link
+   *       ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenHandled_whenExtensionManagerOperationExecuteReturnHandled() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
     when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
         .thenReturn(ExtensionResultStatusType.HANDLED);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager.execute(operation,
-        BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -540,30 +682,39 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@code NOT_HANDLED}.</li>
-   *   <li>When {@link ExtensionManagerOperation} {@link ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code NOT_HANDLED}.</li>
+   *   <li>Given {@code NOT_HANDLED}.
+   *   <li>When {@link ExtensionManagerOperation} {@link
+   *       ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code
+   *       NOT_HANDLED}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenNotHandled_whenExtensionManagerOperationExecuteReturnNotHandled() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
     when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
         .thenReturn(ExtensionResultStatusType.NOT_HANDLED);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager.execute(operation,
-        BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -573,29 +724,38 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Given {@code null}.</li>
-   *   <li>When {@link ExtensionManagerOperation} {@link ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code null}.</li>
+   *   <li>Given {@code null}.
+   *   <li>When {@link ExtensionManagerOperation} {@link
+   *       ExtensionManagerOperation#execute(ExtensionHandler, Object[])} return {@code null}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
   public void testExecute_givenNull_whenExtensionManagerOperationExecuteReturnNull() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
-    when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any())).thenReturn(null);
+    when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
+        .thenReturn(null);
 
     // Act
-    ExtensionResultStatusType actualExecuteResult = breadcrumbServiceExtensionManager.execute(operation,
-        BLCFieldUtils.NULL_FIELD);
+    ExtensionResultStatusType actualExecuteResult =
+        breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD);
 
     // Assert
     verify(breadcrumbServiceExtensionHandler).isEnabled();
@@ -605,28 +765,36 @@ public class ExtensionManagerDiffblueTest {
 
   /**
    * Test {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}.
+   *
    * <ul>
-   *   <li>Then throw {@link UnsupportedOperationException}.</li>
+   *   <li>Given {@link UnsupportedOperationException#UnsupportedOperationException()}.
    * </ul>
-   * <p>
-   * Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
+   *
+   * <p>Method under test: {@link ExtensionManager#execute(ExtensionManagerOperation, Object[])}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"})
-  public void testExecute_thenThrowUnsupportedOperationException() {
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "ExtensionResultStatusType ExtensionManager.execute(ExtensionManagerOperation, Object[])"
+  })
+  public void testExecute_givenUnsupportedOperationException() {
     // Arrange
-    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler = mock(BreadcrumbServiceExtensionHandler.class);
+    BreadcrumbServiceExtensionHandler breadcrumbServiceExtensionHandler =
+        mock(BreadcrumbServiceExtensionHandler.class);
     when(breadcrumbServiceExtensionHandler.isEnabled()).thenReturn(true);
 
-    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager = new BreadcrumbServiceExtensionManager();
+    BreadcrumbServiceExtensionManager breadcrumbServiceExtensionManager =
+        new BreadcrumbServiceExtensionManager();
     breadcrumbServiceExtensionManager.registerHandler(breadcrumbServiceExtensionHandler);
+
     ExtensionManagerOperation operation = mock(ExtensionManagerOperation.class);
     when(operation.execute(Mockito.<ExtensionHandler>any(), (Object[]) Mockito.any()))
-        .thenThrow(new UnsupportedOperationException("priority"));
+        .thenThrow(new UnsupportedOperationException());
 
     // Act and Assert
-    assertThrows(UnsupportedOperationException.class,
+    assertThrows(
+        UnsupportedOperationException.class,
         () -> breadcrumbServiceExtensionManager.execute(operation, BLCFieldUtils.NULL_FIELD));
     verify(breadcrumbServiceExtensionHandler).isEnabled();
     verify(operation).execute(isA(ExtensionHandler.class), (Object[]) Mockito.any());

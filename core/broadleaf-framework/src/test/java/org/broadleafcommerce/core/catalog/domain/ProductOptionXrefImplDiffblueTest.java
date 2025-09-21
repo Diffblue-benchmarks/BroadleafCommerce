@@ -26,8 +26,10 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
+import java.util.HashMap;
 import org.broadleafcommerce.common.copy.CreateResponse;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.junit.Test;
@@ -41,13 +43,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductOptionXrefImplDiffblueTest {
-  @Autowired
-  private ProductOptionXrefImpl productOptionXrefImpl;
+  @Autowired private ProductOptionXrefImpl productOptionXrefImpl;
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProductOptionXrefImpl#setId(Long)}
    *   <li>{@link ProductOptionXrefImpl#setProduct(Product)}
@@ -58,10 +60,16 @@ public class ProductOptionXrefImplDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"Long ProductOptionXrefImpl.getId()", "Product ProductOptionXrefImpl.getProduct()",
-      "ProductOption ProductOptionXrefImpl.getProductOption()", "void ProductOptionXrefImpl.setId(Long)",
-      "void ProductOptionXrefImpl.setProduct(Product)", "void ProductOptionXrefImpl.setProductOption(ProductOption)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "Long ProductOptionXrefImpl.getId()",
+    "Product ProductOptionXrefImpl.getProduct()",
+    "ProductOption ProductOptionXrefImpl.getProductOption()",
+    "void ProductOptionXrefImpl.setId(Long)",
+    "void ProductOptionXrefImpl.setProduct(Product)",
+    "void ProductOptionXrefImpl.setProductOption(ProductOption)"
+  })
   public void testGettersAndSetters() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -84,23 +92,25 @@ public class ProductOptionXrefImplDiffblueTest {
 
   /**
    * Test {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
-   * <p>
-   * Method under test: {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   *
+   * <p>Method under test: {@link
+   * ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"CreateResponse ProductOptionXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse ProductOptionXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
   public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
     // Arrange
-    ProductOptionXrefImpl productOptionXrefImpl2 = new ProductOptionXrefImpl();
     MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
-    CreateResponse<Object> createResponse = new CreateResponse<>("Clone", true);
-
+    CreateResponse<Object> createResponse = new CreateResponse<>(new ProductOptionXrefImpl(), true);
     when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
 
     // Act
-    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult = productOptionXrefImpl2
-        .createOrRetrieveCopyInstance(context);
+    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult =
+        productOptionXrefImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -108,21 +118,60 @@ public class ProductOptionXrefImplDiffblueTest {
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link ProductOptionXrefImpl#hashCode()}.
+   * Test {@link ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   *
+   * <p>Method under test: {@link
+   * ProductOptionXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "CreateResponse ProductOptionXrefImpl.createOrRetrieveCopyInstance(MultiTenantCopyContext)"
+  })
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // Arrange
+    HashMap<String, String> stringStringMap = new HashMap<>();
+    stringStringMap.put("MANUAL_DUPLICATION", "Copy Hints");
+
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.getCopyHints()).thenReturn(stringStringMap);
+    CreateResponse<Object> createResponse = new CreateResponse<>(productOptionXrefImpl, false);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    CreateResponse<ProductOptionXref> actualCreateOrRetrieveCopyInstanceResult =
+        productOptionXrefImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+    verify(context).getCopyHints();
+    assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link
+   * ProductOptionXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is equal.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is equal.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProductOptionXrefImpl#equals(Object)}
    *   <li>{@link ProductOptionXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProductOptionXrefImpl.equals(Object)", "int ProductOptionXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProductOptionXrefImpl.equals(Object)",
+    "int ProductOptionXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -137,26 +186,32 @@ public class ProductOptionXrefImplDiffblueTest {
 
     // Act and Assert
     assertEquals(productOptionXrefImpl, productOptionXrefImpl2);
-    int expectedHashCodeResult = productOptionXrefImpl.hashCode();
-    assertEquals(expectedHashCodeResult, productOptionXrefImpl2.hashCode());
+    assertEquals(productOptionXrefImpl.hashCode(), productOptionXrefImpl2.hashCode());
   }
 
   /**
-   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link ProductOptionXrefImpl#hashCode()}.
+   * Test {@link ProductOptionXrefImpl#equals(Object)}, and {@link
+   * ProductOptionXrefImpl#hashCode()}.
+   *
    * <ul>
-   *   <li>When other is same.</li>
-   *   <li>Then return equal.</li>
+   *   <li>When other is same.
+   *   <li>Then return equal.
    * </ul>
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>{@link ProductOptionXrefImpl#equals(Object)}
    *   <li>{@link ProductOptionXrefImpl#hashCode()}
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProductOptionXrefImpl.equals(Object)", "int ProductOptionXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProductOptionXrefImpl.equals(Object)",
+    "int ProductOptionXrefImpl.hashCode()"
+  })
   public void testEqualsAndHashCode_whenOtherIsSame_thenReturnEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -172,16 +227,21 @@ public class ProductOptionXrefImplDiffblueTest {
 
   /**
    * Test {@link ProductOptionXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is different.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is different.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProductOptionXrefImpl.equals(Object)", "int ProductOptionXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProductOptionXrefImpl.equals(Object)",
+    "int ProductOptionXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -200,16 +260,21 @@ public class ProductOptionXrefImplDiffblueTest {
 
   /**
    * Test {@link ProductOptionXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is {@code null}.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is {@code null}.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProductOptionXrefImpl.equals(Object)", "int ProductOptionXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProductOptionXrefImpl.equals(Object)",
+    "int ProductOptionXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -223,16 +288,21 @@ public class ProductOptionXrefImplDiffblueTest {
 
   /**
    * Test {@link ProductOptionXrefImpl#equals(Object)}.
+   *
    * <ul>
-   *   <li>When other is wrong type.</li>
-   *   <li>Then return not equal.</li>
+   *   <li>When other is wrong type.
+   *   <li>Then return not equal.
    * </ul>
-   * <p>
-   * Method under test: {@link ProductOptionXrefImpl#equals(Object)}
+   *
+   * <p>Method under test: {@link ProductOptionXrefImpl#equals(Object)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"boolean ProductOptionXrefImpl.equals(Object)", "int ProductOptionXrefImpl.hashCode()"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "boolean ProductOptionXrefImpl.equals(Object)",
+    "int ProductOptionXrefImpl.hashCode()"
+  })
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange
     ProductOptionXrefImpl productOptionXrefImpl = new ProductOptionXrefImpl();
@@ -246,11 +316,12 @@ public class ProductOptionXrefImplDiffblueTest {
 
   /**
    * Test new {@link ProductOptionXrefImpl} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link ProductOptionXrefImpl}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link ProductOptionXrefImpl}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void ProductOptionXrefImpl.<init>()"})
   public void testNewProductOptionXrefImpl() {
     // Arrange and Act

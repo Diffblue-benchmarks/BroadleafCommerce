@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import java.util.Properties;
@@ -45,71 +46,114 @@ import org.junit.experimental.categories.Category;
 public class Broadleaf2CompatibilityMySQL5InnoDBDialectDiffblueTest {
   /**
    * Test new {@link Broadleaf2CompatibilityMySQL5InnoDBDialect} (default constructor).
-   * <p>
-   * Method under test: default or parameterless constructor of {@link Broadleaf2CompatibilityMySQL5InnoDBDialect}
+   *
+   * <p>Method under test: default or parameterless constructor of {@link
+   * Broadleaf2CompatibilityMySQL5InnoDBDialect}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"void Broadleaf2CompatibilityMySQL5InnoDBDialect.<init>()"})
   public void testNewBroadleaf2CompatibilityMySQL5InnoDBDialect() {
     // Arrange and Act
-    Broadleaf2CompatibilityMySQL5InnoDBDialect actualBroadleaf2CompatibilityMySQL5InnoDBDialect = new Broadleaf2CompatibilityMySQL5InnoDBDialect();
+    Broadleaf2CompatibilityMySQL5InnoDBDialect actualBroadleaf2CompatibilityMySQL5InnoDBDialect =
+        new Broadleaf2CompatibilityMySQL5InnoDBDialect();
 
     // Assert
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect
-        .getIdentityColumnSupport() instanceof MySQLIdentityColumnSupport);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getUniqueDelegate() instanceof MySQLUniqueDelegate);
     assertTrue(
-        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSchemaNameResolver() instanceof DefaultSchemaNameResolver);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect
-        .getDefaultMultiTableBulkIdStrategy() instanceof LocalTemporaryTableBulkIdStrategy);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect
-        .getCallableStatementSupport() instanceof StandardCallableStatementSupport);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect
-        .getSequenceInformationExtractor() instanceof SequenceInformationExtractorNoOpImpl);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect
-        .getAuxiliaryDatabaseObjectExporter() instanceof StandardAuxiliaryDatabaseObjectExporter);
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getIdentityColumnSupport()
+            instanceof MySQLIdentityColumnSupport);
     assertTrue(
-        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForeignKeyExporter() instanceof StandardForeignKeyExporter);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getIndexExporter() instanceof StandardIndexExporter);
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getUniqueDelegate()
+            instanceof MySQLUniqueDelegate);
     assertTrue(
-        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSequenceExporter() instanceof StandardSequenceExporter);
-    assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getTableExporter() instanceof StandardTableExporter);
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSchemaNameResolver()
+            instanceof DefaultSchemaNameResolver);
     assertTrue(
-        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getUniqueKeyExporter() instanceof StandardUniqueKeyExporter);
-    assertEquals(" cross join ", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCrossJoinSeparator());
-    assertEquals(" drop foreign key ", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getDropForeignKeyString());
-    assertEquals(" engine=InnoDB", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getTableTypeString());
-    assertEquals(" for update", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateNowaitString());
-    assertEquals(" for update", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateSkipLockedString());
-    assertEquals(" for update", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateString());
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getDefaultMultiTableBulkIdStrategy()
+            instanceof LocalTemporaryTableBulkIdStrategy);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCallableStatementSupport()
+            instanceof StandardCallableStatementSupport);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSequenceInformationExtractor()
+            instanceof SequenceInformationExtractorNoOpImpl);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getAuxiliaryDatabaseObjectExporter()
+            instanceof StandardAuxiliaryDatabaseObjectExporter);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForeignKeyExporter()
+            instanceof StandardForeignKeyExporter);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getIndexExporter()
+            instanceof StandardIndexExporter);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSequenceExporter()
+            instanceof StandardSequenceExporter);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getTableExporter()
+            instanceof StandardTableExporter);
+    assertTrue(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getUniqueKeyExporter()
+            instanceof StandardUniqueKeyExporter);
+    assertEquals(
+        " cross join ", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCrossJoinSeparator());
+    assertEquals(
+        " drop foreign key ",
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getDropForeignKeyString());
+    assertEquals(
+        " engine=InnoDB", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getTableTypeString());
+    assertEquals(
+        " for update", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateNowaitString());
+    assertEquals(
+        " for update",
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateSkipLockedString());
+    assertEquals(
+        " for update", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getForUpdateString());
     assertEquals("", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getAddColumnSuffixString());
-    assertEquals("", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCascadeConstraintsString());
+    assertEquals(
+        "", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCascadeConstraintsString());
     assertEquals("", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNullColumnString());
-    assertEquals("add column", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getAddColumnString());
-    assertEquals("create table", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCreateMultisetTableString());
-    assertEquals("create table", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCreateTableString());
-    assertEquals("current_timestamp",
+    assertEquals(
+        "add column", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getAddColumnString());
+    assertEquals(
+        "create table",
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCreateMultisetTableString());
+    assertEquals(
+        "create table", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCreateTableString());
+    assertEquals(
+        "current_timestamp",
         actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCurrentTimestampSQLFunctionName());
-    assertEquals("identity", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNativeIdentifierGeneratorStrategy());
+    assertEquals(
+        "identity",
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNativeIdentifierGeneratorStrategy());
     assertEquals("like", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCaseInsensitiveLike());
     assertEquals("lower", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getLowercaseFunction());
-    assertEquals("select now()", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCurrentTimestampSelectString());
-    assertEquals("select uuid()", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSelectGUIDString());
-    assertEquals("values ( )", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNoColumnsInsertString());
+    assertEquals(
+        "select now()",
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCurrentTimestampSelectString());
+    assertEquals(
+        "select uuid()", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getSelectGUIDString());
+    assertEquals(
+        "values ( )", actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNoColumnsInsertString());
     assertNull(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getCurrentSchemaCommand());
     assertNull(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getQuerySequencesString());
     assertNull(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNameQualifierSupport());
     assertEquals(0, actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getInExpressionCountLimit());
     assertEquals(10, actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getMaxAliasLength());
-    Map<String, SQLFunction> functions = actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getFunctions();
+    Map<String, SQLFunction> functions =
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getFunctions();
     assertEquals(108, functions.size());
-    Properties defaultProperties = actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getDefaultProperties();
+    Properties defaultProperties =
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getDefaultProperties();
     assertEquals(2, defaultProperties.size());
-    assertFalse(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isLegacyLimitHandlerBehaviorEnabled());
+    assertFalse(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isLegacyLimitHandlerBehaviorEnabled());
     assertFalse(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isLockTimeoutParameterized());
-    assertFalse(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isCurrentTimestampSelectStringCallable());
-    assertFalse(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isJdbcLogWarningsEnabledByDefault());
+    assertFalse(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isCurrentTimestampSelectStringCallable());
+    assertFalse(
+        actualBroadleaf2CompatibilityMySQL5InnoDBDialect.isJdbcLogWarningsEnabledByDefault());
     assertTrue(functions.containsKey("bin"));
     assertTrue(functions.containsKey("character_length"));
     assertTrue(functions.containsKey("mod"));
@@ -122,7 +166,8 @@ public class Broadleaf2CompatibilityMySQL5InnoDBDialectDiffblueTest {
     assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.hasAlterTable());
     assertTrue(actualBroadleaf2CompatibilityMySQL5InnoDBDialect.hasSelfReferentialForeignKeyBug());
     Class<IdentityGenerator> expectedNativeIdentifierGeneratorClass = IdentityGenerator.class;
-    assertEquals(expectedNativeIdentifierGeneratorClass,
+    assertEquals(
+        expectedNativeIdentifierGeneratorClass,
         actualBroadleaf2CompatibilityMySQL5InnoDBDialect.getNativeIdentifierGeneratorClass());
   }
 }

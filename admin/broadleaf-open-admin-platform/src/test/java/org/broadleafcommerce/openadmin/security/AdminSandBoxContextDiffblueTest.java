@@ -22,7 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.web.SandBoxContext;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
@@ -34,15 +35,17 @@ import org.junit.experimental.categories.Category;
 public class AdminSandBoxContextDiffblueTest {
   /**
    * Test {@link AdminSandBoxContext#clone()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminSandBoxContext} (default constructor) Replay is {@code true}.</li>
-   *   <li>Then return Replay.</li>
+   *   <li>Given {@link AdminSandBoxContext} (default constructor) Replay is {@code true}.
+   *   <li>Then return Replay.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSandBoxContext#clone()}
+   *
+   * <p>Method under test: {@link AdminSandBoxContext#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBoxContext AdminSandBoxContext.clone()"})
   public void testClone_givenAdminSandBoxContextReplayIsTrue_thenReturnReplay() {
     // Arrange
@@ -66,19 +69,21 @@ public class AdminSandBoxContextDiffblueTest {
 
   /**
    * Test {@link AdminSandBoxContext#clone()}.
+   *
    * <ul>
-   *   <li>Given {@link AdminSandBoxContext} (default constructor).</li>
-   *   <li>Then return not Replay.</li>
+   *   <li>Given {@link AdminSandBoxContext} (default constructor).
+   *   <li>Then return not Replay.
    * </ul>
-   * <p>
-   * Method under test: {@link AdminSandBoxContext#clone()}
+   *
+   * <p>Method under test: {@link AdminSandBoxContext#clone()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"SandBoxContext AdminSandBoxContext.clone()"})
   public void testClone_givenAdminSandBoxContext_thenReturnNotReplay() {
     // Arrange and Act
-    SandBoxContext actualCloneResult = (new AdminSandBoxContext()).clone();
+    SandBoxContext actualCloneResult = new AdminSandBoxContext().clone();
 
     // Assert
     assertTrue(actualCloneResult instanceof AdminSandBoxContext);
@@ -94,8 +99,9 @@ public class AdminSandBoxContextDiffblueTest {
 
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link AdminSandBoxContext}
    *   <li>{@link AdminSandBoxContext#setAdminUser(AdminUser)}
@@ -113,14 +119,23 @@ public class AdminSandBoxContextDiffblueTest {
    * </ul>
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void AdminSandBoxContext.<init>()", "AdminUser AdminSandBoxContext.getAdminUser()",
-      "SandBoxMode AdminSandBoxContext.getSandBoxMode()", "String AdminSandBoxContext.getSandBoxName()",
-      "boolean AdminSandBoxContext.isRebuildSandBox()", "boolean AdminSandBoxContext.isReplay()",
-      "boolean AdminSandBoxContext.isResetData()", "void AdminSandBoxContext.setAdminUser(AdminUser)",
-      "void AdminSandBoxContext.setRebuildSandBox(boolean)", "void AdminSandBoxContext.setReplay(boolean)",
-      "void AdminSandBoxContext.setResetData(boolean)", "void AdminSandBoxContext.setSandBoxMode(SandBoxMode)",
-      "void AdminSandBoxContext.setSandBoxName(String)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void AdminSandBoxContext.<init>()",
+    "AdminUser AdminSandBoxContext.getAdminUser()",
+    "SandBoxMode AdminSandBoxContext.getSandBoxMode()",
+    "String AdminSandBoxContext.getSandBoxName()",
+    "boolean AdminSandBoxContext.isRebuildSandBox()",
+    "boolean AdminSandBoxContext.isReplay()",
+    "boolean AdminSandBoxContext.isResetData()",
+    "void AdminSandBoxContext.setAdminUser(AdminUser)",
+    "void AdminSandBoxContext.setRebuildSandBox(boolean)",
+    "void AdminSandBoxContext.setReplay(boolean)",
+    "void AdminSandBoxContext.setResetData(boolean)",
+    "void AdminSandBoxContext.setSandBoxMode(SandBoxMode)",
+    "void AdminSandBoxContext.setSandBoxName(String)"
+  })
   public void testGettersAndSetters() {
     // Arrange and Act
     AdminSandBoxContext actualAdminSandBoxContext = new AdminSandBoxContext();

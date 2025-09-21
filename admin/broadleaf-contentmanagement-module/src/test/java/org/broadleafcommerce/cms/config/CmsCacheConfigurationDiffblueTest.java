@@ -21,7 +21,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.broadleafcommerce.common.extensibility.cache.JCacheRegionConfiguration;
 import org.junit.Test;
@@ -34,19 +35,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(classes = {CmsCacheConfiguration.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CmsCacheConfigurationDiffblueTest {
-  @Autowired
-  private CmsCacheConfiguration cmsCacheConfiguration;
+  @Autowired private CmsCacheConfiguration cmsCacheConfiguration;
 
   /**
    * Test {@link CmsCacheConfiguration#blCMSElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#blCMSElements()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#blCMSElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.blCMSElements()"})
   public void testBlCMSElements_givenCmsCacheConfiguration() {
     // Arrange and Act
@@ -67,18 +69,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#blCMSElements()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#blCMSElements()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#blCMSElements()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.blCMSElements()"})
   public void testBlCMSElements_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlCMSElementsResult = (new CmsCacheConfiguration()).blCMSElements();
+    JCacheRegionConfiguration actualBlCMSElementsResult =
+        new CmsCacheConfiguration().blCMSElements();
 
     // Assert
     assertEquals("blCMSElements", actualBlCMSElementsResult.getCacheName());
@@ -95,14 +100,16 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsPageCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsPageCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsPageCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsPageCache()"})
   public void testCmsPageCache_givenCmsCacheConfiguration() {
     // Arrange and Act
@@ -123,18 +130,20 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsPageCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsPageCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsPageCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsPageCache()"})
   public void testCmsPageCache_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsPageCacheResult = (new CmsCacheConfiguration()).cmsPageCache();
+    JCacheRegionConfiguration actualCmsPageCacheResult = new CmsCacheConfiguration().cmsPageCache();
 
     // Assert
     assertEquals("cmsPageCache", actualCmsPageCacheResult.getCacheName());
@@ -151,14 +160,16 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsPageMapCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsPageMapCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsPageMapCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsPageMapCache()"})
   public void testCmsPageMapCache_givenCmsCacheConfiguration() {
     // Arrange and Act
@@ -179,18 +190,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsPageMapCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsPageMapCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsPageMapCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsPageMapCache()"})
   public void testCmsPageMapCache_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsPageMapCacheResult = (new CmsCacheConfiguration()).cmsPageMapCache();
+    JCacheRegionConfiguration actualCmsPageMapCacheResult =
+        new CmsCacheConfiguration().cmsPageMapCache();
 
     // Assert
     assertEquals("cmsPageMapCache", actualCmsPageMapCacheResult.getCacheName());
@@ -207,18 +221,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#uriCachedDateCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#uriCachedDateCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#uriCachedDateCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.uriCachedDateCache()"})
   public void testUriCachedDateCache_givenCmsCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualUriCachedDateCacheResult = cmsCacheConfiguration.uriCachedDateCache();
+    JCacheRegionConfiguration actualUriCachedDateCacheResult =
+        cmsCacheConfiguration.uriCachedDateCache();
 
     // Assert
     assertEquals("uriCachedDateCache", actualUriCachedDateCacheResult.getCacheName());
@@ -235,18 +252,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#uriCachedDateCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#uriCachedDateCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#uriCachedDateCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.uriCachedDateCache()"})
   public void testUriCachedDateCache_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualUriCachedDateCacheResult = (new CmsCacheConfiguration()).uriCachedDateCache();
+    JCacheRegionConfiguration actualUriCachedDateCacheResult =
+        new CmsCacheConfiguration().uriCachedDateCache();
 
     // Assert
     assertEquals("uriCachedDateCache", actualUriCachedDateCacheResult.getCacheName());
@@ -263,18 +283,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsStructuredContentCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsStructuredContentCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsStructuredContentCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsStructuredContentCache()"})
   public void testCmsStructuredContentCache_givenCmsCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsStructuredContentCacheResult = cmsCacheConfiguration.cmsStructuredContentCache();
+    JCacheRegionConfiguration actualCmsStructuredContentCacheResult =
+        cmsCacheConfiguration.cmsStructuredContentCache();
 
     // Assert
     assertEquals("cmsStructuredContentCache", actualCmsStructuredContentCacheResult.getCacheName());
@@ -291,19 +314,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsStructuredContentCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsStructuredContentCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsStructuredContentCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsStructuredContentCache()"})
   public void testCmsStructuredContentCache_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsStructuredContentCacheResult = (new CmsCacheConfiguration())
-        .cmsStructuredContentCache();
+    JCacheRegionConfiguration actualCmsStructuredContentCacheResult =
+        new CmsCacheConfiguration().cmsStructuredContentCache();
 
     // Assert
     assertEquals("cmsStructuredContentCache", actualCmsStructuredContentCacheResult.getCacheName());
@@ -320,18 +345,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsUrlHandlerCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsUrlHandlerCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsUrlHandlerCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsUrlHandlerCache()"})
   public void testCmsUrlHandlerCache_givenCmsCacheConfiguration() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsUrlHandlerCacheResult = cmsCacheConfiguration.cmsUrlHandlerCache();
+    JCacheRegionConfiguration actualCmsUrlHandlerCacheResult =
+        cmsCacheConfiguration.cmsUrlHandlerCache();
 
     // Assert
     assertEquals("cmsUrlHandlerCache", actualCmsUrlHandlerCacheResult.getCacheName());
@@ -348,18 +376,21 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#cmsUrlHandlerCache()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#cmsUrlHandlerCache()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#cmsUrlHandlerCache()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.cmsUrlHandlerCache()"})
   public void testCmsUrlHandlerCache_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualCmsUrlHandlerCacheResult = (new CmsCacheConfiguration()).cmsUrlHandlerCache();
+    JCacheRegionConfiguration actualCmsUrlHandlerCacheResult =
+        new CmsCacheConfiguration().cmsUrlHandlerCache();
 
     // Assert
     assertEquals("cmsUrlHandlerCache", actualCmsUrlHandlerCacheResult.getCacheName());
@@ -376,14 +407,16 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#blUrlHandler()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration}.</li>
+   *   <li>Given {@link CmsCacheConfiguration}.
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#blUrlHandler()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#blUrlHandler()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.blUrlHandler()"})
   public void testBlUrlHandler_givenCmsCacheConfiguration() {
     // Arrange and Act
@@ -404,18 +437,20 @@ public class CmsCacheConfigurationDiffblueTest {
 
   /**
    * Test {@link CmsCacheConfiguration#blUrlHandler()}.
+   *
    * <ul>
-   *   <li>Given {@link CmsCacheConfiguration} (default constructor).</li>
+   *   <li>Given {@link CmsCacheConfiguration} (default constructor).
    * </ul>
-   * <p>
-   * Method under test: {@link CmsCacheConfiguration#blUrlHandler()}
+   *
+   * <p>Method under test: {@link CmsCacheConfiguration#blUrlHandler()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"JCacheRegionConfiguration CmsCacheConfiguration.blUrlHandler()"})
   public void testBlUrlHandler_givenCmsCacheConfiguration2() {
     // Arrange and Act
-    JCacheRegionConfiguration actualBlUrlHandlerResult = (new CmsCacheConfiguration()).blUrlHandler();
+    JCacheRegionConfiguration actualBlUrlHandlerResult = new CmsCacheConfiguration().blUrlHandler();
 
     // Assert
     assertEquals("blUrlHandler", actualBlUrlHandlerResult.getCacheName());

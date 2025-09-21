@@ -18,6 +18,7 @@
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,8 +27,9 @@ import org.junit.jupiter.api.Test;
 class ChangePasswordFormDiffblueTest {
   /**
    * Test getters and setters.
-   * <p>
-   * Methods under test:
+   *
+   * <p>Methods under test:
+   *
    * <ul>
    *   <li>default or parameterless constructor of {@link ChangePasswordForm}
    *   <li>{@link ChangePasswordForm#setCurrentPassword(String)}
@@ -40,11 +42,17 @@ class ChangePasswordFormDiffblueTest {
    */
   @Test
   @DisplayName("Test getters and setters")
-  @Tag("MaintainedByDiffblue")
-  @MethodsUnderTest({"void ChangePasswordForm.<init>()", "String ChangePasswordForm.getCurrentPassword()",
-      "String ChangePasswordForm.getNewPassword()", "String ChangePasswordForm.getNewPasswordConfirm()",
-      "void ChangePasswordForm.setCurrentPassword(String)", "void ChangePasswordForm.setNewPassword(String)",
-      "void ChangePasswordForm.setNewPasswordConfirm(String)"})
+  @Tag("ContributionFromDiffblue")
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void ChangePasswordForm.<init>()",
+    "String ChangePasswordForm.getCurrentPassword()",
+    "String ChangePasswordForm.getNewPassword()",
+    "String ChangePasswordForm.getNewPasswordConfirm()",
+    "void ChangePasswordForm.setCurrentPassword(String)",
+    "void ChangePasswordForm.setNewPassword(String)",
+    "void ChangePasswordForm.setNewPasswordConfirm(String)"
+  })
   void testGettersAndSetters() {
     // Arrange and Act
     ChangePasswordForm actualChangePasswordForm = new ChangePasswordForm();

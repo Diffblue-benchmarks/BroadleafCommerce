@@ -21,13 +21,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import com.diffblue.cover.annotations.MaintainedByDiffblue;
+import com.diffblue.cover.annotations.ContributionFromDiffblue;
+import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
 import java.util.Map;
 import org.broadleafcommerce.common.currency.service.BroadleafCurrencyService;
@@ -71,57 +71,79 @@ public class NotificationOrderSubmittedEventListenerDiffblueTest {
   private SiteService siteService;
 
   /**
-   * Test {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with {@code OrderSubmittedEvent}.
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
+   * Test {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
+   * {@code OrderSubmittedEvent}.
+   *
+   * <p>Method under test: {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
+  })
   public void testHandleApplicationEventWithOrderSubmittedEvent() throws ServiceException {
     // Arrange
-    doThrow(new ServiceException("An error occurred")).when(notificationDispatcher)
+    doThrow(new ServiceException("An error occurred"))
+        .when(notificationDispatcher)
         .dispatchNotification(Mockito.<Notification>any());
     when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
 
     // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(new OrderSubmittedEvent("Source", 1L, "42"));
+    notificationOrderSubmittedEventListener.handleApplicationEvent(
+        new OrderSubmittedEvent("Source", 1L, "42"));
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
-    verify(orderService).findOrderById(eq(1L));
+    verify(orderService).findOrderById(1L);
   }
 
   /**
-   * Test {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with {@code OrderSubmittedEvent}.
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
+   * Test {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
+   * {@code OrderSubmittedEvent}.
+   *
+   * <p>Method under test: {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
+  })
   public void testHandleApplicationEventWithOrderSubmittedEvent2() {
     // Arrange
     when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(null);
 
     // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(new OrderSubmittedEvent("Source", 1L, "42"));
+    notificationOrderSubmittedEventListener.handleApplicationEvent(
+        new OrderSubmittedEvent("Source", 1L, "42"));
 
     // Assert
-    verify(orderService).findOrderById(eq(1L));
+    verify(orderService).findOrderById(1L);
   }
 
   /**
-   * Test {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with {@code OrderSubmittedEvent}.
+   * Test {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)} with
+   * {@code OrderSubmittedEvent}.
+   *
    * <ul>
-   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.</li>
+   *   <li>Then calls {@link NotificationDispatcher#dispatchNotification(Notification)}.
    * </ul>
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
+   *
+   * <p>Method under test: {@link
+   * NotificationOrderSubmittedEventListener#handleApplicationEvent(OrderSubmittedEvent)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
-  @MethodsUnderTest({"void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"})
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({
+    "void NotificationOrderSubmittedEventListener.handleApplicationEvent(OrderSubmittedEvent)"
+  })
   public void testHandleApplicationEventWithOrderSubmittedEvent_thenCallsDispatchNotification()
       throws ServiceException {
     // Arrange
@@ -129,31 +151,35 @@ public class NotificationOrderSubmittedEventListenerDiffblueTest {
     when(orderService.findOrderById(Mockito.<Long>any())).thenReturn(new NullOrderImpl());
 
     // Act
-    notificationOrderSubmittedEventListener.handleApplicationEvent(new OrderSubmittedEvent("Source", 1L, "42"));
+    notificationOrderSubmittedEventListener.handleApplicationEvent(
+        new OrderSubmittedEvent("Source", 1L, "42"));
 
     // Assert
     verify(notificationDispatcher, atLeast(1)).dispatchNotification(Mockito.<Notification>any());
-    verify(orderService).findOrderById(eq(1L));
+    verify(orderService).findOrderById(1L);
   }
 
   /**
    * Test {@link NotificationOrderSubmittedEventListener#createContext(Order)}.
+   *
    * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return size is two.</li>
+   *   <li>When {@link NullOrderImpl} (default constructor).
+   *   <li>Then return size is two.
    * </ul>
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
+   *
+   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map NotificationOrderSubmittedEventListener.createContext(Order)"})
   public void testCreateContext_whenNullOrderImpl_thenReturnSizeIsTwo() {
     // Arrange
     NullOrderImpl order = new NullOrderImpl();
 
     // Act
-    Map<String, Object> actualCreateContextResult = notificationOrderSubmittedEventListener.createContext(order);
+    Map<String, Object> actualCreateContextResult =
+        notificationOrderSubmittedEventListener.createContext(order);
 
     // Assert
     assertEquals(2, actualCreateContextResult.size());
@@ -165,15 +191,17 @@ public class NotificationOrderSubmittedEventListenerDiffblueTest {
 
   /**
    * Test {@link NotificationOrderSubmittedEventListener#createContext(Order)}.
+   *
    * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
+   *   <li>When {@code null}.
+   *   <li>Then return Empty.
    * </ul>
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
+   *
+   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#createContext(Order)}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"Map NotificationOrderSubmittedEventListener.createContext(Order)"})
   public void testCreateContext_whenNull_thenReturnEmpty() {
     // Arrange, Act and Assert
@@ -182,14 +210,15 @@ public class NotificationOrderSubmittedEventListenerDiffblueTest {
 
   /**
    * Test {@link NotificationOrderSubmittedEventListener#isAsynchronous()}.
-   * <p>
-   * Method under test: {@link NotificationOrderSubmittedEventListener#isAsynchronous()}
+   *
+   * <p>Method under test: {@link NotificationOrderSubmittedEventListener#isAsynchronous()}
    */
   @Test
-  @Category(MaintainedByDiffblue.class)
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
   @MethodsUnderTest({"boolean NotificationOrderSubmittedEventListener.isAsynchronous()"})
   public void testIsAsynchronous() {
     // Arrange, Act and Assert
-    assertTrue((new NotificationOrderSubmittedEventListener()).isAsynchronous());
+    assertTrue(new NotificationOrderSubmittedEventListener().isAsynchronous());
   }
 }
