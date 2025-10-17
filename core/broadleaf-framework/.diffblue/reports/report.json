@@ -4,18 +4,18 @@
   },
   "run" : {
     "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-09-19T10:40:50.455477524Z",
+    "creationTimestamp" : "2025-10-15T16:07:16.260043423Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
-    "totalTime" : 66322.779,
-    "environmentDetectionTime" : 10.192,
-    "indexingTime" : 0.398,
-    "entryPointsTime" : 10.183,
-    "generationTime" : 93201.964,
-    "timeToFirstTest" : 68726.18,
-    "timeToLastTest" : 95665.632,
-    "indexQueryTime" : 23.101,
-    "verificationTime" : 2174.457,
-    "validationTime" : 231.714
+    "totalTime" : 67236.982,
+    "environmentDetectionTime" : 11.027,
+    "indexingTime" : 0.384,
+    "entryPointsTime" : 11.019,
+    "generationTime" : 94486.45,
+    "timeToFirstTest" : 69655.531,
+    "timeToLastTest" : 96934.517,
+    "indexQueryTime" : 24.485,
+    "verificationTime" : 2158.245,
+    "validationTime" : 325.294
   },
   "codes" : {
     "F009" : "Internal error",
@@ -52,9 +52,9 @@
   "summary" : {
     "classesCount" : 983,
     "methodsCount" : 9245,
-    "cumulativeDiffblueTestCount" : 7872,
+    "cumulativeDiffblueTestCount" : 7867,
     "cumulativeManualTestCount" : 42,
-    "completeTestCount" : 7924,
+    "completeTestCount" : 7916,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 63371,
@@ -75,7 +75,7 @@
     },
     "perMethodOutcome" : {
       "F009" : 12,
-      "R000" : 4291,
+      "R000" : 4287,
       "R002" : 35,
       "R004" : 37,
       "R008" : 37,
@@ -84,7 +84,7 @@
       "R015" : 67,
       "R024" : 25,
       "R026" : 3,
-      "R027" : 528,
+      "R027" : 531,
       "R033" : 2,
       "R081" : 68,
       "T003" : 76,
@@ -96,19 +96,19 @@
       "T012" : 71,
       "T023" : 133,
       "W001" : 5,
-      "W002" : 136
+      "W002" : 137
     },
     "perTestOutcome" : {
-      "R000" : 7924
+      "R000" : 7916
     },
     "perTestValidation" : {
-      "V000" : 7907,
-      "V003" : 17
+      "V000" : 7902,
+      "V003" : 14
     },
     "warnings" : {
       "F009" : 5,
       "W001" : 29,
-      "W002" : 462
+      "W002" : 468
     }
   },
   "classes" : {
@@ -953,7 +953,7 @@
     },
     "org.broadleafcommerce.core.catalog.domain.ProductImpl" : {
       "methodsCount" : 112,
-      "completeTestCount" : 109,
+      "completeTestCount" : 108,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 84,
@@ -969,11 +969,11 @@
         "W002" : 31
       },
       "perTestOutcome" : {
-        "R000" : 109
+        "R000" : 108
       },
       "warnings" : {
         "W001" : 1,
-        "W002" : 86
+        "W002" : 87
       }
     },
     "org.broadleafcommerce.core.catalog.domain.ProductImpl$1" : {
@@ -1469,7 +1469,7 @@
     },
     "org.broadleafcommerce.core.catalog.domain.SkuImpl" : {
       "methodsCount" : 105,
-      "completeTestCount" : 438,
+      "completeTestCount" : 439,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 66,
@@ -1486,10 +1486,10 @@
         "T023" : 1
       },
       "perTestOutcome" : {
-        "R000" : 438
+        "R000" : 439
       },
       "warnings" : {
-        "W002" : 7
+        "W002" : 8
       }
     },
     "org.broadleafcommerce.core.catalog.domain.SkuMediaXref" : {
@@ -3598,7 +3598,7 @@
     },
     "org.broadleafcommerce.core.offer.domain.OfferCodeImpl" : {
       "methodsCount" : 27,
-      "completeTestCount" : 25,
+      "completeTestCount" : 24,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 13,
@@ -3610,7 +3610,7 @@
         "R015" : 1
       },
       "perTestOutcome" : {
-        "R000" : 25
+        "R000" : 24
       }
     },
     "org.broadleafcommerce.core.offer.domain.OfferImpl" : {
@@ -9710,7 +9710,7 @@
     },
     "org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider" : {
       "methodsCount" : 6,
-      "completeTestCount" : 22,
+      "completeTestCount" : 21,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 4,
@@ -9723,10 +9723,10 @@
         "T023" : 1
       },
       "perTestOutcome" : {
-        "R000" : 22
+        "R000" : 21
       },
       "warnings" : {
-        "W002" : 1
+        "W002" : 2
       }
     },
     "org.broadleafcommerce.core.pricing.service.fulfillment.provider.FixedPriceFulfillmentPricingProvider" : {
@@ -12272,7 +12272,7 @@
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.AbstractSolrIndexUpdateServiceImpl" : {
       "methodsCount" : 15,
-      "completeTestCount" : 5,
+      "completeTestCount" : 2,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 12,
@@ -12281,19 +12281,19 @@
         "T023" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 5,
+        "R000" : 2,
         "R004" : 1,
-        "R027" : 5,
+        "R027" : 6,
         "T010" : 1,
         "T012" : 1,
         "T023" : 1,
-        "W002" : 1
+        "W002" : 3
       },
       "perTestOutcome" : {
-        "R000" : 5
+        "R000" : 2
       },
       "warnings" : {
-        "W002" : 2
+        "W002" : 6
       }
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.AbstractSolrIndexUpdateServiceImpl$CommandCoordinator" : {
@@ -12488,12 +12488,12 @@
         "T000" : 5
       },
       "perMethodOutcome" : {
-        "R027" : 2,
+        "R027" : 3,
         "T005" : 1,
-        "W002" : 2
+        "W002" : 1
       },
       "warnings" : {
-        "W002" : 2
+        "W002" : 1
       }
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.DefaultSolrIndexQueueProvider" : {
@@ -12971,20 +12971,16 @@
     },
     "org.broadleafcommerce.core.util.ZookeeperUtil" : {
       "methodsCount" : 7,
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 6,
         "T005" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
         "R011" : 1,
-        "R013" : 4,
+        "R013" : 5,
         "T005" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 3
       }
     },
     "org.broadleafcommerce.core.util.ZookeeperUtil$1" : {
@@ -13128,8 +13124,7 @@
       },
       "perMethodOutcome" : {
         "R011" : 11,
-        "R013" : 1,
-        "R027" : 4,
+        "R027" : 5,
         "R081" : 10,
         "T012" : 3,
         "T023" : 1
@@ -23609,12 +23604,15 @@
       ]
     },
     "org.broadleafcommerce.core.catalog.domain.ProductImpl.isActive:()Z" : {
-      "completeTestCount" : 6,
+      "completeTestCount" : 5,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 6
+        "R000" : 5
+      },
+      "warnings" : {
+        "W002" : 1
       },
       "lineNumbers" : [
         429,
@@ -28432,6 +28430,9 @@
       "perTestOutcome" : {
         "R000" : 11
       },
+      "warnings" : {
+        "W002" : 1
+      },
       "lineNumbers" : [
         875,
         876,
@@ -28444,12 +28445,12 @@
       ]
     },
     "org.broadleafcommerce.core.catalog.domain.SkuImpl.isActive:(Lorg/broadleafcommerce/core/catalog/domain/Product;Lorg/broadleafcommerce/core/catalog/domain/Category;)Z" : {
-      "completeTestCount" : 12,
+      "completeTestCount" : 13,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 12
+        "R000" : 13
       },
       "lineNumbers" : [
         893,
@@ -41890,12 +41891,12 @@
       ]
     },
     "org.broadleafcommerce.core.offer.domain.OfferCodeImpl.isActive:()Z" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 3,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 3
       },
       "lineNumbers" : [
         295,
@@ -93334,12 +93335,15 @@
       ]
     },
     "org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup:(Lorg/broadleafcommerce/core/order/domain/FulfillmentGroup;Ljava/util/Set;)Lorg/broadleafcommerce/core/pricing/service/fulfillment/provider/FulfillmentEstimationResponse;" : {
-      "completeTestCount" : 7,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 7
+        "R000" : 6
+      },
+      "warnings" : {
+        "W002" : 1
       },
       "lineNumbers" : [
         96,
@@ -112373,25 +112377,19 @@
       ]
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.AbstractSolrIndexUpdateServiceImpl.getQueueOfferTime:()J" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         290
       ]
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.AbstractSolrIndexUpdateServiceImpl.getQueuePollTime:()J" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         281
       ]
@@ -112424,15 +112422,12 @@
       ]
     },
     "org.broadleafcommerce.core.search.service.solr.indexer.AbstractSolrIndexUpdateServiceImpl.scheduleCommand:(Lorg/broadleafcommerce/core/search/service/solr/indexer/SolrUpdateCommand;)V" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "W002",
       "warnings" : {
-        "W002" : 1
+        "W002" : 2
       },
       "lineNumbers" : [
         136,
@@ -112482,7 +112477,10 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R027",
+      "perMethodOutcome" : "W002",
+      "warnings" : {
+        "W002" : 3
+      },
       "lineNumbers" : [
         260,
         261,
@@ -113692,10 +113690,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         47,
         48,
@@ -116074,13 +116069,10 @@
       ]
     },
     "org.broadleafcommerce.core.util.ZookeeperUtil.makePath:(Ljava/lang/String;Lorg/apache/zookeeper/ZooKeeper;)V" : {
-      "completeTestCount" : 3,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 3
-      },
+      "perMethodOutcome" : "R013",
       "lineNumbers" : [
         65,
         66
@@ -116974,7 +116966,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R013",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         199,
         200
@@ -117524,7 +117516,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R011",
+      "perMethodOutcome" : "R027",
       "lineNumbers" : [
         105,
         106
@@ -117534,7 +117526,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R027",
+      "perMethodOutcome" : "R011",
       "lineNumbers" : [
         119,
         120

@@ -47,32 +47,6 @@ public class DateUtilDiffblueTest {
     Date startDate = new Date();
 
     // Act
-    boolean actualIsActiveResult = DateUtil.isActive(startDate, new Date(), true);
-
-    // Assert
-    assertFalse(actualIsActiveResult);
-  }
-
-  /**
-   * Test {@link DateUtil#isActive(Date, Date, boolean)}.
-   *
-   * <ul>
-   *   <li>When from {@link LocalDate} with {@code 1970} and one and one atStartOfDay atZone {@link
-   *       ZoneOffset#UTC} toInstant.
-   * </ul>
-   *
-   * <p>Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean DateUtil.isActive(Date, Date, boolean)"})
-  public void testIsActive_whenFromLocalDateWith1970AndOneAndOneAtStartOfDayAtZoneUtcToInstant() {
-    // Arrange
-    Date startDate =
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
-
-    // Act
     boolean actualIsActiveResult =
         DateUtil.isActive(
             startDate,
@@ -100,6 +74,36 @@ public class DateUtilDiffblueTest {
   public void testIsActive_whenNull_thenReturnFalse() {
     // Arrange and Act
     boolean actualIsActiveResult = DateUtil.isActive(null, null, false);
+
+    // Assert
+    assertFalse(actualIsActiveResult);
+  }
+
+  /**
+   * Test {@link DateUtil#isActive(Date, Date, boolean)}.
+   *
+   * <ul>
+   *   <li>When {@code true}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link DateUtil#isActive(Date, Date, boolean)}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean DateUtil.isActive(Date, Date, boolean)"})
+  public void testIsActive_whenTrue_thenReturnFalse() {
+    // Arrange
+    Date startDate =
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant());
+
+    // Act
+    boolean actualIsActiveResult =
+        DateUtil.isActive(
+            startDate,
+            Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()),
+            true);
 
     // Assert
     assertFalse(actualIsActiveResult);

@@ -4,18 +4,18 @@
   },
   "run" : {
     "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-09-19T10:40:50.455477524Z",
+    "creationTimestamp" : "2025-10-15T16:07:16.260043423Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
-    "totalTime" : 33592.404,
-    "environmentDetectionTime" : 8.971,
-    "indexingTime" : 0.413,
-    "entryPointsTime" : 8.964,
-    "generationTime" : 142321.649,
-    "timeToFirstTest" : 119741.269,
-    "timeToLastTest" : 146265.536,
-    "indexQueryTime" : 21.017,
-    "verificationTime" : 3311.86,
-    "validationTime" : 105.488
+    "totalTime" : 34736.615,
+    "environmentDetectionTime" : 9.333,
+    "indexingTime" : 0.396,
+    "entryPointsTime" : 9.326,
+    "generationTime" : 145463.483,
+    "timeToFirstTest" : 122533.18,
+    "timeToLastTest" : 149398.044,
+    "indexQueryTime" : 21.547,
+    "verificationTime" : 3304.359,
+    "validationTime" : 103.413
   },
   "codes" : {
     "F009" : "Internal error",
@@ -49,9 +49,9 @@
   "summary" : {
     "classesCount" : 567,
     "methodsCount" : 5037,
-    "cumulativeDiffblueTestCount" : 6134,
+    "cumulativeDiffblueTestCount" : 6137,
     "cumulativeManualTestCount" : 0,
-    "completeTestCount" : 6181,
+    "completeTestCount" : 6184,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 43712,
@@ -93,16 +93,16 @@
       "W002" : 48
     },
     "perTestOutcome" : {
-      "R000" : 6181
+      "R000" : 6184
     },
     "perTestValidation" : {
-      "V000" : 6156,
+      "V000" : 6159,
       "V003" : 25
     },
     "warnings" : {
       "F009" : 1,
       "W001" : 23,
-      "W002" : 169
+      "W002" : 167
     }
   },
   "classes" : {
@@ -2861,7 +2861,7 @@
     },
     "org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityServiceImpl" : {
       "methodsCount" : 13,
-      "completeTestCount" : 25,
+      "completeTestCount" : 29,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 9,
@@ -2877,10 +2877,10 @@
         "T023" : 1
       },
       "perTestOutcome" : {
-        "R000" : 25
+        "R000" : 29
       },
       "warnings" : {
-        "W002" : 3
+        "W002" : 1
       }
     },
     "org.broadleafcommerce.openadmin.server.security.service.navigation.AbstractAdminNavigationServiceExtensionHandler" : {
@@ -6430,7 +6430,7 @@
     },
     "org.broadleafcommerce.openadmin.web.controller.AdminAbstractController" : {
       "methodsCount" : 43,
-      "completeTestCount" : 157,
+      "completeTestCount" : 156,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 41,
@@ -6445,7 +6445,7 @@
         "T023" : 1
       },
       "perTestOutcome" : {
-        "R000" : 157
+        "R000" : 156
       }
     },
     "org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionHandler" : {
@@ -38997,9 +38997,6 @@
       "perTestOutcome" : {
         "R000" : 2
       },
-      "warnings" : {
-        "W002" : 1
-      },
       "lineNumbers" : [
         109,
         110,
@@ -39015,9 +39012,6 @@
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
         "R000" : 2
-      },
-      "warnings" : {
-        "W002" : 1
       },
       "lineNumbers" : [
         80,
@@ -39096,12 +39090,12 @@
       ]
     },
     "org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityServiceImpl.validateAddRequest:(Lorg/broadleafcommerce/openadmin/server/security/domain/AdminUser;Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/GlobalValidationResult;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 6
       },
       "lineNumbers" : [
         155,
@@ -39115,12 +39109,12 @@
       ]
     },
     "org.broadleafcommerce.openadmin.server.security.service.RowLevelSecurityServiceImpl.validateRemoveRequest:(Lorg/broadleafcommerce/openadmin/server/security/domain/AdminUser;Lorg/broadleafcommerce/openadmin/dto/Entity;Lorg/broadleafcommerce/openadmin/dto/PersistencePackage;)Lorg/broadleafcommerce/openadmin/server/service/persistence/validation/GlobalValidationResult;" : {
-      "completeTestCount" : 4,
+      "completeTestCount" : 6,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 4
+        "R000" : 6
       },
       "lineNumbers" : [
         142,
@@ -61216,12 +61210,12 @@
       ]
     },
     "org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.setSpecializedNameForFields:(Lorg/broadleafcommerce/openadmin/web/form/entity/DynamicEntityFormInfo;Lorg/broadleafcommerce/openadmin/web/form/entity/EntityForm;)V" : {
-      "completeTestCount" : 12,
+      "completeTestCount" : 11,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
       "perMethodOutcome" : "R000",
       "perTestOutcome" : {
-        "R000" : 12
+        "R000" : 11
       },
       "lineNumbers" : [
         354,
@@ -80865,82 +80859,82 @@
   "validationMetrics" : {
     "failingTests" : [
       "org.broadleafcommerce.core.catalog.service.CatalogTest.testSkus",
+      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsById",
       "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsByName",
       "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testFeaturedProduct",
-      "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadProductsById",
       "org.broadleafcommerce.core.catalog.dao.ProductDaoTest.testReadArchivedProductsByName",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForId",
       "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readFulfillmentGroupsForId",
       "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForOrder",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupDaoTest.readDefaultFulfillmentGroupForId",
       "org.broadleafcommerce.test.translation.sitejvm.TranslationServiceTest.testTranslation",
       "org.broadleafcommerce.security.service.AdminUserTest.testAdminUserSave",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testDetectedModuleActivity",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testSameOrderingConfiguredActivity",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testInBetweenActivity",
-      "org.broadleafcommerce.common.workflow.WorkflowTest.testNonExplicitOrdering",
       "org.broadleafcommerce.common.workflow.WorkflowTest.testFrameworkOrderingChanged",
       "org.broadleafcommerce.common.workflow.WorkflowTest.testMergedOrderedActivities",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testDetectedModuleActivity",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testSameOrderingConfiguredActivity",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testNonExplicitOrdering",
+      "org.broadleafcommerce.common.workflow.WorkflowTest.testInBetweenActivity",
       "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToSpecificItems",
+      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToFulfillmentGroup",
       "org.broadleafcommerce.core.offer.service.MVELTest.testBasicMVELFunctions",
       "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToItemsInCategoryAndOrderValueGreaterThanFifty",
-      "org.broadleafcommerce.core.offer.service.MVELTest.testOfferAppliesToFulfillmentGroup",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createPayment",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoById",
-      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createTestPayment",
       "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoByOrder",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createPayment",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.createTestPayment",
+      "org.broadleafcommerce.core.payment.service.PaymentInfoServiceTest.readPaymentInfoById",
       "org.broadleafcommerce.core.checkout.service.CheckoutTest.testCheckout",
       "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrderById",
       "org.broadleafcommerce.core.order.dao.OrderDaoTest.createOrder",
       "org.broadleafcommerce.core.order.dao.OrderDaoTest.readOrdersForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testReadOrdersForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.findOrderByOrderNumber",
-      "org.broadleafcommerce.core.order.service.OrderTest.findCartForAnonymousCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.addItemToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testSubmitOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.findNamedOrderForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.addPaymentToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalAddScenarios",
-      "org.broadleafcommerce.core.order.service.OrderTest.removeItemFromOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testManyToOneFGItemToOrderItem",
-      "org.broadleafcommerce.core.order.service.OrderTest.findCurrentCartForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.addBundleToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.addAnotherItemToOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.updateItemsInOrder",
-      "org.broadleafcommerce.core.order.service.OrderTest.testOrderPaymentInfos",
-      "org.broadleafcommerce.core.order.service.OrderTest.getItemsForOrder",
       "org.broadleafcommerce.core.order.service.OrderTest.getOrdersForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.testOrderPaymentInfos",
+      "org.broadleafcommerce.core.order.service.OrderTest.findOrderByOrderNumber",
+      "org.broadleafcommerce.core.order.service.OrderTest.testReadOrdersForCustomer",
       "org.broadleafcommerce.core.order.service.OrderTest.createCartForCustomer",
       "org.broadleafcommerce.core.order.service.OrderTest.testNamedOrderForCustomer",
-      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalUpdateScenarios",
+      "org.broadleafcommerce.core.order.service.OrderTest.testManyToOneFGItemToOrderItem",
+      "org.broadleafcommerce.core.order.service.OrderTest.getItemsForOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.addBundleToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.addAnotherItemToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.addPaymentToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.addItemToOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.updateItemsInOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalAddScenarios",
       "org.broadleafcommerce.core.order.service.OrderTest.checkOrderItems",
+      "org.broadleafcommerce.core.order.service.OrderTest.findNamedOrderForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.findCurrentCartForCustomer",
+      "org.broadleafcommerce.core.order.service.OrderTest.testSubmitOrder",
       "org.broadleafcommerce.core.order.service.OrderTest.findCartForNullCustomerId",
-      "org.broadleafcommerce.core.order.service.OrderTest.testOrderProperties",
       "org.broadleafcommerce.core.order.service.OrderTest.removeBundleFromOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.testOrderProperties",
+      "org.broadleafcommerce.core.order.service.OrderTest.testIllegalUpdateScenarios",
+      "org.broadleafcommerce.core.order.service.OrderTest.removeItemFromOrder",
+      "org.broadleafcommerce.core.order.service.OrderTest.findCartForAnonymousCustomer",
       "org.broadleafcommerce.profile.web.core.service.PhoneTest.readPhoneById",
-      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.createFulfillmentGroupItem",
       "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsForFulfillmentGroup",
+      "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.createFulfillmentGroupItem",
       "org.broadleafcommerce.core.order.dao.FulfillmentGroupItemDaoTest.readFulfillmentGroupItemsById",
       "org.broadleafcommerce.security.service.AdminPermissionTest.testAdminPermissionSave",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.deleteGiftWrapOrderItemsById",
       "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsByIdAfterGiftWrapDeletion",
       "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readGiftWrapOrderItemsById",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.deleteGiftWrapOrderItemsById",
-      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createGiftWrapOrderItem",
       "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.readOrderItemsById",
       "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createDiscreteOrderItem",
+      "org.broadleafcommerce.core.order.dao.OrderItemDaoTest.createGiftWrapOrderItem",
       "org.broadleafcommerce.common.email.service.EmailTest.testSynchronousEmail",
       "org.broadleafcommerce.common.config.SystemPropertiesTest.testOverridesPropertyFiles",
       "org.broadleafcommerce.common.config.SystemPropertiesTest.testEnvironmentResolvedFromDatabase",
       "org.broadleafcommerce.security.service.AdminRoleTest.testAdminRoleSave",
       "org.broadleafcommerce.core.order.service.CartTest.testMergeWithInactiveAnonymousCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testAddItemToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoAnonymousCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrderWithoutExistingCart",
-      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrder",
-      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoCustomerCart",
       "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrderWithoutExistingCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testAddItemToCartFromNamedOrder",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoCustomerCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testMoveItemToCartFromNamedOrder",
       "org.broadleafcommerce.core.order.service.CartTest.testMoveAllItemsToCartFromNamedOrder",
       "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrder",
       "org.broadleafcommerce.core.order.service.CartTest.testMergeWithBothCarts",
+      "org.broadleafcommerce.core.order.service.CartTest.testMergeWithNoAnonymousCart",
+      "org.broadleafcommerce.core.order.service.CartTest.testAddAllItemsToCartFromNamedOrderWithoutExistingCart",
       "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readFirstSku",
       "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.createSku",
       "org.broadleafcommerce.core.catalog.dao.SkuDaoTest.readSkuById",

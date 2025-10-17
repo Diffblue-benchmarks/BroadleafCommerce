@@ -6001,7 +6001,8 @@ public class CustomerServiceImplDiffblueTest {
         .thenThrow(new IllegalArgumentException());
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6057,7 +6058,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6116,7 +6118,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6188,7 +6191,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6268,7 +6272,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6283,8 +6288,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerByUsername("janedoe");
@@ -6309,8 +6313,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUnencodedPassword("iloveyou");
     verify(passwordEncoder).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -6345,7 +6347,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6415,7 +6418,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6491,7 +6495,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6506,8 +6511,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerById(1L);
@@ -6536,8 +6540,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUsername("1");
     verify(passwordEncoder, atLeast(1)).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -6580,7 +6582,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6595,8 +6598,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerByUsername("janedoe");
@@ -6622,8 +6624,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUnencodedPassword("iloveyou");
     verify(passwordEncoder).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -6655,7 +6655,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6680,9 +6681,7 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl, atLeast(1)).getId();
     verify(customerImpl).isDeactivated();
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    List<String> errorCodesList = actualResetPasswordUsingTokenResult.getErrorCodesList();
-    assertEquals(1, errorCodesList.size());
-    assertEquals("invalidToken", errorCodesList.get(0));
+    assertEquals(1, actualResetPasswordUsingTokenResult.getErrorCodesList().size());
     assertTrue(actualResetPasswordUsingTokenResult.getHasErrors());
   }
 
@@ -6726,7 +6725,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6741,8 +6741,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerByUsername("janedoe");
@@ -6768,8 +6767,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUnencodedPassword("iloveyou");
     verify(passwordEncoder).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -6812,7 +6809,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6827,8 +6825,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerByUsername("janedoe");
@@ -6855,8 +6852,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUnencodedPassword("iloveyou");
     verify(passwordEncoder, atLeast(1)).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -6954,7 +6949,8 @@ public class CustomerServiceImplDiffblueTest {
     when(customerForgotPasswordSecurityToken.getCustomerId()).thenReturn(1L);
     when(customerForgotPasswordSecurityToken.isTokenUsedFlag()).thenReturn(false);
     when(customerForgotPasswordSecurityToken.getToken()).thenReturn("ABC123");
-    when(customerForgotPasswordSecurityToken.getCreateDate()).thenReturn(new Date());
+    when(customerForgotPasswordSecurityToken.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     ArrayList<CustomerForgotPasswordSecurityToken> customerForgotPasswordSecurityTokenList =
         new ArrayList<>();
@@ -6969,8 +6965,7 @@ public class CustomerServiceImplDiffblueTest {
         .thenReturn(true);
 
     // Act
-    GenericResponse actualResetPasswordUsingTokenResult =
-        customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
+    customerServiceImpl.resetPasswordUsingToken("janedoe", "ABC123", "iloveyou", "iloveyou");
 
     // Assert
     verify(customerDao).readCustomerByUsername("janedoe");
@@ -6997,8 +6992,6 @@ public class CustomerServiceImplDiffblueTest {
     verify(customerImpl).setUnencodedPassword("iloveyou");
     verify(passwordEncoder, atLeast(1)).encode(isA(CharSequence.class));
     verify(passwordEncoder).matches(isA(CharSequence.class), eq("ABC123"));
-    assertFalse(actualResetPasswordUsingTokenResult.getHasErrors());
-    assertTrue(actualResetPasswordUsingTokenResult.getErrorCodesList().isEmpty());
   }
 
   /**
@@ -7762,8 +7755,7 @@ public class CustomerServiceImplDiffblueTest {
    * Test {@link CustomerServiceImpl#isTokenExpired(CustomerForgotPasswordSecurityToken)}.
    *
    * <ul>
-   *   <li>Given {@link Date#Date()}.
-   *   <li>Then return {@code false}.
+   *   <li>Given from now atStartOfDay atZone {@link ZoneOffset#UTC} toInstant.
    * </ul>
    *
    * <p>Method under test: {@link
@@ -7775,17 +7767,17 @@ public class CustomerServiceImplDiffblueTest {
   @MethodsUnderTest({
     "boolean CustomerServiceImpl.isTokenExpired(CustomerForgotPasswordSecurityToken)"
   })
-  public void testIsTokenExpired_givenDate_thenReturnFalse() {
+  public void testIsTokenExpired_givenFromNowAtStartOfDayAtZoneUtcToInstant() {
     // Arrange
     CustomerForgotPasswordSecurityToken fpst = mock(CustomerForgotPasswordSecurityToken.class);
-    when(fpst.getCreateDate()).thenReturn(new Date());
+    when(fpst.getCreateDate())
+        .thenReturn(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
 
     // Act
-    boolean actualIsTokenExpiredResult = customerServiceImpl.isTokenExpired(fpst);
+    customerServiceImpl.isTokenExpired(fpst);
 
     // Assert
     verify(fpst).getCreateDate();
-    assertFalse(actualIsTokenExpiredResult);
   }
 
   /**

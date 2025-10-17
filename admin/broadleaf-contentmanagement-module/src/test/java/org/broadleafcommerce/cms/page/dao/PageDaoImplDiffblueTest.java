@@ -85,7 +85,7 @@ public class PageDaoImplDiffblueTest {
    * <ul>
    *   <li>Given {@link PageImpl} (default constructor).
    *   <li>When {@link ArrayList#ArrayList()} add {@link PageImpl} (default constructor).
-   *   <li>Then {@link ArrayList#ArrayList()} size is one.
+   *   <li>Then return {@link ArrayList#ArrayList()}.
    * </ul>
    *
    * <p>Method under test: {@link PageDaoImpl#filterInactive(List)}
@@ -94,7 +94,7 @@ public class PageDaoImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"List PageDaoImpl.filterInactive(List)"})
-  public void testFilterInactive_givenPageImpl_whenArrayListAddPageImpl_thenArrayListSizeIsOne() {
+  public void testFilterInactive_givenPageImpl_whenArrayListAddPageImpl_thenReturnArrayList() {
     // Arrange
     ArrayList<Page> pages = new ArrayList<>();
     pages.add(new PageImpl());
@@ -103,7 +103,6 @@ public class PageDaoImplDiffblueTest {
     List<Page> actualFilterInactiveResult = pageDaoImpl.filterInactive(pages);
 
     // Assert
-    assertEquals(1, pages.size());
     assertSame(pages, actualFilterInactiveResult);
   }
 

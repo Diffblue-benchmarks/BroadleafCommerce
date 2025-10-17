@@ -507,6 +507,75 @@ public class OfferPriceDataImplDiffblueTest {
    * Test {@link OfferPriceDataImpl#isActive()}.
    *
    * <ul>
+   *   <li>Given {@link OfferPriceDataImpl} (default constructor) Amount is {@link
+   *       BigDecimal#BigDecimal(String)} with {@code 2.3}.
+   *   <li>Then return {@code false}.
+   * </ul>
+   *
+   * <p>Method under test: {@link OfferPriceDataImpl#isActive()}
+   */
+  @Test
+  @Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean OfferPriceDataImpl.isActive()"})
+  public void testIsActive_givenOfferPriceDataImplAmountIsBigDecimalWith23_thenReturnFalse() {
+    // Arrange
+    OfferImpl offer = new OfferImpl();
+    offer.setAdjustmentType(OfferAdjustmentType.FUTURE_CREDIT);
+    offer.setApplyDiscountToSalePrice(true);
+    offer.setApplyToChildItems(true);
+    offer.setAutomaticallyAdded(true);
+    offer.setCombinableWithOtherOffers(true);
+    offer.setDescription("The characteristics of someone or something");
+    offer.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offer.setId(OfferImpl.serialVersionUID);
+    offer.setMarketingMessage("Marketing Message");
+    offer.setMaxUsesPerCustomer(OfferImpl.serialVersionUID);
+    offer.setMaxUsesPerOrder(3);
+    offer.setMaxUsesStrategyType(CustomerMaxUsesStrategyType.ACCOUNT);
+    offer.setMinimumDaysPerUsage(OfferImpl.serialVersionUID);
+    offer.setName("Name");
+    offer.setOfferCodes(new ArrayList<>());
+    offer.setOfferItemQualifierRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferItemTargetRuleType(OfferItemRestrictionRuleType.NONE);
+    offer.setOfferMatchRulesXref(new HashMap<>());
+    offer.setOfferPriceData(new ArrayList<>());
+    offer.setOrderMinSubTotal(new Money());
+    offer.setPriority(1);
+    offer.setQualifyingItemCriteriaXref(new HashSet<>());
+    offer.setQualifyingItemSubTotal(new Money());
+    offer.setRequiresRelatedTargetAndQualifiers(true);
+    offer.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offer.setTargetItemCriteriaXref(new HashSet<>());
+    offer.setTargetMinSubTotal(new Money());
+    offer.setTargetSystem("Target System");
+    offer.setTotalitarianOffer(true);
+    offer.setType(OfferType.FULFILLMENT_GROUP);
+    offer.setUseListForDiscounts(true);
+    offer.setValue(new BigDecimal("2.3"));
+    offer.setEndDate(new Date());
+
+    OfferPriceDataImpl offerPriceDataImpl = new OfferPriceDataImpl();
+    offerPriceDataImpl.setAmount(new BigDecimal("2.3"));
+    offerPriceDataImpl.setDiscountType(OfferDiscountType.AMOUNT_OFF);
+    offerPriceDataImpl.setId(OfferPriceDataImpl.serialVersionUID);
+    offerPriceDataImpl.setIdentifierType(OfferPriceDataIdentifierType.PRODUCT_EXTERNAL_ID);
+    offerPriceDataImpl.setIdentifierValue("42");
+    offerPriceDataImpl.setQuantity(1);
+    offerPriceDataImpl.setActiveStartDate(null);
+    offerPriceDataImpl.setOffer(offer);
+    offerPriceDataImpl.setActiveEndDate(null);
+    offerPriceDataImpl.setArchived('Y');
+
+    // Act and Assert
+    assertFalse(offerPriceDataImpl.isActive());
+  }
+
+  /**
+   * Test {@link OfferPriceDataImpl#isActive()}.
+   *
+   * <ul>
    *   <li>Given {@link OfferPriceDataImpl} Archived is {@code Y}.
    *   <li>Then return {@code false}.
    * </ul>

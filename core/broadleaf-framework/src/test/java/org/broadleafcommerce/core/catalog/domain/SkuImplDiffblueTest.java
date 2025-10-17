@@ -8676,6 +8676,35 @@ public class SkuImplDiffblueTest {
   /**
    * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
    *
+   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory5() {
+    // Arrange
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.isActive()).thenReturn(true);
+
+    SkuImpl skuImpl = new SkuImpl();
+    skuImpl.setActiveEndDate(new Date());
+    skuImpl.setActiveStartDate(new java.sql.Date(1, 1, 1));
+    skuImpl.setProduct(mock(Product.class));
+    skuImpl.setDefaultProduct(defaultProduct);
+    Product product = mock(Product.class);
+
+    // Act
+    boolean actualIsActiveResult = skuImpl.isActive(product, new CategoryImpl());
+
+    // Assert
+    verify(defaultProduct).isActive();
+    assertFalse(actualIsActiveResult);
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   *
    * <ul>
    *   <li>Given {@link ProductBundleImpl} (default constructor) DefaultSku is {@link SkuImpl}
    *       (default constructor).
@@ -8792,6 +8821,43 @@ public class SkuImplDiffblueTest {
 
     // Act and Assert
     assertFalse(skuImpl.isActive(product, new CategoryImpl()));
+  }
+
+  /**
+   * Test {@link SkuImpl#isActive(Product, Category)} with {@code Product}, {@code Category}.
+   *
+   * <ul>
+   *   <li>Given {@code true}.
+   *   <li>When {@link Product} {@link Product#isActive()} return {@code true}.
+   * </ul>
+   *
+   * <p>Method under test: {@link SkuImpl#isActive(Product, Category)}
+   */
+  @Test
+  @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
+  @ManagedByDiffblue
+  @MethodsUnderTest({"boolean SkuImpl.isActive(Product, Category)"})
+  public void testIsActiveWithProductCategory_givenTrue_whenProductIsActiveReturnTrue() {
+    // Arrange
+    ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
+    when(defaultProduct.isActive()).thenReturn(true);
+
+    SkuImpl skuImpl = new SkuImpl();
+    skuImpl.setActiveEndDate(new Date());
+    skuImpl.setActiveStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    skuImpl.setProduct(mock(Product.class));
+    skuImpl.setDefaultProduct(defaultProduct);
+
+    Product product = mock(Product.class);
+    when(product.isActive()).thenReturn(true);
+
+    // Act
+    boolean actualIsActiveResult = skuImpl.isActive(product, new CategoryImpl());
+
+    // Assert
+    verify(defaultProduct).isActive();
+    assertFalse(actualIsActiveResult);
   }
 
   /**
@@ -8963,7 +9029,7 @@ public class SkuImplDiffblueTest {
    *
    * <ul>
    *   <li>Given {@link SkuImpl} ActiveStartDate is {@link Date#Date()}.
-   *   <li>Then return {@code true}.
+   *   <li>Then calls {@link ProductBundleImpl#isActive()}.
    * </ul>
    *
    * <p>Method under test: {@link SkuImpl#isActive()}
@@ -8972,20 +9038,22 @@ public class SkuImplDiffblueTest {
   @org.junit.experimental.categories.Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"boolean SkuImpl.isActive()"})
-  public void testIsActive_givenSkuImplActiveStartDateIsDate_thenReturnTrue() {
+  public void testIsActive_givenSkuImplActiveStartDateIsDate_thenCallsIsActive() {
     // Arrange
-    skuImpl.setActiveStartDate(new Date());
-    skuImpl.setActiveEndDate(null);
-    skuImpl.setProduct(new ProductBundleImpl());
-
     ProductBundleImpl defaultProduct = mock(ProductBundleImpl.class);
     when(defaultProduct.isActive()).thenReturn(true);
+    skuImpl.setActiveStartDate(new Date());
+    skuImpl.setActiveEndDate(new Date());
+    skuImpl.setProduct(mock(Product.class));
     skuImpl.setDefaultProduct(defaultProduct);
     skuImpl.setId(null);
 
-    // Act and Assert
-    assertTrue(skuImpl.isActive());
+    // Act
+    boolean actualIsActiveResult = skuImpl.isActive();
+
+    // Assert
     verify(defaultProduct).isActive();
+    assertFalse(actualIsActiveResult);
   }
 
   /**

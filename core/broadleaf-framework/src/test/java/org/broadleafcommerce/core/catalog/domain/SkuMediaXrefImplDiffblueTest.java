@@ -497,6 +497,7 @@ public class SkuMediaXrefImplDiffblueTest {
    *
    * <ul>
    *   <li>Given {@link SkuMediaXrefImpl}.
+   *   <li>When {@code Dr}.
    *   <li>Then {@link SkuMediaXrefImpl} Media {@link MediaImpl}.
    * </ul>
    *
@@ -506,7 +507,7 @@ public class SkuMediaXrefImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"void SkuMediaXrefImpl.setTitle(String)"})
-  public void testSetTitle_givenSkuMediaXrefImpl_thenSkuMediaXrefImplMediaMediaImpl() {
+  public void testSetTitle_givenSkuMediaXrefImpl_whenDr_thenSkuMediaXrefImplMediaMediaImpl() {
     // Arrange and Act
     skuMediaXrefImpl.setTitle("Dr");
 
@@ -943,6 +944,7 @@ public class SkuMediaXrefImplDiffblueTest {
    *
    * <ul>
    *   <li>Given {@link SkuMediaXrefImpl}.
+   *   <li>When {@code Tags}.
    *   <li>Then {@link SkuMediaXrefImpl} Media {@link MediaImpl}.
    * </ul>
    *
@@ -952,7 +954,7 @@ public class SkuMediaXrefImplDiffblueTest {
   @Category(ContributionFromDiffblue.class)
   @ManagedByDiffblue
   @MethodsUnderTest({"void SkuMediaXrefImpl.setTags(String)"})
-  public void testSetTags_givenSkuMediaXrefImpl_thenSkuMediaXrefImplMediaMediaImpl() {
+  public void testSetTags_givenSkuMediaXrefImpl_whenTags_thenSkuMediaXrefImplMediaMediaImpl() {
     // Arrange and Act
     skuMediaXrefImpl.setTags("Tags");
 

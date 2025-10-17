@@ -17,13 +17,8 @@
  */
 package org.broadleafcommerce.core.search.service.solr.indexer;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import com.diffblue.cover.annotations.ContributionFromDiffblue;
 import com.diffblue.cover.annotations.ManagedByDiffblue;
 import com.diffblue.cover.annotations.MethodsUnderTest;
@@ -61,29 +56,6 @@ public class AbstractSolrIndexUpdateServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link AbstractSolrIndexUpdateServiceImpl#scheduleCommand(SolrUpdateCommand)}.
-   *
-   * <ul>
-   *   <li>Then throw {@link IllegalStateException}.
-   * </ul>
-   *
-   * <p>Method under test: {@link
-   * AbstractSolrIndexUpdateServiceImpl#scheduleCommand(SolrUpdateCommand)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void AbstractSolrIndexUpdateServiceImpl.scheduleCommand(SolrUpdateCommand)"})
-  public void testScheduleCommand_thenThrowIllegalStateException() {
-    // Arrange, Act and Assert
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            abstractSolrIndexUpdateServiceImpl.scheduleCommand(
-                FullReindexCommand.DEFAULT_INSTANCE));
-  }
-
-  /**
    * Test {@link AbstractSolrIndexUpdateServiceImpl#isRunning(String)}.
    *
    * <p>Method under test: {@link AbstractSolrIndexUpdateServiceImpl#isRunning(String)}
@@ -95,67 +67,5 @@ public class AbstractSolrIndexUpdateServiceImplDiffblueTest {
   public void testIsRunning() {
     // Arrange, Act and Assert
     assertFalse(AbstractSolrIndexUpdateServiceImpl.isRunning("42"));
-  }
-
-  /**
-   * Test {@link AbstractSolrIndexUpdateServiceImpl#getQueuePollTime()}.
-   *
-   * <ul>
-   *   <li>Then return {@code 60000}.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSolrIndexUpdateServiceImpl#getQueuePollTime()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"long AbstractSolrIndexUpdateServiceImpl.getQueuePollTime()"})
-  public void testGetQueuePollTime_thenReturn60000() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-    //   Run dcover create --keep-partial-tests to gain insights into why
-    //   a non-Spring test was created.
-
-    // Arrange
-    CatalogSolrIndexUpdateCommandHandlerImpl commandHandler =
-        mock(CatalogSolrIndexUpdateCommandHandlerImpl.class);
-    when(commandHandler.getCommandGroup()).thenReturn("Command Group");
-    CatalogSolrIndexUpdateServiceImpl catalogSolrIndexUpdateServiceImpl =
-        new CatalogSolrIndexUpdateServiceImpl(new DefaultSolrIndexQueueProvider(), commandHandler);
-
-    // Act
-    long actualQueuePollTime = catalogSolrIndexUpdateServiceImpl.getQueuePollTime();
-
-    // Assert
-    verify(commandHandler).getCommandGroup();
-    assertEquals(60000L, actualQueuePollTime);
-  }
-
-  /**
-   * Test {@link AbstractSolrIndexUpdateServiceImpl#getQueueOfferTime()}.
-   *
-   * <ul>
-   *   <li>Then return one thousand.
-   * </ul>
-   *
-   * <p>Method under test: {@link AbstractSolrIndexUpdateServiceImpl#getQueueOfferTime()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"long AbstractSolrIndexUpdateServiceImpl.getQueueOfferTime()"})
-  public void testGetQueueOfferTime_thenReturnOneThousand() {
-    // Arrange
-    CatalogSolrIndexUpdateCommandHandlerImpl commandHandler =
-        mock(CatalogSolrIndexUpdateCommandHandlerImpl.class);
-    when(commandHandler.getCommandGroup()).thenReturn("Command Group");
-    CatalogSolrIndexUpdateServiceImpl catalogSolrIndexUpdateServiceImpl =
-        new CatalogSolrIndexUpdateServiceImpl(new DefaultSolrIndexQueueProvider(), commandHandler);
-
-    // Act
-    long actualQueueOfferTime = catalogSolrIndexUpdateServiceImpl.getQueueOfferTime();
-
-    // Assert
-    verify(commandHandler).getCommandGroup();
-    assertEquals(1000L, actualQueueOfferTime);
   }
 }

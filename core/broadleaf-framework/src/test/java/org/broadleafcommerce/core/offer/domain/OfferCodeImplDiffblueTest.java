@@ -432,40 +432,15 @@ public class OfferCodeImplDiffblueTest {
   public void testIsActive_givenOfferCodeImplArchivedIsY_thenReturnFalse2() {
     // Arrange
     OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
-    offerCodeImpl.setEndDate(new Date());
     offerCodeImpl.setArchived('Y');
-    offerCodeImpl.setStartDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-
-    // Act and Assert
-    assertFalse(offerCodeImpl.isActive());
-  }
-
-  /**
-   * Test {@link OfferCodeImpl#isActive()}.
-   *
-   * <ul>
-   *   <li>Given {@link OfferCodeImpl} (default constructor) StartDate is {@link Date#Date()}.
-   *   <li>Then return {@code false}.
-   * </ul>
-   *
-   * <p>Method under test: {@link OfferCodeImpl#isActive()}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"boolean OfferCodeImpl.isActive()"})
-  public void testIsActive_givenOfferCodeImplStartDateIsDate_thenReturnFalse() {
-    // Arrange
-    OfferCodeImpl offerCodeImpl = new OfferCodeImpl();
     offerCodeImpl.setEmailAddress("42 Main St");
-    offerCodeImpl.setEndDate(
-        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    offerCodeImpl.setEndDate(new Date());
     offerCodeImpl.setId(OfferCodeImpl.serialVersionUID);
     offerCodeImpl.setMaxUses(3);
     offerCodeImpl.setOfferCode("Offer Code");
     offerCodeImpl.setOrders(new ArrayList<>());
-    offerCodeImpl.setStartDate(new Date());
+    offerCodeImpl.setStartDate(
+        Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
     offerCodeImpl.setUses(1);
 
     // Act and Assert

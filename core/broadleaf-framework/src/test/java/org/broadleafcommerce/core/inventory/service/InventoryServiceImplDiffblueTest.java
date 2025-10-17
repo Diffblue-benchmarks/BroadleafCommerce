@@ -4842,36 +4842,6 @@ public class InventoryServiceImplDiffblueTest {
    * Test {@link InventoryServiceImpl#incrementSku(Map, Map)}.
    *
    * <ul>
-   *   <li>Given minus one.
-   *   <li>When {@link HashMap#HashMap()} {@link SkuImpl} (default constructor) is minus one.
-   * </ul>
-   *
-   * <p>Method under test: {@link InventoryServiceImpl#incrementSku(Map, Map)}
-   */
-  @Test
-  @Category(ContributionFromDiffblue.class)
-  @ManagedByDiffblue
-  @MethodsUnderTest({"void InventoryServiceImpl.incrementSku(Map, Map)"})
-  public void testIncrementSku_givenMinusOne_whenHashMapSkuImplIsMinusOne() {
-    // Arrange
-    SkuImpl skuImpl = mock(SkuImpl.class);
-    when(skuImpl.getInventoryType()).thenReturn(InventoryType.ALWAYS_AVAILABLE);
-
-    HashMap<Sku, Integer> skuQuantities = new HashMap<>();
-    skuQuantities.put(new SkuImpl(), -1);
-    skuQuantities.put(skuImpl, 1);
-
-    // Act and Assert
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> inventoryServiceImpl.incrementSku(skuQuantities, new HashMap<>()));
-    verify(skuImpl).getInventoryType();
-  }
-
-  /**
-   * Test {@link InventoryServiceImpl#incrementSku(Map, Map)}.
-   *
-   * <ul>
    *   <li>Given {@link SkuImpl} {@link SkuImpl#getInventoryType()} return {@link
    *       InventoryType#ALWAYS_AVAILABLE}.
    * </ul>

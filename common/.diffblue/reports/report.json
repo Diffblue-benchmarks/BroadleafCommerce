@@ -4,18 +4,18 @@
   },
   "run" : {
     "version" : "2025.09.01-44e352d-licensed",
-    "creationTimestamp" : "2025-09-19T10:40:50.455477524Z",
+    "creationTimestamp" : "2025-10-15T16:07:16.260043423Z",
     "command" : "dcover create --coverage-reports --upload http://localhost:8080 --project-name BroadleafCommerce --name with-diffblue-tests",
-    "totalTime" : 27755.659,
-    "environmentDetectionTime" : 5.456,
-    "indexingTime" : 0.386,
-    "entryPointsTime" : 5.426,
-    "generationTime" : 26621.807,
-    "timeToFirstTest" : 123.021,
-    "timeToLastTest" : 27547.294,
-    "indexQueryTime" : 22.225,
-    "verificationTime" : 850.468,
-    "validationTime" : 130.977
+    "totalTime" : 28185.019,
+    "environmentDetectionTime" : 5.421,
+    "indexingTime" : 0.374,
+    "entryPointsTime" : 5.391,
+    "generationTime" : 27065.188,
+    "timeToFirstTest" : 122.78,
+    "timeToLastTest" : 27978.401,
+    "indexQueryTime" : 22.252,
+    "verificationTime" : 838.45,
+    "validationTime" : 129.146
   },
   "codes" : {
     "F009" : "Internal error",
@@ -57,9 +57,9 @@
   "summary" : {
     "classesCount" : 1082,
     "methodsCount" : 6605,
-    "cumulativeDiffblueTestCount" : 6834,
+    "cumulativeDiffblueTestCount" : 6833,
     "cumulativeManualTestCount" : 71,
-    "completeTestCount" : 6928,
+    "completeTestCount" : 6927,
     "incompleteTestCount" : 0,
     "skeletonTestCount" : 0,
     "totalPhysicalLineCount" : 44607,
@@ -81,16 +81,16 @@
     },
     "perMethodOutcome" : {
       "F009" : 16,
-      "R000" : 3435,
+      "R000" : 3434,
       "R002" : 86,
       "R004" : 107,
       "R005" : 4,
       "R008" : 12,
-      "R011" : 2,
+      "R011" : 3,
       "R013" : 150,
       "R015" : 6,
       "R024" : 3,
-      "R026" : 239,
+      "R026" : 241,
       "R027" : 6,
       "R031" : 16,
       "R033" : 1,
@@ -107,19 +107,19 @@
       "T012" : 132,
       "T023" : 230,
       "W001" : 4,
-      "W002" : 58
+      "W002" : 56
     },
     "perTestOutcome" : {
-      "R000" : 6928
+      "R000" : 6927
     },
     "perTestValidation" : {
-      "V000" : 6876,
+      "V000" : 6875,
       "V003" : 52
     },
     "warnings" : {
       "F009" : 19,
       "W001" : 37,
-      "W002" : 163
+      "W002" : 161
     }
   },
   "classes" : {
@@ -6605,11 +6605,8 @@
       "perMethodOutcome" : {
         "R002" : 1,
         "R004" : 1,
-        "T023" : 1,
-        "W002" : 1
-      },
-      "warnings" : {
-        "W002" : 1
+        "R011" : 1,
+        "T023" : 1
       }
     },
     "org.broadleafcommerce.common.io.ConcurrentFileOutputStream" : {
@@ -6625,7 +6622,7 @@
     },
     "org.broadleafcommerce.common.io.ConcurrentFileOutputStreamImpl" : {
       "methodsCount" : 9,
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : {
         "T000" : 7,
@@ -6633,17 +6630,9 @@
         "T023" : 1
       },
       "perMethodOutcome" : {
-        "R000" : 1,
-        "R026" : 5,
+        "R026" : 7,
         "T005" : 1,
-        "T023" : 1,
-        "W002" : 1
-      },
-      "perTestOutcome" : {
-        "R000" : 1
-      },
-      "warnings" : {
-        "W002" : 1
+        "T023" : 1
       }
     },
     "org.broadleafcommerce.common.jmx.AnnotationJmxAttributeSource" : {
@@ -47545,10 +47534,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R011",
       "lineNumbers" : [
         40,
         41,
@@ -47600,13 +47586,10 @@
       ]
     },
     "org.broadleafcommerce.common.io.ConcurrentFileOutputStreamImpl.getFileMoveLock:(Ljava/io/File;)Ljava/lang/Object;" : {
-      "completeTestCount" : 1,
+      "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "R000",
-      "perTestOutcome" : {
-        "R000" : 1
-      },
+      "perMethodOutcome" : "R026",
       "lineNumbers" : [
         96,
         97,
@@ -47629,10 +47612,7 @@
       "completeTestCount" : 0,
       "incompleteTestCount" : 0,
       "perMethodTestability" : "T000",
-      "perMethodOutcome" : "W002",
-      "warnings" : {
-        "W002" : 1
-      },
+      "perMethodOutcome" : "R026",
       "lineNumbers" : [
         84,
         85,
